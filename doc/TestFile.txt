@@ -1,5 +1,8 @@
 This is the doc file required for project part 1, this line is made by Deweert
 
+File edited by Felipe 
+
+
 - Art -
 
 # hello-world
@@ -65,6 +68,7 @@ ____________0___________________0
 
 ^^^^ Kaya ^^^^
 
+
 -Mohamed-
 
 
@@ -102,3 +106,6 @@ ____________0___________________0
 
 
 -Mohamed-
+
+I'm Hussein
+
