@@ -1,1 +1,33 @@
 This is the doc file required for project part 1, this line is made by Deweert
+
+- Art -
+
+# hello-world
+
+What can i say.
+Im just a lowly peasant
+learning this great structure
+created by networks unknown
+to my perception.
+
+I took my first step into
+this binary world not long ago.
+Learned the difference between
+Ones and zeroes
+The truth and false.
+
+The struggle to move
+my ever learning feet
+to take another step
+against the unknown stream
+of bits, just to gain
+a byte of knowledge.
+
+Now, I've come upon an even
+Greater project to conquer.
+Here I take my first, 
+out of the million commits.
+Though I might fall, 
+im sure Google will be there.
+
+- Art - 
