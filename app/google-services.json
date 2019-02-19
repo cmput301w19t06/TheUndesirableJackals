@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "332025387286",
+    "firebase_url": "https://theundesirablejackals.firebaseio.com",
+    "project_id": "theundesirablejackals",
+    "storage_bucket": "theundesirablejackals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332025387286:android:5516a423debad9e8",
+        "android_client_info": {
+          "package_name": "com.cmput301.w19t06.theundesirablejackals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332025387286-qtpse0p68c3vfdhffj1hl2uo0hf8kv9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmput301.w19t06.theundesirablejackals",
+            "certificate_hash": "8bfd9a5416ee6ac76a35d6d73cf520c450eb3933"
+          }
+        },
+        {
+          "client_id": "332025387286-ce2dplgovac6u7matldsie974uvmq5jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1O64xHEVetq4L9c8r4TWqAxBwvdni8x4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332025387286-ce2dplgovac6u7matldsie974uvmq5jr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
