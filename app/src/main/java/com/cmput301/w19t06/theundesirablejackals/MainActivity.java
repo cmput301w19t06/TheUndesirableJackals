@@ -2,115 +2,109 @@ package com.cmput301.w19t06.theundesirablejackals;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private SurfaceView svBarcode;
-    private TextView tvBarcode;
-
-    private BarcodeDetector detector;
-    private CameraSource cameraSource;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private static final int RC_SIGN_IN = 123;
+    private static final String TAG = "CustomAuthActivity";
+    private TokenBroadcastReceiver mTokenReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        svBarcode = findViewById(R.id.sv_barcode);
-        tvBarcode = findViewById(R.id.tv_barcode);
+        FirebaseApp.initializeApp(this);
 
-        detector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        detector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
 
-            }
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                 if(barcodes.size()>0) {
-                     tvBarcode.post(new Runnable() {
-                         @Override
-                         public void run() {
-                             tvBarcode.setText(barcodes.valueAt(0).displayValue);
-                         }
-                     });
-                 }
-            }
-        });
 
-        cameraSource = new CameraSource.Builder(this, detector).setRequestedPreviewSize(1024,768)
-                .setRequestedFps(25).setAutoFocusEnabled(true).build();
-        svBarcode.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
-                    try {
-                        cameraSource.start(holder);
-                    } catch (IOException e) {
-                        // TODO: IOException
-                    }
-                } else {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.CAMERA}, 123);
-                }
-            }
-            @Override
+        // Button click listeners
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
 
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
     }
 
-    @SuppressLint("MissingPermission")
+
+    public void createSignInIntent() {
+        // [START auth_fui_create_intent]
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+        // [END auth_fui_create_intent]
+    }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==123) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    cameraSource.start(svBarcode.getHolder());
-                } catch (IOException e) {
-                    // TODO: IOException
-                }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                // ...
             } else {
-                Toast.makeText(this, "Scanner wont work without permission!",
-                        Toast.LENGTH_SHORT).show();
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
             }
         }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        detector.release();
-        cameraSource.stop();
-        cameraSource.release();
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.buttonSignIn) {
+            signIn();
+
+        }
     }
+
+    private void signIn(){
+        createSignInIntent();
+    }
+
+
 }
