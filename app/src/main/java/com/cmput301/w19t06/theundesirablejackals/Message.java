@@ -1,4 +1,4 @@
-
+package com.cmput301.w19t06.theundesirablejackals;
 
 public class Message extends Communication {
     private String text;
