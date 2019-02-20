@@ -1,7 +1,7 @@
 /*
 Small test example that can be run from the terminal
 */
-
+package com.cmput301.w19t06.theundesirablejackals;
 import java.util.ArrayList;
 
 public class Test {
