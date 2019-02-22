@@ -4,6 +4,7 @@ public class BookRequestHandler extends Communication {
     private Book bookRequested;
     private String requestStatus; // "pending", "denied" or "accepted"
 
+
     public BookRequestHandler(User sender, User receiver, Book bookRequested) {
         super(sender, receiver);
         this.bookRequested = bookRequested;
