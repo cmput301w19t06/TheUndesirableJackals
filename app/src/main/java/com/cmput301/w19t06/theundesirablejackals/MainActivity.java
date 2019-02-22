@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
                         .setAvailableProviders(providers)
                         .build(),
                 RC_SIGN_IN);
@@ -90,9 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Successfully signed in
                 currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 database = FirebaseDatabase.getInstance();
-                myRef = database.getReference("message");
+                myRef = database.getReference("users/" + currentUser.getUid());
 
                 myRef.setValue("Hello, World!");
+
                 mStorageRef = FirebaseStorage.getInstance().getReference();
                 // ...
             } else {
