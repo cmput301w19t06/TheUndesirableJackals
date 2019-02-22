@@ -15,7 +15,10 @@ public class Authentication {
 
     public Boolean authenticate(String input) {
         // Returns true if user's input is the same as password
-        return password == input;
+        //NOT IT DOES NOT  IT RETURNS TRUE IF THE PASSWORD AND THE INPUT ARE THE LITERAL SAME STRING!!!!!!
+        //return password == input;
+
+        return password.equals(input); //Strings are not primitive "int's", don't use ==
     }
 
     public String getUserName() {
