@@ -4,17 +4,25 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
-    private String status; // available, requested, accepted or borrowed
+    private BookStatus status;
     private User owner;
     private Image image;
+
+    public enum  BookStatus {
+        AVAILABLE,  // book is available for all users to be borrowed
+        REQUESTED,  // book is requested by a user
+        ACCEPTED,   // book request has been accepted by the owner
+        BORROWED    // book was handed off to the borrower
+    }
 
     public Book(String title, String author, String isbn, User owner) {
         // status is set to "available" as default
         // images is set to null as default
+        // TODO: Images will need to be set to a default image in the future
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.status = "available";
+        this.status = BookStatus.AVAILABLE;
         this.owner = owner;
         this.image = null;
     }
@@ -31,7 +39,7 @@ public class Book {
         return isbn;
     }
 
-    public String getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 
@@ -55,7 +63,7 @@ public class Book {
         isbn = newISBN;
     }
 
-    public void setStatus(String newStatus) {
+    public void setStatus(BookStatus newStatus) {
         status = newStatus;
     }
 
