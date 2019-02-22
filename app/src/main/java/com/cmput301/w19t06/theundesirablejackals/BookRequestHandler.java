@@ -1,5 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals;
-
+/*
 public class BookRequestHandler extends Communication {
     private Book bookRequested;
     private String requestStatus; // "pending", "denied" or "accepted"
@@ -43,3 +43,4 @@ public class BookRequestHandler extends Communication {
     }
 
 }
+*/
