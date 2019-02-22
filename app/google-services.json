@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "332025387286-p35k7tcllv51v0cnkpqsjju27e2ts5dr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmput301.w19t06.theundesirablejackals",
+            "certificate_hash": "452a26e0c3637b2f17b033baf543d4bf71be5328"
+          }
+        },
+        {
+          "client_id": "332025387286-8h77nbv23c0slhtuojq3j9lh4a4uu510.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmput301.w19t06.theundesirablejackals",
+            "certificate_hash": "e90b05fbf3f09d576c2564b2d0b4652ab47d9e7a"
+          }
+        },
+        {
           "client_id": "332025387286-ce2dplgovac6u7matldsie974uvmq5jr.apps.googleusercontent.com",
           "client_type": 3
         }
