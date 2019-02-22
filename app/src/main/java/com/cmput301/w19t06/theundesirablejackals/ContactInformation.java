@@ -26,6 +26,11 @@ public class ContactInformation {
         email = newEmail;
     }
 
+    public boolean isUniqueEmail() {
+        // TODO: will need to be implemented in the future
+        return true;
+    }
+
     public void setPhoneNumber(String newPhoneNumber) {
         phoneNumber = newPhoneNumber;
     }
