@@ -1,5 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals;
-/*
+
 public class Book {
     private String title;
     private String author;
@@ -67,4 +67,3 @@ public class Book {
         image = null;
     }
 }
-*/

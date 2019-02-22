@@ -1,5 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals;
-/*
+
+import java.util.ArrayList;
+
 public class User {
     private Authentication authentication;
     private ContactInformation contactInformation;
@@ -7,7 +9,7 @@ public class User {
     private BookList borrowedBooks;
 
     // user's requests to borrow books 
-    private ArrayList<BookRequestHandler> lendRequests; 
+    private ArrayList<BookRequestHandler> lendRequests;
 
     // requests to borrow user's books
     private ArrayList<BookRequestHandler> borrowRequests; 
@@ -17,7 +19,7 @@ public class User {
     public User(String userName, String password, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
-/*
+
         authentication = new Authentication(userName, password);
         contactInformation = new ContactInformation(email, phoneNumber);
         ownedBooks = new BookList();
@@ -67,4 +69,3 @@ public class User {
         messages.add(newMessage);
     }
 }
-*/

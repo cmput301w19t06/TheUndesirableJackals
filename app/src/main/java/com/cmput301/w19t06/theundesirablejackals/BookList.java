@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals;
-/*import java.util.ArrayList;
+
+import java.util.ArrayList;
 
 public class BookList {
     private ArrayList<Book> books;
@@ -38,4 +39,3 @@ public class BookList {
         books.remove(book);
     }
 }
-*/

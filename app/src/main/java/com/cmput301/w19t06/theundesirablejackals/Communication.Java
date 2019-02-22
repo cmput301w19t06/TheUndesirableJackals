@@ -1,5 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals;
-/*
+
+import java.util.Date;
+
 public abstract class Communication {
     private User sender;
     private User receiver;
@@ -29,4 +31,3 @@ public abstract class Communication {
         seen = true;
     }
 }
-*/
