@@ -15,7 +15,7 @@ public class Authentication {
 
     public Boolean authenticate(String input) {
         // Returns true if user's input is the same as password
-
+        //This is a quick change in authentication.java
 
         return password.equals(input); //Strings are not primitive "int's", don't use ==
     }
