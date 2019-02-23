@@ -7,7 +7,7 @@ public class UserTest {
             "email@hotmail.com", "333-333-3333");
 
     @Test
-    public void passwordEntry_isCorrect() {
+    public void Sometest() {
 
     }
 
