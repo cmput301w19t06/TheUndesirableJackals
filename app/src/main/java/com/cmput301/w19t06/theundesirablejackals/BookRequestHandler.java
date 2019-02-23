@@ -49,12 +49,12 @@ public class BookRequestHandler /*extends Communication*/ {
         currentStatus = RequestStatus.HANDED_OFF;
     }
 
-    public void recieveBookAsOwner() {
+    public void receiveBookAsOwner() {
         // set status of the book back to "available"
         bookRequested.setStatus(Book.BookStatus.AVAILABLE);
         currentStatus = RequestStatus.RECEIVED_OWNER;
 
-        // then posibly delete this instance from the main 
+        // then posibly delete this instance from the main
     }
 
     public void returnBook() {
@@ -68,5 +68,4 @@ public class BookRequestHandler /*extends Communication*/ {
         bookRequested.setStatus(Book.BookStatus.BORROWED);
         currentStatus = RequestStatus.RECEIVED_BORROWER;
     }
-
 }

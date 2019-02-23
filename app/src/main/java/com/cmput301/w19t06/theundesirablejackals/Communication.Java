@@ -2,13 +2,13 @@ package com.cmput301.w19t06.theundesirablejackals;
 
 import java.util.Date;
 
-public abstract class Communication {
+public class Communication {
     private User sender;
     private User receiver;
     private Date date;
     private Boolean seen;
 
-    public Communication(User sender, User receiver) {
+    public Communication (User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
         date = new Date(); // time and date

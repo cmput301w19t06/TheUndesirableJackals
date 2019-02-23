@@ -26,9 +26,9 @@ public class BookList {
 
         return result;
     }
+    public ArrayList<Book> searchByKeyword(String keyword) {
 
-    public ArrayList<Book> getBooks() {
-        return books;
+        return null;
     }
 
     public void addBook(Book newBook) {
@@ -38,4 +38,10 @@ public class BookList {
     public void deleteBook(Book book) {
         books.remove(book);
     }
+
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+
 }

@@ -1,12 +1,14 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import java.util.ArrayList;
+
 public class Book {
     private String title;
     private String author;
     private String isbn;
     private BookStatus status;
     private User owner;
-    private Image image;
+    private ArrayList<Image> images;
 
     public enum  BookStatus {
         AVAILABLE,  // book is available for all users to be borrowed
@@ -24,7 +26,7 @@ public class Book {
         this.isbn = isbn;
         this.status = BookStatus.AVAILABLE;
         this.owner = owner;
-        this.image = null;
+        this.images = new ArrayList<Image>();
     }
 
     public String getTitle() {
@@ -47,8 +49,8 @@ public class Book {
         return owner;
     }
 
-    public Image getImage() {
-        return image;
+    public ArrayList<Image> getImages() {
+        return images;
     }
 
     public void setTitle(String newTitle) {
@@ -67,11 +69,11 @@ public class Book {
         status = newStatus;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void addImage(Image image) {
+        images.add(image);
     }
 
-    public void deleteImage() {
-        image = null;
+    public void deleteImage(Image image) {
+        images.remove(image);
     }
 }
