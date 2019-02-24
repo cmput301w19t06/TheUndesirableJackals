@@ -31,12 +31,12 @@ public class UserTest {
 
     @Test
     public void addLendRequest_isCorrect() {
-        assertTrue(owner.getLendRequests().contains(bookRequested));
+        assertTrue(owner.getLendRequests().contains(bookRequest));
     }
 
     @Test
     public void addBorrowRequest_isCorrect() {
-        assertTrue(borrower.getBorrowRequests().contains(bookRequested));
+        assertTrue(borrower.getBorrowRequests().contains(bookRequest));
     }
 
     @Test

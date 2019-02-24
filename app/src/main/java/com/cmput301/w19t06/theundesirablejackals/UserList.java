@@ -32,4 +32,8 @@ public class UserList {
         userlist.remove(user);
     }
 
+    public boolean contains(User user) {
+        return userlist.contains(user);
+    }
+
 }
