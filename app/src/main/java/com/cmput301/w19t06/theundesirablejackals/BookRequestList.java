@@ -30,4 +30,8 @@ public class BookRequestList {
         return bookRequests;
     }
 
+    public boolean contains(BookRequest bookRequest) {
+        return bookRequests.contains(bookRequest);
+    }
+
 }

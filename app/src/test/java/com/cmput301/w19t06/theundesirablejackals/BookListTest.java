@@ -106,10 +106,10 @@ public class BookListTest {
         Book book4 = new Book("Title4", "Author4", "ISBN4", felipe);
         Book book5 = new Book("Title5", "Author5", "ISBN5", felipe);
 
-        book2.setStatus(Book.BookStatus.BORROWED);
-        book3.setStatus(Book.BookStatus.BORROWED);
-        book4.setStatus(Book.BookStatus.ACCEPTED);
-        book5.setStatus(Book.BookStatus.ACCEPTED);
+        book2.setStatus(BookStatus.BORROWED);
+        book3.setStatus(BookStatus.BORROWED);
+        book4.setStatus(BookStatus.ACCEPTED);
+        book5.setStatus(BookStatus.ACCEPTED);
 
         bookList.addBook(book1);
         bookList.addBook(book2);
@@ -117,7 +117,7 @@ public class BookListTest {
         bookList.addBook(book4);
         bookList.addBook(book5);
 
-        ArrayList<Book> searched = bookList.searchByStatus(Book.BookStatus.ACCEPTED);
+        ArrayList<Book> searched = bookList.searchByStatus(BookStatus.ACCEPTED);
 
         assertTrue(searched.contains(book4));
         assertTrue(searched.contains(book5));
