@@ -9,12 +9,14 @@ public class User {
     private BookList borrowedBooks;
 
     // user's requests to borrow books 
-    private ArrayList<BookRequest> lendRequests;
+    private BookRequestList lendRequests;
 
     // requests to borrow user's books
-    private ArrayList<BookRequest> borrowRequests;
+    private BookRequestList borrowRequests;
 
     private ArrayList<Message> messages;
+
+    private UserNotificationList notifications;
 
     public User(String userName, String password, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
@@ -24,9 +26,10 @@ public class User {
         contactInformation = new ContactInformation(email, phoneNumber);
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
-        lendRequests = new ArrayList<BookRequest>();
-        borrowRequests = new ArrayList<BookRequest>();
+        lendRequests = new BookRequestList();
+        borrowRequests = new BookRequestList();
         messages = new ArrayList<Message>();
+        notifications = new UserNotificationList();
     }
 
     public Authentication getAuthentication() {
@@ -45,11 +48,11 @@ public class User {
         return borrowedBooks;
     }
 
-    public ArrayList<BookRequest> getLendRequests() {
+    public BookRequestList getLendRequests() {
         return lendRequests;
     }
 
-    public ArrayList<BookRequest> getBorrowRequests() {
+    public BookRequestList getBorrowRequests() {
         return borrowRequests;
     }
 
@@ -58,11 +61,11 @@ public class User {
     }
 
     public void addLendRequest(BookRequest request) {
-        lendRequests.add(request);
+        lendRequests.addRequest(request);
     }
 
     public void addBorrowRequest(BookRequest request) {
-        borrowRequests.add(request);
+        borrowRequests.addRequest(request);
     }
 
     public void addMessage(Message newMessage) {
