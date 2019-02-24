@@ -41,7 +41,7 @@ public class Test {
         User felipeTwo = new User("felipeTwo", "pass", "email2@hotmail.com", "111-111-1111");
 
         // send a request for book "a"
-        BookRequestHandler request = new BookRequestHandler(felipeTwo, felipe, a);
+        BookRequest request = new BookRequest(felipeTwo, felipe, a);
 
         // print requests details
 

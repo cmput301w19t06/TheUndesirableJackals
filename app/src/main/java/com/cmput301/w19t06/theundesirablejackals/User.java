@@ -8,10 +8,10 @@ public class User {
     private BookList borrowedBooks;
 
     // user's requests to borrow books 
-    private ArrayList<BookRequestHandler> lendRequests; 
+    private ArrayList<BookRequest> lendRequests;
 
     // requests to borrow user's books
-    private ArrayList<BookRequestHandler> borrowRequests; 
+    private ArrayList<BookRequest> borrowRequests;
 
     private ArrayList<Message> messages;
 
@@ -23,8 +23,8 @@ public class User {
         contactInformation = new ContactInformation(email, phoneNumber);
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
-        lendRequests = new ArrayList<BookRequestHandler>();
-        borrowRequests = new ArrayList<BookRequestHandler>();
+        lendRequests = new ArrayList<BookRequest>();
+        borrowRequests = new ArrayList<BookRequest>();
         messages = new ArrayList<Message>();
     }
 
@@ -44,11 +44,11 @@ public class User {
         return borrowedBooks;
     }
 
-    public ArrayList<BookRequestHandler> getLendRequests() {
+    public ArrayList<BookRequest> getLendRequests() {
         return lendRequests;
     }
 
-    public ArrayList<BookRequestHandler> getBorrowRequests() {
+    public ArrayList<BookRequest> getBorrowRequests() {
         return borrowRequests;
     }
 
@@ -56,11 +56,11 @@ public class User {
         return messages;
     }
 
-    public void addLendRequest(BookRequestHandler request) {
+    public void addLendRequest(BookRequest request) {
         lendRequests.add(request);
     }
 
-    public void addBorrowRequest(BookRequestHandler request) {
+    public void addBorrowRequest(BookRequest request) {
         borrowRequests.add(request);
     }
 
