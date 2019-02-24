@@ -26,7 +26,7 @@ public class ContactInformation {
         email = newEmail;
     }
 
-    public boolean isUniqueEmail() {
+    public static boolean isUniqueEmail(String email) {
         // TODO: will need to be implemented in the future
         return true;
     }

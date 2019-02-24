@@ -2,7 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals;
 
 import java.util.Date;
 
-public class Communication {
+public abstract class Communication {
     private User sender;
     private User receiver;
     private Date date;
