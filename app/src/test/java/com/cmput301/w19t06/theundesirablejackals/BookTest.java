@@ -36,8 +36,8 @@ public class BookTest {
 
     @Test
     public void setStatus_isCorrect() {
-        book.setStatus(Book.BookStatus.BORROWED);
-        assertEquals(book.getStatus(), Book.BookStatus.BORROWED );
+        book.setStatus(BookStatus.BORROWED);
+        assertEquals(book.getStatus(), BookStatus.BORROWED );
     }
 
     @Test

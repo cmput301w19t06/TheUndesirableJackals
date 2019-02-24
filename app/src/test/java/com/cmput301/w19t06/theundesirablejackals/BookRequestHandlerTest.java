@@ -28,7 +28,7 @@ public class BookRequestHandlerTest {
     @Test
     public void constructor_isCorrect() {
 
-        assertEquals(bookRequest.getCurrentStatus(), BookRequest.RequestStatus.PENDING);
+        assertEquals(bookRequest.getCurrentStatus(), BookRequestStatus.PENDING);
         assertTrue(owner.getLendRequests().contains(bookRequest));
         assertTrue(borrower.getBorrowRequests().contains(bookRequest));
 
@@ -37,12 +37,16 @@ public class BookRequestHandlerTest {
     @Test
     public void denyRequest_isCorrect() {
         bookRequest.denyRequest();
-        assertEquals(bookRequest.getCurrentStatus(), BookRequest.RequestStatus.DENIED);
 
+        // check for request status change
+        assertEquals(bookRequest.getCurrentStatus(), BookRequestStatus.DENIED);
+
+        // check if status changed in owners side
     }
 
     @Test
     public void acceptRequest_isCorrect() {
+
     }
 
     @Test

@@ -13,7 +13,7 @@ public class BookList {
         this.books = books;
     }
 
-    public ArrayList<Book> searchByStatus(Book.BookStatus status) {
+    public ArrayList<Book> searchByStatus(BookStatus status) {
         ArrayList<Book> result = new ArrayList<Book>();
 
         // iterates over "books" and append instances with desired status to
