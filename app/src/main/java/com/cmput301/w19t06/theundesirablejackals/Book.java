@@ -10,13 +10,6 @@ public class Book {
     private User owner;
     private ArrayList<Image> images;
 
-    public enum  BookStatus {
-        AVAILABLE,  // book is available for all users to be borrowed
-        REQUESTED,  // book is requested by a user
-        ACCEPTED,   // book request has been accepted by the owner
-        BORROWED    // book was handed off to the borrower
-    }
-
     public Book(String title, String author, String isbn, User owner) {
         // status is set to "available" as default
         // images is set to null as default
