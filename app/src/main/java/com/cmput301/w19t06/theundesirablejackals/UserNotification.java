@@ -26,7 +26,6 @@ public class UserNotification {
                 notificationMessage = "A book request has been updated";
                 break;
         }
-
     }
 
     public void doNotify() {
