@@ -14,9 +14,15 @@ public class User {
     // requests to borrow user's books
     private BookRequestList borrowRequests;
 
+    // arraylist of all mesages
     private ArrayList<Message> messages;
 
     private UserNotificationList notifications;
+
+    // topics of interest
+    private ArrayList<BookGenres> interests;
+
+    private UserList friends;
 
     public User(String userName, String password, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
@@ -71,4 +77,6 @@ public class User {
     public void addMessage(Message newMessage) {
         messages.add(newMessage);
     }
+
+    public UserList doSuggestFriends(){ return new UserList();}
 }
