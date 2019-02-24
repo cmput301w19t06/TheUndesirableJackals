@@ -42,7 +42,7 @@ public class BookList {
         return books;
     }
 
-    public Boolean contains(Book book) {
+    public boolean contains(Book book) {
         return books.contains(book);
     }
 

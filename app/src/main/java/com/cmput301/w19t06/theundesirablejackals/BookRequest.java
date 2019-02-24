@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals;
 public class BookRequest extends Communication {
     private Book bookRequested;
     private BookRequestStatus currentStatus;
+    private boolean requestSeen;
     private Geolocation pickuplocation;
     private Scanner scanner;
 

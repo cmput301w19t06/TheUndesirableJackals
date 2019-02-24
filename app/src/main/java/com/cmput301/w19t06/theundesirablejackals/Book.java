@@ -1,13 +1,18 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * Holds relevant information about a book
+ */
 public class Book {
     private String title;
     private String author;
     private String isbn;
     private BookStatus status;
     private User owner;
+    private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
 
     public Book(String title, String author, String isbn, User owner) {
@@ -56,6 +61,22 @@ public class Book {
 
     public void setISBN(String newISBN) {
         isbn = newISBN;
+    }
+
+    public ArrayList<BookGenres> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(ArrayList<BookGenres> genres) {
+        this.genres = genres;
+    }
+
+    public void addGenre(BookGenres genre) {
+        genres.add(genre);
+    }
+
+    public void setImages(ArrayList<Image> images) {
+        this.images = images;
     }
 
     public void setStatus(BookStatus newStatus) {
