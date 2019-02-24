@@ -20,7 +20,7 @@ public class UserList {
         return new ArrayList<>();
     }
 
-    public ArrayList<User> searchPotentialFriends(User user) {
+    public ArrayList<User> doSuggestFriends(User user) {
         return new ArrayList<>();
     }
 

@@ -15,4 +15,8 @@ public class Image {
     public void setFileLocation(String fileLocation) {
         this.fileLocation = fileLocation;
     }
+
+    public static boolean isValidFormat(String fileLocation) {
+        return true;
+    }
 }

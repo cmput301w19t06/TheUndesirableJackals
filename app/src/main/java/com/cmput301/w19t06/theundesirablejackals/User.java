@@ -20,7 +20,7 @@ public class User {
     private UserNotificationList notifications;
 
     // topics of interest
-    private ArrayList<BookGenres> interests;
+    private ArrayList<BookGenres> genreOfInterests;
 
     private UserList friends;
 
@@ -66,6 +66,34 @@ public class User {
         return messages;
     }
 
+    public UserNotificationList getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(UserNotificationList notifications) {
+        this.notifications = notifications;
+    }
+
+    public ArrayList<BookGenres> getInterests() {
+        return genreOfInterests;
+    }
+
+    public void setGenreOfInterests(ArrayList<BookGenres> interests) {
+        this.genreOfInterests = interests;
+    }
+
+    public UserList getFriends() {
+        return friends;
+    }
+
+    public void setFriends(UserList friends) {
+        this.friends = friends;
+    }
+
+    public void addGenreOfInterest(BookGenres genre) {genreOfInterests.add(genre);}
+
+    public void addFriend(User user) {}
+
     public void addLendRequest(BookRequest request) {
         lendRequests.addRequest(request);
     }
@@ -78,5 +106,4 @@ public class User {
         messages.add(newMessage);
     }
 
-    public UserList doSuggestFriends(){ return new UserList();}
 }
