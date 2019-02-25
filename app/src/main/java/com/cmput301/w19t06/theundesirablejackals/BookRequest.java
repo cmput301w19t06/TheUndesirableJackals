@@ -60,6 +60,11 @@ public class BookRequest extends Communication {
         bookRequested.setStatus(BookStatus.BORROWED);
         currentStatus = BookRequestStatus.RECEIVED_BORROWER;
     }
+
+    public Book getBookRequested() {
+        return bookRequested;
+    }
+
     public BookRequestStatus getCurrentStatus() {
         return currentStatus;
     }

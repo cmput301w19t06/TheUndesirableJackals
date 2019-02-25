@@ -17,4 +17,14 @@ public class UserNotificationList {
         notifications.remove(notification);
     }
 
+    public boolean contains(UserNotification notification) {return notifications.contains(notification);}
+
+    public int count() {
+        return notifications.size();
+    }
+
+    public UserNotification get(int index) {
+        return notifications.get(index);
+    }
+
 }

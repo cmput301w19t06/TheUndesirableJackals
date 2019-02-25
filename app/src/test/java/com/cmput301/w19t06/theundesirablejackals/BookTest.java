@@ -3,18 +3,27 @@ package com.cmput301.w19t06.theundesirablejackals;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class BookTest {
     private Book book;
     private User owner;
-
+    private ArrayList<BookGenres> genres;
     @Before
     public void setup() {
         owner = new User("Red", "IHeartGrandma",
                 "Red@hood.com", "433-001-9112");
         book = new Book("The Undesirable", "Jackal The Unknown",
                 "99452212-0", owner);
+
+        genres = new ArrayList<>();
+
+        genres.add(BookGenres.SATIRE);
+        genres.add(BookGenres.FANTASY);
+
     }
     @Test
     public void setTitle_isCorrect() {
@@ -32,6 +41,19 @@ public class BookTest {
     public void setISBN_isCorrect() {
         book.setISBN("178238-011");
         assertEquals(book.getISBN(),"178238-011" );
+    }
+
+    @Test
+    public void setGenres_isCorrect() {
+        book.setGenres(genres);
+        assertEquals(book.getGenres(), genres);
+    }
+
+    @Test
+    public void addGenre_isCorrect() {
+        book.setGenres(genres);
+        book.addGenre(BookGenres.ANTHOLOGY);
+        assertTrue(book.getGenres().contains(BookGenres.ANTHOLOGY));
     }
 
     @Test

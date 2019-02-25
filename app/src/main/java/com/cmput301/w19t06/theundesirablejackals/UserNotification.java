@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserNotification {
     private String notificationMessage;
     private User reciever;
+    private UserNotificationType type;
     private Boolean seen;
     private Date date;
 
@@ -26,10 +27,16 @@ public class UserNotification {
                 notificationMessage = "A book request has been updated";
                 break;
         }
+
+        this.type = type;
+        this.reciever = reciever;
     }
 
     public void doNotify() {
 
     }
+
+    public UserNotificationType getType() {return type;}
+
 
 }
