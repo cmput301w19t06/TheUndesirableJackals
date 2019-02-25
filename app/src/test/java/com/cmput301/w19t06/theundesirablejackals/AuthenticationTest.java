@@ -22,7 +22,6 @@ public class AuthenticationTest {
     public void setUsername_isCorrect() {
         authentication.setUsername("NeverLucky");
         assertEquals(authentication.getUserName(), "NeverLucky");
-
     }
 
     @Test
@@ -30,5 +29,5 @@ public class AuthenticationTest {
         authentication.setPassword("rightpassword");
         assertTrue(authentication.authenticate("rightpassword"));
     }
-
 }
+
