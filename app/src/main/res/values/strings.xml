@@ -2,4 +2,5 @@
     <string name="app_name">TheUndesirableJackals</string>
     <string name="TestString1">ThisIsTestString1</string>
     <string name="button_sign_in">Sign In</string>
+    <string name="scan_barcode_button">Scan Barcode</string>
 </resources>
