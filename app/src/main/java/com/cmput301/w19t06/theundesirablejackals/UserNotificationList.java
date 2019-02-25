@@ -26,5 +26,4 @@ public class UserNotificationList {
     public UserNotification get(int index) {
         return notifications.get(index);
     }
-
 }

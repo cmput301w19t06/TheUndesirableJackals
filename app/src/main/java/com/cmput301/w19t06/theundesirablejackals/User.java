@@ -6,6 +6,7 @@ public class User {
     private ContactInformation contactInformation;
     private BookList ownedBooks;
     private BookList borrowedBooks;
+    private BookList favouriteBooks;
 
     // user's requests to borrow books 
     private BookRequestList lendRequests;
@@ -31,10 +32,12 @@ public class User {
         contactInformation = new ContactInformation(email, phoneNumber);
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
+        favouriteBooks = new BookList();
         lendRequests = new BookRequestList();
         borrowRequests = new BookRequestList();
         messages = new ArrayList<Message>();
         notifications = new UserNotificationList();
+        genreOfInterests = new ArrayList<BookGenres>();
     }
 
     public Authentication getAuthentication() {
@@ -73,12 +76,24 @@ public class User {
         this.notifications = notifications;
     }
 
-    public ArrayList<BookGenres> getInterests() {
+    public ArrayList<BookGenres> getGenreOfInterests() {
         return genreOfInterests;
     }
 
     public void setGenreOfInterests(ArrayList<BookGenres> interests) {
         this.genreOfInterests = interests;
+    }
+
+    public BookList getFavouriteBooks() {
+        return favouriteBooks;
+    }
+
+    public void addFavouriteBooks(Book book) {
+        favouriteBooks.addBook(book);
+    }
+
+    public void setFavouriteBooks(BookList favouriteBooks) {
+        this.favouriteBooks = favouriteBooks;
     }
 
     public UserList getFriends() {

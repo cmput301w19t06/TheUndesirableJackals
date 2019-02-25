@@ -54,4 +54,16 @@ public class UserTest {
         // check if owner got the message
         assertTrue(owner.getMessages().contains(message));
     }
+
+    @Test
+    public void addFriend_isCorrect() {
+        borrower.addFriend(owner);
+        assertTrue(borrower.getFriends().contains(owner));
+    }
+
+    @Test
+    public void addGenreOfInterests_isCorrect() {
+        borrower.addGenreOfInterest(BookGenres.AUTOBIOGRAPHY);
+        assertTrue(borrower.getGenreOfInterests().contains(BookGenres.AUTOBIOGRAPHY));
+    }
 }
