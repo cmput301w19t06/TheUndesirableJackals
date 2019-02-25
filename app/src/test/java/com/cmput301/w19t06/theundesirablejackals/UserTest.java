@@ -3,6 +3,8 @@ package com.cmput301.w19t06.theundesirablejackals;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class UserTest {
@@ -31,7 +33,14 @@ public class UserTest {
 
     @Test
     public void addLendRequest_isCorrect() {
-        assertTrue(owner.getLendRequests().contains(bookRequest));
+        // first get the "BookRequestList" object
+        BookRequestList object = owner.getLendRequests();
+
+        // then get the list of books
+        ArrayList<BookRequest> listOfBooks = object.getBookRequests();
+
+        // now check if book is in there
+        assertTrue(listOfBooks.contains(bookRequest));
     }
 
     @Test

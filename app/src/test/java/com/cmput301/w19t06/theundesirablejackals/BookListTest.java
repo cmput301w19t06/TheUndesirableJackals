@@ -19,38 +19,51 @@ public class BookListTest {
     public void addBook_isCorrect(){
         User felipe = new User("felipe", "pass",
                 "email@hotmail.com", "333-333-3333");
+
+        // re-written test to check the book was added to the owner's list instead of the "bookList"
+
+        // create a new book and add it to the owner's list
         Book book1 = new Book("Title1", "Author1", "ISBN1", felipe);
 
-        int sizeBefore = bookList.getBooks().size();
+        // retrieve the owner's list of books owned
+        BookList ownedBooks = felipe.getOwnedBooks();
 
-        bookList.addBook(book1);
+        // check the book was added
+        assertTrue(ownedBooks.getBooks().contains(book1));
 
-        assertTrue(bookList.getBooks().contains(book1));
-        assertEquals(bookList.getBooks().size(), sizeBefore + 1);
 
-        // adding a null book
-        book1 = null;
-
-        sizeBefore = bookList.getBooks().size();
-
-        bookList.addBook(book1);
-        assertFalse(bookList.getBooks().contains(book1));
-        assertEquals(bookList.getBooks().size(), sizeBefore);
-
-        // adding the same book to the same list
-        book1 = new Book("Title1", "Author1", "ISBN1", felipe);
-
-        sizeBefore = bookList.getBooks().size();
-
-        bookList.addBook(book1);
-
-        assertTrue(bookList.getBooks().contains(book1));
-        assertEquals(bookList.getBooks().size(), sizeBefore);
+//        int sizeBefore = bookList.getBooks().size();
+//
+//        bookList.addBook(book1);
+//
+//        assertTrue(bookList.getBooks().contains(book1));
+//        assertEquals(bookList.getBooks().size(), sizeBefore + 1);
+//
+//        // adding a null book
+//        book1 = null;
+//
+//        sizeBefore = bookList.getBooks().size();
+//
+//        bookList.addBook(book1);
+//        assertFalse(bookList.getBooks().contains(book1));
+//        assertEquals(bookList.getBooks().size(), sizeBefore);
+//
+//        // adding the same book to the same list
+//        book1 = new Book("Title1", "Author1", "ISBN1", felipe);
+//
+//        sizeBefore = bookList.getBooks().size();
+//
+//        bookList.addBook(book1);
+//
+//        assertTrue(bookList.getBooks().contains(book1));
+//        assertEquals(bookList.getBooks().size(), sizeBefore);
 
     }
 
     @Test
     public void deleteBook_isCorrect() {
+        // TO BE IMPLEMENTED Test will be unsatisfactory
+
         User felipe = new User("felipe", "pass",
                 "email@hotmail.com", "333-333-3333");
         Book book1 = new Book("Title1", "Author1", "ISBN1", felipe);

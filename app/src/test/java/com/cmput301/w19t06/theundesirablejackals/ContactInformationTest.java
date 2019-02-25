@@ -23,9 +23,10 @@ public class ContactInformationTest {
 
     @Test
     public void isUniqueEmail_isCorrect() {
+        // TO BE IMPLEMENTED Test will be unsatisfactory
 
         // creation of a new contact will render the used email not unique
-        assertFalse(contactInformation.isUniqueEmail("nanithefaq@gmail.com"));
+        assertFalse(contactInformation.isUniqueEmail("nani@gmail.com"));
 
     }
 

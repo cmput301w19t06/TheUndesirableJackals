@@ -25,6 +25,10 @@ public class Book {
         this.status = BookStatus.AVAILABLE;
         this.owner = owner;
         this.images = new ArrayList<Image>();
+
+        // adds itself to the owner's owned books
+        BookList ownedBooks = owner.getOwnedBooks();
+        ownedBooks.addBook(this);
     }
 
     public String getTitle() {
