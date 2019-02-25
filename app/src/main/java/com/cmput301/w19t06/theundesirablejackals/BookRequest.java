@@ -15,11 +15,11 @@ public class BookRequest extends Communication {
         // set the status of the book requested to "requested"
         bookRequested.setStatus(BookStatus.REQUESTED);
 
-        // object adds itself into "lendRequests" of sender
-        sender.addLendRequest(this);
+        // object adds itself into "lendRequests" of receiver
+        receiver.addLendRequest(this);
 
-        // object adds itself into "borrowRequests" of receiver
-        receiver.addBorrowRequest(this);
+        // object adds itself into "borrowRequests" of sender
+        sender.addBorrowRequest(this);
     }
 
     public void denyRequest() {
