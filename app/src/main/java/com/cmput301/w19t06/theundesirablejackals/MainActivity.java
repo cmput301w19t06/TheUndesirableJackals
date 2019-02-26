@@ -34,12 +34,14 @@ import com.google.firebase.storage.StorageReference;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnSignUp;
+
 
 
     @Override
@@ -52,13 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void createBarcodeScanner(){
-        options =
-                new FirebaseVisionBarcodeDetectorOptions.Builder()
-                        .setBarcodeFormats(
-                                FirebaseVisionBarcode.FORMAT_EAN_13)
-                        .build();
-    }
 
     public void loginBtn(View view) {
         Intent intent = new Intent(this, MainHomeViewActivity.class);
