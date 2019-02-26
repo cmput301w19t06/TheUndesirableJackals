@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,12 +57,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private StorageReference mStorageRef;
-    private Bitmap imageBitmap;
+    private ArrayList<String> barcodes;
+
     private static final int RC_SIGN_IN = 123;
-    private static final int REQUEST_IMAGE_CAPTURE = 321;
+
     private static final String TAG = "CustomAuthActivity";
     private TokenBroadcastReceiver mTokenReceiver;
-    FirebaseVisionBarcodeDetectorOptions options;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    protected void createBarcodeScanner(){
-        options =
-                new FirebaseVisionBarcodeDetectorOptions.Builder()
-                        .setBarcodeFormats(
-                                FirebaseVisionBarcode.FORMAT_EAN_13)
-                        .build();
-    }
+
 
 
     public void createSignInIntent() {
@@ -128,18 +126,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // response.getError().getErrorCode() and handle the error.
                 // ...
             }
-        }else if(requestCode == REQUEST_IMAGE_CAPTURE){
-            if (resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                imageBitmap = (Bitmap) extras.get("data");
-                scanBArcodePII();
-
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+        }else if(requestCode == BarcodeDetect.REQUEST_BARCODE){
+            if(resultCode ==RESULT_OK){
+                barcodes = data.getStringArrayListExtra("barcodes");
             }
         }
     }
@@ -151,59 +140,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signIn();
 
         }else if(i == R.id.buttonScanBarcode){
-            scanBarcode();
+            Intent intent = new Intent(this, BarcodeDetect.class);
+            startActivityForResult(intent, BarcodeDetect.REQUEST_BARCODE);
         }
     }
 
-    private void dispatchTakePictureIntent() {
 
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
 
     private void signIn(){
         createSignInIntent();
     }
 
-    private void scanBarcode(){
-        createBarcodeScanner();
-        dispatchTakePictureIntent();
-
-    }
-
-    private void scanBArcodePII(){
-        ((ImageView)findViewById(R.id.imageViewBarcodePicture)).setImageBitmap(imageBitmap);
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(imageBitmap);
-        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-                .getVisionBarcodeDetector(options);
 
 
-        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
-                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
-                    @Override
-                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-                        // Task completed successfully
-                        // ...
-                        if(barcodes.size() > 0){
-                            ((TextView)findViewById(R.id.textViewBarcode)).setText(barcodes.get(0).toString());
-                        }else{
-                            ((TextView)findViewById(R.id.textViewBarcode)).setText("Good pic, no code tho");
-                        }
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Task failed with an exception
-                        // ...
-                        ((TextView)findViewById(R.id.textViewBarcode)).setText("FAILURE");
-                    }
-                });
-    }
 
 
 }
