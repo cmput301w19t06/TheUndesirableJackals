@@ -43,7 +43,7 @@ public class BarcodeDetect extends AppCompatActivity {
     private String TAG = "Image Capture Failure: ";
     private ArrayList<String> barcodesFound;
 
-
+//https://developer.android.com/training/camera/photobasics
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
