@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
@@ -18,8 +16,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,10 +33,10 @@ import java.util.List;
 
 public class BarcodeDetect extends AppCompatActivity {
     private FirebaseVisionBarcodeDetectorOptions options;
-    private static final int REQUEST_IMAGE_CAPTURE = 321;
-    public static final int REQUEST_BARCODE = 100;
+    private static final int IMAGE_CAPTURE = 301;
+    public static final int REQUEST_BARCODE = 300;
     private Bitmap imageBitmap;
-    private String TAG = "Image Capture Failure: ";
+    private String TAG = "BarcodeDetectActivity";
     private ArrayList<String> barcodesFound;
 
 //https://developer.android.com/training/camera/photobasics
@@ -60,7 +56,7 @@ public class BarcodeDetect extends AppCompatActivity {
     private void scanBarcode() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            startActivityForResult(takePictureIntent, IMAGE_CAPTURE);
         }
     }
 
@@ -122,9 +118,9 @@ public class BarcodeDetect extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_IMAGE_CAPTURE){
+        if(requestCode == IMAGE_CAPTURE){
 
-            Intent _result = new Intent();
+            Intent intent = new Intent();
 
             if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();
@@ -133,13 +129,13 @@ public class BarcodeDetect extends AppCompatActivity {
 
                 if(barcodesFound.size() > 0){
 
-                    _result.putStringArrayListExtra("barcodes", barcodesFound);
-                    setResult(Activity.RESULT_OK, _result);
+                    intent.putStringArrayListExtra("barcodes", barcodesFound);
+                    setResult(Activity.RESULT_OK, intent);
 
                 }
             } else {
 
-                setResult(Activity.RESULT_CANCELED, _result);
+                setResult(Activity.RESULT_CANCELED, intent);
 
             }
             finish();

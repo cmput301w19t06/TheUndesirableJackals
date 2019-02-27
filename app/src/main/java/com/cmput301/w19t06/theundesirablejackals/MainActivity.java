@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.icu.text.SimpleDateFormat;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -54,14 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
-    private StorageReference mStorageRef;
     private ArrayList<String> barcodes;
-
-    private static final int RC_SIGN_IN = 123;
-
-    private static final String TAG = "CustomAuthActivity";
+    private static final String TAG = "MainActivity";
     private TokenBroadcastReceiver mTokenReceiver;
 
 
@@ -72,54 +67,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseApp.initializeApp(this);
 
-
-
         // Button click listeners
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
         findViewById(R.id.buttonScanBarcode).setOnClickListener(this);
 
-
-
     }
 
 
-
-
-    public void createSignInIntent() {
-        // [START auth_fui_create_intent]
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-        // [END auth_fui_create_intent]
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == SignInActivity.REQUEST_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                database = FirebaseDatabase.getInstance();
-                myRef = database.getReference("users/" + currentUser.getUid());
 
-                myRef.setValue("Hello, World!");
 
-                mStorageRef = FirebaseStorage.getInstance().getReference();
-                // ...
+
+//                database = FirebaseDatabase.getInstance();
+//                myRef = database.getReference("users/" + currentUser.getUid());
+//
+//                myRef.setValue("Hello, World!");
+//
+//                mStorageRef = FirebaseStorage.getInstance().getReference();
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -137,7 +111,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.buttonSignIn) {
-            signIn();
+//            signIn();
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivityForResult(intent, SignInActivity.REQUEST_SIGN_IN);
 
         }else if(i == R.id.buttonScanBarcode){
             Intent intent = new Intent(this, BarcodeDetect.class);
@@ -146,10 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-    private void signIn(){
-        createSignInIntent();
-    }
 
 
 
