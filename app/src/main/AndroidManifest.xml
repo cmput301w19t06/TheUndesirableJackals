@@ -26,6 +26,8 @@
         <activity android:name=".SignupActivity"/>
         <activity android:name=".PersonalProfileActivity"></activity>
         <activity android:name=".BarcodeDetect"></activity>
+        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".BarcodeDetect" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,9 +47,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 
 </manifest>
