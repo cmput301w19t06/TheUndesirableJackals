@@ -3,8 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574b</color>
     <color name="colorAccent">#d81b60</color>
-    <color name="tabtextcolor">#000</color>
-    <color name="tabindicatorcolor">#056fff</color>
-    <color name="tabbackgroundcolor">#6e727e</color>
+    <color name="tabTextColor">#10100e</color>
+    <color name="tabIndicatorColor">#056fff</color>
+    <color name="tabBackgroundColor">#a39398</color>
 
 </resources>

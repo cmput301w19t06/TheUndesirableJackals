@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView btnLogin;
+    private Button btnLogin;
 
 
     @Override
@@ -19,13 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnLogin = findViewById(R.id.Login);
-
+        btnLogin = (Button) findViewById(R.id.buttonLogin);
     }
 
 
     public void loginBtn(View view) {
-        Intent intent = new Intent(this, MainHomeView.class);
+        Intent intent = new Intent(this, MainHomeViewActivity.class);
         startActivity(intent);
 
     }
