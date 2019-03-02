@@ -27,7 +27,6 @@
         <activity android:name=".MainHomeViewActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".StartActivity" />
-        <activity android:name=".SignInActivity" />
         <activity android:name=".BarcodeDetect" />
 
         <meta-data
