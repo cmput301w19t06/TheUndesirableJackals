@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +33,11 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOption
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BarcodeDetect extends AppCompatActivity {
@@ -37,7 +46,8 @@ public class BarcodeDetect extends AppCompatActivity {
     public static final int REQUEST_BARCODE = 300;
     private Bitmap imageBitmap;
     private String TAG = "BarcodeDetectActivity";
-    private ArrayList<String> barcodesFound;
+    private ArrayList<String> barcodesFound = new ArrayList<String>();
+    String currentPhotoPath;
 
 //https://developer.android.com/training/camera/photobasics
     @Override
@@ -49,20 +59,46 @@ public class BarcodeDetect extends AppCompatActivity {
                         .setBarcodeFormats(
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
-        scanBarcode();
+        dispatchTakePictureIntent();
     }
 
 
-    private void scanBarcode() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+//            ...
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.cmput301.w19t06.theundesirablejackals",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, IMAGE_CAPTURE);
+            }
         }
     }
 
 
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
 
     private void scanBarcodePII(){
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(imageBitmap);
 
         FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
@@ -123,8 +159,9 @@ public class BarcodeDetect extends AppCompatActivity {
             Intent intent = new Intent();
 
             if (resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                imageBitmap = (Bitmap) extras.get("data");
+
+                imageBitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                galleryAddPic();
                 scanBarcodePII();  //Tries to find barcodes and add them to barcodesFound arraylist object
 
                 if(barcodesFound.size() > 0){
@@ -141,6 +178,23 @@ public class BarcodeDetect extends AppCompatActivity {
             finish();
         }
     }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
