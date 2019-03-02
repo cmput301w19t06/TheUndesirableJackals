@@ -17,8 +17,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.Arrays;
 import java.util.List;
 
-public class SignInActivity extends AppCompatActivity {
-//    private StorageReference mStorageRef;
+public class LoginActivity extends AppCompatActivity {
+    //    private StorageReference mStorageRef;
 //    private FirebaseDatabase database;
 //    private DatabaseReference myRef;
     private static final String TAG = "SignInActivity";
@@ -29,7 +29,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_login);
         createSignInIntent();
     }
 
