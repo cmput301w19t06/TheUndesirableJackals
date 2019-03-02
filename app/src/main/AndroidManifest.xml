@@ -31,7 +31,6 @@
         <activity android:name=".MainHomeViewActivity"></activity>
         <activity android:name=".AddBookActivity"></activity>
         <activity android:name=".PersonalProfileActivity"></activity>
-        <activity android:name=".BarcodeDetect"></activity>
         <activity android:name=".BarcodeDetect" />
 
         <meta-data
