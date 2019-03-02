@@ -12,6 +12,7 @@ import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
+    private Button btnSignUp;
 
 
     @Override
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLogin = (Button) findViewById(R.id.buttonLogin);
+        btnSignUp = (Button) findViewById(R.id.signupInitial_id);
+
     }
 
 
@@ -27,5 +30,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainHomeViewActivity.class);
         startActivity(intent);
 
+    }
+
+    public void signupBtn(View view){
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
     }
 }
