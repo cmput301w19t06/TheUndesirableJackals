@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(requestCode == BarcodeDetect.REQUEST_BARCODE){
             if(resultCode ==RESULT_OK){
                 barcodes = data.getStringArrayListExtra("barcodes");
+                if(barcodes.size()== 1){
+                    ((TextView) findViewById(R.id.textViewBarcode)).setText(barcodes.get(0));
+                }
             }
         }
     }
