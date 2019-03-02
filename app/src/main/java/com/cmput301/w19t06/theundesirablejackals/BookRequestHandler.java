@@ -1,12 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-public class BookRequestHandler extends Communication {
+public class BookRequestHandler /*extends Communication*/ {
     private Book bookRequested;
     private String requestStatus; // "pending", "denied" or "accepted"
 
 
     public BookRequestHandler(User sender, User receiver, Book bookRequested) {
-        super(sender, receiver);
+        //super(sender, receiver);
         this.bookRequested = bookRequested;
         requestStatus = "pending";
 

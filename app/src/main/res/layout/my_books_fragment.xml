@@ -12,4 +12,12 @@
         android:text="My Books Fragment"
         android:textSize="20dp"
         />
+
+    <Button
+        android:id="@+id/addBook_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="202dp" />
 </android.support.v7.widget.LinearLayoutCompat>
