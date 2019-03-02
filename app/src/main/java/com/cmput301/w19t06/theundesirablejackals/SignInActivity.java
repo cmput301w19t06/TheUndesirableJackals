@@ -71,6 +71,6 @@ public class SignInActivity extends AppCompatActivity {
                         .setAvailableProviders(providers)
                         .build(),
                 SIGN_IN_AND_AUTH);
-        // [END auth_fui_create_intent]
+        // [END auth_fui_create_intent]-
     }
 }
