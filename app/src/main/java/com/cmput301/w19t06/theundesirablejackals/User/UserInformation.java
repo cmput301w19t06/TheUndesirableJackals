@@ -1,16 +1,15 @@
 package com.cmput301.w19t06.theundesirablejackals.User;
 
-public class ContactInformation {
-    /* 
-    May be remove if we can access this info through google account after
-    we authenticate via Firebase
-    */ 
+public class UserInformation {
+
+    private String userName;
     private String email;
     private String phoneNumber;
 
-    public ContactInformation(String email, String phoneNumber) {
+    public UserInformation(String userName, String email, String phoneNumber) {
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.userName = userName;
     }
 
     public String getEmail() {

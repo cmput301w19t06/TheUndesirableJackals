@@ -1,49 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".MainActivity">
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="16dp">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="179dp"
+        android:drawableLeft="@drawable/ic_action_username"
+        android:ems="10"
+        android:hint="@string/user_name"
+        android:inputType="textPersonName" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_login"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/username"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="266dp"
+        android:layout_marginEnd="-1dp"
+        android:drawableStart="@drawable/ic_action_pass"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/email"
-            android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
-            android:hint="@string/hint_email"/>
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/password"
-            android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
-            android:hint="@string/hint_password"/>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/buttonLogin"
+            android:layout_width="255dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="128dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorAccent"
+            android:onClick="loginBtn"
+            android:text="Login"
+            android:textColor="#fff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signupInitial_id" />
+
+        <Button
+            android:id="@+id/signupInitial_id"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_login"
-            android:text="Login"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="signupBtn"
+            android:text="Sign Up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="342dp" />
+    </android.support.constraint.ConstraintLayout>
 
-    </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
