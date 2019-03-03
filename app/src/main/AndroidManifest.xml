@@ -48,8 +48,10 @@
         <activity android:name=".AddBookActivity"></activity>
         <activity android:name=".PersonalProfileActivity"></activity>
         <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".StartActivity" />
+            android:name=".SignupActivity"
+            android:parentActivityName=".LoginActivity"/>
+
+        <activity android:name=".MainHomeViewActivity"/>
         <activity android:name=".BarcodeDetect" />
         <activity android:name=".MainActivity">
             <intent-filter>

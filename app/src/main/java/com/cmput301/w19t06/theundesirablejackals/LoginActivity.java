@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
@@ -32,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    MaterialEditText email, password;
+    EditText email, password;
     Button btn_login, btn_signup;
     FirebaseAuth auth;
 
@@ -44,8 +45,8 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        email = findViewById(R.id.etext_login_email);
+        password = findViewById(R.id.etext_login_password);
 
         btn_login = findViewById(R.id.btn_login);
         btn_signup = findViewById(R.id.btn_login_signup);
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 String txt_password = password.getText().toString();
 
                 if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
-                    Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT);
+                    Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
 

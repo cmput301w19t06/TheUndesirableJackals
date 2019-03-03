@@ -15,8 +15,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseHelper {
     // database path to users
@@ -27,6 +29,7 @@ public class DatabaseHelper {
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
     private Context context;
+    private Gson gson;
 
     private DatabaseHelper(Context context) {
         this.firebaseAuth = FirebaseAuth.getInstance();
@@ -34,13 +37,14 @@ public class DatabaseHelper {
         this.databaseReference = database.getReference();
         this.firebaseUser = firebaseAuth.getCurrentUser();
         this.context = context;
+        this.gson = new Gson();
     }
 
     public static DatabaseHelper getInstance(Context context) {
         return new DatabaseHelper(context);
     }
 
-    public void createAccount(final String username, String password, final String email, final String phonenumber) {
+    public void createAccount(final String username, final String email, final String password, final String phonenumber) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -51,13 +55,13 @@ public class DatabaseHelper {
                             assert firebaseUser != null;
                             String userid = firebaseUser.getUid();
 
-                            databaseReference = FirebaseDatabase.getInstance().getReference(PATH_USERS).child(userid);
+                            databaseReference = database.getReference(PATH_USERS);
 
-                            HashMap<String, User> hashMap = new HashMap<>();
-                            hashMap.put(username, new User(username, email, phonenumber));
+                            Map<String, User> user = new HashMap<>();
+                            user.put(username, new User(username, email, phonenumber));
 
                             // save class user to database
-                            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -69,7 +73,7 @@ public class DatabaseHelper {
                             });
                         } else {
                             Toast.makeText(context,
-                                    "You can't register with this email and or password", Toast.LENGTH_SHORT);
+                                    "You can't register with this email and or password", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -85,11 +89,10 @@ public class DatabaseHelper {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
                         } else {
-                            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT);
+                            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
 
 }

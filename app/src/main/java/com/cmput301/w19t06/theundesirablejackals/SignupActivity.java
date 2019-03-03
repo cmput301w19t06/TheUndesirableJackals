@@ -8,13 +8,6 @@ import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
     private Button btnSignUp;
