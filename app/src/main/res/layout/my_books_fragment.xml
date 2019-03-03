@@ -17,6 +17,7 @@
         android:id="@+id/addBook_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="addBookButton"
         android:text="Add"
         tools:layout_editor_absoluteX="82dp"
         tools:layout_editor_absoluteY="202dp" />

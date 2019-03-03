@@ -26,14 +26,6 @@ public class MyBooksFragment extends Fragment {
 
         //create and Handle Add book Button
         addBookButton = (Button) view.findViewById(R.id.addBook_button);
-        addBookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(this, AddBookActivity.class);
-                //startActivity(intent);
-
-            }
-        });
         return view;
     }
 

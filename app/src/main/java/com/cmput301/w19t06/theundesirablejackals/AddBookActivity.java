@@ -1,11 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import android.support.design.widget.AppBarLayout;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toolbar;
+import android.view.View;
 
 /*
  * Created by Kaya on 02/02/2019
@@ -30,5 +30,9 @@ public class AddBookActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+    public void finalAddbookbtn(View view){
+        Intent intent = new Intent(this, MainHomeViewActivity.class);
+        startActivity(intent);
     }
 }

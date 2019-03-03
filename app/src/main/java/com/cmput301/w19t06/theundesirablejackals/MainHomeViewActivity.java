@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -96,5 +98,10 @@ public class MainHomeViewActivity extends AppCompatActivity {
     //Check if the additional menu tabs are clickable
     public void displayMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void addBookButton(View view){
+        Intent intent = new Intent(this, AddBookActivity.class);
+        startActivity(intent);
     }
 }
