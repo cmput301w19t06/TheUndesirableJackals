@@ -23,4 +23,7 @@
     <string name="edit_text_user_name">User Name</string>
     <string name="edit_text_phone_number">Phone Number</string>
     <string name="button_check_available">Register</string>
+    <string name="buttonCaptureBarcodePicture">Scan Barcode</string>
+    <string name="editTextISBNField">ISBN</string>
+    <string name="buttonSearchISBN">Search</string>
 </resources>

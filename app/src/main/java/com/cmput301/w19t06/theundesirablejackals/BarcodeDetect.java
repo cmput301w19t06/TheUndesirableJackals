@@ -1,26 +1,17 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.Surface;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +22,6 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,27 +30,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BarcodeDetect extends AppCompatActivity {
+public class BarcodeDetect extends AppCompatActivity implements View.OnClickListener{
     private FirebaseVisionBarcodeDetectorOptions options;
     private static final int IMAGE_CAPTURE = 301;
     public static final int REQUEST_BARCODE = 300;
     public static final String BARCODES_DATA_CODE = "BarCode";
     private String TAG = "BarcodeDetectActivity";
-    public ArrayList<String> barcodesFound;
+    public ArrayList<String> barcodesFound = new ArrayList<String>();
     String currentPhotoPath;
 
 //https://developer.android.com/training/camera/photobasics
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        barcodesFound = getIntent().getStringArrayListExtra(BARCODES_DATA_CODE);
+        setContentView(R.layout.activity_barcode_detect);
+
+        findViewById(R.id.buttonCaptureBarcodePicture).setOnClickListener(this);
+        findViewById(R.id.buttonSearchISBN).setOnClickListener(this);
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
                         .setBarcodeFormats(
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
-        dispatchTakePictureIntent();
+
     }
 
 
@@ -74,7 +67,7 @@ public class BarcodeDetect extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-//            ...
+
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -83,6 +76,7 @@ public class BarcodeDetect extends AppCompatActivity {
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, IMAGE_CAPTURE);
+
             }
         }
     }
@@ -97,7 +91,7 @@ public class BarcodeDetect extends AppCompatActivity {
     }
 
 
-    private void scanBarcodePII(){
+    private void scanBarcode(){
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
 
@@ -164,29 +158,26 @@ public class BarcodeDetect extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == IMAGE_CAPTURE){
-
-            Intent intent = getIntent();
-
             if (resultCode == RESULT_OK) {
 
                 galleryAddPic();
-                scanBarcodePII();  //Tries to find barcodes and add them to barcodesFound arraylist object
-
-
-                intent.putStringArrayListExtra(BARCODES_DATA_CODE, barcodesFound);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
+                if(barcodesFound.size() > 0){
+                    ((TextView) findViewById(R.id.editTextISBNField)).setText(barcodesFound.get(0));
+                }else{
+                    showMyToast("ISBN Not Found. Please try again");
+                }
 
             } else {
-
-                setResult(Activity.RESULT_CANCELED, intent);
-                finish();
+                showMyToast("Photo Scan Canceled");
             }
-//            finish();
+
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private File createImageFile() throws IOException {
@@ -206,55 +197,26 @@ public class BarcodeDetect extends AppCompatActivity {
     }
 
 
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.buttonCaptureBarcodePicture) {
+            dispatchTakePictureIntent();
 
-    /**
-     * Get the angle by which an image must be rotated given the device's current
-     * orientation.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private int getRotationCompensation(String cameraId, Activity activity, Context context)
-            throws CameraAccessException {
-        // Get the device's current rotation relative to its "native" orientation.
-        // Then, from the ORIENTATIONS table, look up the angle the image must be
-        // rotated to compensate for the device's rotation.
-        int deviceRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int rotationCompensation = ORIENTATIONS.get(deviceRotation);
-
-        // On most devices, the sensor orientation is 90 degrees, but for some
-        // devices it is 270 degrees. For devices with a sensor orientation of
-        // 270, rotate the image an additional 180 ((270 + 270) % 360) degrees.
-        CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-        int sensorOrientation = cameraManager
-                .getCameraCharacteristics(cameraId)
-                .get(CameraCharacteristics.SENSOR_ORIENTATION);
-        rotationCompensation = (rotationCompensation + sensorOrientation + 270) % 360;
-
-        // Return the corresponding FirebaseVisionImageMetadata rotation value.
-        int result;
-        switch (rotationCompensation) {
-            case 0:
-                result = FirebaseVisionImageMetadata.ROTATION_0;
-                break;
-            case 90:
-                result = FirebaseVisionImageMetadata.ROTATION_90;
-                break;
-            case 180:
-                result = FirebaseVisionImageMetadata.ROTATION_180;
-                break;
-            case 270:
-                result = FirebaseVisionImageMetadata.ROTATION_270;
-                break;
-            default:
-                result = FirebaseVisionImageMetadata.ROTATION_0;
-                Log.e(TAG, "Bad rotation value: " + rotationCompensation);
+        }else if(i == R.id.buttonSearchISBN) {
+            File file = new File(currentPhotoPath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    Log.d(TAG, "file Deleted : " + currentPhotoPath );
+                } else {
+                    Log.d(TAG,"file not Deleted : " + currentPhotoPath);
+                }
+            }
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra(BARCODES_DATA_CODE, barcodesFound);
+            setResult(RESULT_OK, intent);
+            finish();
         }
-        return result;
+
     }
 }
