@@ -1,8 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,13 +11,6 @@ import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -36,10 +26,10 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        username = findViewById(R.id.edit_text_signup_username);
-        password = findViewById(R.id.edit_text_signup_password);
-        email = findViewById(R.id.edit_text_signup_email);
-        phone = findViewById(R.id.edit_text_signup_phone);
+        username = findViewById(R.id.etext_signup_username);
+        password = findViewById(R.id.etext_signup_password);
+        email = findViewById(R.id.etext_signup_email);
+        phone = findViewById(R.id.etext_signup_phone);
 
 
         btn_signup_confirm = findViewById(R.id.btn_signup_confirm);
@@ -57,9 +47,9 @@ public class SignupActivity extends AppCompatActivity {
 
                     showMessage("All fields required.");
 
-                } else if (txt_password.length() <MIN_PASSWORD_CHAR) {
+                } else if (txt_password.length() < MIN_PASSWORD_CHAR) {
 
-                    String message = "Password must be" + MIN_PASSWORD_CHAR.toString() + "characters long.";
+                    String message = "Password must be " + MIN_PASSWORD_CHAR.toString() + " characters long.";
                     showMessage(message);
                 } else {
                     DatabaseHelper.getInstance(SignupActivity.this).createAccount(txt_username, txt_email, txt_password,txt_phone);

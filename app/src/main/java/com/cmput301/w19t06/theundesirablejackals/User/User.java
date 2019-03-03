@@ -23,7 +23,7 @@ public class User {
     // arraylist of all mesages
     private ArrayList<Message> messages;
 
-    private UserNotificationList notifications;
+    //private UserNotificationList notifications;
 
     // topics of interest
     private ArrayList<BookGenres> genreOfInterests;
@@ -40,7 +40,7 @@ public class User {
         lendRequests = new BookRequestList();
         borrowRequests = new BookRequestList();
         messages = new ArrayList<Message>();
-        notifications = new UserNotificationList();
+        //notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
     }
 
@@ -64,13 +64,13 @@ public class User {
         return messages;
     }
 
-    public UserNotificationList getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(UserNotificationList notifications) {
-        this.notifications = notifications;
-    }
+//    public UserNotificationList getNotifications() {
+//        return notifications;
+//    }
+//
+//    public void setNotifications(UserNotificationList notifications) {
+//        this.notifications = notifications;
+//    }
 
     public ArrayList<BookGenres> getGenreOfInterests() {
         return genreOfInterests;
