@@ -4,4 +4,7 @@
     <string name="button_sign_in">Sign In</string>
     <string name="scan_barcode_button">Scan Barcode</string>
     <string name="button_update">Update</string>
+    <string name="edit_text_user_name">User Name</string>
+    <string name="edit_text_phone_number">Phone Number</string>
+    <string name="button_check_available">Register</string>
 </resources>

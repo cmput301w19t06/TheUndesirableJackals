@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//                JSON user = data.getBundleExtra("UserDataKey");
+////                JSON TO USER CLASS
+//                Intent intent = new Intent(Library.class);
 
 
 
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(requestCode == BarcodeDetect.REQUEST_BARCODE){
             if(resultCode == RESULT_OK){
-
+                barcodes = data.getStringArrayListExtra(BarcodeDetect.BARCODES_DATA_CODE);
 
             }
         }
@@ -117,12 +120,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (i == R.id.buttonSignIn) {
 //            signIn();
             Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-            startActivityForResult(intent, SignInActivity.REQUEST_SIGN_IN);
+            startActivity(intent);
 
         }else if(i == R.id.buttonScanBarcode){
             Intent intent = new Intent(MainActivity.this, BarcodeDetect.class);
-            intent.putStringArrayListExtra(BarcodeDetect.BARCODES_DATA_CODE, barcodes);
-            startActivity(intent);
+//            intent.putStringArrayListExtra(BarcodeDetect.BARCODES_DATA_CODE, barcodes);
+            startActivityForResult(intent, BarcodeDetect.REQUEST_BARCODE);
 
         }else if(i == R.id.buttonUpdate){
             if(barcodes.size() > 0) {

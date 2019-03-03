@@ -53,7 +53,7 @@ public class BarcodeDetect extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        barcodesFound = getIntent().getStringArrayListExtra(BARCODES_DATA_CODE);
+//        barcodesFound = getIntent().getStringArrayListExtra(BARCODES_DATA_CODE);
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
