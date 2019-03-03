@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cmput301.w19t06.theundesirablejackals">
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
@@ -43,9 +47,6 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".AddBookActivity"></activity>
         <activity android:name=".PersonalProfileActivity"></activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".StartActivity" />
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".StartActivity" />

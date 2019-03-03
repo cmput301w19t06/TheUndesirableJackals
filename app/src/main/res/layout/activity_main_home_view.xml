@@ -12,46 +12,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:elevation="10dp"
-        android:background="#fff"
-        android:id="@+id/appbar_id">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <SearchView
-                android:layout_width="304dp"
-                android:layout_height="56dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="29dp"
-                android:background="@drawable/border"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="116dp">
-
-            </SearchView>
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="89dp"
-                android:layout_height="78dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="-17dp"
-                android:layout_marginTop="23dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/ic_action_menu"
-                tools:layout_editor_absoluteX="329dp"
-                tools:layout_editor_absoluteY="166dp" />
-
-        </RelativeLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 

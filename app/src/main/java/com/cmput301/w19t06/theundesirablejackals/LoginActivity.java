@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.data.DataBuffer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,8 +33,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     MaterialEditText email, password;
-    Button btn_login;
-
+    Button btn_login, btn_signup;
     FirebaseAuth auth;
 
     @Override
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
 
         btn_login = findViewById(R.id.btn_login);
+        btn_signup = findViewById(R.id.btn_login_signup);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,23 +59,18 @@ public class LoginActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
                     Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT);
                 } else {
-                    auth.signInWithEmailAndPassword(txt_email, txt_password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()) {
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT);
-                                    }
-                                }
-                            });
+                    DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
+
                 }
             }
         });
-    }
 
+        btn_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class ));
+                finish();
+            }
+        });
+    }
 }
