@@ -16,7 +16,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home_view);
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appbar_id);
+       // appBarLayout = (AppBarLayout) findViewById(R.id.appbar_id);
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //Adding Fragments
