@@ -21,6 +21,7 @@ public class SignInActivity extends AppCompatActivity {
 //    private StorageReference mStorageRef;
 //    private FirebaseDatabase database;
 //    private DatabaseReference myRef;
+    private FirebaseUser currentUser;
     private static final String TAG = "SignInActivity";
     public static final int REQUEST_SIGN_IN = 100;
     private static final int SIGN_IN_AND_AUTH = 101;
@@ -43,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 //Please get the user's phone number and password now
-//                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 // ...
             } else {
