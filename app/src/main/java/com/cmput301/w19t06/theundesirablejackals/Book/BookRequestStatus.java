@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
 
 public enum BookRequestStatus {
     PENDING,            // book has been requested and waiting for owner to take action

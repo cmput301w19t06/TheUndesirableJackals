@@ -1,5 +1,9 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.User.UserNotification;
+import com.cmput301.w19t06.theundesirablejackals.User.UserNotificationType;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

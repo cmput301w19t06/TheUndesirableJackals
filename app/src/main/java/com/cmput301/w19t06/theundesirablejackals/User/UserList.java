@@ -1,4 +1,7 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.User;
+
+import com.cmput301.w19t06.theundesirablejackals.Book.Book;
+import com.cmput301.w19t06.theundesirablejackals.Book.BookGenres;
 
 import java.util.ArrayList;
 
