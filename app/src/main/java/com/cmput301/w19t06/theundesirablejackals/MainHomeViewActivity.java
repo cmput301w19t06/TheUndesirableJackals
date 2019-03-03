@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
+
 public class MainHomeViewActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private Toolbar toolBar;

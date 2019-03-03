@@ -4,7 +4,6 @@ import com.cmput301.w19t06.theundesirablejackals.Book.BookGenres;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookRequestList;
-import com.cmput301.w19t06.theundesirablejackals.Message;
 
 import java.util.ArrayList;
 
@@ -14,14 +13,11 @@ public class User {
     private BookList borrowedBooks;
     private BookList favouriteBooks;
 
-    // user's requests to borrow books 
+    // user's requests to borrow books
     private BookRequestList lendRequests;
 
     // requests to borrow user's books
     private BookRequestList borrowRequests;
-
-    // arraylist of all mesages
-    private ArrayList<Message> messages;
 
     //private UserNotificationList notifications;
 
@@ -39,7 +35,6 @@ public class User {
         favouriteBooks = new BookList();
         lendRequests = new BookRequestList();
         borrowRequests = new BookRequestList();
-        messages = new ArrayList<Message>();
         //notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
     }
@@ -60,9 +55,6 @@ public class User {
         return borrowRequests;
     }
 
-    public ArrayList<Message> getMessages() {
-        return messages;
-    }
 
 //    public UserNotificationList getNotifications() {
 //        return notifications;
@@ -112,8 +104,17 @@ public class User {
         borrowRequests.addRequest(request);
     }
 
-    public void addMessage(Message newMessage) {
-        messages.add(newMessage);
+    @Override
+    public String toString() {
+        return "User{" +
+                "userinfo=" + userinfo +
+                ", ownedBooks=" + ownedBooks +
+                ", borrowedBooks=" + borrowedBooks +
+                ", favouriteBooks=" + favouriteBooks +
+                ", lendRequests=" + lendRequests +
+                ", borrowRequests=" + borrowRequests +
+                ", genreOfInterests=" + genreOfInterests +
+                ", friends=" + friends +
+                '}';
     }
-
 }
