@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
 
 public enum BookGenres {
     FICTION, NONFICTION, ACTION, ADVENTURE, ALTERNATE_HISTORY, ANTHOLOGY, CRIME, DRAMA,

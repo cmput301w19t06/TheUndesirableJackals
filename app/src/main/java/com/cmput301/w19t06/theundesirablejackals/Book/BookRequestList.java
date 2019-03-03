@@ -1,6 +1,7 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
 
-import java.lang.reflect.Array;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+
 import java.util.ArrayList;
 
 public class BookRequestList {

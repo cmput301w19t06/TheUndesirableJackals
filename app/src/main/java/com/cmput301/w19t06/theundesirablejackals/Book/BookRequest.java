@@ -1,4 +1,9 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
+
+import com.cmput301.w19t06.theundesirablejackals.Communication;
+import com.cmput301.w19t06.theundesirablejackals.Geolocation;
+import com.cmput301.w19t06.theundesirablejackals.Scanner;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
 
 public class BookRequest extends Communication {
     private Book bookRequested;

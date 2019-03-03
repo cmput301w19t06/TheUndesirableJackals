@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.User;
 
 public enum UserNotificationType {
     NEW_BOOK_REQUEST,

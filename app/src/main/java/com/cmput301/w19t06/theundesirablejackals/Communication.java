@@ -1,4 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+
 import java.util.Date;
 
 public abstract class Communication {

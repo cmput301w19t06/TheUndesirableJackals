@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
 
 public enum BookStatus {
     AVAILABLE,  // book is available for all users to be borrowed
