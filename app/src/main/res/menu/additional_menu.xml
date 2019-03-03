@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/addtnl_profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/addtnl_notification"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/addtnl_borrowRqst"
+            android:title="Borrow Requests" />
+        <item
+            android:id="@+id/addtnl_lendRqst"
+            android:title="Lend Requests" />
+        <item
+            android:id="@+id/addtnl_friends"
+            android:title="Friends" />
+
+
+
+
+
+    </group>
+
+</menu>
