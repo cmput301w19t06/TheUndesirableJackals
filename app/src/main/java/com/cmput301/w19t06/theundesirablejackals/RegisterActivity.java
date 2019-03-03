@@ -35,15 +35,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Register");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         username = findViewById(R.id.new_username);
         email = findViewById(R.id.new_email);
         phone = findViewById(R.id.new_phone);
         password = findViewById(R.id.new_password);
+
+        btn_register = findViewById(R.id.btn_register);
 
         auth = FirebaseAuth.getInstance();
 
@@ -71,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register(final String username, String email, String password) {
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -81,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                             assert firebaseUser != null;
                             String userid = firebaseUser.getUid();
 
-                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+                            reference = FirebaseDatabase.getInstance().getReference("users").child(userid);
 
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("id", userid);
@@ -92,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(RegisterActivity.this, MainHomeViewActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();
@@ -101,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
                         } else {
                             Toast.makeText(RegisterActivity.this,
-                                    "You can't register with this email and or password", Toast.LENGTH_LONG);
+                                    "You can't register with this email and or password", Toast.LENGTH_SHORT);
                         }
                     }
                 });
