@@ -29,16 +29,6 @@
         android:layout_marginEnd="150dp"
         android:text="@string/scan_barcode_button" />
 
-    <ImageView
-        android:id="@+id/imageViewBarcodePicture"
-        android:layout_width="385dp"
-        android:layout_height="382dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="36dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/textViewBarcode"
         android:layout_width="wrap_content"
@@ -48,5 +38,15 @@
         android:layout_marginStart="159dp"
         android:layout_marginTop="151dp"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/buttonUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="191dp"
+        android:text="@string/button_update" />
 
 </RelativeLayout>

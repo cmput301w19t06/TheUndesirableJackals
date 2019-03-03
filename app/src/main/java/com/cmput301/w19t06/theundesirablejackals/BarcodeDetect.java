@@ -44,15 +44,16 @@ public class BarcodeDetect extends AppCompatActivity {
     private FirebaseVisionBarcodeDetectorOptions options;
     private static final int IMAGE_CAPTURE = 301;
     public static final int REQUEST_BARCODE = 300;
-    private Bitmap imageBitmap;
+    public static final String BARCODES_DATA_CODE = "BarCode";
     private String TAG = "BarcodeDetectActivity";
-    private ArrayList<String> barcodesFound = new ArrayList<String>();
+    public ArrayList<String> barcodesFound;
     String currentPhotoPath;
 
 //https://developer.android.com/training/camera/photobasics
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        barcodesFound = getIntent().getStringArrayListExtra(BARCODES_DATA_CODE);
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
@@ -65,6 +66,7 @@ public class BarcodeDetect extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        takePictureIntent.resolveType(BarcodeDetect.this);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
@@ -99,43 +101,53 @@ public class BarcodeDetect extends AppCompatActivity {
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
 
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(imageBitmap);
+        FirebaseVisionImage image;
+        try {
+            image = FirebaseVisionImage.fromFilePath(this, contentUri);
 
-        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-                .getVisionBarcodeDetector(options);
+            FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
+                    .getVisionBarcodeDetector(options);
 //                .getVisionBarcodeDetector();
 
 
-        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
-                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
-                    @Override
-                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-                        // Task completed successfully
-                        checkForBarcodeData(barcodes);
+            Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
+                    .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+                        @Override
+                        public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+                            // Task completed successfully
+                            checkForBarcodeData(barcodes);
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Task failed with an exception
-                        Log.e(TAG , e.toString());
-                        showMyToast("Failed to capture");
-                    }
-                });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Task failed with an exception
+                            Log.e(TAG , e.toString());
+                            showMyToast("Failed to capture");
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void checkForBarcodeData(List<FirebaseVisionBarcode> barcodes){
         for (FirebaseVisionBarcode barcode: barcodes) {
 
             String rawValue = barcode.getRawValue();
+            Log.d(TAG, rawValue);
 
             int valueType = barcode.getValueType();
+            Log.d(TAG, valueType + " : " +  FirebaseVisionBarcode.TYPE_ISBN);
             // See API reference for complete list of supported types
             switch (valueType) {
                 case FirebaseVisionBarcode.TYPE_ISBN:
                     //Add data to list
                     barcodesFound.add(rawValue);
+                    Log.d(TAG, ((Integer)barcodesFound.size()).toString());
                     break;
                 default:
                     showMyToast("No ISBN found");
@@ -156,26 +168,24 @@ public class BarcodeDetect extends AppCompatActivity {
 
         if(requestCode == IMAGE_CAPTURE){
 
-            Intent intent = new Intent();
+            Intent intent = getIntent();
 
             if (resultCode == RESULT_OK) {
 
-                imageBitmap = BitmapFactory.decodeFile(currentPhotoPath);
                 galleryAddPic();
                 scanBarcodePII();  //Tries to find barcodes and add them to barcodesFound arraylist object
 
-                if(barcodesFound.size() > 0){
 
-                    intent.putStringArrayListExtra("barcodes", barcodesFound);
-                    setResult(Activity.RESULT_OK, intent);
+                intent.putStringArrayListExtra(BARCODES_DATA_CODE, barcodesFound);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
 
-                }
             } else {
 
                 setResult(Activity.RESULT_CANCELED, intent);
-
+                finish();
             }
-            finish();
+//            finish();
         }
     }
 

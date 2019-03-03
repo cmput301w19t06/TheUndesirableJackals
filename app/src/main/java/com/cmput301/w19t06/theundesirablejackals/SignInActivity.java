@@ -23,7 +23,7 @@ public class SignInActivity extends AppCompatActivity {
 //    private DatabaseReference myRef;
     private static final String TAG = "SignInActivity";
     public static final int REQUEST_SIGN_IN = 100;
-    public static final int SIGN_IN_AND_AUTH = 101;
+    private static final int SIGN_IN_AND_AUTH = 101;
 
 
     @Override

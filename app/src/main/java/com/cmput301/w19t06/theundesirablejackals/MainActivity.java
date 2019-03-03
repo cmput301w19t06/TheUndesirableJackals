@@ -11,6 +11,8 @@ import android.icu.text.SimpleDateFormat;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private ArrayList<String> barcodes;
+    private ArrayList<String> barcodes = new ArrayList<String>();
     private static final String TAG = "MainActivity";
     private TokenBroadcastReceiver mTokenReceiver;
 
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d(TAG, ((Integer)requestCode).toString());
         if (requestCode == SignInActivity.REQUEST_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
@@ -100,12 +102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // response.getError().getErrorCode() and handle the error.
                 // ...
             }
-        }else if(requestCode == BarcodeDetect.REQUEST_BARCODE){
-            if(resultCode ==RESULT_OK){
-                barcodes = data.getStringArrayListExtra("barcodes");
-                if(barcodes.size()== 1){
-                    ((TextView) findViewById(R.id.textViewBarcode)).setText(barcodes.get(0));
-                }
+        }
+        else if(requestCode == BarcodeDetect.REQUEST_BARCODE){
+            if(resultCode == RESULT_OK){
+
+
             }
         }
     }
@@ -115,20 +116,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int i = v.getId();
         if (i == R.id.buttonSignIn) {
 //            signIn();
-            Intent intent = new Intent(this, SignInActivity.class);
+            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
             startActivityForResult(intent, SignInActivity.REQUEST_SIGN_IN);
 
         }else if(i == R.id.buttonScanBarcode){
-            Intent intent = new Intent(this, BarcodeDetect.class);
-            startActivityForResult(intent, BarcodeDetect.REQUEST_BARCODE);
+            Intent intent = new Intent(MainActivity.this, BarcodeDetect.class);
+            intent.putStringArrayListExtra(BarcodeDetect.BARCODES_DATA_CODE, barcodes);
+            startActivity(intent);
+
+        }else if(i == R.id.buttonUpdate){
+            if(barcodes.size() > 0) {
+                ((TextView) findViewById(R.id.textViewBarcode)).setText(barcodes.get(0));
+            }
         }
     }
-
-
-
-
-
-
 
 
 }
