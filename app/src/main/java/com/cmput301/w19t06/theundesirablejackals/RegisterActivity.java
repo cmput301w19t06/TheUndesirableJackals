@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,7 +23,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
-    MaterialEditText username, email, phone, password;
+    EditText username, email, phone, password;
     Button btn_register;
 
     FirebaseAuth auth;

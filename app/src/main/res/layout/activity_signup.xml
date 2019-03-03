@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/tv_signup_login_info"
+        android:text="@string/tv_signup_create_new"
         android:textColor="@color/tabTextColor"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,14 +39,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="@string/fui_password_hint"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_username" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_phone" />
 
     <EditText
         android:id="@+id/edit_text_signup_email"
@@ -59,8 +60,9 @@
         android:hint="@string/fui_email_hint"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_signup_contact_info" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_username" />
 
     <EditText
         android:id="@+id/edit_text_signup_phone"
@@ -75,20 +77,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_email"/>
-
-    <TextView
-        android:id="@+id/text_signup_contact_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/tv_signup_contact_info"
-        android:textColor="@color/tabTextColor"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_password" />
 
     <Button
         android:id="@+id/btn_signup_confirm"

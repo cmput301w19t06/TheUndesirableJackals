@@ -38,5 +38,4 @@ public class UserList {
     public boolean contains(User user) {
         return userlist.contains(user);
     }
-
 }

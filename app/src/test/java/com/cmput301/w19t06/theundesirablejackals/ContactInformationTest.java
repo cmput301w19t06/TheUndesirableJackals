@@ -1,7 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import com.cmput301.w19t06.theundesirablejackals.User.ContactInformation;
-
 import org.junit.Before;
 import org.junit.Test;
 

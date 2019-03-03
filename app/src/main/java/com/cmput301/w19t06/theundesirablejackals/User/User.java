@@ -9,8 +9,7 @@ import com.cmput301.w19t06.theundesirablejackals.Message;
 import java.util.ArrayList;
 
 public class User {
-    private Authentication authentication;
-    private ContactInformation contactInformation;
+    private UserInformation userinfo;
     private BookList ownedBooks;
     private BookList borrowedBooks;
     private BookList favouriteBooks;
@@ -31,12 +30,10 @@ public class User {
 
     private UserList friends;
 
-    public User(String userName, String password, String email, String phoneNumber) {
+    public User(String userName, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
-
-        authentication = new Authentication(userName, password);
-        contactInformation = new ContactInformation(email, phoneNumber);
+        userinfo = new UserInformation(userName, email, phoneNumber);
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
         favouriteBooks = new BookList();
@@ -45,14 +42,6 @@ public class User {
         messages = new ArrayList<Message>();
         notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
-    }
-
-    public Authentication getAuthentication() {
-        return authentication;
-    }
-
-    public ContactInformation getContactInformation() {
-        return contactInformation;
     }
 
     public BookList getOwnedBooks() {
