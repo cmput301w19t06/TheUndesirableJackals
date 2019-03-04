@@ -5,9 +5,10 @@ import com.cmput301.w19t06.theundesirablejackals.Book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookRequestList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private UserInformation userinfo;
     private BookList ownedBooks;
     private BookList borrowedBooks;
@@ -37,6 +38,10 @@ public class User {
         borrowRequests = new BookRequestList();
         //notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
+    }
+
+    public UserInformation getUserinfo(){
+        return userinfo;
     }
 
     public BookList getOwnedBooks() {

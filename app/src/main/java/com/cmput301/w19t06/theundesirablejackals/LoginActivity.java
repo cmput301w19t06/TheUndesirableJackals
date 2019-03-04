@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
                     Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
                 } else {
-                    DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
+//                    DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
 
                 }
             }
