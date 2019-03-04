@@ -55,17 +55,17 @@ public class SignInActivity extends AppCompatActivity {
                 databaseHelper = new DatabaseHelper(this);
                 Log.d(TAG, "Created Database helper");
                 databaseHelper.isRegistered(new BooleanCallback() {
-                    @Override
-                    public void onCallback(boolean bool) {
-                        if(bool){
-                            Log.d(TAG, "User is registered already, finishing up now...");
-                            finish();
-                        }else{
-                            Log.d(TAG, "User is not registered, start registration");
-                            registerUser();
-                        }
-                    }
-                });
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        Log.d(TAG, "User is registered already, finishing up now...");
+                                        finish();
+                                    }else{
+                                        Log.d(TAG, "User is not registered, start registration");
+                                        registerUser();
+                                    }
+                                }
+                            });
 
                 // ...
             } else {
@@ -110,9 +110,8 @@ public class SignInActivity extends AppCompatActivity {
 
     private void validateFields(final String username,final String phone){
         if(!username.isEmpty() && !phone.isEmpty()) {
-            databaseHelper.isAvailable(
+            databaseHelper.isUsernameAvailable(
                     username,
-                    phone,
                     new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
@@ -128,16 +127,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void registerInDatabase(final String username, final String phone){
-        databaseHelper.registerUser(new User(username, databaseHelper.getCurrentUser().getEmail(), phone), new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                if (bool) {
-                    showMyToast("SUCCESS! you are registered");
-                } else {
-                    showMyToast("Failure, database conection error");
+        databaseHelper.registerUser(
+                new User(username, databaseHelper.getCurrentUser().getEmail(), phone),
+                new BooleanCallback() {
+                @Override
+                public void onCallback(boolean bool) {
+                    if (bool) {
+                        showMyToast("SUCCESS! you are registered");
+                        finish();
+                    } else {
+                        showMyToast("Failure, database connection error");
+                    }
                 }
-            }
-        });
+            });
     }
 
 
