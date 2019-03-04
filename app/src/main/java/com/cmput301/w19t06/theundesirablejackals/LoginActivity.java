@@ -43,11 +43,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // check if someone is already logged in on the current running device
-        if(DatabaseHelper.getInstance(LoginActivity.this).isUserLoggedin()) {
-            Intent intent = new Intent(LoginActivity.this, MainHomeViewActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        if(DatabaseHelper.getInstance(LoginActivity.this).isUserLoggedin()) {
+//            Intent intent = new Intent(LoginActivity.this, MainHomeViewActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
 
     }
 

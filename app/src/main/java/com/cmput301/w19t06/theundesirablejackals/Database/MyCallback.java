@@ -12,4 +12,5 @@ public interface MyCallback {
     void onCallback(UserList userList);
     void onCallback(Book book);
     void onCallback(BookList bookList);
+    void onCallback(boolean bool);
 }
