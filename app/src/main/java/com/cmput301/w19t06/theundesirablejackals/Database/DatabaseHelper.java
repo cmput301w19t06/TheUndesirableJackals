@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.cmput301.w19t06.theundesirablejackals.Book.Book;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.LoginActivity;
+import com.cmput301.w19t06.theundesirablejackals.SignInActivity;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 import com.cmput301.w19t06.theundesirablejackals.User.UserInformation;
 import com.cmput301.w19t06.theundesirablejackals.User.UserList;
@@ -27,7 +28,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-public class DatabaseHelper<T> {
+public class DatabaseHelper{
     // database path to users
     private final static String TAG = "DatabaseHelper";
     private final static String INFO_DUMP_FLAG = "INFO_DUMP";
@@ -37,7 +38,7 @@ public class DatabaseHelper<T> {
     private final static String PATH_REGISTERED = "registered";
     private final static String PATH_FAVOURITE = "favourites";
 
-//    private static volatile DatabaseHelper dbinstance;
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersReference;
     private DatabaseReference booksReference;
@@ -53,7 +54,7 @@ public class DatabaseHelper<T> {
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   //
 
 
-    private DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.currentUser = firebaseAuth.getCurrentUser();
 
@@ -69,7 +70,72 @@ public class DatabaseHelper<T> {
 
     }
 
-    private void isRegistered(final MyCallback onCallback){
+    public void isAvailable(String username, final String phone, final BooleanCallback onCallback){
+        isUsernameAvailable(username, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool){
+//                    isPhoneAvailable(phone, new BooleanCallback() {
+//                        @Override
+//                        public void onCallback(boolean bool) {
+//                            if(bool){
+                                onCallback.onCallback(true);
+//                            }else{onCallback.onCallback(false);}
+//                        }
+//                    });
+                }else{onCallback.onCallback(false);}
+            }
+        });
+    }
+
+    private void isUsernameAvailable(String username, final BooleanCallback onCallback){
+        registeredReference.child(currentUser.getUid())
+                .child("username")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            onCallback.onCallback(true);
+
+                        }else {
+                            onCallback.onCallback(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+//    private void isPhoneAvailable(String phone, final BooleanCallback onCallback){
+//        registeredReference.child(currentUser.getUid())
+//                .child("phone")
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if (dataSnapshot.exists()) {
+//                            onCallback.onCallback(true);
+//
+//                        }else {
+//                            onCallback.onCallback(false);
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        Log.d(TAG, "isPhoneAvailable error Occured");
+//                        Log.e(TAG, databaseError.getMessage());
+//                    }
+//                });
+//    }
+
+    public FirebaseUser getCurrentUser(){return currentUser;}
+
+    public void isRegistered(final BooleanCallback onCallback){
         registeredReference.child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -85,15 +151,182 @@ public class DatabaseHelper<T> {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, "ERROR HAPPENED");
+                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
 
 
-    private void setContext(Context context) {
+    public void setContext(Context context) {
         this.context = context;
     }
+
+
+
+
+
+
+    public boolean isUserLoggedin() {
+        return currentUser != null;
+    }
+
+    public void signOut() {
+        firebaseAuth.signOut();
+//        context.startActivity(new Intent(context, SignInActivity.class));
+    }
+
+    public void getBookFromDatabase(String isbn, final BookCallback callback){
+        booksReference.child(isbn)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                callback.onCallback(book);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    public void getUserFromDatabase(UserInformation userInfo, final UserCallback myCallback){
+
+        usersReference.child(userInfo.getUserName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                myCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getUserInfoFromDatabase(final UserInformationCallback callback){
+        registeredReference.child(currentUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
+                        callback.onCallback(userInfo);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void saveCurrentUser(User user, final BooleanCallback onCallback){
+        usersReference.child(user.getUserinfo().getUserName()).setValue(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    onCallback.onCallback(true);
+                    //TODO
+//                    Intent intent = new Intent(context, MainHomeViewActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(intent);
+                }else{
+                    onCallback.onCallback(false);
+                }
+            }
+        });
+
+    }
+
+    public void registerUser(final User user, final BooleanCallback onCallback){
+        registeredReference
+                .child(currentUser.getUid())
+                .child("username")
+                .setValue(user.getUserinfo().getUserName())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            saveCurrentUser(user, new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        onCallback.onCallback(true);
+                                    }else{
+                                        onCallback.onCallback(false);
+                                    }
+                                }
+                            });
+                        }else{onCallback.onCallback(false);}
+                    }
+                });
+    }
+
+    public static DatabaseHelper getInstance(Context context) {
+        return new DatabaseHelper(context);
+    }
+
+//    public void createAccount(final String username, String password, final String email, final String phonenumber) {
+//        firebaseAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+//
+//                            assert firebaseUser != null;
+//                            String userid = firebaseUser.getUid();
+//
+//                            usersReference = FirebaseDatabase.getInstance().getReference(PATH_USERS).child(userid);
+//
+//                            HashMap<String, User> hashMap = new HashMap<>();
+//                            hashMap.put(username, new User(username, email, phonenumber));
+//
+//                            // save class user to database
+//                            usersReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        Intent intent = new Intent(context, MainHomeViewActivity.class);
+//                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        context.startActivity(intent);
+//                                    }
+//                                }
+//                            });
+//                        } else {
+//                            Toast.makeText(context,
+//                                    "You can't register with this email and or password", Toast.LENGTH_SHORT);
+//                        }
+//                    }
+//                });
+//    }
+
+
+
+//    public void login(String email, String password) {
+//        firebaseAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if(task.isSuccessful()) {
+//                            Intent intent = new Intent(context, MainHomeViewActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            context.startActivity(intent);
+//                        } else {
+//                            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT);
+//                        }
+//                    }
+//                });
+//    }
+
 
 //    /**
 //     * Get the same instance of database helper, This is done to only have one DatabaseHelper running
@@ -207,144 +440,5 @@ public class DatabaseHelper<T> {
 //            });
 //        }
 //    }
-
-
-
-    public boolean isUserLoggedin() {
-        return currentUser != null;
-    }
-
-    public void signOut() {
-        firebaseAuth.signOut();
-        context.startActivity(new Intent(context, LoginActivity.class));
-    }
-
-    public void getBookFromDatabase(String isbn, final MyCallback callback){
-        booksReference.child(isbn)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Book book = dataSnapshot.getValue(Book.class);
-                callback.onCallback(book);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    public void getUserFromDatabase(UserInformation userInfo, final MyCallback myCallback){
-
-        usersReference.child(userInfo.getUserName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                myCallback.onCallback(user);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void getUserInfoFromDatabase(final MyCallback callback){
-        registeredReference.child(currentUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
-                        callback.onCallback(userInfo);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void saveCurrentUser(User user, final MyCallback onCallback){
-        usersReference.child(user.getUserinfo().getUserName()).setValue(user)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    onCallback.onCallback(true);
-                    //TODO
-//                    Intent intent = new Intent(context, MainHomeViewActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    context.startActivity(intent);
-                }else{
-                    onCallback.onCallback(false);
-                }
-            }
-        });
-
-    }
-
-    public static DatabaseHelper getInstance(Context context) {
-        return new DatabaseHelper(context);
-    }
-
-//    public void createAccount(final String username, String password, final String email, final String phonenumber) {
-//        firebaseAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//
-//                            assert firebaseUser != null;
-//                            String userid = firebaseUser.getUid();
-//
-//                            usersReference = FirebaseDatabase.getInstance().getReference(PATH_USERS).child(userid);
-//
-//                            HashMap<String, User> hashMap = new HashMap<>();
-//                            hashMap.put(username, new User(username, email, phonenumber));
-//
-//                            // save class user to database
-//                            usersReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Intent intent = new Intent(context, MainHomeViewActivity.class);
-//                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                        context.startActivity(intent);
-//                                    }
-//                                }
-//                            });
-//                        } else {
-//                            Toast.makeText(context,
-//                                    "You can't register with this email and or password", Toast.LENGTH_SHORT);
-//                        }
-//                    }
-//                });
-//    }
-
-
-
-//    public void login(String email, String password) {
-//        firebaseAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(task.isSuccessful()) {
-//                            Intent intent = new Intent(context, MainHomeViewActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            context.startActivity(intent);
-//                        } else {
-//                            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT);
-//                        }
-//                    }
-//                });
-//    }
-
-
 
 }

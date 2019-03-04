@@ -12,6 +12,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home_view);
 
-        DatabaseHelper.getInstance(MainHomeViewActivity.this).getLoggedinUser();
+//        DatabaseHelper.getInstance(MainHomeViewActivity.this).getLoggedinUser();
     }
 }

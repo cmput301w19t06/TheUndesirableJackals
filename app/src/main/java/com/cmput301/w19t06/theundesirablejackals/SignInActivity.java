@@ -1,36 +1,42 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import android.app.Activity;
+//import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.Database.BooleanCallback;
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+//import com.firebase.ui.auth.IdpResponse;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.storage.FirebaseStorage;
+//import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
-//    private StorageReference mStorageRef;
-//    private FirebaseDatabase database;
-//    private DatabaseReference myRef;
-    private FirebaseUser currentUser;
+
+//    private FirebaseUser currentUser;
     private static final String TAG = "SignInActivity";
     public static final int REQUEST_SIGN_IN = 100;
     private static final int SIGN_IN_AND_AUTH = 101;
+    DatabaseHelper databaseHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_in_loading);
         createSignInIntent();
     }
 
@@ -44,7 +50,22 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 //Please get the user's phone number and password now
-                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                Log.d(TAG, "Sign in complete and good, checking registration");
+                databaseHelper = new DatabaseHelper(this);
+                Log.d(TAG, "Created Database helper");
+                databaseHelper.isRegistered(new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+                        if(bool){
+                            Log.d(TAG, "User is registered already, finishing up now...");
+                            finish();
+                        }else{
+                            Log.d(TAG, "User is not registered, start registration");
+                            registerUser();
+                        }
+                    }
+                });
 
                 // ...
             } else {
@@ -73,5 +94,55 @@ public class SignInActivity extends AppCompatActivity {
                         .build(),
                 SIGN_IN_AND_AUTH);
         // [END auth_fui_create_intent]
+    }
+
+    public void registerUser(){
+        setContentView(R.layout.activity_sign_in);
+        findViewById(R.id.buttonCheckAvailable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = ((TextView) findViewById(R.id.editTextUserName)).getText().toString();
+                final String phone = ((TextView) findViewById(R.id.editTextPhoneNumber)).getText().toString();
+                validateFields(username, phone);
+            }
+        });
+    }
+
+    private void validateFields(final String username,final String phone){
+        if(!username.isEmpty() && !phone.isEmpty()) {
+            databaseHelper.isAvailable(
+                    username,
+                    phone,
+                    new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if (bool) {
+                                registerInDatabase(username, phone);
+                            } else {
+                                showMyToast("Name/Phone number not available");
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    private void registerInDatabase(final String username, final String phone){
+        databaseHelper.registerUser(new User(username, databaseHelper.getCurrentUser().getEmail(), phone), new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    showMyToast("SUCCESS! you are registered");
+                } else {
+                    showMyToast("Failure, database conection error");
+                }
+            }
+        });
+    }
+
+
+    private void showMyToast(String message){
+        Toast.makeText(this, message,
+                Toast.LENGTH_LONG).show();
     }
 }
