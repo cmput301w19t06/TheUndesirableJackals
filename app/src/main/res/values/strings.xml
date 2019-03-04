@@ -41,4 +41,5 @@
     <string name="buttonCaptureBarcodePicture">Scan Barcode</string>
     <string name="editTextISBNField">ISBN</string>
     <string name="buttonSearchISBN">Search</string>
+    <string name="checking_user_data">Checking User Data...</string>
 </resources>

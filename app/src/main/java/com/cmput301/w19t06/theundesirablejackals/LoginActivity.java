@@ -36,55 +36,55 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText email, password;
-    Button btn_login, btn_signup;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // check if someone is already logged in on the current running device
-//        if(DatabaseHelper.getInstance(LoginActivity.this).isUserLoggedin()) {
-//            Intent intent = new Intent(LoginActivity.this, MainHomeViewActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-
-    }
-
+//    EditText email, password;
+//    Button btn_login, btn_signup;
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        // check if someone is already logged in on the current running device
+////        if(DatabaseHelper.getInstance(LoginActivity.this).isUserLoggedin()) {
+////            Intent intent = new Intent(LoginActivity.this, MainHomeViewActivity.class);
+////            startActivity(intent);
+////            finish();
+////        }
+//
+//    }
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-
-        email = findViewById(R.id.etext_login_email);
-        password = findViewById(R.id.etext_login_password);
-
-        btn_login = findViewById(R.id.btn_login);
-        btn_signup = findViewById(R.id.btn_login_signup);
-
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String txt_email = email.getText().toString();
-                String txt_password = password.getText().toString();
-
-                if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
-                    Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
-                } else {
-//                    DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
-
-                }
-            }
-        });
-
-        btn_signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class ));
-                finish();
-            }
-        });
     }
+//
+//
+//        email = findViewById(R.id.etext_login_email);
+//        password = findViewById(R.id.etext_login_password);
+//
+//        btn_login = findViewById(R.id.btn_login);
+//        btn_signup = findViewById(R.id.btn_login_signup);
+//
+//        btn_login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String txt_email = email.getText().toString();
+//                String txt_password = password.getText().toString();
+//
+//                if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
+//                    Toast.makeText(LoginActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
+//                } else {
+////                    DatabaseHelper.getInstance(LoginActivity.this).login(txt_email, txt_password);
+//
+//                }
+//            }
+//        });
+//
+//        btn_signup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(LoginActivity.this, SignupActivity.class ));
+//                finish();
+//            }
+//        });
+//    }
 }
