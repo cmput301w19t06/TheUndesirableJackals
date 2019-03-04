@@ -42,4 +42,5 @@
     <string name="editTextISBNField">ISBN</string>
     <string name="buttonSearchISBN">Search</string>
     <string name="checking_user_data">Checking User Data...</string>
+    <string name="button_sign_out">Sign Out</string>
 </resources>
