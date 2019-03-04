@@ -15,6 +15,7 @@ import android.widget.Button;
 public class AddBookManualFragment extends Fragment {
     View view;
     private Button finalAddbtn;
+    private Button photoaddbtn;
     public AddBookManualFragment() {
     }
 
@@ -23,6 +24,7 @@ public class AddBookManualFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =inflater.inflate(R.layout.add_book_manual,container,false);
         finalAddbtn = (Button) view.findViewById(R.id.finalAddBookButton_id);
+        photoaddbtn = (Button) view.findViewById(R.id.photoAddButton_id);
         return view;
 
 

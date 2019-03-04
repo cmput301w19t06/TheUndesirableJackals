@@ -35,4 +35,6 @@ public class AddBookActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainHomeViewActivity.class);
         startActivity(intent);
     }
+    public void addPhotobtn(View view){
+    }
 }
