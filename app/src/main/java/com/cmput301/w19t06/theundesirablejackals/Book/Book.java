@@ -3,12 +3,13 @@ package com.cmput301.w19t06.theundesirablejackals.Book;
 import com.cmput301.w19t06.theundesirablejackals.Image;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Holds relevant information about a book
  */
-public class Book {
+public class Book implements Serializable {
     private String title;
     private String author;
     private String isbn;

@@ -1,6 +1,8 @@
 package com.cmput301.w19t06.theundesirablejackals.User;
 
-public class UserInformation {
+import java.io.Serializable;
+
+public class UserInformation implements Serializable {
 
     private String userName;
     private String email;
