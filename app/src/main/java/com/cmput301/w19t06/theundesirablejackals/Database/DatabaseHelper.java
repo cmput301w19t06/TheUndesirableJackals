@@ -114,7 +114,9 @@ public class DatabaseHelper{
     public FirebaseUser getCurrentUser(){return currentUser;}
 
     public void isRegistered(final BooleanCallback onCallback){
-        registeredReference.child(currentUser.getUid())
+        registeredReference
+                .child("uid")
+                .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
