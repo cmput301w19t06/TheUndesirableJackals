@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseHelper{
     // database path to users
@@ -54,6 +55,12 @@ public class DatabaseHelper{
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   //
 
 
+    /**
+     * Constructor for database helper, Requires that the user is already
+     * authenticated to firebase in the calling activity
+     * @param context the running context that called DatabaseHelper
+     * @return new object DatabaseHelper
+     */
     public DatabaseHelper(Context context) {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.currentUser = firebaseAuth.getCurrentUser();
@@ -70,68 +77,39 @@ public class DatabaseHelper{
 
     }
 
-    public void isAvailable(String username, final String phone, final BooleanCallback onCallback){
-        isUsernameAvailable(username, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                if(bool){
-//                    isPhoneAvailable(phone, new BooleanCallback() {
-//                        @Override
-//                        public void onCallback(boolean bool) {
-//                            if(bool){
-                                onCallback.onCallback(true);
-//                            }else{onCallback.onCallback(false);}
-//                        }
-//                    });
-                }else{onCallback.onCallback(false);}
-            }
-        });
-    }
 
-    private void isUsernameAvailable(String username, final BooleanCallback onCallback){
-        registeredReference.child(currentUser.getUid())
+
+    /**
+     * Get the same instance of database helper, This is done to only have one DatabaseHelper running
+     * @param username to be checked against registered usernames for uniqueness
+     * @param onCallback the function which will be called once the result is available
+     * Since database access is asynchronous, the result will not be available right away.
+     * Instead, once the result comes back it can be dealt with using various Callback interfaces
+     */
+    public void isUsernameAvailable(String username, final BooleanCallback onCallback){
+        registeredReference
                 .child("username")
+                .child(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            onCallback.onCallback(true);
+                            onCallback.onCallback(false);
 
                         }else {
-                            onCallback.onCallback(false);
+                            onCallback.onCallback(true);
 
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.d(TAG, "Error occured in isUsernameAvaialable");
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
 
-//    private void isPhoneAvailable(String phone, final BooleanCallback onCallback){
-//        registeredReference.child(currentUser.getUid())
-//                .child("phone")
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        if (dataSnapshot.exists()) {
-//                            onCallback.onCallback(true);
-//
-//                        }else {
-//                            onCallback.onCallback(false);
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        Log.d(TAG, "isPhoneAvailable error Occured");
-//                        Log.e(TAG, databaseError.getMessage());
-//                    }
-//                });
-//    }
 
     public FirebaseUser getCurrentUser(){return currentUser;}
 
@@ -161,8 +139,6 @@ public class DatabaseHelper{
     public void setContext(Context context) {
         this.context = context;
     }
-
-
 
 
 
@@ -221,22 +197,23 @@ public class DatabaseHelper{
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
 
     public void saveCurrentUser(User user, final BooleanCallback onCallback){
-        usersReference.child(user.getUserinfo().getUserName()).setValue(user)
+        HashMap<String, Object> userMap = new HashMap<>();
+        userMap.put(user.getUserinfo().getUserName(), user);
+        usersReference
+                .updateChildren(userMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     onCallback.onCallback(true);
                     //TODO
-//                    Intent intent = new Intent(context, MainHomeViewActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    context.startActivity(intent);
                 }else{
                     onCallback.onCallback(false);
                 }
@@ -246,25 +223,67 @@ public class DatabaseHelper{
     }
 
     public void registerUser(final User user, final BooleanCallback onCallback){
+        Map<String, Object> uidMap = new HashMap<>();
+        Map<String, Object> tempMap = new HashMap<>();
+        uidMap.put(
+                currentUser.getUid(),
+                user.getUserinfo());
+
+        tempMap.put(
+                user.getUserinfo().getUserName(),
+                user.getUserinfo().getPhoneNumber());
+        final Map<String, Object> usernameMap = new HashMap<>(tempMap);
+
+        registerUID(uidMap, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool){
+                    registerUsername(usernameMap, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if(bool){
+                                saveCurrentUser(user, new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if(bool){
+                                            onCallback.onCallback(true);
+                                        }else { onCallback.onCallback(false);}
+                                    }
+                                });
+                            }else { onCallback.onCallback(false); }
+                        }
+                    });
+                }else { onCallback.onCallback(false); }
+            }
+        });
+
+
+
+    }
+
+    private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
         registeredReference
-                .child(currentUser.getUid())
-                .child("username")
-                .setValue(user.getUserinfo().getUserName())
+                .child("uid")
+                .updateChildren(uidMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{onCallback.onCallback(false);}
+                    }
+                });
+    }
 
-                            saveCurrentUser(user, new BooleanCallback() {
-                                @Override
-                                public void onCallback(boolean bool) {
-                                    if(bool){
-                                        onCallback.onCallback(true);
-                                    }else{
-                                        onCallback.onCallback(false);
-                                    }
-                                }
-                            });
+    private void registerUsername(Map<String, Object> usernameMap, final BooleanCallback onCallback){
+        registeredReference
+                .child("username")
+                .updateChildren(usernameMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
                         }else{onCallback.onCallback(false);}
                     }
                 });
