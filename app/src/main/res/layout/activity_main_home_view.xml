@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cmput301.w19t06.theundesirablejackals.MainHomeViewActivity"
+    tools:context="com.cmput301.w19t06.theundesirablejackals.Activities.MainHomeViewActivity"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true">
 
@@ -34,26 +34,20 @@
             app:tabPaddingEnd="12dp"
             app:tabPaddingStart="12dp"
             app:tabTextColor="@color/tabTextColor" />
+
         <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewpager_id"
             ></android.support.v4.view.ViewPager>
-        
+
     </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/navigationView"
         android:layout_gravity="start"
-        app:menu="@menu/additional_menu"
-        />
-
-
-
-
-
-
-
+        app:menu="@menu/additional_menu" />
 
 </android.support.v4.widget.DrawerLayout>
