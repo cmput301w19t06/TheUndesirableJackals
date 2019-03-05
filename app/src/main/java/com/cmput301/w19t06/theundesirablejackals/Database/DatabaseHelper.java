@@ -111,6 +111,7 @@ public class DatabaseHelper{
     }
 
 
+
     public FirebaseUser getCurrentUser(){return currentUser;}
 
     public void isRegistered(final BooleanCallback onCallback){
