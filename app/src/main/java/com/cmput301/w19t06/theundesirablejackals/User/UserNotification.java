@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.User;
 
 import java.util.Date;
 
@@ -27,7 +27,6 @@ public class UserNotification {
                 notificationMessage = "A book request has been updated";
                 break;
         }
-
         this.type = type;
         this.reciever = reciever;
     }

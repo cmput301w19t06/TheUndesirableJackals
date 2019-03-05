@@ -1,5 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import com.cmput301.w19t06.theundesirablejackals.Book.Book;
+import com.cmput301.w19t06.theundesirablejackals.Book.BookGenres;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.User.UserList;
+
 import org.junit.Before;
 import org.junit.Test;
 

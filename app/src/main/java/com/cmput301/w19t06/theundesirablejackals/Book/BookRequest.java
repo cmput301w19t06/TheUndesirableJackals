@@ -1,25 +1,30 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Book;
 
-public class BookRequest extends Communication {
+import com.cmput301.w19t06.theundesirablejackals.Geolocation;
+import com.cmput301.w19t06.theundesirablejackals.Scanner;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+
+public class BookRequest {
     private Book bookRequested;
     private BookRequestStatus currentStatus;
-    private boolean requestSeen;
+    private User borrower;
     private Geolocation pickuplocation;
     private Scanner scanner;
 
-    public BookRequest(User sender, User receiver, Book bookRequested) {
-        super(sender, receiver);
+    public BookRequest(User borrower, Book bookRequested) {
         this.bookRequested = bookRequested;
         this.currentStatus = BookRequestStatus.PENDING;
+        this.borrower = borrower;
 
         // set the status of the book requested to "requested"
         bookRequested.setStatus(BookStatus.REQUESTED);
 
-        // object adds itself into "lendRequests" of receiver
-        receiver.addLendRequest(this);
+        // object adds itself into "lendRequests" of book owner
+        bookRequested.getOwner().addBorrowRequest(this);
 
         // object adds itself into "borrowRequests" of sender
-        sender.addBorrowRequest(this);
+        borrower.addLendRequest(this);
+
     }
 
     public void denyRequest() {
