@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,7 @@ public class SignInActivity extends AppCompatActivity {
                                 public void onCallback(boolean bool) {
                                     if(bool){
                                         Log.d(TAG, "User is registered already, finishing up now...");
-                                        finish();
+                                        startMainHomeActivity();
                                     }else{
                                         Log.d(TAG, "User is not registered, start registration");
                                         registerUser();
@@ -101,8 +102,8 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.buttonCheckAvailable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username = ((TextView) findViewById(R.id.editTextUserName)).getText().toString();
-                final String phone = ((TextView) findViewById(R.id.editTextPhoneNumber)).getText().toString();
+                final String username = ((TextView) findViewById(R.id.editSignInTextUserName)).getText().toString();
+                final String phone = ((TextView) findViewById(R.id.editTextSignInPhoneNumber)).getText().toString();
                 validateFields(username, phone);
             }
         });
@@ -127,14 +128,15 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void registerInDatabase(final String username, final String phone){
-        databaseHelper.registerUser(
-                new User(username, databaseHelper.getCurrentUser().getEmail(), phone),
-                new BooleanCallback() {
+
+       User user = new User(username, databaseHelper.getCurrentUser().getEmail(), phone);
+
+        databaseHelper.registerUser(user, new BooleanCallback() {
                 @Override
                 public void onCallback(boolean bool) {
                     if (bool) {
                         showMyToast("SUCCESS! you are registered");
-                        finish();
+                        startMainHomeActivity();
                     } else {
                         showMyToast("Failure, database connection error");
                     }
@@ -142,9 +144,16 @@ public class SignInActivity extends AppCompatActivity {
             });
     }
 
+    private void startMainHomeActivity() {
+        Intent intent = new Intent(SignInActivity.this, MainHomeViewActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void showMyToast(String message){
-        Toast.makeText(this, message,
-                Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0,0);;
+        toast.show();
     }
 }

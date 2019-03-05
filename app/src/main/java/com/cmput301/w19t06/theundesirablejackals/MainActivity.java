@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
         findViewById(R.id.buttonScanBarcode).setOnClickListener(this);
         findViewById(R.id.buttonUpdate).setOnClickListener(this);
-
     }
 
 
