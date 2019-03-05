@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,16 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(StartActivity.this);
+
+        // check if a user is already logged in
+        if (databaseHelper.isUserLoggedin()) {
+            // if a user is logged, continue to MainHomeActivity
+            Intent intent = new Intent(StartActivity.this, MainHomeViewActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
     public void onClickSignInButton(View v) {
         Intent intent = new Intent(StartActivity.this, SignInActivity.class);

@@ -15,6 +15,7 @@ import android.widget.Toolbar;
 
 import com.cmput301.w19t06.theundesirablejackals.Activities.AddBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.MyBooksFragment;
@@ -26,6 +27,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
         //toolBar = findViewById(R.id.tool_bar);
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        databaseHelper = new DatabaseHelper(MainHomeViewActivity.this);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -82,6 +87,13 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         //close the drawer layout
                         drawerLayout.closeDrawers();
                         return true;
+                    case R.id.addtn1_logout:
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
+                        databaseHelper.signOut();
+                        startActivity(intent);
+                        finish();
                 }
 
 
