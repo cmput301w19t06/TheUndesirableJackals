@@ -35,62 +35,19 @@
             app:tabPaddingStart="12dp"
             app:tabTextColor="@color/tabTextColor" />
 
-    <android.support.design.widget.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        android:id="@+id/tablayout_id"
-        app:tabTextColor="@color/tabTextColor"
-        app:tabIndicatorColor="@color/tabIndicatorColor"
-        app:tabIndicatorHeight="5dp"
-        app:tabPaddingStart="12dp"
-        app:tabPaddingEnd="12dp"
-        app:tabBackground="@color/tabBackgroundColor"/>
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/tool_bar"
-            android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar"
-            android:background="@color/colorPrimary"/>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout_id"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:tabBackground="@color/tabBackgroundColor"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/tabIndicatorColor"
-            app:tabIndicatorHeight="5dp"
-            app:tabMode="fixed"
-            app:tabPaddingEnd="12dp"
-            app:tabPaddingStart="12dp"
-            app:tabTextColor="@color/tabTextColor" />
         <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewpager_id"
             ></android.support.v4.view.ViewPager>
-        
+
     </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/navigationView"
         android:layout_gravity="start"
-        app:menu="@menu/additional_menu"
-        />
-
-
-
-
-
-
-
+        app:menu="@menu/additional_menu" />
 
 </android.support.v4.widget.DrawerLayout>
