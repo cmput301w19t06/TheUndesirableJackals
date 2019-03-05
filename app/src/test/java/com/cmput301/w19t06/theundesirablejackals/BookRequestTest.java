@@ -1,5 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+import com.cmput301.w19t06.theundesirablejackals.Book.Book;
+import com.cmput301.w19t06.theundesirablejackals.Book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.Book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.Book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.User.UserNotificationList;
+import com.cmput301.w19t06.theundesirablejackals.User.UserNotificationType;
+
 import org.junit.Before;
 import org.junit.Test;
 
