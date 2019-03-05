@@ -42,6 +42,7 @@
         <activity android:name=".Activities.AddBookActivity"/>
         <activity android:name=".Activities.PersonalProfileActivity"/>
         <activity android:name=".Activities.OthersProfileActivity"/>
+        <activity android:name=".Activities.FriendsListActivity"/>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
