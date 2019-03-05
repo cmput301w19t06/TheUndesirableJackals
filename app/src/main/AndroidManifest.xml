@@ -43,6 +43,7 @@
         <activity android:name=".Activities.AddBookActivity"/>
         <activity android:name=".Activities.PersonalProfileActivity"/>
         <activity android:name=".Activities.OthersProfileActivity"/>
+        <activity android:name=".Activities.FriendsListActivity"/>
         <activity android:name=".activities.SignInActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.MainHomeViewActivity" />
