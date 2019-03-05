@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Activities;
 
 //import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.Database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.MainHomeViewActivity;
+import com.cmput301.w19t06.theundesirablejackals.R;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 import com.firebase.ui.auth.AuthUI;
 //import com.firebase.ui.auth.IdpResponse;

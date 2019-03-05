@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentListTitle = new ArrayList<String>();
 
-    ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

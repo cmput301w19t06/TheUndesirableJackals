@@ -28,17 +28,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".StartActivity">
+        <activity android:name=".Activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".Activities.SignInActivity" />
         <activity android:name=".MainActivity"/>
         <activity android:name=".MainHomeViewActivity" />
-        <activity android:name=".BarcodeDetect" />
+        <activity android:name=".Activities.BarcodeDetectActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

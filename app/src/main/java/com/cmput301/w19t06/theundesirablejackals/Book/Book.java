@@ -1,6 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.Book;
 
-import com.cmput301.w19t06.theundesirablejackals.Image;
+import com.cmput301.w19t06.theundesirablejackals.Classes.Image;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 
 import java.io.Serializable;

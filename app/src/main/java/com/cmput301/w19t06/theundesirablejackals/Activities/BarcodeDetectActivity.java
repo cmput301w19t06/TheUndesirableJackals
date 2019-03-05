@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BarcodeDetect extends AppCompatActivity implements View.OnClickListener{
+public class BarcodeDetectActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseVisionBarcodeDetectorOptions options;
     private static final int IMAGE_CAPTURE = 301;
     public static final int REQUEST_BARCODE = 300;
@@ -59,7 +60,7 @@ public class BarcodeDetect extends AppCompatActivity implements View.OnClickList
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        takePictureIntent.resolveType(BarcodeDetect.this);
+//        takePictureIntent.resolveType(BarcodeDetectActivity.this);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;

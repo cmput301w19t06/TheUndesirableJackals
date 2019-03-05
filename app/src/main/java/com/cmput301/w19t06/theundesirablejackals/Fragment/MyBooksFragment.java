@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Fragment;
 
 
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.cmput301.w19t06.theundesirablejackals.R;
 
 /*
 * Created by Mohamed on 21/02/2019

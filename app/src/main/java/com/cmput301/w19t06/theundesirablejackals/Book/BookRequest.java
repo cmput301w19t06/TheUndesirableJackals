@@ -1,7 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.Book;
 
-import com.cmput301.w19t06.theundesirablejackals.Geolocation;
-import com.cmput301.w19t06.theundesirablejackals.Scanner;
+import com.cmput301.w19t06.theundesirablejackals.Classes.Geolocation;
+//import com.cmput301.w19t06.theundesirablejackals.Scanner;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 
 public class BookRequest {
@@ -9,7 +9,7 @@ public class BookRequest {
     private BookRequestStatus currentStatus;
     private User borrower;
     private Geolocation pickuplocation;
-    private Scanner scanner;
+//    private Scanner scanner;
 
     public BookRequest(User borrower, Book bookRequested) {
         this.bookRequested = bookRequested;

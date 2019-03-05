@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 
@@ -46,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signupBtn(View view){
-        Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, SignupActivity.class);
+//        startActivity(intent);
+        Toast toast = new Toast(this);
+        toast.setText("Sign up Button");
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
     }
 }

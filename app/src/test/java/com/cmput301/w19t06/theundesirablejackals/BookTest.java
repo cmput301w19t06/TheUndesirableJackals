@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals;
 import com.cmput301.w19t06.theundesirablejackals.Book.Book;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookGenres;
 import com.cmput301.w19t06.theundesirablejackals.Book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.Classes.Image;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 
 import org.junit.Before;

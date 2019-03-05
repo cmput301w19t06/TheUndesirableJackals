@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Activities;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -6,6 +6,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.AddBookCameraFragment;
+import com.cmput301.w19t06.theundesirablejackals.AddBookManualFragment;
+import com.cmput301.w19t06.theundesirablejackals.MainHomeViewActivity;
+import com.cmput301.w19t06.theundesirablejackals.R;
 
 /*
  * Created by Kaya on 02/02/2019

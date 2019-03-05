@@ -2,7 +2,6 @@ package com.cmput301.w19t06.theundesirablejackals;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,7 +13,11 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.Activities.AddBookActivity;
+import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.BorrowedFragment;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.LibraryFragment;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.MyBooksFragment;
 
 public class MainHomeViewActivity extends AppCompatActivity {
     private TabLayout tabLayout;
