@@ -27,7 +27,6 @@ public class UserNotification {
                 notificationMessage = "A book request has been updated";
                 break;
         }
-
         this.type = type;
         this.reciever = reciever;
     }

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">TheUndesirableJackals</string>
     <string name="tv_signup_login_info">Login Information</string>
     <string name="tv_signup_contact_info">Contact Information</string>
     <string name="btn_signup_signup_text">Sign up</string>
+    <string name="app_name">BookBook</string>
     <string name="user_name">User name:</string>
     <string name="password">Password:</string>
     <string name="login">Login</string>

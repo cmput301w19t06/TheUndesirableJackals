@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cmput301.w19t06.theundesirablejackals">
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -35,6 +34,7 @@
             android:noHistory="false"/>
         <activity android:name=".SignupActivity"></activity>
         <activity android:name=".MainActivity">
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +52,9 @@
             android:parentActivityName=".LoginActivity"/>
 
         <activity android:name=".MainHomeViewActivity"/>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainHomeViewActivity" />
         <activity android:name=".BarcodeDetect" />
         <activity android:name=".MainActivity">
             <intent-filter>

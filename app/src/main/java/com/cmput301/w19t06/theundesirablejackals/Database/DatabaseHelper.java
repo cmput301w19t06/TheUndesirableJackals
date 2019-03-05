@@ -1,21 +1,14 @@
 package com.cmput301.w19t06.theundesirablejackals.Database;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.cmput301.w19t06.theundesirablejackals.Book.Book;
-import com.cmput301.w19t06.theundesirablejackals.Book.BookList;
-import com.cmput301.w19t06.theundesirablejackals.LoginActivity;
-import com.cmput301.w19t06.theundesirablejackals.SignInActivity;
 import com.cmput301.w19t06.theundesirablejackals.User.User;
 import com.cmput301.w19t06.theundesirablejackals.User.UserInformation;
-import com.cmput301.w19t06.theundesirablejackals.User.UserList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -129,7 +122,6 @@ public class DatabaseHelper{
 
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.d(TAG, "isRegistered ERROR HAPPENED");
@@ -172,21 +164,23 @@ public class DatabaseHelper{
     }
 
 
-    public void getUserFromDatabase(UserInformation userInfo, final UserCallback myCallback){
-
-        usersReference.child(userInfo.getUserName())
+    public void getUserFromDatabase(String username, final UserCallback onCallback){
+        usersReference
+                .child(PATH_USERS)
+                .child(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                myCallback.onCallback(user);
-            }
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        onCallback.onCallback(user);
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(TAG, "Failed to retrieve User object from getCurrentUser().");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
     }
 
     public void getUserInfoFromDatabase(final UserInformationCallback callback){
