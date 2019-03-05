@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals;
+package com.cmput301.w19t06.theundesirablejackals.Activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -18,6 +18,7 @@ import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.Fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class MainHomeViewActivity extends AppCompatActivity {
     private TabLayout tabLayout;

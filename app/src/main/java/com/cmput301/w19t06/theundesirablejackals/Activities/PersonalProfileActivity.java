@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.cmput301.w19t06.theundesirablejackals.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class PersonalProfileActivity extends AppCompatActivity {

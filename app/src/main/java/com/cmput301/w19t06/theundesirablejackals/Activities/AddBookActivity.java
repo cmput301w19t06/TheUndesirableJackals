@@ -10,7 +10,6 @@ import android.view.View;
 import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.AddBookCameraFragment;
 import com.cmput301.w19t06.theundesirablejackals.AddBookManualFragment;
-import com.cmput301.w19t06.theundesirablejackals.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 /*
