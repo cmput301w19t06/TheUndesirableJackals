@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "332025387286-j4u35bpjqoh9u0438k0215ppfdqmbu9r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cmput301.w19t06.theundesirablejackals",
+            "certificate_hash": "c1fc02eda9ee78fffdb1fd34c25a1ed6f9fe6f30"
+          }
+        },
+        {
           "client_id": "332025387286-ce2dplgovac6u7matldsie974uvmq5jr.apps.googleusercontent.com",
           "client_type": 3
         }
