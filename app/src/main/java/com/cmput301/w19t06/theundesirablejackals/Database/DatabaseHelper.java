@@ -135,9 +135,6 @@ public class DatabaseHelper{
         this.context = context;
     }
 
-
-
-
     public boolean isUserLoggedin() {
         return currentUser != null;
     }
@@ -254,8 +251,6 @@ public class DatabaseHelper{
             }
         });
 
-
-
     }
 
     private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
@@ -285,6 +280,8 @@ public class DatabaseHelper{
                     }
                 });
     }
+
+
 
     public static DatabaseHelper getInstance(Context context) {
         return new DatabaseHelper(context);
