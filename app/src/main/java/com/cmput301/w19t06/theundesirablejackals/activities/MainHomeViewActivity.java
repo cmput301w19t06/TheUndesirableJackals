@@ -87,10 +87,12 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.addtnl_friends:
                         //highlight the selected item/tab
                         menuItem.setChecked(true);
-                        displayMessage("Friends selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
+                        Intent intent2 = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
+                        startActivity(intent2);
                         return true;
+
                     case R.id.addtn1_logout:
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
