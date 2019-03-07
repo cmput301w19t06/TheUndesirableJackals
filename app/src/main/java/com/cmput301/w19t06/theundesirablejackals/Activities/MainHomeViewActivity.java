@@ -51,9 +51,14 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.addtnl_profile:
                         //highlight the selected item/tab
                         menuItem.setChecked(true);
-                        displayMessage("Profile selected....");
+
                         //close the drawer layout
                         drawerLayout.closeDrawers();
+
+                        // go to "PersonalProfileActivity"
+                        Intent intent_profile = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
+                        startActivity(intent_profile);
+
                         return true;
 
                     case R.id.addtnl_notification:
