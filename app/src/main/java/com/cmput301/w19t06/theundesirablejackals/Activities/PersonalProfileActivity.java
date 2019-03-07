@@ -60,20 +60,5 @@ public class PersonalProfileActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
-
-
-    private void getUser() {
-        databaseHelper.getUserFromDatabase("felipe", new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                User u = user;
-                UserInformation info = u.getUserinfo();
-            }
-        });
-    }
 }
 
