@@ -136,7 +136,7 @@ public class DatabaseHelper{
     }
 
     public boolean isUserLoggedin() {
-        return currentUser == firebaseAuth.getCurrentUser();
+        return currentUser != null;
     }
 
     public void signOut() {
