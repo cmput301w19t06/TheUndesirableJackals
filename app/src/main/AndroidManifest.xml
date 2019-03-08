@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cmput301.w19t06.theundesirablejackals">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -36,11 +37,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.SignInActivity" />
-        <activity android:name=".Activities.MainActivity"/>
+        <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.MainHomeViewActivity" />
         <activity android:name=".Activities.BarcodeDetectActivity" />
-        <activity android:name=".Activities.AddBookActivity"/>
+        <activity android:name=".Activities.AddBookActivity" />
+
         <activity android:name=".Activities.PersonalProfileActivity"/>
+
+
+        <activity android:name=".Activities.EditContactInfo"></activity>
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -54,6 +60,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
     </application>
 
 </manifest>

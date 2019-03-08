@@ -255,7 +255,7 @@ public class DatabaseHelper{
 
     }
 
-    private void registerUserInfo(Map<String, Object> uidMap, final BooleanCallback onCallback){
+    public void registerUserInfo(Map<String, Object> uidMap, final BooleanCallback onCallback){
         usersReference
                 .updateChildren(uidMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
