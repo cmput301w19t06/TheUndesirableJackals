@@ -104,9 +104,21 @@ public class DatabaseHelper{
     }
 
 
-
+    /**
+     * Get the FirebaseAuth user object that is currently in use
+     * @return FirebaseAuth user object
+     */
     public FirebaseUser getCurrentUser(){return currentUser;}
 
+
+    /**
+     * Check if the current user (getCurrentUser) is registered
+     * in the database as a full user object
+     * @param onCallback the callback that will be used to signal that the asynchronous
+     *                   database search has been completed
+     * @return void, but the callback will return a boolean true if the user is registered
+     *              and false otherwise
+     */
     public void isRegistered(final BooleanCallback onCallback){
         registeredReference
                 .child("uid")
@@ -131,19 +143,44 @@ public class DatabaseHelper{
     }
 
 
+    /**
+     * Set the context for the current databaseHelper object
+     * @param context the context that the database helper should use
+     * @return void
+     */
     public void setContext(Context context) {
         this.context = context;
     }
 
+
+    /**
+     * Check if the user is authenticated as a FirebaseAuth object
+     * @return boolean true if the firebaseAuth object exists (logged in)
+     *          boolean false otherwise
+     */
     public boolean isUserLoggedin() {
         return currentUser != null;
     }
 
+
+    /**
+     * Sign out the current FirebaseAuth user object by calling signOut()
+     * and setting currentUser to null
+     * @return void
+     */
     public void signOut() {
         firebaseAuth.signOut();
-//        context.startActivity(new Intent(context, SignInActivity.class));
+        currentUser = null;
+
     }
 
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
+     * @param  isbn  the string representing a valid book ISBN that google books api can use/search
+     * @param  callback  The callback which is passed in, to be called upon successful data acquisition
+     * @return void
+     */
     public void getBookFromDatabase(String isbn, final BookCallback callback){
         booksReference
                 .child(isbn)
@@ -162,6 +199,12 @@ public class DatabaseHelper{
     }
 
 
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom User object
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     * @return void
+     */
     public void getUserFromDatabase(final UserCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
@@ -180,7 +223,13 @@ public class DatabaseHelper{
                 });
     }
 
-    public void getUserInfoFromDatabase(final UserInformationCallback callback){
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     */
+    public void getUserInfoFromDatabase(final UserInformationCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("userinfo")
@@ -188,17 +237,26 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
-                        callback.onCallback(userInfo);
+                        onCallback.onCallback(userInfo);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
                         Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
                         Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
 
+
+
+    /**
+     * Goes to the firebase database and saves (asynchronously) the currentUser's custom User object
+     * @param  user The currentuser's custom User object that is to be written/updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void saveCurrentUser(User user, final BooleanCallback onCallback){
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put(currentUser.getUid(), user);
@@ -218,6 +276,13 @@ public class DatabaseHelper{
 
     }
 
+
+    /**
+     * Goes to the firebase database to register and save (asynchronously) the currentUser's custom User object
+     * @param  user The currentuser's custom User object that is to be written in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void registerUser(final User user, final BooleanCallback onCallback){
         Map<String, Object> uidMap = new HashMap<>();
         Map<String, Object> tempMap = new HashMap<>();
@@ -255,6 +320,13 @@ public class DatabaseHelper{
 
     }
 
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
@@ -288,6 +360,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void updateRegisteredUserInfo(UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
@@ -310,6 +389,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to register (asynchronously) the currentUser's unique UID
+     * @param  uidMap The mapping between the unique UID and the data it needs to contain in the Database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
         registeredReference
                 .child("uid")
@@ -324,6 +410,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to register (asynchronously) the currentUser's unique Username
+     * @param  usernameMap The mapping between the unique Username and the data it needs to contain in the Database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void registerUsername(Map<String, Object> usernameMap, final BooleanCallback onCallback){
         registeredReference
                 .child("username")
@@ -340,6 +433,11 @@ public class DatabaseHelper{
 
 
 
+    /**
+     * Gets a new database helper in Context context
+     * @param  context The context with which to create the new databaseHelper
+     * @return DatabaseHelper returns a new database helper object using Context context
+     */
     public static DatabaseHelper getInstance(Context context) {
         return new DatabaseHelper(context);
     }
