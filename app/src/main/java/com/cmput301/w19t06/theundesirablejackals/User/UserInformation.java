@@ -8,6 +8,10 @@ public class UserInformation implements Serializable {
     private String email;
     private String phoneNumber;
 
+    public UserInformation() {
+
+    }
+
     public UserInformation(String userName, String email, String phoneNumber) {
         this.email = email;
         this.phoneNumber = phoneNumber;

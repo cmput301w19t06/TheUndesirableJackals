@@ -42,20 +42,27 @@ public class PersonalProfileActivity extends AppCompatActivity {
         databaseHelper.getUserInfoFromDatabase(new UserInformationCallback() {
             @Override
             public void onCallback(UserInformation userInformation) {
-                // retrieve user's info
-                String userName = userInformation.getUserName();
-                String email = userInformation.getEmail();
-                String phone = userInformation.getPhoneNumber();
+                if (userInformation == null){
+                    String n = "null";
+                    TextView userNameView = findViewById(R.id.textView8);
+                    userNameView.setText(n);
+                } else {
+                    // retrieve user's info
+                    String userName = userInformation.getUserName();
+                    String email = userInformation.getEmail();
+                    String phone = userInformation.getPhoneNumber();
 
-                // display the info
-                TextView userNameView = findViewById(R.id.textView8);
-                userNameView.setText(userName);
+                    // display the info
+                    TextView userNameView = findViewById(R.id.textView8);
+                    userNameView.setText(userName);
 
-                TextView emailView = findViewById(R.id.textView12);
-                emailView.setText(email);
+                    TextView emailView = findViewById(R.id.textView12);
+                    emailView.setText(email);
 
-                TextView phoneView = findViewById(R.id.textView14);
-                phoneView.setText(phone);
+                    TextView phoneView = findViewById(R.id.textView14);
+                    phoneView.setText(phone);
+                }
+
             }
         });
 

@@ -18,6 +18,10 @@ public class Book implements Serializable {
     private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
 
+    public Book(){
+
+    }
+
     public Book(String title, String author, String isbn, User owner) {
         // status is set to "available" as default
         // images is set to null as default

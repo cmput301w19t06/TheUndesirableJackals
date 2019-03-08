@@ -181,8 +181,10 @@ public class DatabaseHelper{
     }
 
     public void getUserInfoFromDatabase(final UserInformationCallback callback){
-        registeredReference.child("uid").child(currentUser.getUid())
-                .addValueEventListener(new ValueEventListener() {
+        registeredReference.
+                child("uid")
+                .child(currentUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);

@@ -9,6 +9,10 @@ public class UserNotification {
     private Boolean seen;
     private Date date;
 
+    public UserNotification() {
+
+    }
+
     public UserNotification(UserNotificationType type, User reciever) {
         switch (type) {
             case FRIEND_REQUEST:

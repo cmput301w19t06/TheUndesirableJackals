@@ -27,6 +27,10 @@ public class User implements Serializable {
 
     private UserList friends;
 
+    public User() {
+
+    }
+
     public User(String userName, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
