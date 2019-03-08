@@ -161,10 +161,10 @@ public class DatabaseHelper{
     }
 
 
-    public void getUserFromDatabase(String username, final UserCallback onCallback){
-        usersReference
-                .child(PATH_USERS)
-                .child(username)
+    public void getUserFromDatabase(final UserCallback onCallback){
+        registeredReference
+                .child("uid")
+                .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -180,10 +180,9 @@ public class DatabaseHelper{
                 });
     }
 
-    public void getUserInfoFromDatabase(final UserInformationCallback callback){
-        registeredReference.
-                child("uid")
-                .child(currentUser.getUid())
+    public void getUserInfoFromDatabase(String userName, final UserInformationCallback callback){
+        usersReference
+                .child(userName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -201,8 +200,9 @@ public class DatabaseHelper{
 
     public void saveCurrentUser(User user, final BooleanCallback onCallback){
         HashMap<String, Object> userMap = new HashMap<>();
-        userMap.put(user.getUserinfo().getUserName(), user);
-        usersReference
+        userMap.put(currentUser.getUid(), user);
+        registeredReference
+                .child("uid")
                 .updateChildren(userMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -222,7 +222,7 @@ public class DatabaseHelper{
         Map<String, Object> uidMap = new HashMap<>();
         Map<String, Object> tempMap = new HashMap<>();
         uidMap.put(
-                currentUser.getUid(),
+                user.getUserinfo().getUserName(),
                 user.getUserinfo());
 
         tempMap.put(
@@ -230,7 +230,7 @@ public class DatabaseHelper{
                 user.getUserinfo().getPhoneNumber());
         final Map<String, Object> usernameMap = new HashMap<>(tempMap);
 
-        registerUID(uidMap, new BooleanCallback() {
+        registerUserInfo(uidMap, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
                 if(bool){
@@ -255,9 +255,8 @@ public class DatabaseHelper{
 
     }
 
-    private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
-        registeredReference
-                .child("uid")
+    private void registerUserInfo(Map<String, Object> uidMap, final BooleanCallback onCallback){
+        usersReference
                 .updateChildren(uidMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

@@ -29,6 +29,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         // display personal information on the activity
         displayInfo();
+        //getUser();
 
         editProfilebtn = (Button) findViewById(R.id.profileEditBtn_id);
     }
@@ -39,7 +40,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     }
 
     public void displayInfo() {
-        databaseHelper.getUserInfoFromDatabase(new UserInformationCallback() {
+        databaseHelper.getUserInfoFromDatabase("felipe", new UserInformationCallback() {
             @Override
             public void onCallback(UserInformation userInformation) {
                 if (userInformation == null){
@@ -66,6 +67,36 @@ public class PersonalProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void getUser () {
+        databaseHelper.getUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                if (user == null){
+                    String n = "null";
+                    TextView userNameView = findViewById(R.id.textView8);
+                    userNameView.setText(n);
+                } else {
+                    // retrieve user's info
+                    UserInformation userInformation = user.getUserinfo();
+                    String userName = userInformation.getUserName();
+                    String email = userInformation.getEmail();
+                    String phone = userInformation.getPhoneNumber();
+
+                    // display the info
+                    TextView userNameView = findViewById(R.id.textView8);
+                    userNameView.setText(userName);
+
+                    TextView emailView = findViewById(R.id.textView12);
+                    emailView.setText(email);
+
+                    TextView phoneView = findViewById(R.id.textView14);
+                    phoneView.setText(phone);
+                }
+
+            }
+        });
     }
 }
 
