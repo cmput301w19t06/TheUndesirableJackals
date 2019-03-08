@@ -25,7 +25,6 @@ import java.util.Map;
 public class DatabaseHelper{
     // database path to users
     private final static String TAG = "DatabaseHelper";
-    private final static String INFO_DUMP_FLAG = "INFO_DUMP";
 
     private final static String PATH_USERS = "users";
     private final static String PATH_BOOKS = "books";
@@ -40,8 +39,6 @@ public class DatabaseHelper{
     private DatabaseReference favouriteReference;
     private FirebaseUser currentUser;
 
-    private Context context;
-    private Gson gson;
 
 
 
@@ -51,10 +48,8 @@ public class DatabaseHelper{
     /**
      * Constructor for database helper, Requires that the user is already
      * authenticated to firebase in the calling activity
-     * @param context the running context that called DatabaseHelper
-     * @return new object DatabaseHelper
      */
-    public DatabaseHelper(Context context) {
+    public DatabaseHelper() {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.currentUser = firebaseAuth.getCurrentUser();
 
@@ -63,10 +58,6 @@ public class DatabaseHelper{
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
-
-        this.gson = new Gson();
-
-        this.context = context;
 
     }
 
@@ -116,8 +107,6 @@ public class DatabaseHelper{
      * in the database as a full user object
      * @param onCallback the callback that will be used to signal that the asynchronous
      *                   database search has been completed
-     * @return void, but the callback will return a boolean true if the user is registered
-     *              and false otherwise
      */
     public void isRegistered(final BooleanCallback onCallback){
         registeredReference
@@ -144,16 +133,6 @@ public class DatabaseHelper{
 
 
     /**
-     * Set the context for the current databaseHelper object
-     * @param context the context that the database helper should use
-     * @return void
-     */
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-
-    /**
      * Check if the user is authenticated as a FirebaseAuth object
      * @return boolean true if the firebaseAuth object exists (logged in)
      *          boolean false otherwise
@@ -166,7 +145,6 @@ public class DatabaseHelper{
     /**
      * Sign out the current FirebaseAuth user object by calling signOut()
      * and setting currentUser to null
-     * @return void
      */
     public void signOut() {
         firebaseAuth.signOut();
@@ -179,7 +157,6 @@ public class DatabaseHelper{
      * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
      * @param  isbn  the string representing a valid book ISBN that google books api can use/search
      * @param  callback  The callback which is passed in, to be called upon successful data acquisition
-     * @return void
      */
     public void getBookFromDatabase(String isbn, final BookCallback callback){
         booksReference
@@ -203,7 +180,6 @@ public class DatabaseHelper{
      * Goes to the firebase database and fetches (asynchronously) the currentUser custom User object
      * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
      *                     used to pass data back to calling activity/fragment/class
-     * @return void
      */
     public void getUserFromDatabase(final UserCallback onCallback){
         usersReference
@@ -229,10 +205,37 @@ public class DatabaseHelper{
      * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
      *                     used to pass data back to calling activity/fragment/class
      */
-    public void getUserInfoFromDatabase(final UserInformationCallback onCallback){
+    public void getCurrentUserInfoFromDatabase(final UserInformationCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("userinfo")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
+                        onCallback.onCallback(userInfo);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
+                        Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
+     * @param username The username to use when searching for specific user info
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     */
+    public void getUserInfoFromDatabase(String username, final UserInformationCallback onCallback){
+        registeredReference
+                .child("username")
+                .child(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -267,7 +270,6 @@ public class DatabaseHelper{
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             onCallback.onCallback(true);
-                                            //TODO
                                         }else{
                                             onCallback.onCallback(false);
                                         }
@@ -292,7 +294,7 @@ public class DatabaseHelper{
 
         tempMap.put(
                 user.getUserinfo().getUserName(),
-                user.getUserinfo().getPhoneNumber());
+                user.getUserinfo());
         final Map<String, Object> usernameMap = new HashMap<>(tempMap);
 
         registerUID(uidMap, new BooleanCallback() {
@@ -354,7 +356,7 @@ public class DatabaseHelper{
                         }else{
                             onCallback.onCallback(false);
                             Log.d(TAG, "Something went wrong updating user info");
-                            Log.e(TAG, task.getException().toString());
+
                         }
                     }
                 });
@@ -371,7 +373,7 @@ public class DatabaseHelper{
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
                 userInfo.getUserName(),
-                userInfo.getPhoneNumber());
+                userInfo);
         registeredReference
                 .child("username")
                 .updateChildren(userInfoMap)
@@ -383,7 +385,9 @@ public class DatabaseHelper{
                         }else{
                             onCallback.onCallback(false);
                             Log.d(TAG, "Something went wrong updating registered user info");
-                            Log.e(TAG, task.getException().toString());
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
                         }
                     }
                 });
@@ -433,14 +437,6 @@ public class DatabaseHelper{
 
 
 
-    /**
-     * Gets a new database helper in Context context
-     * @param  context The context with which to create the new databaseHelper
-     * @return DatabaseHelper returns a new database helper object using Context context
-     */
-    public static DatabaseHelper getInstance(Context context) {
-        return new DatabaseHelper(context);
-    }
 
 //    public void createAccount(final String username, String password, final String email, final String phonenumber) {
 //        firebaseAuth.createUserWithEmailAndPassword(email, password)
