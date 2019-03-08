@@ -11,8 +11,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -30,6 +33,8 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private DatabaseHelper databaseHelper;
+    private SearchView searchView;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +44,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //enable home button on the app i.e it adds home button to the app
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -126,6 +130,15 @@ public class MainHomeViewActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    // display the search icon on the app
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+
+        return true;
     }
 
     //Check if the additional menu tabs are clickable
