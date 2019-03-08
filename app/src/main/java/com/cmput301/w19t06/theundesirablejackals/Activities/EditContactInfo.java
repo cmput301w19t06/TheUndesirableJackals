@@ -29,6 +29,14 @@ public class EditContactInfo extends AppCompatActivity {
         setContentView(R.layout.activity_edit_contact_info);
 
         databaseHelper = new DatabaseHelper(this);
+        databaseHelper.getUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                ((EditText) findViewById(R.id.editText)).setText(user.getUserinfo().getEmail());
+                ((EditText) findViewById(R.id.editText3)).setText(user.getUserinfo().getPhoneNumber());
+//                updateUser(user);
+            }
+        });
         submit = (Button) findViewById(R.id.submit);
         cancel = (Button) findViewById(R.id.cancel);
 
@@ -39,8 +47,8 @@ public class EditContactInfo extends AppCompatActivity {
                 // updates user
                 getUser();
                 // return to "PersonalProfileActivity
-                Intent intent = new Intent(view.getContext(), MainHomeViewActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(view.getContext(), MainHomeViewActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -49,8 +57,7 @@ public class EditContactInfo extends AppCompatActivity {
 
             public void onClick(View view) {
                 // return to "PersonalProfileActivity
-                Intent intent = new Intent(view.getContext(), MainHomeViewActivity.class);
-                startActivity(intent);
+                startMainHomeView();
             }
         });
     }
@@ -59,6 +66,8 @@ public class EditContactInfo extends AppCompatActivity {
         databaseHelper.getUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
+//                ((EditText) findViewById(R.id.editText)).setText(user.getUserinfo().getEmail());
+//                ((EditText) findViewById(R.id.editText3)).setText(user.getUserinfo().getPhoneNumber());
                 updateUser(user);
             }
         });
@@ -68,12 +77,12 @@ public class EditContactInfo extends AppCompatActivity {
         UserInformation userInfo = user.getUserinfo();
 
         // retrieve new email
-        EditText email = (EditText) findViewById(R.id.editText);
-        String newEmail = email.getText().toString();
-
-        if (!newEmail.isEmpty()) {
-            userInfo.setEmail(newEmail);
-        }
+//        EditText email = (EditText) findViewById(R.id.editText);
+//        String newEmail = email.getText().toString();
+//
+//        if (!newEmail.isEmpty()) {
+//            userInfo.setEmail(newEmail);
+//        }
 
         // retrieve new phone
         EditText phone = (EditText) findViewById(R.id.editText3);
@@ -84,13 +93,12 @@ public class EditContactInfo extends AppCompatActivity {
         }
 
         // updates userInfo on branch "users" on Firebase
-        Map<String, Object> uidMap = new HashMap<>();
-        uidMap.put(
-                user.getUserinfo().getUserName(),
-                user.getUserinfo());
-        databaseHelper.registerUserInfo(uidMap, new BooleanCallback() {
+        databaseHelper.updateUserInfo(userInfo, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
+                if(bool){
+                    startMainHomeView();
+                }
             }
         });
 
@@ -100,5 +108,10 @@ public class EditContactInfo extends AppCompatActivity {
             public void onCallback(boolean bool) {
             }
         });
+    }
+
+    public void startMainHomeView(){
+        Intent intent = new Intent(this, MainHomeViewActivity.class);
+        startActivity(intent);
     }
 }
