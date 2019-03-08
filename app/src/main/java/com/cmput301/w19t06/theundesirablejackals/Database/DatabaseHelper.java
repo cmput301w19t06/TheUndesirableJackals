@@ -136,7 +136,7 @@ public class DatabaseHelper{
     }
 
     public boolean isUserLoggedin() {
-        return currentUser != null;
+        return currentUser == firebaseAuth.getCurrentUser();
     }
 
     public void signOut() {
@@ -145,26 +145,26 @@ public class DatabaseHelper{
     }
 
     public void getBookFromDatabase(String isbn, final BookCallback callback){
-        booksReference.child(isbn)
+        booksReference
+                .child(isbn)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Book book = dataSnapshot.getValue(Book.class);
-                callback.onCallback(book);
-            }
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Book book = dataSnapshot.getValue(Book.class);
+                    callback.onCallback(book);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
     }
 
 
-    public void getUserFromDatabase(String username, final UserCallback onCallback){
+    public void getUserFromDatabase(final UserCallback onCallback){
         usersReference
-                .child(PATH_USERS)
-                .child(username)
+                .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -181,7 +181,9 @@ public class DatabaseHelper{
     }
 
     public void getUserInfoFromDatabase(final UserInformationCallback callback){
-        registeredReference.child(currentUser.getUid())
+        usersReference
+                .child(currentUser.getUid())
+                .child("userinfo")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -199,20 +201,20 @@ public class DatabaseHelper{
 
     public void saveCurrentUser(User user, final BooleanCallback onCallback){
         HashMap<String, Object> userMap = new HashMap<>();
-        userMap.put(user.getUserinfo().getUserName(), user);
+        userMap.put(currentUser.getUid(), user);
         usersReference
                 .updateChildren(userMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    onCallback.onCallback(true);
-                    //TODO
-                }else{
-                    onCallback.onCallback(false);
-                }
-            }
-        });
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            onCallback.onCallback(true);
+                                            //TODO
+                                        }else{
+                                            onCallback.onCallback(false);
+                                        }
+                                    }
+                                });
 
     }
 
@@ -221,7 +223,7 @@ public class DatabaseHelper{
         Map<String, Object> tempMap = new HashMap<>();
         uidMap.put(
                 currentUser.getUid(),
-                user.getUserinfo());
+                user.getUserinfo().getUserName());
 
         tempMap.put(
                 user.getUserinfo().getUserName(),
@@ -251,6 +253,61 @@ public class DatabaseHelper{
             }
         });
 
+    }
+
+    public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
+        Map<String, Object> userInfoMap = new HashMap<>();
+        userInfoMap.put(
+                "userinfo",
+                userInfo);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(userInfoMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            updateRegisteredUserInfo(userInfo, new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        onCallback.onCallback(true);
+                                    }else {
+                                        onCallback.onCallback(false);
+
+                                    }
+                                }
+                            });
+
+                        }else{
+                            onCallback.onCallback(false);
+                            Log.d(TAG, "Something went wrong updating user info");
+                            Log.e(TAG, task.getException().toString());
+                        }
+                    }
+                });
+    }
+
+    private void updateRegisteredUserInfo(UserInformation userInfo, final BooleanCallback onCallback){
+        Map<String, Object> userInfoMap = new HashMap<>();
+        userInfoMap.put(
+                userInfo.getUserName(),
+                userInfo.getPhoneNumber());
+        registeredReference
+                .child("username")
+                .updateChildren(userInfoMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                            Log.d(TAG, "Something went wrong updating registered user info");
+                            Log.e(TAG, task.getException().toString());
+                        }
+                    }
+                });
     }
 
     private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){

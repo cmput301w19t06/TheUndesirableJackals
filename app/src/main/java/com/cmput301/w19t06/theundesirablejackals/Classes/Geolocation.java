@@ -4,6 +4,10 @@ public class Geolocation {
     private Double longitude;
     private Double latitude;
 
+    public Geolocation() {
+
+    }
+
     public Geolocation(Double latitude, Double longitude) {}
 
     public Double getLongitude() {

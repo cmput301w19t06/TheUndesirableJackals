@@ -11,6 +11,10 @@ public class BookRequest {
     private Geolocation pickuplocation;
 //    private Scanner scanner;
 
+    public BookRequest() {
+
+    }
+
     public BookRequest(User borrower, Book bookRequested) {
         this.bookRequested = bookRequested;
         this.currentStatus = BookRequestStatus.PENDING;
