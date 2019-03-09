@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.Image;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
@@ -17,6 +18,7 @@ public class Book implements Serializable {
     private User owner;
     private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
+    private Geolocation pickUpLocation;
 
     public Book(){
 
@@ -32,6 +34,9 @@ public class Book implements Serializable {
         this.status = BookStatus.AVAILABLE;
         this.owner = owner;
         this.images = new ArrayList<Image>();
+
+        // pick up location as default at the U of A
+        this.pickUpLocation = new Geolocation(53.5232, 113.5263);
 
         // adds itself to the owner's owned books
         BookList ownedBooks = owner.getOwnedBooks();
@@ -60,6 +65,10 @@ public class Book implements Serializable {
 
     public ArrayList<Image> getImages() {
         return images;
+    }
+
+    public Geolocation getPickUpLocation() {
+        return pickUpLocation;
     }
 
     public void setTitle(String newTitle) {
