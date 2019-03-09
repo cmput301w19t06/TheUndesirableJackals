@@ -48,12 +48,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (user != null){
                     // CANNOT ACCESS ATTRIBUTE Geolocation
                     // get the instance Geolocation from user
-//                    Geolocation geolocation = user.getPickUpLocation();
+                    Geolocation geolocation = user.getPickUpLocation();
 //
-//                    // get the values
-//                    Double lt = geolocation.getLatitude();
-//                    Double ln = geolocation.getLongitude();
-                    coord = new LatLng(-34, 151); // set to some random location
+                    if (geolocation == null){
+                        // SEEMS TO ALWAYS BE NULL
+                        coord = new LatLng(-34, 151); // set to some random location
+                    } else {
+                        // get the values
+                        Double lt = geolocation.getLatitude();
+                        Double ln = geolocation.getLongitude();
+
+                        coord = new LatLng(lt.intValue(), ln.intValue()); // set to some random location
+                    }
+//
                 } else {
                     coord = new LatLng(-34, 151); // set to some random location
                 }
