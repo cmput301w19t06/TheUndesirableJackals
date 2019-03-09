@@ -1,6 +1,8 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.AddBookCameraFragment;
@@ -16,12 +19,15 @@ import com.cmput301.w19t06.theundesirablejackals.AddBookManualFragment;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /*
  * Created by Kaya on 02/02/2019
  * */
 
 public class AddBookActivity extends AppCompatActivity {
+    public static final int IMAGE_GALLERY_REQUEST = 5;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -63,7 +69,26 @@ public class AddBookActivity extends AppCompatActivity {
 
         photoIntent.setDataAndType(data, "image/*");
 
-        startActivity(photoIntent);
+        startActivityForResult(photoIntent, IMAGE_GALLERY_REQUEST);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
+        if (requestCode==RESULT_OK){
+            if (requestCode==IMAGE_GALLERY_REQUEST){
+                Uri imageUri = data.getData();
+                InputStream inputStream;
+
+                try {
+                    inputStream = getContentResolver().openInputStream(imageUri);
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 }
