@@ -25,6 +25,4 @@ public class Geolocation {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
-
-    public void pickLocation() {}
 }
