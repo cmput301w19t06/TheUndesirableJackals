@@ -73,25 +73,31 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.addtnl_notification:
                         //highlight the selected item/tab
                         menuItem.setChecked(true);
-                        displayMessage("Notifications selected....");
+                        //displayMessage("Notifications selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
+                        Intent intent3 = new Intent(MainHomeViewActivity.this, NotifcationActivity.class);
+                        startActivity(intent3);
                         return true;
 
                     case R.id.addtnl_borrowRqst:
                         //highlight the selected item/tab
                         menuItem.setChecked(true);
-                        displayMessage("Borrow Requests selected....");
+                        //displayMessage("Borrow Requests selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
+                        Intent intent4 = new Intent(MainHomeViewActivity.this, BorrowedListActivty.class);
+                        startActivity(intent4);
                         return true;
 
                     case R.id.addtnl_lendRqst:
                         //highlight the selected item/tab
                         menuItem.setChecked(true);
-                        displayMessage("Lend Requests selected....");
+                        //displayMessage("Lend Requests selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
+                        Intent intent5 = new Intent(MainHomeViewActivity.this, LentListActivity.class);
+                        startActivity(intent5);
                         return true;
 
                     case R.id.addtnl_friends:
