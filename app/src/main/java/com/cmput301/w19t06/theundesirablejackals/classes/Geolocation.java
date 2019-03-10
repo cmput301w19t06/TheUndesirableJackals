@@ -8,7 +8,10 @@ public class Geolocation {
 
     }
 
-    public Geolocation(Double latitude, Double longitude) {}
+    public Geolocation(Double lat, Double lon) {
+        latitude = lat;
+        longitude = lon;
+    }
 
     public Double getLongitude() {
         return longitude;

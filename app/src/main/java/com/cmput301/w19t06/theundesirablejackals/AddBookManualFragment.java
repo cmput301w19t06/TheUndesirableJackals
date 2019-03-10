@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.R;
+
 /*
  * Created by Kaya on 02/02/2019
  * */

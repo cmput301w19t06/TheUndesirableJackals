@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.cmput301.w19t06.theundesirablejackals.activities.R;
 
-import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.User.UserInformation;
+
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.List;
 

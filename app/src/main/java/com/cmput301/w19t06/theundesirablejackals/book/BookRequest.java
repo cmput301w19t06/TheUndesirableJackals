@@ -24,7 +24,7 @@ public class BookRequest {
         bookRequested.setStatus(BookStatus.REQUESTED);
 
         // object adds itself into "lendRequests" of book owner
-        bookRequested.getOwner().addBorrowRequest(this);
+//        bookRequested.getOwner().addBorrowRequest(this);
 
         // object adds itself into "borrowRequests" of sender
         borrower.addLendRequest(this);

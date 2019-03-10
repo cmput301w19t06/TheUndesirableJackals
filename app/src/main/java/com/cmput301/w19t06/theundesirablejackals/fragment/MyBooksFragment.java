@@ -14,7 +14,8 @@ import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MyBooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.user.User;
+//import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.activities.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -76,7 +74,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
             @Override
             public void onCallback(User user) {
                 // retrieve user's info
-                UserInformation userInformation = user.getUserinfo();
+                UserInformation userInformation = user.getUserInfo();
                 String userName = userInformation.getUserName();
                 String email = userInformation.getEmail();
                 String phone = userInformation.getPhoneNumber();
@@ -84,14 +82,14 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 Geolocation b = user.getPickUpLocation();
 
                 // display the info
-                TextView userNameView = findViewById(R.id.textView8);
-                userNameView.setText(userName);
-
-                TextView emailView = findViewById(R.id.textView12);
-                emailView.setText(email);
-
-                TextView phoneView = findViewById(R.id.textView14);
-                phoneView.setText(phone);
+//                TextView userNameView = findViewById(R.id.textView8);
+//                userNameView.setText(userName);
+//
+//                TextView emailView = findViewById(R.id.textView12);
+//                emailView.setText(email);
+//
+//                TextView phoneView = findViewById(R.id.textView14);
+//                phoneView.setText(phone);
             }
         });
     }

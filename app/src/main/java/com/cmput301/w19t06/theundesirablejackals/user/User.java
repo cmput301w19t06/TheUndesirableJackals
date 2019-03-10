@@ -9,12 +9,13 @@ import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable {
-    private UserInformation userinfo;
+public class User {
+    private Geolocation pickUpLocation;
+    private UserInformation userInfo;
     private BookList ownedBooks;
     private BookList borrowedBooks;
     private BookList favouriteBooks;
-    private Geolocation pickUpLocation;
+
 
     // user's requests to borrow books
     private BookRequestList lendRequests;
@@ -34,7 +35,7 @@ public class User implements Serializable {
     public User(String userName, String email, String phoneNumber) {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
-        userinfo = new UserInformation(userName, email, phoneNumber);
+        userInfo = new UserInformation(userName, email, phoneNumber);
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
         favouriteBooks = new BookList();
@@ -47,8 +48,8 @@ public class User implements Serializable {
         pickUpLocation = new Geolocation(53.5232, 113.5263);
     }
 
-    public UserInformation getUserinfo(){
-        return userinfo;
+    public UserInformation getUserInfo(){
+        return userInfo;
     }
 
     public BookList getOwnedBooks() {
@@ -123,7 +124,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "userinfo=" + userinfo +
+                "userInfo=" + userInfo +
                 ", ownedBooks=" + ownedBooks +
                 ", borrowedBooks=" + borrowedBooks +
                 ", favouriteBooks=" + favouriteBooks +

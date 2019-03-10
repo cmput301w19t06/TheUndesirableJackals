@@ -1,6 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals.database;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 
 import java.util.HashMap;
@@ -290,11 +288,11 @@ public class DatabaseHelper{
         Map<String, Object> tempMap = new HashMap<>();
         uidMap.put(
                 currentUser.getUid(),
-                user.getUserinfo().getUserName());
+                user.getUserInfo().getUserName());
 
         tempMap.put(
-                user.getUserinfo().getUserName(),
-                user.getUserinfo());
+                user.getUserInfo().getUserName(),
+                user.getUserInfo());
         final Map<String, Object> usernameMap = new HashMap<>(tempMap);
 
         registerUID(uidMap, new BooleanCallback() {

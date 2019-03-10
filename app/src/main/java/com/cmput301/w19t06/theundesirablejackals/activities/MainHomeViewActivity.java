@@ -7,10 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +46,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        databaseHelper = new DatabaseHelper(MainHomeViewActivity.this);
+        databaseHelper = new DatabaseHelper();
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -78,7 +76,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         //displayMessage("Notifications selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
-                        Intent intent3 = new Intent(MainHomeViewActivity.this, NotifcationActivity.class);
+                        Intent intent3 = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
                         startActivity(intent3);
                         return true;
 
@@ -88,7 +86,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         //displayMessage("Borrow Requests selected....");
                         //close the drawer layout
                         drawerLayout.closeDrawers();
-                        Intent intent4 = new Intent(MainHomeViewActivity.this, BorrowedListActivty.class);
+                        Intent intent4 = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         startActivity(intent4);
                         return true;
 

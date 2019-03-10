@@ -23,11 +23,11 @@ public class EditContactInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact_info);
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper();
         databaseHelper.getUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
-                ((EditText) findViewById(R.id.editText3)).setText(user.getUserinfo().getPhoneNumber());
+                ((EditText) findViewById(R.id.editText3)).setText(user.getUserInfo().getPhoneNumber());
 //                updateUser(user);
             }
         });
@@ -60,15 +60,15 @@ public class EditContactInfo extends AppCompatActivity {
         databaseHelper.getUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
-//                ((EditText) findViewById(R.id.editText)).setText(user.getUserinfo().getEmail());
-//                ((EditText) findViewById(R.id.editText3)).setText(user.getUserinfo().getPhoneNumber());
+//                ((EditText) findViewById(R.id.editText)).setText(user.getUserInfo().getEmail());
+//                ((EditText) findViewById(R.id.editText3)).setText(user.getUserInfo().getPhoneNumber());
                 updateUser(user);
             }
         });
     }
 
     public void updateUser(User user) {
-        UserInformation userInfo = user.getUserinfo();
+        UserInformation userInfo = user.getUserInfo();
         // retrieve new phone
         EditText phone = (EditText) findViewById(R.id.editText3);
         String newPhone = phone.getText().toString();

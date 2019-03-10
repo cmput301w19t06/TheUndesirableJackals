@@ -56,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {
                 //Please get the user's phone number and password now
 //                currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d(TAG, "Sign in complete and good, checking registration");
-                databaseHelper = new DatabaseHelper(this);
+                databaseHelper = new DatabaseHelper();
                 Log.d(TAG, "Created Database helper");
                 databaseHelper.isRegistered(new BooleanCallback() {
                                 @Override

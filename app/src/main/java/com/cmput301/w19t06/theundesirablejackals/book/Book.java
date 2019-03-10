@@ -24,6 +24,25 @@ public class Book implements Serializable {
 
     }
 
+    public Book(String title, String author, String isbn) {
+        // status is set to "available" as default
+        // images is set to null as default
+        // TODO: Images will need to be set to a default image in the future
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.status = BookStatus.AVAILABLE;
+        // this.owner = owner;
+        this.images = new ArrayList<Image>();
+
+        // pick up location as default at the U of A
+        this.pickUpLocation = new Geolocation(53.5232, 113.5263);
+
+        // adds itself to the owner's owned books
+//        BookList ownedBooks = owner.getOwnedBooks();
+//        ownedBooks.addBook(this);
+    }
+
     public Book(String title, String author, String isbn, User owner) {
         // status is set to "available" as default
         // images is set to null as default

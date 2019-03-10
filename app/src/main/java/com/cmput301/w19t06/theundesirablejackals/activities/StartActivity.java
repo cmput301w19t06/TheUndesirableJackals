@@ -24,7 +24,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(StartActivity.this);
+        DatabaseHelper databaseHelper = new DatabaseHelper();
 
         // check if a user is already logged in
         if (databaseHelper.isUserLoggedin()) {

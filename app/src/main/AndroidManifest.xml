@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cmput301.w19t06.theundesirablejackals">
+    package="com.cmput301.w19t06.theundesirablejackals.activities">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -39,25 +39,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.StartActivity">
+        <activity android:name="StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SignInActivity" />
-        <activity android:name=".activities.MainActivity"/>
-        <activity android:name=".activities.MainHomeViewActivity" />
-        <activity android:name=".activities.BarcodeDetectActivity" />
-        <activity android:name=".activities.AddBookActivity"/>
-        <activity android:name=".activities.PersonalProfileActivity"/>
-        <activity android:name=".activities.OthersProfileActivity"/>
-        <activity android:name=".activities.FriendsListActivity"/>
-        <activity android:name=".activities.EditContactInfo" />
-        <activity android:name=".activities.BorrowedListActivty"/>
-        <activity android:name=".activities.LentListActivity"/>
-        <activity android:name=".activities.NotifcationActivity"/>
+        <activity android:name="SignInActivity" />
+        <activity android:name="MainActivity"/>
+        <activity android:name="MainHomeViewActivity" />
+        <activity android:name="BarcodeDetectActivity" />
+        <activity android:name="AddBookActivity"/>
+        <activity android:name="PersonalProfileActivity"/>
+        <activity android:name="OthersProfileActivity"/>
+        <activity android:name="FriendsListActivity"/>
+        <activity android:name="EditContactInfo" />
+        <activity android:name="BorrowedListActivity"/>
+        <activity android:name="LentListActivity"/>
+        <activity android:name="NotificationActivity"/>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -85,7 +85,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.MapsActivity"
+            android:name="MapsActivity"
             android:label="@string/title_activity_maps"/>
     </application>
 
