@@ -1,8 +1,8 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import com.cmput301.w19t06.theundesirablejackals.User.User;
-import com.cmput301.w19t06.theundesirablejackals.User.UserNotification;
-import com.cmput301.w19t06.theundesirablejackals.User.UserNotificationType;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserNotification;
+import com.cmput301.w19t06.theundesirablejackals.user.UserNotificationType;
 
 import org.junit.Test;
 

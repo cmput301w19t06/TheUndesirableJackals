@@ -1,10 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import com.cmput301.w19t06.theundesirablejackals.Book.Book;
-import com.cmput301.w19t06.theundesirablejackals.Book.BookGenres;
-import com.cmput301.w19t06.theundesirablejackals.Book.BookRequest;
-import com.cmput301.w19t06.theundesirablejackals.Book.BookRequestList;
-import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookGenres;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import org.junit.Before;
 import org.junit.Test;
