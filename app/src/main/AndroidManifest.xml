@@ -54,14 +54,7 @@
         <activity android:name=".activities.PersonalProfileActivity"/>
         <activity android:name=".activities.OthersProfileActivity"/>
         <activity android:name=".activities.FriendsListActivity"/>
-        <activity android:name=".activities.SignInActivity" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.MainHomeViewActivity" />
-        <activity android:name=".activities.BarcodeDetectActivity" />
-        <activity android:name=".activities.AddBookActivity" />
-        <activity android:name=".activities.PersonalProfileActivity" />
         <activity android:name=".activities.EditContactInfo" />
-
         <activity android:name=".activities.BorrowedListActivty"/>
         <activity android:name=".activities.LentListActivity"/>
         <activity android:name=".activities.NotifcationActivity"/>
@@ -93,7 +86,7 @@
 
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps"/>
     </application>
 
 </manifest>

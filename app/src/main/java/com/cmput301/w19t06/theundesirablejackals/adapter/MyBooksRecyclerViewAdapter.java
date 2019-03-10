@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals.Adapter;
+package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -65,7 +65,7 @@ public class MyBooksRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksRecy
 
             tv_title = (TextView) itemView.findViewById(R.id.myBooks_book_title);
             tv_author = (TextView) itemView.findViewById(R.id.myBooks_author);
-            tv_isbn = (TextView) itemView.findViewById(R.id.myBooks_isbn;
+            tv_isbn = (TextView) itemView.findViewById(R.id.myBooks_isbn);
             tv_status = (TextView) itemView.findViewById(R.id.myBooks_status);
             img_book = (ImageView) itemView.findViewById(R.id.myBooks_img_book);
         }

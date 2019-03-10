@@ -26,6 +26,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/image_description_book_thumbnail"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

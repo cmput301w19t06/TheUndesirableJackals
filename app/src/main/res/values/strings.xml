@@ -7,8 +7,8 @@
     <string name="hint_password">Password</string>
     <string name="hint_email">Email</string>
     <string name="hint_phone">Phone number</string>
-    <string name="tv_signup_create_new">Create a new account</string>
-    <string name="btn_signup_text">Sign up</string>
+    <string name="tv_sign_up_create_new">Create a new account</string>
+    <string name="btn_sign_up_text">Sign up</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login3">Sign in</string>
     <!-- Strings related to login -->
@@ -31,9 +31,10 @@
     <string name="edit_text_phone_number">Phone Number</string>
     <string name="button_check_available">Register</string>
     <string name="buttonCaptureBarcodePicture">Scan Barcode</string>
-    <string name="editTextISBNField">ISBN</string>
-    <string name="buttonSearchISBN">Search</string>
-    <string name="checking_user_data">Checking User Data...</string>
+    <string name="edit_text_isbn_field">ISBN</string>
+    <string name="button_search_isbn">Search</string>
+    <string name="checking_user_data">Checking User Data#8230</string>
     <string name="button_sign_out">Sign Out</string>
     <string name="title_activity_maps">Map</string>
+    <string name="image_description_book_thumbnail">Book Thumbnail</string>
 </resources>

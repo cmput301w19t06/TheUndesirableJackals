@@ -12,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.cmput301.w19t06.theundesirablejackals.Adapter.MyBooksRecyclerViewAdapter;
-import com.cmput301.w19t06.theundesirablejackals.Book.Book;
-import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.adapter.MyBooksRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,6 @@ public class MyBooksFragment extends Fragment {
         lstBook = new ArrayList<>();
         lstBook.add(new Book("To kill a Mockingbird", "Harper Lee", "9781545704325"));
         lstBook.add(new Book("Hello World", "Franky Johnson", "9781545703452"));
-        lstBook.add(new Book("How to pet a Jackal", "Kaya", "9781545704325");
+        lstBook.add(new Book("How to pet a Jackal", "Kaya", "9781545704325"));
     }
 }
