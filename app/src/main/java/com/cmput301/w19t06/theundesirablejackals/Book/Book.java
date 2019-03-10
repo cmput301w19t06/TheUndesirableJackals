@@ -18,7 +18,7 @@ public class Book implements Serializable {
     private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
 
-    public Book(String title, String author, String isbn, User owner) {
+    public Book(String title, String author, String isbn) {
         // status is set to "available" as default
         // images is set to null as default
         // TODO: Images will need to be set to a default image in the future
@@ -26,7 +26,7 @@ public class Book implements Serializable {
         this.author = author;
         this.isbn = isbn;
         this.status = BookStatus.AVAILABLE;
-        this.owner = owner;
+       // this.owner = owner;
         this.images = new ArrayList<Image>();
 
         // adds itself to the owner's owned books
@@ -50,9 +50,9 @@ public class Book implements Serializable {
         return status;
     }
 
-    public User getOwner() {
-        return owner;
-    }
+//    public User getOwner() {
+//        return owner;
+//    }
 
     public ArrayList<Image> getImages() {
         return images;
