@@ -30,7 +30,7 @@ public class Book implements Serializable {
         this.author = author;
         this.isbn = isbn;
         this.status = BookStatus.AVAILABLE;
-        this.owner = owner;
+       // this.owner = owner;
         this.images = new ArrayList<Image>();
 
         // adds itself to the owner's owned books
@@ -54,9 +54,9 @@ public class Book implements Serializable {
         return status;
     }
 
-    public User getOwner() {
-        return owner;
-    }
+//    public User getOwner() {
+//        return owner;
+//    }
 
     public ArrayList<Image> getImages() {
         return images;

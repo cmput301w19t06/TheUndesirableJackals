@@ -138,7 +138,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
     }
 
-    // display the search icon on the app
+    // display the search icon on the app bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 

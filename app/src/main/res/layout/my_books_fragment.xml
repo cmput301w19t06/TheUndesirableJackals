@@ -6,17 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Books Fragment"
-        android:textSize="20dp"
-        />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/myBooks_recyclerview"
+        >
+
+    </android.support.v7.widget.RecyclerView>
 
     <Button
         android:id="@+id/addBook_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="16dp"
         android:onClick="addBookButton"
         android:text="Add"
         tools:layout_editor_absoluteX="82dp"
