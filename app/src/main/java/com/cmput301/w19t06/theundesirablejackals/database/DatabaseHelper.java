@@ -356,6 +356,9 @@ public class DatabaseHelper{
                         }else{
                             onCallback.onCallback(false);
                             Log.d(TAG, "Something went wrong updating user info");
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
 
                         }
                     }
