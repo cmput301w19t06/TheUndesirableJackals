@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cmput301.w19t06.theundesirablejackals.R;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

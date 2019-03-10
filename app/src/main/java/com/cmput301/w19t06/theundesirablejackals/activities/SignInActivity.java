@@ -14,7 +14,6 @@ import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.R;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;

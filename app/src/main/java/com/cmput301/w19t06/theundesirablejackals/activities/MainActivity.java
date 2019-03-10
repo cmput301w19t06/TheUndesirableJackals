@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnLogin;

@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals.Activities;
+package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.cmput301.w19t06.theundesirablejackals.Adapter.FriendsListAdapter;
-import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.User.UserInformation;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.ArrayList;
 import java.util.List;

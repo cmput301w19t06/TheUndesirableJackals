@@ -10,7 +10,6 @@ import android.widget.EditText;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.R;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 

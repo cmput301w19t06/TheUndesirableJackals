@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals.Activities;
+package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.R;
 
 
 

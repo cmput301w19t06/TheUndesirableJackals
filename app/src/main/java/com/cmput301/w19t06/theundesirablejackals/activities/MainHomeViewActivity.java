@@ -24,7 +24,6 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
-import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class MainHomeViewActivity extends AppCompatActivity {
     private TabLayout tabLayout;

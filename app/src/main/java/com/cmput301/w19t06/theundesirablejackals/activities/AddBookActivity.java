@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.AddBookCameraFragment;
 import com.cmput301.w19t06.theundesirablejackals.AddBookManualFragment;
-import com.cmput301.w19t06.theundesirablejackals.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

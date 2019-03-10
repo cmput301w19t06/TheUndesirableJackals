@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
