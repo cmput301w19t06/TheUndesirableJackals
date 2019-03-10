@@ -16,18 +16,18 @@ import java.util.List;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsListHolder>{
 
-    private Context mCtx;
+    private Context context;
     private List<UserInformation> friendsList;
 
     public FriendsListAdapter(Context mCtx, List<UserInformation> friendsList) {
-        this.mCtx = mCtx;
+        this.context = mCtx;
         this.friendsList = friendsList;
     }
 
     @NonNull
     @Override
     public FriendsListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mCtx);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.friendslist_layout, null);
         FriendsListHolder holder = new FriendsListHolder(view);
         return holder;

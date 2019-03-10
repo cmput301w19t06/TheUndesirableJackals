@@ -55,6 +55,9 @@
 
         <activity android:name=".activities.EditContactInfo"/>
 
+        <activity android:name=".Activities.BorrowedListActivty"/>
+        <activity android:name=".Activities.LentListActivity"/>
+        <activity android:name=".Activities.NotifcationActivity"/>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
