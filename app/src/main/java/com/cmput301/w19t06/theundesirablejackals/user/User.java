@@ -4,6 +4,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookGenres;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class User implements Serializable {
     private BookList ownedBooks;
     private BookList borrowedBooks;
     private BookList favouriteBooks;
+    private Geolocation pickUpLocation;
 
     // user's requests to borrow books
     private BookRequestList lendRequests;
@@ -40,6 +42,9 @@ public class User implements Serializable {
         borrowRequests = new BookRequestList();
         //notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
+
+        // pick up location as default at the U of A
+        pickUpLocation = new Geolocation(53.5232, 113.5263);
     }
 
     public UserInformation getUserinfo(){
@@ -60,6 +65,10 @@ public class User implements Serializable {
 
     public BookRequestList getBorrowRequests() {
         return borrowRequests;
+    }
+
+    public Geolocation getPickUpLocation() {
+        return pickUpLocation;
     }
 
 

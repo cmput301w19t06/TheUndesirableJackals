@@ -25,7 +25,6 @@ import java.util.Map;
 public class DatabaseHelper{
     // database path to users
     private final static String TAG = "DatabaseHelper";
-    private final static String INFO_DUMP_FLAG = "INFO_DUMP";
 
     private final static String PATH_USERS = "users";
     private final static String PATH_BOOKS = "books";
@@ -40,8 +39,6 @@ public class DatabaseHelper{
     private DatabaseReference favouriteReference;
     private FirebaseUser currentUser;
 
-    private Context context;
-    private Gson gson;
 
 
 
@@ -51,10 +48,8 @@ public class DatabaseHelper{
     /**
      * Constructor for database helper, Requires that the user is already
      * authenticated to firebase in the calling activity
-     * @param context the running context that called DatabaseHelper
-     * @return new object DatabaseHelper
      */
-    public DatabaseHelper(Context context) {
+    public DatabaseHelper() {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.currentUser = firebaseAuth.getCurrentUser();
 
@@ -63,10 +58,6 @@ public class DatabaseHelper{
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
-
-        this.gson = new Gson();
-
-        this.context = context;
 
     }
 
@@ -104,9 +95,19 @@ public class DatabaseHelper{
     }
 
 
-
+    /**
+     * Get the FirebaseAuth user object that is currently in use
+     * @return FirebaseAuth user object
+     */
     public FirebaseUser getCurrentUser(){return currentUser;}
 
+
+    /**
+     * Check if the current user (getCurrentUser) is registered
+     * in the database as a full user object
+     * @param onCallback the callback that will be used to signal that the asynchronous
+     *                   database search has been completed
+     */
     public void isRegistered(final BooleanCallback onCallback){
         registeredReference
                 .child("uid")
@@ -131,19 +132,32 @@ public class DatabaseHelper{
     }
 
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
+    /**
+     * Check if the user is authenticated as a FirebaseAuth object
+     * @return boolean true if the firebaseAuth object exists (logged in)
+     *          boolean false otherwise
+     */
     public boolean isUserLoggedin() {
         return currentUser != null;
     }
 
+
+    /**
+     * Sign out the current FirebaseAuth user object by calling signOut()
+     * and setting currentUser to null
+     */
     public void signOut() {
         firebaseAuth.signOut();
-//        context.startActivity(new Intent(context, SignInActivity.class));
+        currentUser = null;
+
     }
 
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
+     * @param  isbn  the string representing a valid book ISBN that google books api can use/search
+     * @param  callback  The callback which is passed in, to be called upon successful data acquisition
+     */
     public void getBookFromDatabase(String isbn, final BookCallback callback){
         booksReference
                 .child(isbn)
@@ -162,6 +176,11 @@ public class DatabaseHelper{
     }
 
 
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom User object
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     */
     public void getUserFromDatabase(final UserCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
@@ -180,7 +199,13 @@ public class DatabaseHelper{
                 });
     }
 
-    public void getUserInfoFromDatabase(final UserInformationCallback callback){
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     */
+    public void getCurrentUserInfoFromDatabase(final UserInformationCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("userinfo")
@@ -188,17 +213,53 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
-                        callback.onCallback(userInfo);
+                        onCallback.onCallback(userInfo);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
                         Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
                         Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
 
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
+     * @param username The username to use when searching for specific user info
+     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     *                     used to pass data back to calling activity/fragment/class
+     */
+    public void getUserInfoFromDatabase(String username, final UserInformationCallback onCallback){
+        registeredReference
+                .child("username")
+                .child(username)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
+                        onCallback.onCallback(userInfo);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
+                        Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
+
+
+    /**
+     * Goes to the firebase database and saves (asynchronously) the currentUser's custom User object
+     * @param  user The currentuser's custom User object that is to be written/updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void saveCurrentUser(User user, final BooleanCallback onCallback){
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put(currentUser.getUid(), user);
@@ -209,7 +270,6 @@ public class DatabaseHelper{
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             onCallback.onCallback(true);
-                                            //TODO
                                         }else{
                                             onCallback.onCallback(false);
                                         }
@@ -218,6 +278,13 @@ public class DatabaseHelper{
 
     }
 
+
+    /**
+     * Goes to the firebase database to register and save (asynchronously) the currentUser's custom User object
+     * @param  user The currentuser's custom User object that is to be written in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void registerUser(final User user, final BooleanCallback onCallback){
         Map<String, Object> uidMap = new HashMap<>();
         Map<String, Object> tempMap = new HashMap<>();
@@ -227,7 +294,7 @@ public class DatabaseHelper{
 
         tempMap.put(
                 user.getUserinfo().getUserName(),
-                user.getUserinfo().getPhoneNumber());
+                user.getUserinfo());
         final Map<String, Object> usernameMap = new HashMap<>(tempMap);
 
         registerUID(uidMap, new BooleanCallback() {
@@ -255,6 +322,13 @@ public class DatabaseHelper{
 
     }
 
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
@@ -282,17 +356,27 @@ public class DatabaseHelper{
                         }else{
                             onCallback.onCallback(false);
                             Log.d(TAG, "Something went wrong updating user info");
-                            Log.e(TAG, task.getException().toString());
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
+
                         }
                     }
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void updateRegisteredUserInfo(UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
                 userInfo.getUserName(),
-                userInfo.getPhoneNumber());
+                userInfo);
         registeredReference
                 .child("username")
                 .updateChildren(userInfoMap)
@@ -304,12 +388,21 @@ public class DatabaseHelper{
                         }else{
                             onCallback.onCallback(false);
                             Log.d(TAG, "Something went wrong updating registered user info");
-                            Log.e(TAG, task.getException().toString());
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
                         }
                     }
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to register (asynchronously) the currentUser's unique UID
+     * @param  uidMap The mapping between the unique UID and the data it needs to contain in the Database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
         registeredReference
                 .child("uid")
@@ -324,6 +417,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Goes to the firebase database to register (asynchronously) the currentUser's unique Username
+     * @param  usernameMap The mapping between the unique Username and the data it needs to contain in the Database
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
+     */
     private void registerUsername(Map<String, Object> usernameMap, final BooleanCallback onCallback){
         registeredReference
                 .child("username")
@@ -340,9 +440,6 @@ public class DatabaseHelper{
 
 
 
-    public static DatabaseHelper getInstance(Context context) {
-        return new DatabaseHelper(context);
-    }
 
 //    public void createAccount(final String username, String password, final String email, final String phonenumber) {
 //        firebaseAuth.createUserWithEmailAndPassword(email, password)

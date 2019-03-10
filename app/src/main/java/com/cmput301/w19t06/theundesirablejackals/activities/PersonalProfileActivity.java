@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.R;
@@ -16,6 +18,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class PersonalProfileActivity extends AppCompatActivity {
     private Button editProfilebtn;
     private Button back;
+    private Button location;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -30,6 +33,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         editProfilebtn = (Button) findViewById(R.id.profileEditBtn_id);
         back = (Button) findViewById(R.id.Back);
+        location = (Button) findViewById(R.id.location);
 
         // edit action
         editProfilebtn.setOnClickListener(new View.OnClickListener() {
@@ -48,12 +52,20 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // location action
+        location.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper();
 
         // display personal information on the activity
         getUserInfo();
@@ -70,6 +82,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 String email = userInformation.getEmail();
                 String phone = userInformation.getPhoneNumber();
 
+                Geolocation b = user.getPickUpLocation();
+
                 // display the info
                 TextView userNameView = findViewById(R.id.textView8);
                 userNameView.setText(userName);
@@ -82,35 +96,5 @@ public class PersonalProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-    //    public void displayInfo() {
-//        databaseHelper.getUserInfoFromDatabase("felipe", new UserInformationCallback() {
-//            @Override
-//            public void onCallback(UserInformation userInformation) {
-//                if (userInformation == null){
-//                    String n = "null";
-//                    TextView userNameView = findViewById(R.id.textView8);
-//                    userNameView.setText(n);
-//                } else {
-//                    // retrieve user's info
-//                    String userName = userInformation.getUserName();
-//                    String email = userInformation.getEmail();
-//                    String phone = userInformation.getPhoneNumber();
-//
-//                    // display the info
-//                    TextView userNameView = findViewById(R.id.textView8);
-//                    userNameView.setText(userName);
-//
-//                    TextView emailView = findViewById(R.id.textView12);
-//                    emailView.setText(email);
-//
-//                    TextView phoneView = findViewById(R.id.textView14);
-//                    phoneView.setText(phone);
-//                }
-//
-//            }
-//        });
-//
-//    }
 }
 

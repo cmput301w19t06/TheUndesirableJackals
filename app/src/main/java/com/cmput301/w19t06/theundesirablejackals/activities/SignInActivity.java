@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.R;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 //import com.firebase.ui.auth.IdpResponse;
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
@@ -75,6 +78,11 @@ public class SignInActivity extends AppCompatActivity {
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
                 // ...
+
+                IdpResponse response = IdpResponse.fromResultIntent(data);
+                if(response != null){
+                    Log.e(TAG, String.valueOf(response));
+                }
                 finish();
             }
         }
