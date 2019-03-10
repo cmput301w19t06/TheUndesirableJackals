@@ -65,7 +65,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper();
 
         // display personal information on the activity
         getUserInfo();
