@@ -60,25 +60,27 @@
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/acceptbtn_Id"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
+        android:onClick="accept"
         android:text="Accept"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserLendRequest_Id" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/rejectbtn_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
+        android:onClick="reject"
         android:text="Reject"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/acceptbtn_Id"
         app:layout_constraintTop_toBottomOf="@+id/UserLendRequest_Id" />
 </android.support.constraint.ConstraintLayout>

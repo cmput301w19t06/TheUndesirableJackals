@@ -11,10 +11,6 @@ import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 
-/*
- * Created by Kaya on 02/02/2019
- * */
-
 /**
  * The manual entry for add a book, fragment that loads when AddBookActivity is called
  * Author: Kaya Thiessen
@@ -31,7 +27,7 @@ public class AddBookManualFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return view
      */
     @Nullable
     @Override
