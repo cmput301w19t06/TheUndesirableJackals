@@ -1,9 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.user;
 
+
 import java.util.ArrayList;
 
 public class UserNotificationList {
     private ArrayList<UserNotification> notifications;
+
 
     public  UserNotificationList() {
         notifications = new ArrayList<UserNotification>();
