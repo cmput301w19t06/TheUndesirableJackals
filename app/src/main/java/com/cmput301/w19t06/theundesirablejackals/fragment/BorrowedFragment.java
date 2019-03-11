@@ -1,3 +1,7 @@
+/**
+ * Fragment for holding books that an owner borrows from the Library tab
+ */
+
 package com.cmput301.w19t06.theundesirablejackals.fragment;
 
 import android.os.Bundle;

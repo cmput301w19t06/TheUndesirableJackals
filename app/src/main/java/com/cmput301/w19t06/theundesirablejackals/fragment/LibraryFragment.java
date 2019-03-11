@@ -1,3 +1,7 @@
+/**
+ * The Fragment for displaying all the books available in a database
+ */
+
 package com.cmput301.w19t06.theundesirablejackals.fragment;
 
 import android.os.Bundle;

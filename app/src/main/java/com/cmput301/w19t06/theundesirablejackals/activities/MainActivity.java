@@ -1,3 +1,7 @@
+/**
+ * it represents a Login activity that we don't use it anymore.
+ * It's replace with Sign in Activity
+ */
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;

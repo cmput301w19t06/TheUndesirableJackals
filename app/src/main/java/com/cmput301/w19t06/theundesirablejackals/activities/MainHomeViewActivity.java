@@ -1,4 +1,12 @@
-package com.cmput301.w19t06.theundesirablejackals.activities;
+/**
+ * The First Activity that is launched when the user signs in the app
+ * it contains three Fragments. "My Books", "Library" and "Borrowed" Fragment and a hidden
+ * menu
+ * @Version 1 - Jan - 2019
+ * @see MyBooksFragemt, LibraryFragment, BorrowedFragment
+ */
+
+package com.cmput301.w19t06.theundesirablejackals.Activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -19,11 +27,12 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
-import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
-import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
-import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
-import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.Activities.AddBookActivity;
+import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.BorrowedFragment;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.LibraryFragment;
+import com.cmput301.w19t06.theundesirablejackals.Fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class MainHomeViewActivity extends AppCompatActivity {
@@ -35,6 +44,10 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private SearchView searchView;
     private ListView listView;
+
+    /**
+     * Creates a tablayout for the fragments
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,59 +67,59 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            //using the MenuItem passed, we can identify which item is selected by the user
+            /**
+             * using the MenuItem passed, we can identify which item is selected by the user
+             * @param menuItem the selected item
+             * @return true to display the item as the selected item
+             */
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 switch (menuItem.getItemId()){
 
                     case R.id.addtnl_profile:
-                        //highlight the selected item/tab
+                        /* highlight the selected item/tab */
                         menuItem.setChecked(true);
-
                         //close the drawer layout
                         drawerLayout.closeDrawers();
-
-                        // go to "PersonalProfileActivity"
-                        Intent intent_profile = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
-                        startActivity(intent_profile);
-
+                        Intent intent1 = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
+                        startActivity(intent1);
                         return true;
 
                     case R.id.addtnl_notification:
-                        //highlight the selected item/tab
+                        /* highlight the selected item/tab */
                         menuItem.setChecked(true);
                         //displayMessage("Notifications selected....");
-                        //close the drawer layout
+                        /*close the drawer layout*/
                         drawerLayout.closeDrawers();
                         Intent intent3 = new Intent(MainHomeViewActivity.this, NotifcationActivity.class);
                         startActivity(intent3);
                         return true;
 
                     case R.id.addtnl_borrowRqst:
-                        //highlight the selected item/tab
+                        /* highlight the selected item/tab */
                         menuItem.setChecked(true);
                         //displayMessage("Borrow Requests selected....");
-                        //close the drawer layout
+                        /* close the drawer layout */
                         drawerLayout.closeDrawers();
                         Intent intent4 = new Intent(MainHomeViewActivity.this, BorrowedListActivty.class);
                         startActivity(intent4);
                         return true;
 
                     case R.id.addtnl_lendRqst:
-                        //highlight the selected item/tab
+                        /* highlight the selected item/tab */
                         menuItem.setChecked(true);
                         //displayMessage("Lend Requests selected....");
-                        //close the drawer layout
+                        /* close the drawer layout */
                         drawerLayout.closeDrawers();
                         Intent intent5 = new Intent(MainHomeViewActivity.this, LentListActivity.class);
                         startActivity(intent5);
                         return true;
 
                     case R.id.addtnl_friends:
-                        //highlight the selected item/tab
+                        /* highlight the selected item/tab */
                         menuItem.setChecked(true);
-                        //close the drawer layout
+                        /* close the drawer layout */
                         drawerLayout.closeDrawers();
                         Intent intent2 = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         startActivity(intent2);
@@ -128,17 +141,19 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //Adding Fragments
+        /* Adding Fragments */
         adapter.AddFragment(new MyBooksFragment(),"My Books");
         adapter.AddFragment(new LibraryFragment(),"Library");
         adapter.AddFragment(new BorrowedFragment(),"Borrowed");
-        //adapter setup
+        /* adapter setup */
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
-    // display the search icon on the app bar
+    /**
+     *  displays the search icon on the app bar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -147,16 +162,28 @@ public class MainHomeViewActivity extends AppCompatActivity {
         return true;
     }
 
-    //Check if the additional menu tabs are clickable
+    /**
+     * Checks if the additional menu tabs are clickable
+     * @param message to indicate which item is se
+     */
     public void displayMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Called when the user tabs the add button
+     * @param view context is passed for the intent
+     */
     public void addBookButton(View view){
         Intent intent = new Intent(this, AddBookActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * To open Navigation Drawer when user tabs the menu icon
+     * @param item a menu item
+     * @return true for selecting the icon
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // open navigation drawer by tabbing the menu icon
