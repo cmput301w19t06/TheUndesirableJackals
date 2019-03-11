@@ -1,14 +1,14 @@
-package com.cmput301.w19t06.theundesirablejackals.Activities;
+package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.cmput301.w19t06.theundesirablejackals.R;
 
-public class NotifcationActivity extends AppCompatActivity {
+public class BorrowedListActivty extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.notification_view);
+        setContentView(R.layout.borrow_requests);
     }
 }

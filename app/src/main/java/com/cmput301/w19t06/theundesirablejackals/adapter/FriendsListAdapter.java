@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals.Adapter;
+package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,11 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.User.UserInformation;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.List;
 

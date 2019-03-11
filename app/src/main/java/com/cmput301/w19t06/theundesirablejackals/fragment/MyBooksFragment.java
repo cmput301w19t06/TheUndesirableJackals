@@ -18,11 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.cmput301.w19t06.theundesirablejackals.Adapter.MyBooksRecyclerViewAdapter;
-import com.cmput301.w19t06.theundesirablejackals.Book.Book;
+import com.cmput301.w19t06.theundesirablejackals.adapter.MyBooksRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.Classes.MyBooksModelClass;
 import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.User.User;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.ArrayList;
 import java.util.List;

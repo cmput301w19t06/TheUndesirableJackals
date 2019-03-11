@@ -46,7 +46,7 @@ public class BookRequestList {
 
     /**
      * Get book requests of a user given a book
-     * @param usr
+     * @param user
      * @param book
      * @return
      */

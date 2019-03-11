@@ -1,6 +1,5 @@
-package com.cmput301.w19t06.theundesirablejackals.Activities;
+package com.cmput301.w19t06.theundesirablejackals.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;

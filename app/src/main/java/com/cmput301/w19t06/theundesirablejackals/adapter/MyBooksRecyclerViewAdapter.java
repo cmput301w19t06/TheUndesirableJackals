@@ -3,7 +3,7 @@
  * it determines the Viewholder which we will need to display the data
  */
 
-package com.cmput301.w19t06.theundesirablejackals.Adapter;
+package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,11 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.Book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.Classes.MyBooksModelClass;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyBooksRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksRecyclerViewAdapter.MyViewHolder> {

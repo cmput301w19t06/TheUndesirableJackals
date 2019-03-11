@@ -4,8 +4,6 @@
 
 package com.cmput301.w19t06.theundesirablejackals.Classes;
 
-import com.cmput301.w19t06.theundesirablejackals.Adapter.MyBooksRecyclerViewAdapter;
-
 public class MyBooksModelClass {
 
 

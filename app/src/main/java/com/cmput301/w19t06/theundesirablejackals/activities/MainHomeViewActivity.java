@@ -6,7 +6,7 @@
  * @see MyBooksFragemt, LibraryFragment, BorrowedFragment
  */
 
-package com.cmput301.w19t06.theundesirablejackals.Activities;
+package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,10 +15,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,12 +25,11 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
-import com.cmput301.w19t06.theundesirablejackals.Activities.AddBookActivity;
-import com.cmput301.w19t06.theundesirablejackals.Adapter.ViewPagerAdapter;
-import com.cmput301.w19t06.theundesirablejackals.Database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.Fragment.BorrowedFragment;
-import com.cmput301.w19t06.theundesirablejackals.Fragment.LibraryFragment;
-import com.cmput301.w19t06.theundesirablejackals.Fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
+import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
+import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 public class MainHomeViewActivity extends AppCompatActivity {
