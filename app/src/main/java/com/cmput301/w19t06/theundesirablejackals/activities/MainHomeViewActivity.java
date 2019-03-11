@@ -1,6 +1,9 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,7 +26,11 @@ import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class MainHomeViewActivity extends AppCompatActivity {
+    public static final int ADD_BOOK = 50;
     private TabLayout tabLayout;
     private Toolbar toolBar;
     private ViewPager viewPager;
@@ -160,9 +167,14 @@ public class MainHomeViewActivity extends AppCompatActivity {
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Add book Button for my books
+     * @param view
+     * Author: Kaya Thiessen
+     */
     public void addBookButton(View view){
-        Intent intent = new Intent(this, AddBookActivity.class);
-        startActivity(intent);
+        Intent intent = AddBookActivity.makeIntent(MainHomeViewActivity.this);
+        startActivityForResult(intent, ADD_BOOK);
     }
 
     @Override
@@ -176,5 +188,30 @@ public class MainHomeViewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case ADD_BOOK:
+                if (resultCode == MainHomeViewActivity.RESULT_OK) {
+                    String title = data.getStringExtra("bookTitle");
+                    String author = data.getStringExtra("bookAuthor");
+                    String isbn = data.getStringExtra("bookIsbn");
+                    String description = data.getStringExtra("bookDescription");
+                    Uri imageUri = data.getData();
+                    imageUri = data.getData();
+                    InputStream inputStream;
+
+                    try {
+                        inputStream = getContentResolver().openInputStream(imageUri);
+                        Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
+                    }
+                }
+        }
     }
 }

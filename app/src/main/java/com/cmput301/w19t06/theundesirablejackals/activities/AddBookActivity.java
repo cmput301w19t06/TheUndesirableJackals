@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,15 +22,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-/*
- * Created by Kaya on 02/02/2019
- * */
+/**
+ * This Activity adds books to a persons library. This is the main access to the two fragments
+ * Author: Kaya Thiessen
+ */
 
 public class AddBookActivity extends AppCompatActivity {
     public static final int IMAGE_GALLERY_REQUEST = 5;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Uri imageUri;
+    private String title, author, isbn, description;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +55,20 @@ public class AddBookActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param view
+     */
     public void isbnReader(View view){
         Intent intent = new Intent(this, BarcodeDetectActivity.class);
         startActivity(intent);
     }
+
+    /**
+     *
+     * @param view
+     */
     public void finalAddbookbtn(View view){
-        String title, author, isbn, description;
         EditText edit = (EditText)findViewById(R.id.booktitleAdd_id);
         title = edit.getText().toString();
         edit = (EditText)findViewById(R.id.bookauthorAdd_id);
@@ -62,9 +78,25 @@ public class AddBookActivity extends AppCompatActivity {
         edit = (EditText)findViewById(R.id.descriptionAdd_id);
         description = edit.getText().toString();
 
-        Intent intent = new Intent(this, MainHomeViewActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent();
+        intent.putExtra("bookTitle", title);
+        intent.putExtra("bookAuthor", author);
+        intent.putExtra("bookIsbn", isbn);
+        intent.putExtra("bookDescription", description);
+        intent.setData(imageUri);
+        setResult(MainHomeViewActivity.RESULT_OK, intent);
+        finish();
+
     }
+
+    public static Intent makeIntent(Context context){
+        return new Intent(context,AddBookActivity.class);
+    }
+
+    /**
+     *
+     * @param view
+     */
     public void addPhotobtn(View view){
         Intent photoIntent = new Intent(Intent.ACTION_PICK);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -76,12 +108,18 @@ public class AddBookActivity extends AppCompatActivity {
         startActivityForResult(photoIntent, IMAGE_GALLERY_REQUEST);
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
         if (requestCode==RESULT_OK){
-            if (requestCode==IMAGE_GALLERY_REQUEST){
-                Uri imageUri = data.getData();
+            if (requestCode== AddBookActivity.IMAGE_GALLERY_REQUEST){
+                imageUri = data.getData();
                 InputStream inputStream;
 
                 try {
