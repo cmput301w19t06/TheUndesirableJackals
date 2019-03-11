@@ -29,9 +29,18 @@ public class LentListActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
         listview.setOnClickListener((View.OnClickListener) this);
     }
+
+    /**
+     * Opens AcceptRejectLendActivity when pressed with data from list
+     * @param l
+     * @param v
+     * @param position
+     * @param id
+     * @see AcceptRejectLendActivity
+     */
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
         Intent intent = new Intent();
-        intent.setClass(this, UserNotification.class);
+        intent.setClass(this, AcceptRejectLendActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("id", id);
         startActivity(intent);
