@@ -59,7 +59,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        databaseHelper = new DatabaseHelper(MainHomeViewActivity.this);
+        databaseHelper = new DatabaseHelper();
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

@@ -24,7 +24,7 @@ public class EditContactInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact_info);
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper();
         databaseHelper.getUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
