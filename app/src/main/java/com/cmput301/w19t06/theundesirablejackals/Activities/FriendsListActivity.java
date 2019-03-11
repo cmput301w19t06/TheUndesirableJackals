@@ -11,6 +11,11 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * List of friends to the user. Allows them to add new users and view suggested users.
+ * From here they can access friends profiles
+ * Author: Kaya Thiessen
+ */
 public class FriendsListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;

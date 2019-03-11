@@ -190,6 +190,12 @@ public class MainHomeViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * Author Kaya Thiessen
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {

@@ -14,16 +14,31 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.List;
 
+/**
+ * Friends list recycler view adapter
+ * Author: Kaya Thiessen
+ */
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsListHolder>{
 
     private Context context;
     private List<UserInformation> friendsList;
 
+    /**
+     *A dapter builder
+     * @param mCtx
+     * @param friendsList
+     */
     public FriendsListAdapter(Context mCtx, List<UserInformation> friendsList) {
         this.context = mCtx;
         this.friendsList = friendsList;
     }
 
+    /**
+     * On create
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public FriendsListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,21 +48,38 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         return holder;
     }
 
+    /**
+     * onBindViewHolder, sets values
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull FriendsListHolder holder, int position) {
         UserInformation friend= friendsList.get(position);
         holder.friendUsername.setText(friend.getUserName());
     }
 
+    /**
+     * getItemCount, gets the item count...
+     * @return
+     */
     @Override
     public int getItemCount() {
         return friendsList.size();
     }
 
+    /**
+     * FriendsListHolder, gets info from layout
+     * Author: Kaya Thiessen
+     */
     class FriendsListHolder extends RecyclerView.ViewHolder{
         //ImageView friendIcon;
         TextView friendUsername/*, friendRating*/;
 
+        /**
+         * FriendsListHolder, gets the view ids
+         * @param itemView
+         */
         public FriendsListHolder(View itemView) {
             super(itemView);
 

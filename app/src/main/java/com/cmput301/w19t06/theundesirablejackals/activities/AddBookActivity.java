@@ -35,7 +35,7 @@ public class AddBookActivity extends AppCompatActivity {
     private String title, author, isbn, description;
 
     /**
-     *
+     * General Create
      * @param savedInstanceState
      */
     @Override
@@ -56,7 +56,7 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Allows access to ISBN reader
      * @param view
      */
     public void isbnReader(View view){
@@ -65,7 +65,7 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Final add book button, sends data back to MainHomeViewActivity
      * @param view
      */
     public void finalAddbookbtn(View view){
@@ -89,12 +89,17 @@ public class AddBookActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Used to create intent so info can be pushed back
+     * @param context
+     * @return intent
+     */
     public static Intent makeIntent(Context context){
         return new Intent(context,AddBookActivity.class);
     }
 
     /**
-     *
+     * Add photos by using add photo button
      * @param view
      */
     public void addPhotobtn(View view){
@@ -109,7 +114,7 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Fetches image using gallery address provided in addPhotobtn
      * @param requestCode
      * @param resultCode
      * @param data

@@ -17,10 +17,18 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Handles the Notification list. Shows all notifications on a clear list. Allow access to notification
+ * by clicking item on list
+ * Author: Kaya Thiessen
+ */
 public class NotificationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String[] notifications= {};
 
+    /**
+     * On create method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +43,13 @@ public class NotificationActivity extends AppCompatActivity implements AdapterVi
         listview.setOnItemClickListener(this);
     }
 
+    /**
+     * On click of item list adapter. Opens corresponding issue
+     * @param adapterView
+     * @param view
+     * @param i
+     * @param l
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent();

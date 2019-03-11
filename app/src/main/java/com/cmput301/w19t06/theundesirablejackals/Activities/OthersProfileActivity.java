@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
-
+/**
+ * Activity used to display friends profile + give option to message them
+ * Author: Kaya Thiessen
+ */
 
 public class OthersProfileActivity extends AppCompatActivity {
     private Button editFriendbtn;
@@ -22,6 +25,11 @@ public class OthersProfileActivity extends AppCompatActivity {
         editFriendbtn = (Button) findViewById(R.id.editFriend_id);
         txt = (TextView) findViewById(R.id.editFriend_id);
     }
+
+    /**
+     * Allows user to friend or unfriend another user
+     * @param view
+     */
     public void editFriend(View view){
         if (editFriendbtn.getText() == "Unfriend") {
             editFriendbtn.setText("Add Friend");

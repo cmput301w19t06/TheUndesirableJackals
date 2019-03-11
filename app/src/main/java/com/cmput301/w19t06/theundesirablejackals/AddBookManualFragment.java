@@ -14,6 +14,11 @@ import com.cmput301.w19t06.theundesirablejackals.activities.R;
 /*
  * Created by Kaya on 02/02/2019
  * */
+
+/**
+ * The manual entry for add a book, fragment that loads when AddBookActivity is called
+ * Author: Kaya Thiessen
+ */
 public class AddBookManualFragment extends Fragment {
     View view;
     private Button finalAddbtn;
@@ -21,6 +26,13 @@ public class AddBookManualFragment extends Fragment {
     public AddBookManualFragment() {
     }
 
+    /**
+     * on create view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

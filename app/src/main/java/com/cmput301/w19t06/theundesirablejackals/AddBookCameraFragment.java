@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 
-/*
- * Created by Kaya on 02/02/2019
- * */
+/**
+ * The ISBN reader segment of Addbook --> links to the actual reader
+ * Author:Kaya Thiessen
+ */
 public class AddBookCameraFragment extends Fragment {
     View view;
     public AddBookCameraFragment() {
