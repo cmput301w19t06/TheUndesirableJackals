@@ -46,6 +46,11 @@ public class AddBookActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
+
+    public void isbnReader(View view){
+        Intent intent = new Intent(this, BarcodeDetectActivity.class);
+        startActivity(intent);
+    }
     public void finalAddbookbtn(View view){
         String title, author, isbn, description;
         EditText edit = (EditText)findViewById(R.id.booktitleAdd_id);
