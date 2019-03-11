@@ -19,10 +19,8 @@ public class BookTest {
     private ArrayList<BookGenres> genres;
     @Before
     public void setup() {
-        owner = new User("Red", "IHeartGrandma",
-                "Red@hood.com", "433-001-9112");
-        book = new Book("The Undesirable", "Jackal The Unknown",
-                "99452212-0", owner);
+        owner = new User("makata", "makata@gmail.ca", "7803123332");
+        book = new Book("Noli me tangere", "José Rizal", "143322211");
 
         genres = new ArrayList<>();
 

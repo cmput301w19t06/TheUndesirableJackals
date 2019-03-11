@@ -23,15 +23,12 @@ public class BookRequestTest {
 
     @Before
     public void setup() {
-        borrower = new User("user1", "password1",
-                    "user1@gmail.com", "7803123332");
-        owner = new User("user2", "password2",
-                    "user1@gmail.com", "7802231122");
+        borrower = new User("makata", "makata@gmail.ca", "7803123332");
+        owner = new User("poet", "poet@gmail.com", "7802231122");
 
-        book = new Book("The Undesirable", "Jackal The Unknown",
-                "99452212-0", owner);
+        Book book = new Book("Noli me tangere", "José Rizal", "143322211");
 
-        bookRequest = new BookRequest(borrower, owner, book);
+        bookRequest = new BookRequest(borrower, book);
 
     }
 

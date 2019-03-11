@@ -34,7 +34,7 @@ public class User {
     // requests to borrow user's books
     private BookRequestList borrowRequests;
 
-    //private UserNotificationList notifications;
+    private UserNotificationList notifications;
 
     // topics of interest
     private ArrayList<BookGenres> genreOfInterests;
@@ -58,8 +58,9 @@ public class User {
         favouriteBooks = new BookList();
         lendRequests = new BookRequestList();
         borrowRequests = new BookRequestList();
-        //notifications = new UserNotificationList();
+        notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
+        friends = new UserList();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, 113.5263);
@@ -113,14 +114,20 @@ public class User {
         return pickUpLocation;
     }
 
+    /**
+     *
+     * @return the list of notifications for the user
+     */
+    public UserNotificationList getNotifications() {
+        return notifications;
+    }
 
-//    public UserNotificationList getNotifications() {
-//        return notifications;
-//    }
-//
-//    public void setNotifications(UserNotificationList notifications) {
-//        this.notifications = notifications;
-//    }
+    /**
+     * @param notifications list that will overwrite the current notification list of the user
+     */
+    public void setNotifications(UserNotificationList notifications) {
+        this.notifications = notifications;
+    }
 
     /**
      *

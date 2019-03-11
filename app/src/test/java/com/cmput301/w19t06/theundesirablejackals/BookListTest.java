@@ -22,57 +22,21 @@ public class BookListTest {
 
     @Test
     public void addBook_isCorrect(){
-        User felipe = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
 
-        // re-written test to check the book was added to the owner's list instead of the "bookList"
+        Book book1 = new Book("El filibusterismo", "José Rizal", "143322211");
 
-        // create a new book and add it to the owner's list
-        Book book1 = new Book("Title1", "Author1", "ISBN1", felipe);
-
-        // retrieve the owner's list of books owned
-        BookList ownedBooks = felipe.getOwnedBooks();
+        // add book
+        bookList.addBook(book1);
 
         // check the book was added
-        assertTrue(ownedBooks.getBooks().contains(book1));
-
-
-//        int sizeBefore = bookList.getBooks().size();
-//
-//        bookList.addBook(book1);
-//
-//        assertTrue(bookList.getBooks().contains(book1));
-//        assertEquals(bookList.getBooks().size(), sizeBefore + 1);
-//
-//        // adding a null book
-//        book1 = null;
-//
-//        sizeBefore = bookList.getBooks().size();
-//
-//        bookList.addBook(book1);
-//        assertFalse(bookList.getBooks().contains(book1));
-//        assertEquals(bookList.getBooks().size(), sizeBefore);
-//
-//        // adding the same book to the same list
-//        book1 = new Book("Title1", "Author1", "ISBN1", felipe);
-//
-//        sizeBefore = bookList.getBooks().size();
-//
-//        bookList.addBook(book1);
-//
-//        assertTrue(bookList.getBooks().contains(book1));
-//        assertEquals(bookList.getBooks().size(), sizeBefore);
+        assertTrue(bookList.contains(book1));
 
     }
 
     @Test
     public void deleteBook_isCorrect() {
-        // TO BE IMPLEMENTED Test will be unsatisfactory
-
-        User felipe = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
-        Book book1 = new Book("Title1", "Author1", "ISBN1", felipe);
-        Book book2 = new Book("Title2", "Author2", "ISBN2", felipe);
+        Book book1 = new Book("Noli me tangere", "José Rizal", "143322211");
+        Book book2 = new Book("El filibusterismo", "José Rizal", "143322211");
 
         bookList.addBook(book1);
         bookList.addBook(book2);
@@ -87,13 +51,12 @@ public class BookListTest {
 
     @Test
     public void searchBookByKeyWord_isCorrect() {
-        User felipe = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
-        Book book1 = new Book("Made in Abyss", "Yuki Snow", "ISBN1", felipe);
-        Book book2 = new Book("Rise of the Shield Hero", "Mizu Water", "ISBN2", felipe);
-        Book book3 = new Book("Solo Leveling", "Kaze Wind", "ISBN3", felipe);
-        Book book4 = new Book("Promised Neverland", "Omoi Heavy", "ISBN4", felipe);
-        Book book5 = new Book("Attack on Titan", "Weeabo U", "ISBN5", felipe);
+
+        Book book1 = new Book("Made in Abyss", "Yuki Snow", "ISBN1");
+        Book book2 = new Book("Rise of the Shield Hero", "Mizu Water", "ISBN2");
+        Book book3 = new Book("Solo Leveling", "Kaze Wind", "ISBN3");
+        Book book4 = new Book("Promised Neverland", "Omoi Heavy", "ISBN4");
+        Book book5 = new Book("Attack on Titan", "Weeabo U", "ISBN5");
 
         bookList.addBook(book1);
         bookList.addBook(book2);
@@ -116,13 +79,12 @@ public class BookListTest {
 
     @Test
     public void searchBookByStatus_isCorrect() {
-        User felipe = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
-        Book book1 = new Book("Title1", "Author1", "ISBN1", felipe);
-        Book book2 = new Book("Title2", "Author2", "ISBN2", felipe);
-        Book book3 = new Book("Title3", "Author3", "ISBN3", felipe);
-        Book book4 = new Book("Title4", "Author4", "ISBN4", felipe);
-        Book book5 = new Book("Title5", "Author5", "ISBN5", felipe);
+
+        Book book1 = new Book("Made in Abyss", "Yuki Snow", "ISBN1");
+        Book book2 = new Book("Rise of the Shield Hero", "Mizu Water", "ISBN2");
+        Book book3 = new Book("Solo Leveling", "Kaze Wind", "ISBN3");
+        Book book4 = new Book("Promised Neverland", "Omoi Heavy", "ISBN4");
+        Book book5 = new Book("Attack on Titan", "Weeabo U", "ISBN5");
 
         book2.setStatus(BookStatus.BORROWED);
         book3.setStatus(BookStatus.BORROWED);

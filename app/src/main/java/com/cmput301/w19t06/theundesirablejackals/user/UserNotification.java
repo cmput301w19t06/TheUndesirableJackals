@@ -2,6 +2,12 @@ package com.cmput301.w19t06.theundesirablejackals.user;
 
 import java.util.Date;
 
+/**
+ * This class handles user notifications of different types.
+ * @author Art Limbaga
+ * @see UserNotificationType
+ * @see UserNotificationList
+ */
 public class UserNotification {
     private String notificationMessage;
     private User reciever;
@@ -12,6 +18,7 @@ public class UserNotification {
     public UserNotification() {
 
     }
+
 
     public UserNotification(UserNotificationType type, User reciever) {
         switch (type) {
@@ -35,10 +42,17 @@ public class UserNotification {
         this.reciever = reciever;
     }
 
+    /**
+     * Send the notification to the receiver
+     */
     public void doNotify() {
 
     }
 
+    /**
+     *
+     * @return type of this UserNotification object
+     */
     public UserNotificationType getType() {return type;}
 
 

@@ -19,18 +19,12 @@ public class UserListTest {
 
     @Before
     public void setup() {
-        user1 = new User("user1", "passu1",
-                "user1@hotmail.com", "333-333-4441");
-        user2 = new User("user2", "passu2",
-                "user2@hotmail.com", "333-333-4442");
-        user3 = new User("user3", "passu3",
-                "user3@hotmail.com", "333-333-4443");
-        user4 = new User("user4", "passu4",
-                "user4@hotmail.com", "333-333-4444");
-        user5 = new User("user5", "passu5",
-                "user5@hotmail.com", "333-333-4445");
-        book = new Book("The Undesirable", "Jackal The Unknown",
-                "99452212-0", user1);
+        user1 = new User("makata", "makata@gmail.ca", "7803123332");
+        user2 = new User("poet", "poet@gmail.com", "7802231122");
+        user3 = new User("user3", "user3@hotmail.com", "333-333-4443");
+        user4 = new User("user4", "user4@hotmail.com", "333-333-4444");
+        user5 = new User("user5", "user5@hotmail.com", "333-333-4445");
+        book = new Book("Noli me tangere", "José Rizal", "143322211");
 
         user1.addGenreOfInterest(BookGenres.GRAPHIC_NOVEL);
         user2.addGenreOfInterest(BookGenres.AUTOBIOGRAPHY);

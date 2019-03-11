@@ -14,8 +14,7 @@ public class UserNotificationTest {
 
     @Test
     public void doNotify_isCorrect() {
-        user = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
+        user = new User("felipe", "email@hotmail.com", "333-333-3333");
         notification = new UserNotification(UserNotificationType.BOOK_REQUEST_UPDATE, user);
         notification.doNotify();
 

@@ -19,22 +19,17 @@ public class UserTest {
     private User borrower;
     private BookRequest bookRequest;
     private Book bookRequested;
-    private Message message;
 
 
     @Before
     public  void setup() {
-        owner = new User("felipe", "pass",
-                "email@hotmail.com", "333-333-3333");
-        borrower = new User("oriwa", "passu",
-                "emailu@hotmail.com", "333-333-4444");
+        owner = new User("felipe", "email@hotmail.com", "333-333-3333");
+        borrower = new User("oriwa", "emailu@hotmail.com", "333-333-4444");
 
-        bookRequested = new Book("The Undesirable", "Jackal The Unknown",
-                "99452212-0", owner);
+        bookRequested = new Book("Noli me tangere", "José Rizal", "143322211");
 
-        bookRequest = new BookRequest(borrower, owner, bookRequested);
+        bookRequest = new BookRequest(borrower, bookRequested);
 
-        message = new Message(borrower, owner, "I want to borrower your book");
     }
 
     @Test
@@ -52,13 +47,6 @@ public class UserTest {
     @Test
     public void addBorrowRequest_isCorrect() {
         assertTrue(borrower.getBorrowRequests().contains(bookRequest));
-    }
-
-    @Test
-    public void addMessage_isCorrect() {
-
-        // check if owner got the message
-        assertTrue(owner.getMessages().contains(message));
     }
 
     @Test
