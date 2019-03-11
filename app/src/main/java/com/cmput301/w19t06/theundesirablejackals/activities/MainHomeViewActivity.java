@@ -109,6 +109,17 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         startActivity(intent2);
                         return true;
 
+                    case R.id.addtnl_search:
+                        //highlight the selected item/tab
+                        menuItem.setChecked(true);
+
+                        //close the drawer layout
+                        drawerLayout.closeDrawers();
+
+                        Intent intent_search = new Intent(MainHomeViewActivity.this, BookSearch.class);
+                        startActivity(intent_search);
+                        return true;
+
                     case R.id.addtn1_logout:
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();

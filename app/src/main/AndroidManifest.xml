@@ -30,7 +30,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,25 +38,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="StartActivity">
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="SignInActivity" />
-        <activity android:name="MainActivity"/>
-        <activity android:name="MainHomeViewActivity" />
-        <activity android:name="BarcodeDetectActivity" />
-        <activity android:name="AddBookActivity"/>
-        <activity android:name="PersonalProfileActivity"/>
-        <activity android:name="OthersProfileActivity"/>
-        <activity android:name="FriendsListActivity"/>
-        <activity android:name="EditContactInfo" />
-        <activity android:name="BorrowedListActivity"/>
-        <activity android:name="LentListActivity"/>
-        <activity android:name="NotificationActivity"/>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".MainHomeViewActivity" />
+        <activity android:name=".BarcodeDetectActivity" />
+        <activity android:name=".AddBookActivity" />
+        <activity android:name=".PersonalProfileActivity" />
+        <activity android:name=".OthersProfileActivity" />
+        <activity android:name=".FriendsListActivity" />
+        <activity android:name=".EditContactInfo" />
+        <activity android:name=".BorrowedListActivity" />
+        <activity android:name=".LentListActivity" />
+        <activity android:name=".NotificationActivity" />
+        <activity android:name=".BookSearch" />
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -85,8 +86,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="MapsActivity"
-            android:label="@string/title_activity_maps"/>
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.Activities.BookSearch"></activity>
     </application>
 
 </manifest>

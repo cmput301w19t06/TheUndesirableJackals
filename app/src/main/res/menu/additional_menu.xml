@@ -20,6 +20,9 @@
             android:id="@+id/addtnl_friends"
             android:title="Friends" />
         <item
+            android:id="@+id/addtnl_search"
+            android:title="Search Book" />
+        <item
             android:id="@+id/addtn1_logout"
             android:title="Logout" />
 
