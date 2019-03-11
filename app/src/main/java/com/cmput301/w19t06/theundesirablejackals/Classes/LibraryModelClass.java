@@ -2,9 +2,9 @@
  * A common object for holding book data
  */
 
-package com.cmput301.w19t06.theundesirablejackals.Classes;
+package com.cmput301.w19t06.theundesirablejackals.classes;
 
-public class MyBooksModelClass {
+public class LibraryModelClass {
 
 
 
@@ -15,10 +15,8 @@ public class MyBooksModelClass {
     private int img_book;
 
 
-//    public MyBooksModelClass() {
-//    }
 
-    public MyBooksModelClass(String title, String author, String isbn, String status, int img_book) {
+    public LibraryModelClass(String title, String author, String isbn, String status, int img_book) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
