@@ -1,5 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+/**
+ * This enum is used to keep a finite amount of book status in check. These are the only possible
+ * statuses that a book can have.
+ * @author Art Limbaga
+ * @see Book
+ */
 public enum BookStatus {
     AVAILABLE,  // book is available for all users to be borrowed
     REQUESTED,  // book is requested by a user

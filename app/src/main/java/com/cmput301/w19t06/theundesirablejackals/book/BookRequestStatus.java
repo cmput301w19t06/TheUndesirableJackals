@@ -1,5 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+/**
+ * These are the only possible statuses that a book request can have
+ * @author Art Limbaga
+ * @see BookRequest
+ */
 public enum BookRequestStatus {
     PENDING,            // book has been requested and waiting for owner to take action
     DENIED,             // book requested by the borrower is denied by the owner

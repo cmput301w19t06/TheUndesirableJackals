@@ -1,5 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+/**
+ * This enum holds all the book genres available in the application. New genres can be added to
+ * in the future with ease. This will also ensure the proper categorization of all the books
+ * that exists within the domaoin of our application
+ * @author Art Limbaga
+ */
 public enum BookGenres {
     FICTION,
     NONFICTION,
