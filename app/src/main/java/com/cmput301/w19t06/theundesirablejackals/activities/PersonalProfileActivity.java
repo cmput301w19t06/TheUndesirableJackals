@@ -1,3 +1,11 @@
+/**
+ * Class launched from "MainHomeViewActivity" that displays the user's personal information
+ * It gives the user the option to edit their phone number and see their current pick up
+ * location (when the appropiate buttons are pressed)
+ * @version 1 - March 8, 2019
+ * @see MainHomeViewActivity, MapsActivity, EditContactInfo
+ */
+
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
@@ -18,6 +26,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
     private Button location;
     private DatabaseHelper databaseHelper;
 
+    /**
+     * Initializes buttons and contains button handlers that begin intents to MapsActivity
+     * EditContactInfo activities
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +47,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         // edit action
         editProfilebtn.setOnClickListener(new View.OnClickListener() {
-
+            /**
+             * Called when user presses the edit info option
+             * Sends the user to "EditContactInfo" activity
+             * @param view Context passed as parameter for the intent
+             */
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), EditContactInfo.class);
                 startActivity(intent);
@@ -43,7 +60,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         // back action
         back.setOnClickListener(new View.OnClickListener() {
-
+            /**
+             * Called when user presses the back option
+             * Sends the user back to "MainHomeView" activity
+             * @param view Context passed as parameter for the intent
+             */
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MainHomeViewActivity.class);
                 startActivity(intent);
@@ -52,6 +73,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
         // location action
         location.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when user presses the my pick up location option
+             * Sends the user to "MapsActivity" activity
+             * @param view Context passed as parameter for the intent
+             */
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
                 startActivity(intent);
@@ -59,6 +85,10 @@ public class PersonalProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the database helper which will be used to retrieve contact information
+     * from current user
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -69,6 +99,10 @@ public class PersonalProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Retrieves user name, email and phone number and set those values to their respective
+     * text view
+     */
     public void getUserInfo () {
         databaseHelper.getUserFromDatabase(new UserCallback() {
             @Override

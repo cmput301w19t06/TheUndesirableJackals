@@ -1,3 +1,9 @@
+/**
+ * Retrieves the user's pick up default location and displays it in a google map as a mark
+ * @version March 8, 2019
+ * @see PersonalProfileActivity
+ */
+
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.support.v4.app.FragmentActivity;
@@ -34,6 +40,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Executes when the map is ready. It retrieves the user's pick up location lat and lon from
+     * attribute Geolocation, mark it on the map and rotates the map to that location
+     * @param googleMap Google map instance that will be displayed
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
