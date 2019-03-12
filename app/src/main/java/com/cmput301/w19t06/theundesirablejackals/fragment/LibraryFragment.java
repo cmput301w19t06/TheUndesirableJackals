@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cmput301.w19t06.theundesirablejackals.R;
+import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.adapter.LibraryRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.classes.LibraryModelClass;
 

@@ -104,9 +104,9 @@ public class Book implements Serializable {
         return status;
     }
 
-    public User getOwner() {
-        return owner;
-    }
+//    public User getOwner() {
+//        return owner;
+//    }
 
     /**
      *

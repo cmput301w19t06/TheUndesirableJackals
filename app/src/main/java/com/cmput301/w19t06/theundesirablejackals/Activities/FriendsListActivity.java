@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.FriendsListAdapter;
-import com.cmput301.w19t06.theundesirablejackals.R;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.ArrayList;
