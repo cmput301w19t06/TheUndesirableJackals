@@ -11,6 +11,13 @@ public class Geolocation {
     private Double latitude;
 
     /**
+     * No argument constructor required for Firebase
+     * DO NOT USE
+     */
+    @Deprecated
+    public Geolocation(){}
+
+    /**
      *
      * @param lat latitude of the location
      * @param lon longitude off the location
@@ -49,5 +56,13 @@ public class Geolocation {
      */
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "{"+
+                "Lat=" + latitude +
+                ", Lon=" + longitude +
+                "}";
     }
 }

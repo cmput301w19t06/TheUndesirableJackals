@@ -185,6 +185,55 @@ public class User {
         this.friends = friends;
     }
 
+
+
+    /**
+     * Required setter for Firebase
+     * @param geolocation  the geolocation which will set the pickuplocation for User user
+     */
+    public void setPickUpLocation(Geolocation geolocation){this.pickUpLocation = geolocation;}
+
+    /**
+     * Required setter for Firebase
+     * @param borrowedBooks
+     */
+    public void setBorrowedBooks(BookList borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
+    }
+
+    /**
+     * Required setter for Firebase
+     * @param borrowRequests
+     */
+    public void setBorrowRequests(BookRequestList borrowRequests) {
+        this.borrowRequests = borrowRequests;
+    }
+
+    /**
+     * Required setter for Firebase
+     * @param lendRequests
+     */
+    public void setLendRequests(BookRequestList lendRequests) {
+        this.lendRequests = lendRequests;
+    }
+
+    /**
+     * Required setter for Firebase
+     * @param ownedBooks
+     */
+    public void setOwnedBooks(BookList ownedBooks) {
+        this.ownedBooks = ownedBooks;
+    }
+
+    /**
+     * Required setter for Firebase
+     * @param userInfo
+     */
+    public void setUserInfo(UserInformation userInfo) {
+        this.userInfo = userInfo;
+    }
+
+
     /**
      *
      * @param genre to added to the user's genres of interest
@@ -211,5 +260,21 @@ public class User {
      */
     public void addBorrowRequest(BookRequest request) {
         borrowRequests.addRequest(request);
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userInfo=" + userInfo +
+                ", ownedBooks=" + ownedBooks +
+                ", borrowedBooks=" + borrowedBooks +
+                ", favouriteBooks=" + favouriteBooks +
+                ", lendRequests=" + lendRequests +
+                ", borrowRequests=" + borrowRequests +
+                ", genreOfInterests=" + genreOfInterests +
+                ", friends=" + friends +
+                ", pickUpLocation="+ pickUpLocation +
+                '}';
     }
 }

@@ -20,6 +20,23 @@ public class UserNotificationList {
         notifications = new ArrayList<UserNotification>();
     }
 
+
+    /**
+     * Required for Firebase
+     * @return
+     */
+    public ArrayList<UserNotification> getNotifications() {
+        return notifications;
+    }
+
+    /**
+     * Required for Firebase
+     * @param notifications
+     */
+    public void setNotifications(ArrayList<UserNotification> notifications) {
+        this.notifications = notifications;
+    }
+
     /**
      *
      * @param notification to be added to the list

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -116,14 +117,14 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 Geolocation b = user.getPickUpLocation();
 
                 // display the info
-//                TextView userNameView = findViewById(R.id.textView8);
-//                userNameView.setText(userName);
-//
-//                TextView emailView = findViewById(R.id.textView12);
-//                emailView.setText(email);
-//
-//                TextView phoneView = findViewById(R.id.textView14);
-//                phoneView.setText(phone);
+                TextView userNameView = (TextView) findViewById(R.id.textViewUserName);
+                userNameView.setText(userName);
+
+                TextView emailView = (TextView) findViewById(R.id.textViewPersonalEmail);
+                emailView.setText(email);
+
+                TextView phoneView = (TextView) findViewById(R.id.textViewPersonalPhoneNumber);
+                phoneView.setText(phone);
             }
         });
     }

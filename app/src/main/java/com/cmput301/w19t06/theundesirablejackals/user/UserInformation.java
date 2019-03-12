@@ -13,6 +13,12 @@ public class UserInformation implements Serializable {
     private String email;
     private String phoneNumber;
 
+
+    /**
+     * No Parameter constructor REQUIRED for firebase
+     * DO NOT USE
+     */
+    @Deprecated
     public UserInformation() { }
 
     /**
@@ -66,9 +72,16 @@ public class UserInformation implements Serializable {
         phoneNumber = newPhoneNumber;
     }
 
+    /**
+     * Required setter for Firebase
+     * DO NOT USE
+     * @param userName  the username that UserInfo username will be changed to
+     */
+    public void setUserName(String userName){ this.userName = userName;}
+
     @Override
     public String toString() {
-        return "UserInformation{" +
+        return "{" +
                 "userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

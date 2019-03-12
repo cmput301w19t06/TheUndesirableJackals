@@ -37,6 +37,5 @@ public class AddBookManualFragment extends Fragment {
         photoaddbtn = (Button) view.findViewById(R.id.photoAddButton_id);
         return view;
 
-
     }
 }

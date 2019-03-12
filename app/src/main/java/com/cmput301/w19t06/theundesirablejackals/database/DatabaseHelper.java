@@ -186,6 +186,7 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
+                        Log.d(TAG, user.toString());
                         onCallback.onCallback(user);
                     }
 
@@ -258,7 +259,7 @@ public class DatabaseHelper{
      * @param  onCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
-    public void saveCurrentUser(User user, final BooleanCallback onCallback){
+    private void saveCurrentUser(User user, final BooleanCallback onCallback){
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put(currentUser.getUid(), user);
         usersReference
@@ -330,7 +331,7 @@ public class DatabaseHelper{
     public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
         userInfoMap.put(
-                "userinfo",
+                "userInfo",
                 userInfo);
         usersReference
                 .child(currentUser.getUid())
