@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.Classes.MyBooksModelClass;
+import com.cmput301.w19t06.theundesirablejackals.classes.MyBooksModelClass;
 import com.cmput301.w19t06.theundesirablejackals.R;
 
 import java.util.List;

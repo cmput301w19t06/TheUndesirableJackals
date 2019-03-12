@@ -2,7 +2,7 @@
  * A common object for holding book data
  */
 
-package com.cmput301.w19t06.theundesirablejackals.Classes;
+package com.cmput301.w19t06.theundesirablejackals.classes;
 
 public class MyBooksModelClass {
 
