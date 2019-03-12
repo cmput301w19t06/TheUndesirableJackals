@@ -1,4 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals.fragment;
+/**
+ * Fragment to show the books a user owns
+ * The user can add new books and check the book's status
+ * @see MyBookModdelClass, MyBooksRecyclerViewAdapter
+ */
+
 
 
 import android.os.Bundle;
@@ -16,18 +22,19 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.MyBooksRecyclerViewAdap
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 //import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.classes.MyBooksModelClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /*
 * Created by Mohamed on 21/02/2019
-* */
+ */
 public class MyBooksFragment extends Fragment {
     private Button addBookButton;
     View v ;
     private RecyclerView myBooksRecyclerView;
-    private List<Book> lstBook;
+    private List<MyBooksModelClass> lstBook;
     public MyBooksFragment() {
     }
 
@@ -47,12 +54,17 @@ public class MyBooksFragment extends Fragment {
 
     }
 
+    /**
+     * adds a book in the lstBook by creating an object of MyBooksModelClass
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //an empty list of books
         lstBook = new ArrayList<>();
-        lstBook.add(new Book("To kill a Mockingbird", "Harper Lee", "9781545704325"));
-        lstBook.add(new Book("Hello World", "Franky Johnson", "9781545703452"));
-        lstBook.add(new Book("How to pet a Jackal", "Kaya", "9781545704325"));
+        lstBook.add(new MyBooksModelClass("To kill a Mockingbird", "Harper Lee", "9781545704325","AVAILABLE",R.drawable.book_icon));
+        lstBook.add(new MyBooksModelClass("I'll Let You Go", "Bruce Wagner", "9781545073452","AVAILABLE",R.drawable.book_icon));
+        lstBook.add(new MyBooksModelClass("Laughing Gas", "P.G Wodehouse", "9781545875658","AVAILABLE",R.drawable.book_icon));
     }
 }

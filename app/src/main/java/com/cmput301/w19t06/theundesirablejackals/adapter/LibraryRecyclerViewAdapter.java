@@ -14,23 +14,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.classes.MyBooksModelClass;
 import com.cmput301.w19t06.theundesirablejackals.R;
-import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.classes.LibraryModelClass;
 
 import java.util.List;
 
-public class MyBooksRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksRecyclerViewAdapter.MyViewHolder> {
+public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecyclerViewAdapter.MyViewHolder> {
 
     Context mContext;
-    List<MyBooksModelClass> mData;
+    List<LibraryModelClass> mData;
 
     /**
      * the adapter class that connects our data to recycler view
      * @param mContext context of the class
      * @param mData pass the data from MyBooksModelClass
      */
-    public MyBooksRecyclerViewAdapter(Context mContext, List<MyBooksModelClass> mData) {
+    public LibraryRecyclerViewAdapter(Context mContext, List<LibraryModelClass> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
