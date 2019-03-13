@@ -83,4 +83,13 @@ public class BookList {
     public boolean contains(Book book) {
         return books.contains(book);
     }
+
+    @Override
+    public String toString() {
+        String s = "{";
+        for(Book b : books){
+            s += "\n" + b;
+        }s += "}";
+        return s;
+    }
 }

@@ -266,15 +266,15 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userInfo=" + userInfo +
-                ", ownedBooks=" + ownedBooks +
-                ", borrowedBooks=" + borrowedBooks +
-                ", favouriteBooks=" + favouriteBooks +
-                ", lendRequests=" + lendRequests +
-                ", borrowRequests=" + borrowRequests +
-                ", genreOfInterests=" + genreOfInterests +
-                ", friends=" + friends +
-                ", pickUpLocation="+ pickUpLocation +
+                "\nuserInfo=" + userInfo +
+                ",\nownedBooks=" + ownedBooks +
+                ",\nborrowedBooks=" + borrowedBooks +
+                ",\nfavouriteBooks=" + favouriteBooks +
+                ",\nlendRequests=" + lendRequests +
+                ",\nborrowRequests=" + borrowRequests +
+                ",\ngenreOfInterests=" + genreOfInterests +
+                ",\nfriends=" + friends +
+                ",\npickUpLocation="+ pickUpLocation +
                 '}';
     }
 }

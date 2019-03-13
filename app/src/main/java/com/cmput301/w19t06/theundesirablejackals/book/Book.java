@@ -24,7 +24,7 @@ public class Book implements Serializable {
     private BookStatus status;
     private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
-    private Geolocation pickUpLocation;
+//    private Geolocation pickUpLocation;
 
 
 
@@ -46,15 +46,11 @@ public class Book implements Serializable {
         this.author = author;
         this.isbn = isbn;
         this.status = BookStatus.AVAILABLE;
+        this.genres = new ArrayList<BookGenres>();
         // this.owner = owner;
         this.images = new ArrayList<Image>();
 
-        // pick up location as default at the U of A
-        this.pickUpLocation = new Geolocation(53.5232, 113.5263);
 
-        // adds itself to the owner's owned books
-//        BookList ownedBooks = owner.getOwnedBooks();
-//        ownedBooks.addBook(this);
     }
 
 //    public Book(String title, String author, String isbn, User owner) {
@@ -116,13 +112,13 @@ public class Book implements Serializable {
         return images;
     }
 
-    /**
-     *
-     * @return Geolocation of the book pickup location
-     */
-    public Geolocation getPickUpLocation() {
-        return pickUpLocation;
-    }
+//    /**
+//     *
+//     * @return Geolocation of the book pickup location
+//     */
+//    public Geolocation getPickUpLocation() {
+//        return pickUpLocation;
+//    }
 
     /**
      *
@@ -143,11 +139,12 @@ public class Book implements Serializable {
 
     /**
      *
-     * @param newISBN replacement ISBM of the book
+     * @param newISBN replacement ISBN of the book
      */
-    public void setISBN(String newISBN) {
+    public void setIsbn(String newISBN) {
         isbn = newISBN;
     }
+
 
     /**
      *
@@ -203,5 +200,23 @@ public class Book implements Serializable {
      */
     public void deleteImage(Image image) {
         images.remove(image);
+    }
+
+    @Override
+    public String toString() {
+//        private String title;
+//        private String author;
+//        private String isbn;
+//        private BookStatus status;
+//        private ArrayList<BookGenres> genres;
+//        private ArrayList<Image> images;
+        return "{" +
+                "title=" + title +
+                ", author=" + author +
+                ", isbn= " + isbn +
+                ", status= " + status +
+                ", genres= " + genres +
+                ", images= " + images + "}";
+
     }
 }

@@ -33,7 +33,7 @@
     <string name="buttonCaptureBarcodePicture">Scan Barcode</string>
     <string name="edit_text_isbn_field">ISBN</string>
     <string name="button_search_isbn">Search</string>
-    <string name="checking_user_data">Checking User Data#8230</string>
+    <string name="checking_user_data">Checking User Data&#8230;</string>
     <string name="button_sign_out">Sign Out</string>
     <string name="title_activity_maps">Map</string>
     <string name="image_description_book_thumbnail">Book Thumbnail</string>
