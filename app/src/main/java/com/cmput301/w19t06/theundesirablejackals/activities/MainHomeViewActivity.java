@@ -231,6 +231,8 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     InputStream inputStream;
 
+
+
                     try {
                         inputStream = getContentResolver().openInputStream(imageUri);
                         Bitmap image = BitmapFactory.decodeStream(inputStream);
@@ -242,4 +244,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                 }
         }
     }
+
+
 }

@@ -1,4 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
+import android.content.Intent;
+
 import java.util.ArrayList;
 /**
  * This class helps with sorting and searching local list of books.
@@ -50,12 +52,28 @@ public class BookList {
         return null;
     }
 
+    public int size(){
+        return books.size();
+    }
+
+    public Book get(int i){
+        return books.get(i);
+    }
+
     /**
      *
      * @param newBook book to be added to the list
      */
     public void addBook(Book newBook) {
         books.add(newBook);
+    }
+
+    /**
+     * TODO
+     * @param bookList
+     */
+    public void addBooks(BookList bookList){
+        books.addAll(bookList.getBooks());
     }
 
     /**

@@ -105,7 +105,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
      * text view
      */
     public void getUserInfo () {
-        databaseHelper.getUserFromDatabase(new UserCallback() {
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
                 // retrieve user's info

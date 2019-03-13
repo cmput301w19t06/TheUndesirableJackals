@@ -14,23 +14,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.classes.MyBooksModelClass;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
-import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 
 import java.util.List;
 
 public class MyBooksRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksRecyclerViewAdapter.MyViewHolder> {
 
     Context mContext;
-    List<MyBooksModelClass> mData;
+    BookList mData;
 
     /**
      * the adapter class that connects our data to recycler view
      * @param mContext context of the class
      * @param mData pass the data from MyBooksModelClass
      */
-    public MyBooksRecyclerViewAdapter(Context mContext, List<MyBooksModelClass> mData) {
+    public MyBooksRecyclerViewAdapter(Context mContext, BookList mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -64,7 +63,7 @@ public class MyBooksRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksRecy
         holder.tv_author.setText(mData.get(position).getAuthor());
         holder.tv_isbn.setText(mData.get(position).getIsbn());
         holder.tv_status.setText(mData.get(position).getStatus().toString());
-        holder.img_book.setImageResource(mData.get(position).getImg_book());
+//        holder.img_book.setImageResource(mData.get(position).getImg_book());
 
     }
 

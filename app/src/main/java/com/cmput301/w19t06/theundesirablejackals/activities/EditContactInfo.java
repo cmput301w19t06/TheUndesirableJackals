@@ -36,7 +36,7 @@ public class EditContactInfo extends AppCompatActivity {
         setContentView(R.layout.activity_edit_contact_info);
 
         databaseHelper = new DatabaseHelper();
-        databaseHelper.getUserFromDatabase(new UserCallback() {
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             /**
              * Retrieves user's phone number and set it an edit text so user can see it
              * @param user Custom class that holds all data related to current user
@@ -83,7 +83,7 @@ public class EditContactInfo extends AppCompatActivity {
      * Retrieves the User object belonging to current user and calls "updateUser"
      */
     public void getUser () {
-        databaseHelper.getUserFromDatabase(new UserCallback() {
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
 //                ((EditText) findViewById(R.id.editText)).setText(user.getUserInfo().getEmail());

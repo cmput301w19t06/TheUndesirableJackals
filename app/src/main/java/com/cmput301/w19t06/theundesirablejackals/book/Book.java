@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals.book;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.Image;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,9 +22,11 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String isbn;
+    private String description;
     private BookStatus status;
     private ArrayList<BookGenres> genres;
     private ArrayList<Image> images;
+    private UserInformation owner;
 //    private Geolocation pickUpLocation;
 
 
@@ -48,7 +51,29 @@ public class Book implements Serializable {
         this.status = BookStatus.AVAILABLE;
         this.genres = new ArrayList<BookGenres>();
         // this.owner = owner;
-        this.images = new ArrayList<Image>();
+//        this.images = new ArrayList<Image>();
+
+
+    }
+
+    /**
+     * Default constructor which creates a new book object
+     * @param title of the book
+     * @param author of the book
+     * @param isbn of the book
+     */
+    public Book(String title, String author, String isbn, String description) {
+        // status is set to "available" as default
+        // images is set to null as default
+        // TODO: Images will need to be set to a default image in the future
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.description = description;
+        this.status = BookStatus.AVAILABLE;
+        this.genres = new ArrayList<BookGenres>();
+        // this.owner = owner;
+//        this.images = new ArrayList<Image>();
 
 
     }
@@ -72,6 +97,41 @@ public class Book implements Serializable {
 //        ownedBooks.addBook(this);
 //    }
 
+
+    /**
+     *
+     * @return  Return user's the description of the book
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     *
+     * @param description  the user's description of the book
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * get the owner of this book object
+     * @return the User object who is the owner of the book
+     */
+    public UserInformation getOwner() {
+        return owner;
+    }
+
+
+    /**
+     * Set the owner of this book object
+     * @param owner  the User object who is the owner of the book
+     */
+    public void setOwner(UserInformation owner) {
+        this.owner = owner;
+    }
+
+
     /**
      *
      * @return title of the book in String format
@@ -79,6 +139,7 @@ public class Book implements Serializable {
     public String getTitle() {
         return title;
     }
+
 
     /**
      *
@@ -88,21 +149,24 @@ public class Book implements Serializable {
         return author;
     }
 
+
     /**
      *
      * @return ISBN of the book in String  format
      */
-    public String getISBN() {
+    public String getIsbn() {
         return isbn;
     }
 
+
+    /**
+     * get this book's lend status (enum)
+     * @return this book's current lend status
+     */
     public BookStatus getStatus() {
         return status;
     }
 
-//    public User getOwner() {
-//        return owner;
-//    }
 
     /**
      *

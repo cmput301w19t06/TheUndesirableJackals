@@ -223,6 +223,18 @@ public class User {
      */
     public void setOwnedBooks(BookList ownedBooks) {
         this.ownedBooks = ownedBooks;
+        for(Book b : this.ownedBooks.getBooks()){
+            b.setOwner(this.userInfo);
+        }
+    }
+
+    /**
+     * Add an owned book to user's owned book list, and set user as owner
+     * @param book
+     */
+    public void addOwnedBook(Book book){
+        book.setOwner(this.userInfo);
+        this.ownedBooks.addBook(book);
     }
 
     /**
