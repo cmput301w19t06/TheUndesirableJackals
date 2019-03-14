@@ -106,6 +106,8 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         break;
                     default:
                         intent = new Intent();
