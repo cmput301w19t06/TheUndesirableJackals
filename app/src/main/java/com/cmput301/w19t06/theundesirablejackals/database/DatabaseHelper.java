@@ -282,7 +282,7 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
-                        Log.d(TAG, user.toString());
+//                        Log.d(TAG, user.toString());
                         onCallback.onCallback(user);
                     }
 
