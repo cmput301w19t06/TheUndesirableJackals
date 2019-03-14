@@ -95,8 +95,8 @@ public class LibraryFragment extends Fragment {
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
-                if(user.getOwnedBooks() != null) {
-                    libraryRecyclerViewAdapter.addItems(user.getOwnedBooks());
+                if(user.getFavouriteBooks() != null) {
+                    libraryRecyclerViewAdapter.setDataSet(user.getFavouriteBooks());
                 }
 
             }
@@ -117,5 +117,7 @@ public class LibraryFragment extends Fragment {
 //        lstBook.add(new LibraryModelClass("To kill a Mockingbird", "Harper Lee", "9781545704325","AVAILABLE",R.drawable.book_icon));
         //lstBook.add(new LibraryModelClass("I'll Let You Go", "Bruce Wagner", "9781545073452","AVAILABLE",R.drawable.book_icon));
         //lstBook.add(new LibraryModelClass("Laughing Gas", "P.G Wodehouse", "9781545875658","AVAILABLE",R.drawable.book_icon));
+
+
     }
 }

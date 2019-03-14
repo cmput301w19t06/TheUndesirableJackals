@@ -58,6 +58,11 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         myListener = listener;
     }
 
+    public void setDataSet(BookList books){
+        dataSet = books;
+        updateItems();
+    }
+
 
     // Create new views (invoked by the layout manager)
     @Override

@@ -49,7 +49,7 @@ public class MyBooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.my_books_fragment,container,false);
+        view = inflater.inflate(R.layout.my_books_fragment,container,false);
 
         ItemTouchHelper itemTouchhelper;
         SwipeController swipeController;
@@ -106,7 +106,7 @@ public class MyBooksFragment extends Fragment {
             @Override
             public void onCallback(User user) {
                 if(user.getOwnedBooks() != null) {
-                    booksRecyclerViewAdapter.addItems(user.getOwnedBooks());
+                    booksRecyclerViewAdapter.setDataSet(user.getOwnedBooks());
                 }
 
             }

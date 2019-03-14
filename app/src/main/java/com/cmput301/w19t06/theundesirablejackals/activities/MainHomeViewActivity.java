@@ -146,7 +146,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.search_menu,menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
 
         return true;
     }
@@ -231,8 +231,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                             }
                         }
                     });
-
-
 //                    try {
 //                        inputStream = getContentResolver().openInputStream(imageUri);
 //                        Bitmap image = BitmapFactory.decodeStream(inputStream);
@@ -242,6 +240,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
 //                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
 //                    }
                 }
+                break;
         }
     }
 

@@ -92,7 +92,7 @@ public class BorrowedFragment extends Fragment {
             @Override
             public void onCallback(User user) {
                 if(user.getBorrowedBooks() != null) {
-                    borrowedRecyclerViewAdapter.addItems(user.getBorrowedBooks());
+                    borrowedRecyclerViewAdapter.setDataSet(user.getBorrowedBooks());
                 }
 
             }
