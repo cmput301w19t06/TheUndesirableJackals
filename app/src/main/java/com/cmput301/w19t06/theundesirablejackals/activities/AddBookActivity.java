@@ -1,16 +1,19 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,9 +48,10 @@ import java.util.List;
 
 public class AddBookActivity extends AppCompatActivity {
     private FirebaseVisionBarcodeDetectorOptions options;
-    public static final int IMAGE_GALLERY_REQUEST = 5;
-    private static final int IMAGE_CAPTURE = 301;
-    public static final String BARCODES_DATA_CODE = "BarCode";
+    public static final int IMAGE_GALLERY_REQUEST = 300;
+    private static final int IMAGE_CAPTURE_REUEST = 301;
+    private static final int BARCODE_PERMISSION_REQUEST = 302;
+    private static final int GALLERY_PERMISSION_REQUEST = 303;
     private String TAG = "AddBookActivity";
     private Button buttonAddBook;
     private Button buttonAddPhoto;
@@ -94,7 +98,23 @@ public class AddBookActivity extends AppCompatActivity {
      * @param view
      */
     public void isbnReader(View view){
-        dispatchTakePictureIntent();
+        if(ContextCompat.checkSelfPermission(this,
+                                    Manifest.permission.CAMERA)
+                                    == PackageManager.PERMISSION_GRANTED
+                                && ContextCompat.checkSelfPermission(this,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    == PackageManager.PERMISSION_GRANTED
+                                    )
+        {
+
+                dispatchTakePictureIntent();
+
+        }else{
+            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    BARCODE_PERMISSION_REQUEST);
+        }
     }
 
     /**
@@ -136,6 +156,22 @@ public class AddBookActivity extends AppCompatActivity {
      * @param view
      */
     public void addPhotobtn(View view){
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+
+            dispatchImageGalleryIntent();
+
+        }else{
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    GALLERY_PERMISSION_REQUEST);
+        }
+    }
+
+    private void dispatchImageGalleryIntent(){
         Intent photoIntent = new Intent(Intent.ACTION_PICK);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String pictureDirectoryPath = pictureDirectory.getPath();
@@ -171,7 +207,7 @@ public class AddBookActivity extends AppCompatActivity {
             }else{
                 showMyToast("Add picture was canceled");
             }
-        }else if(requestCode == IMAGE_CAPTURE){
+        }else if(requestCode == IMAGE_CAPTURE_REUEST){
             if (resultCode == RESULT_OK) {
 
 //                galleryAddPic();
@@ -191,13 +227,6 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
-//    private void galleryAddPic() {
-//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//        File f = new File(currentPhotoPath);
-//        Uri contentUri = Uri.fromFile(f);
-//        mediaScanIntent.setData(contentUri);
-//        this.sendBroadcast(mediaScanIntent);
-//    }
 
 
     private void scanBarcode(){
@@ -210,7 +239,7 @@ public class AddBookActivity extends AppCompatActivity {
 
             FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
                     .getVisionBarcodeDetector(options);
-//                .getVisionBarcodeDetector();
+
 
 
             Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
@@ -296,7 +325,7 @@ public class AddBookActivity extends AppCompatActivity {
                         "com.cmput301.w19t06.theundesirablejackals",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, IMAGE_CAPTURE);
+                startActivityForResult(takePictureIntent, IMAGE_CAPTURE_REUEST);
 
             }
         }
@@ -319,6 +348,33 @@ public class AddBookActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "file not Deleted : " + currentPhotoPath);
                 }
+            }
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode== BARCODE_PERMISSION_REQUEST) {
+            if (grantResults.length == 2 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Toast.makeText(this, "Scanner wont work without permission!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }else if(requestCode == GALLERY_PERMISSION_REQUEST){
+            if(grantResults.length == 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                dispatchImageGalleryIntent();
+            }else{
+                Toast.makeText(this, "Can't add photos from storage!",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
