@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/photoAddButton_id"
+        android:id="@+id/buttonAddBookActivityAddPhotos"
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginStart="8dp"
@@ -18,10 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionAdd_id" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookDescription" />
 
     <EditText
-        android:id="@+id/booktitleAdd_id"
+        android:id="@+id/editTextAddBookBookTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookTitle" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewAddBookBookTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/bookauthorAdd_id"
+        android:id="@+id/editTextAddBookBookAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,10 +59,10 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookAuthor" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewAddBookBookAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -71,10 +71,10 @@
         android:text="Author"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/booktitleAdd_id" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookTitle" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textViewAddBookBookISBN"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -83,10 +83,10 @@
         android:text="ISBN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookauthorAdd_id" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookAuthor" />
 
     <EditText
-        android:id="@+id/isbnAdd_id"
+        android:id="@+id/editTextAddBookBookISBN"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -95,12 +95,12 @@
         android:ems="10"
         android:hint="111-1-11-111111-1"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddBookScanISBN"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookISBN" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textViewAddBookBookDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -109,10 +109,10 @@
         android:text="Description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/isbnAdd_id" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookISBN" />
 
     <EditText
-        android:id="@+id/descriptionAdd_id"
+        android:id="@+id/editTextAddBookBookDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -123,10 +123,10 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookDescription" />
 
     <Button
-        android:id="@+id/finalAddBookButton_id"
+        android:id="@+id/buttonAddBookActivityAddBook"
         android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
@@ -139,15 +139,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photoAddButton_id"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddBookActivityAddPhotos"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonAddBookScanISBN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/isbnAdd_id"
+        android:onClick="isbnReader"
+        android:text="@string/buttonCaptureBarcodePicture"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextAddBookBookISBN"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
@@ -66,26 +68,32 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-//        TextView systolicView = (TextView) holder.mainTextView.findViewById(R.id.Recycler_View_Systolic_Pressure);
-//        TextView dateView = (TextView) holder.mainTextView.findViewById(R.id.Recycler_View_Date_of_Measurement);
-//        TextView diastolicView = (TextView) holder.mainTextView.findViewById(R.id.Recycler_View_Diastolic_Pressure);
-//        TextView heartView = (TextView) holder.mainTextView.findViewById(R.id.Recycler_View_HeartRate);
+        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_status);
+        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_book_title);
+        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_author);
+        TextView isbnTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_isbn);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.myBooks_img_book);
 
-//        Integer systolicPressure = dataSet.get(position).getSystolicPressure();
-//        Integer diastolicPressure = dataSet.get(position).getDiastolicPressure();
-//        Integer heartRate = dataSet.get(position).getHeartRate();
+        Book b = dataSet.get(position);
+        String status = b.getStatus().toString();
+        String title = b.getTitle();
+        String author = b.getAuthor();
+        String isbn = b.getIsbn();
 
-//        (systolicView).setText(String.valueOf(systolicPressure));
-//        (dateView).setText(dataSet.get(position).getDateMeasured());
-//        (diastolicView).setText(String.valueOf(diastolicPressure));
-//        (heartView).setText(String.valueOf(heartRate));
+        if(status != null) {
+            statusTextView.setText(status);
+        }
+        if(title != null) {
+            titleTextView.setText(title);
+        }
+        if(author != null) {
+            authorTextView.setText(author);
+        }
+        if(isbn != null) {
+            isbnTextView.setText(isbn);
+        }
 
-//        ((ImageView) holder.mainTextView.findViewById(R.id.Recycler_View_Image)).setImageResource(R.drawable.greencheck);
-//
-//        if((systolicPressure.compareTo(140) > 0) || (systolicPressure.compareTo(90) < 0 ) ||
-//                (diastolicPressure.compareTo(90) > 0) || (diastolicPressure.compareTo(60) < 0)){
-//            ((ImageView) holder.mainTextView.findViewById(R.id.Recycler_View_Image)).setImageResource(R.drawable.redx);
-//        }
+        bookThumbnail.setImageResource(R.drawable.book_icon);
 
     }
 

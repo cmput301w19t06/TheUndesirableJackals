@@ -92,7 +92,7 @@ public class MyBooksFragment extends Fragment {
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(booksRecyclerViewAdapter);
         itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(booksRecyclerView);
+//        itemTouchhelper.attachToRecyclerView(booksRecyclerView);
 
 
         //If we got any data from file, add it to the

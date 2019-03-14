@@ -138,15 +138,15 @@ public class SignInActivity extends AppCompatActivity {
     private void registerInDatabase(final String username, final String phone){
 
         User user = new User(username, databaseHelper.getCurrentUser().getEmail(), phone);
-        user.addOwnedBook(new Book("TestBook1", "TUDJ", "1111111111"));
-        user.addOwnedBook(new Book("TestBook2", "TUDJ", "1111111111"));
-        user.addOwnedBook(new Book("TestBook3", "TUDJ", "1111111111"));
-        user.addOwnedBook(new Book("TestBook1", "TUDJ2", "1111111111"));
-        user.addOwnedBook(new Book("TestBook2", "TUDJ2", "1111111111"));
-        user.addOwnedBook(new Book("TestBook3", "TUDJ2", "1111111111"));
-        user.addOwnedBook(new Book("TestBook1", "TUDJ2", "1111111112"));
-        user.addOwnedBook(new Book("TestBook2", "TUDJ2", "1111111112"));
-        user.addOwnedBook(new Book("TestBook3", "TUDJ2", "1111111112"));
+//        user.addOwnedBook(new Book("TestBook1", "TUDJ", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook2", "TUDJ", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook3", "TUDJ", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook1", "TUDJ2", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook2", "TUDJ2", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook3", "TUDJ2", "1111111111"));
+//        user.addOwnedBook(new Book("TestBook1", "TUDJ2", "1111111112"));
+//        user.addOwnedBook(new Book("TestBook2", "TUDJ2", "1111111112"));
+//        user.addOwnedBook(new Book("TestBook3", "TUDJ2", "1111111112"));
         databaseHelper.registerUser(user, new BooleanCallback() {
                 @Override
                 public void onCallback(boolean bool) {

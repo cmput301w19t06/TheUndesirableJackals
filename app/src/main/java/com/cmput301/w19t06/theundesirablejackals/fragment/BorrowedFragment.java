@@ -80,7 +80,7 @@ public class BorrowedFragment extends Fragment {
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(borrowedRecyclerViewAdapter);
         itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(borrowedRecyclerView);
+//        itemTouchhelper.attachToRecyclerView(borrowedRecyclerView);
 
 
         //If we got any data from file, add it to the

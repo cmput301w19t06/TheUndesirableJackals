@@ -84,7 +84,7 @@ public class LibraryFragment extends Fragment {
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(libraryRecyclerViewAdapter);
         itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(libraryRecyclerView);
+//        itemTouchhelper.attachToRecyclerView(libraryRecyclerView);
 
 
         //If we got any data from file, add it to the

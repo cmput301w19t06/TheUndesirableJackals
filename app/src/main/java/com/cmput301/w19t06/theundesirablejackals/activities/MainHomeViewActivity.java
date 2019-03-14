@@ -77,79 +77,45 @@ public class MainHomeViewActivity extends AppCompatActivity {
              */
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
+                /* highlight the selected item/tab */
+                menuItem.setChecked(true);
+                //close the drawer layout
+                drawerLayout.closeDrawers();
+                Intent intent;
+                boolean bool = true;
                 switch (menuItem.getItemId()){
-
                     case R.id.addtnl_profile:
-                        /* highlight the selected item/tab */
-                        menuItem.setChecked(true);
-                        //close the drawer layout
-                        drawerLayout.closeDrawers();
-                        Intent intent1 = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
-                        startActivity(intent1);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
+                        break;
                     case R.id.addtnl_notification:
-                        /* highlight the selected item/tab */
-                        menuItem.setChecked(true);
-                        //displayMessage("Notifications selected....");
-                        /*close the drawer layout*/
-                        drawerLayout.closeDrawers();
-                        Intent intent3 = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
-                        startActivity(intent3);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
+                        break;
                     case R.id.addtnl_borrowRqst:
-                        /* highlight the selected item/tab */
-                        menuItem.setChecked(true);
-                        //displayMessage("Borrow Requests selected....");
-                        /* close the drawer layout */
-                        drawerLayout.closeDrawers();
-                        Intent intent4 = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
-                        startActivity(intent4);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
+                        break;
                     case R.id.addtnl_lendRqst:
-                        /* highlight the selected item/tab */
-                        menuItem.setChecked(true);
-                        //displayMessage("Lend Requests selected....");
-                        /* close the drawer layout */
-                        drawerLayout.closeDrawers();
-                        Intent intent5 = new Intent(MainHomeViewActivity.this, LentListActivity.class);
-                        startActivity(intent5);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, LentListActivity.class);
+                        break;
                     case R.id.addtnl_friends:
-                        /* highlight the selected item/tab */
-                        menuItem.setChecked(true);
-                        /* close the drawer layout */
-                        drawerLayout.closeDrawers();
-                        Intent intent2 = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
-                        startActivity(intent2);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
+                        break;
                     case R.id.addtnl_search:
-                        //highlight the selected item/tab
-                        menuItem.setChecked(true);
-
-                        //close the drawer layout
-                        drawerLayout.closeDrawers();
-
-                        Intent intent_search = new Intent(MainHomeViewActivity.this, BookSearch.class);
-                        startActivity(intent_search);
-                        return true;
-
+                        intent = new Intent(MainHomeViewActivity.this, BookSearch.class);
+                        break;
                     case R.id.addtn1_logout:
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
-                        Intent intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
+                        intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
-                        startActivity(intent);
-                        finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        break;
+                    default:
+                        intent = new Intent();
+                        bool = false;
+                        break;
                 }
-
-
-                return false;
+                if(bool){
+                    startActivity(intent);
+                }
+                return bool;
             }
         });
 

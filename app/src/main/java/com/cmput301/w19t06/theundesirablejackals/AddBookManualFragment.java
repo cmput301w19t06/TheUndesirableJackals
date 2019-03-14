@@ -17,8 +17,8 @@ import com.cmput301.w19t06.theundesirablejackals.activities.R;
  */
 public class AddBookManualFragment extends Fragment {
     View view;
-    private Button finalAddbtn;
-    private Button photoaddbtn;
+    private Button buttonAddBook;
+    private Button buttonAddPhoto;
     public AddBookManualFragment() {
     }
 
@@ -33,9 +33,8 @@ public class AddBookManualFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =inflater.inflate(R.layout.add_book_manual,container,false);
-        finalAddbtn = (Button) view.findViewById(R.id.finalAddBookButton_id);
-        photoaddbtn = (Button) view.findViewById(R.id.photoAddButton_id);
+        buttonAddBook = (Button) view.findViewById(R.id.buttonAddBookActivityAddBook);
+        buttonAddPhoto = (Button) view.findViewById(R.id.buttonAddBookActivityAddPhotos);
         return view;
-
     }
 }
