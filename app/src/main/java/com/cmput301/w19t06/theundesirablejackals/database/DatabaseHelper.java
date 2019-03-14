@@ -364,10 +364,9 @@ public class DatabaseHelper{
      */
     public void saveCurrentUsersOwnedBooks(BookList bookList, final BooleanCallback onCallback){
         HashMap<String, Object> ownedBookHashMap = new HashMap<>();
-        ownedBookHashMap.put("books", bookList);
+        ownedBookHashMap.put("ownedBooks", bookList);
         usersReference
                 .child(currentUser.getUid())
-                .child("ownedBooks")
                 .updateChildren(ownedBookHashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

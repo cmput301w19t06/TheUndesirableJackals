@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
@@ -74,7 +75,8 @@ public class BorrowedFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        borrowedRecyclerViewAdapter = new BooksRecyclerViewAdapter(listener);
+        borrowedRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getBorrowedBooksAdapter();
+        borrowedRecyclerViewAdapter.setMyListener(listener);
         borrowedRecyclerView.setAdapter(borrowedRecyclerViewAdapter);
 
         //interactivity helpers (touch for edit, swipe for delete)

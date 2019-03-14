@@ -65,7 +65,7 @@ public class BookList {
      * @param newBook book to be added to the list
      */
     public void addBook(Book newBook) {
-        books.add(newBook);
+        books.add(0, newBook);
     }
 
     /**

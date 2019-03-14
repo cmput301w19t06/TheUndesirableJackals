@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
@@ -78,7 +79,8 @@ public class LibraryFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        libraryRecyclerViewAdapter = new BooksRecyclerViewAdapter(listener);
+        libraryRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getLibraryBooksAdapter();
+        libraryRecyclerViewAdapter.setMyListener(listener);
         libraryRecyclerView.setAdapter(libraryRecyclerViewAdapter);
 
         //interactivity helpers (touch for edit, swipe for delete)

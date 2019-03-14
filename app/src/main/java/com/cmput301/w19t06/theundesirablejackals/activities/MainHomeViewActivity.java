@@ -28,7 +28,10 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
@@ -47,6 +50,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private SearchView searchView;
     private ListView listView;
+    private BooksRecyclerViewAdapter ownedBooksAdapter = new BooksRecyclerViewAdapter();
+    private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
+    private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();
 
     /**
      * Creates a tablayout for the fragments
@@ -127,6 +133,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
         adapter.AddFragment(new MyBooksFragment(),"My Books");
         adapter.AddFragment(new LibraryFragment(),"Library");
         adapter.AddFragment(new BorrowedFragment(),"Borrowed");
+
         /* adapter setup */
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -142,6 +149,18 @@ public class MainHomeViewActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search_menu,menu);
 
         return true;
+    }
+
+    public BooksRecyclerViewAdapter getOwnedBooksAdapter(){
+        return ownedBooksAdapter;
+    }
+
+    public BooksRecyclerViewAdapter getLibraryBooksAdapter(){
+        return libraryBooksAdapter;
+    }
+
+    public BooksRecyclerViewAdapter getBorrowedBooksAdapter(){
+        return borrowedBooksAdapter;
     }
 
     /**
@@ -188,27 +207,40 @@ public class MainHomeViewActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
+        switch (requestCode) {
             case ADD_BOOK:
-                if (resultCode == MainHomeViewActivity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     String title = data.getStringExtra("bookTitle");
                     String author = data.getStringExtra("bookAuthor");
                     String isbn = data.getStringExtra("bookIsbn");
                     String description = data.getStringExtra("bookDescription");
-                    Uri imageUri = data.getData();
-                    imageUri = data.getData();
-                    InputStream inputStream;
+//                    Uri imageUri = data.getData();
+//                    imageUri = data.getData();
+//                    InputStream inputStream;
+
+                    final Book b = new Book(title, author, isbn, description);
+                    ownedBooksAdapter.addItem(b);
+                    databaseHelper.saveCurrentUsersOwnedBooks(ownedBooksAdapter.getDataSet(), new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if(bool){
+                                displayMessage("Book added to owned list successfully!");
+                            }else{
+                                ownedBooksAdapter.deleteItem(0);
+                                displayMessage("Sorry, something went wrong :(");
+                            }
+                        }
+                    });
 
 
-
-                    try {
-                        inputStream = getContentResolver().openInputStream(imageUri);
-                        Bitmap image = BitmapFactory.decodeStream(inputStream);
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
-                    }
+//                    try {
+//                        inputStream = getContentResolver().openInputStream(imageUri);
+//                        Bitmap image = BitmapFactory.decodeStream(inputStream);
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
+//                    }
                 }
         }
     }

@@ -311,12 +311,14 @@ public class AddBookActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        File file = new File(currentPhotoPath);
-        if (file.exists()) {
-            if (file.delete()) {
-                Log.d(TAG, "file Deleted : " + currentPhotoPath );
-            } else {
-                Log.d(TAG,"file not Deleted : " + currentPhotoPath);
+        if(currentPhotoPath != null) {
+            File file = new File(currentPhotoPath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    Log.d(TAG, "file Deleted : " + currentPhotoPath);
+                } else {
+                    Log.d(TAG, "file not Deleted : " + currentPhotoPath);
+                }
             }
         }
     }

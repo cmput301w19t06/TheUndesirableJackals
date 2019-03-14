@@ -44,10 +44,18 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
-        myListener = listener;
+//    // Provide a suitable constructor (depends on the kind of dataset)
+//    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
+//        myListener = listener;
+//        dataSet = new BookList();
+//    }
+
+    public BooksRecyclerViewAdapter(){
         dataSet = new BookList();
+    }
+
+    public void setMyListener(RecyclerViewClickListener listener){
+        myListener = listener;
     }
 
 
