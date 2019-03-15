@@ -168,7 +168,7 @@ public class SignInActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
         databaseHelper.signOut();
-        
+
     }
 }
 
