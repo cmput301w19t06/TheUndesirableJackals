@@ -42,9 +42,9 @@ public class PersonalProfileActivity extends AppCompatActivity {
 //        // display personal information on the activity
 //        getUserInfo();
 
-        editProfilebtn = (Button) findViewById(R.id.profileEditBtn_id);
-        back = (Button) findViewById(R.id.Back);
-        location = (Button) findViewById(R.id.location);
+        editProfilebtn = (Button) findViewById(R.id.buttonPersonalProfileActivityEditInfo);
+        back = (Button) findViewById(R.id.buttonPersonalProfileActivityBack);
+        location = (Button) findViewById(R.id.buttonPersonalProfileActivityDefaultLocation);
 
         // edit action
         editProfilebtn.setOnClickListener(new View.OnClickListener() {
@@ -117,13 +117,13 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 Geolocation b = user.getPickUpLocation();
 
                 // display the info
-                TextView userNameView = (TextView) findViewById(R.id.textViewOthersProfileActivityUserName);
+                TextView userNameView = (TextView) findViewById(R.id.textViewPersonalProfileActivityUserName);
                 userNameView.setText(userName);
 
-                TextView emailView = (TextView) findViewById(R.id.textViewPersonalEmail);
+                TextView emailView = (TextView) findViewById(R.id.textViewPersonalProfileActivityEmail);
                 emailView.setText(email);
 
-                TextView phoneView = (TextView) findViewById(R.id.textViewPersonalPhoneNumber);
+                TextView phoneView = (TextView) findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
                 phoneView.setText(phone);
             }
         });
