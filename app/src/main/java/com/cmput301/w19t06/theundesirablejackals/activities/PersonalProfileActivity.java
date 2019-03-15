@@ -1,7 +1,7 @@
 /**
  * Class launched from "MainHomeViewActivity" that displays the user's personal information
  * It gives the user the option to edit their phone number and see their current pick up
- * location (when the appropiate buttons are pressed)
+ * buttonDefaultLocation (when the appropiate buttons are pressed)
  * @version 1 - March 8, 2019
  * @see MainHomeViewActivity, MapsActivity, EditContactInfoActivity
  */
@@ -22,9 +22,9 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 public class PersonalProfileActivity extends AppCompatActivity {
-    private Button editProfilebtn;
-    private Button back;
-    private Button location;
+    private Button buttonEditProfile;
+    private Button buttonBack;
+    private Button buttonDefaultLocation;
     private DatabaseHelper databaseHelper;
 
     /**
@@ -42,12 +42,12 @@ public class PersonalProfileActivity extends AppCompatActivity {
 //        // display personal information on the activity
 //        getUserInfo();
 
-        editProfilebtn = (Button) findViewById(R.id.buttonPersonalProfileActivityEditInfo);
-        back = (Button) findViewById(R.id.buttonPersonalProfileActivityBack);
-        location = (Button) findViewById(R.id.buttonPersonalProfileActivityDefaultLocation);
+        buttonEditProfile = (Button) findViewById(R.id.buttonPersonalProfileActivityEditInfo);
+        buttonBack = (Button) findViewById(R.id.buttonPersonalProfileActivityBack);
+        buttonDefaultLocation = (Button) findViewById(R.id.buttonPersonalProfileActivityDefaultLocation);
 
         // edit action
-        editProfilebtn.setOnClickListener(new View.OnClickListener() {
+        buttonEditProfile.setOnClickListener(new View.OnClickListener() {
             /**
              * Called when user presses the edit info option
              * Sends the user to "EditContactInfoActivity" activity
@@ -59,11 +59,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
             }
         });
 
-        // back action
-        back.setOnClickListener(new View.OnClickListener() {
+        // buttonBack action
+        buttonBack.setOnClickListener(new View.OnClickListener() {
             /**
-             * Called when user presses the back option
-             * Sends the user back to "MainHomeView" activity
+             * Called when user presses the buttonBack option
+             * Sends the user buttonBack to "MainHomeView" activity
              * @param view Context passed as parameter for the intent
              */
             public void onClick(View view) {
@@ -72,10 +72,10 @@ public class PersonalProfileActivity extends AppCompatActivity {
             }
         });
 
-        // location action
-        location.setOnClickListener(new View.OnClickListener() {
+        // buttonDefaultLocation action
+        buttonDefaultLocation.setOnClickListener(new View.OnClickListener() {
             /**
-             * Called when user presses the my pick up location option
+             * Called when user presses the my pick up buttonDefaultLocation option
              * Sends the user to "MapsActivity" activity
              * @param view Context passed as parameter for the intent
              */
