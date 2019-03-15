@@ -5,11 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.cmput301.w19t06.theundesirablejackals.adapter.FriendsListAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.FriendsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * List of friends to the user. Allows them to add new users and view suggested users.
@@ -18,9 +17,9 @@ import java.util.List;
  */
 public class FriendsListActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    FriendsListAdapter adapter;
-    List<UserInformation> friendsList;
+    private RecyclerView recyclerView;
+    private FriendsRecyclerViewAdapter adapter;
+    private ArrayList<UserInformation> friendsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -42,8 +42,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private DatabaseHelper databaseHelper;
-    private SearchView searchView;
-    private ListView listView;
     private BooksRecyclerViewAdapter ownedBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();

@@ -20,9 +20,9 @@ public class BorrowedListActivity extends AppCompatActivity {
 
         String[] borrowOptions = {};
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, borrowOptions);
-        ListView listview = (ListView) findViewById(R.id.borrowRequest_list);
+        ListView listview = (ListView) findViewById(R.id.listViewBorrowRequestActivityBorrowRequests);
         listview.setAdapter(adapter);
-        listview.setOnClickListener((View.OnClickListener) this);
+//        listview.setOnClickListener((View.OnClickListener) this);
     }
 
     /**

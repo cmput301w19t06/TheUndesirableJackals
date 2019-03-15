@@ -54,7 +54,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         dataSet = new BookList();
     }
 
-    public void setMyListener(RecyclerViewClickListener listener){
+    public void setMyListener(RecyclerViewClickListener    listener){
         myListener = listener;
     }
 
@@ -78,7 +78,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(BooksRecyclerViewAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_status);

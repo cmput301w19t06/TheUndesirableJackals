@@ -13,7 +13,7 @@ import android.widget.ListView;
  * List view of all current lent requests. Allow the user to view more about them
  * Author: Kaya Thiessen
  */
-public class LentListActivity extends AppCompatActivity {
+public class LentListActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,22 +25,22 @@ public class LentListActivity extends AppCompatActivity {
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lendOptions);
         ListView listview = (ListView) findViewById(R.id.listViewLendRequestActivityLendRequests);
         listview.setAdapter(adapter);
-        listview.setOnClickListener((View.OnClickListener) this);
+//        listview.setOnClickListener((View.OnClickListener) this.onClick());
     }
 
-    /**
-     * Opens AcceptRejectLendActivity when pressed with data from list
-     * @param l
-     * @param v
-     * @param position
-     * @param id
-     * @see AcceptRejectLendActivity
-     */
-    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        Intent intent = new Intent();
-        intent.setClass(this, AcceptRejectLendActivity.class);
-        intent.putExtra("position", position);
-        intent.putExtra("id", id);
-        startActivity(intent);
-    }
+//    /**
+//     * Opens AcceptRejectLendActivity when pressed with data from list
+//     * @param l
+//     * @param v
+//     * @param position
+//     * @param id
+//     * @see AcceptRejectLendActivity
+//     */
+//    public void onClick(AdapterView<?> l, View v, int position, long id) {
+//        Intent intent = new Intent();
+//        intent.setClass(this, AcceptRejectLendActivity.class);
+//        intent.putExtra("position", position);
+//        intent.putExtra("id", id);
+//        startActivity(intent);
+//    }
 }
