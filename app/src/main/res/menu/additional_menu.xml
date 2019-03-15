@@ -5,25 +5,25 @@
 
 
         <item
-            android:id="@+id/addtnl_profile"
+            android:id="@+id/itemMenuProfile"
             android:title="Profile" />
         <item
-            android:id="@+id/addtnl_notification"
+            android:id="@+id/itemMenuNotifications"
             android:title="Notifications" />
         <item
-            android:id="@+id/addtnl_borrowRqst"
+            android:id="@+id/itemMenuBorrowRequests"
             android:title="Borrow Requests" />
         <item
-            android:id="@+id/addtnl_lendRqst"
+            android:id="@+id/itemMenuLendRequests"
             android:title="Lend Requests" />
         <item
-            android:id="@+id/addtnl_friends"
+            android:id="@+id/itemMenuFriends"
             android:title="Friends" />
         <item
-            android:id="@+id/addtnl_search"
+            android:id="@+id/itemMenuSearchBook"
             android:title="Search Book" />
         <item
-            android:id="@+id/addtn1_logout"
+            android:id="@+id/itemMenuLogout"
             android:title="Logout" />
 
     </group>

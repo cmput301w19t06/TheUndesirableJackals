@@ -90,25 +90,25 @@ public class MainHomeViewActivity extends AppCompatActivity {
                 Intent intent;
                 boolean bool = true;
                 switch (menuItem.getItemId()){
-                    case R.id.addtnl_profile:
+                    case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
-                    case R.id.addtnl_notification:
+                    case R.id.itemMenuNotifications:
                         intent = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
                         break;
-                    case R.id.addtnl_borrowRqst:
+                    case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         break;
-                    case R.id.addtnl_lendRqst:
+                    case R.id.itemMenuLendRequests:
                         intent = new Intent(MainHomeViewActivity.this, LentListActivity.class);
                         break;
-                    case R.id.addtnl_friends:
+                    case R.id.itemMenuFriends:
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
-                    case R.id.addtnl_search:
+                    case R.id.itemMenuSearchBook:
                         intent = new Intent(MainHomeViewActivity.this, BookSearch.class);
                         break;
-                    case R.id.addtn1_logout:
+                    case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
