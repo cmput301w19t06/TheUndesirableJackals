@@ -168,7 +168,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
      * @param view
      * Author: Kaya Thiessen
      */
-    public void addBookButton(View view){
+    public void OnClick_AddOwnedBookButton(View view){
         Intent intent = AddBookActivity.makeIntent(MainHomeViewActivity.this);
         startActivityForResult(intent, ADD_BOOK);
     }

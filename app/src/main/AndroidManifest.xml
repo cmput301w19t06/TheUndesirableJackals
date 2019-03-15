@@ -35,7 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AcceptRejectLendActivity"/>
+        <activity android:name=".ViewLibraryBookActivity"></activity>
+        <activity android:name=".ViewBorrowedBookActivity" />
+        <activity android:name=".ViewOwnedBookActivity" />
+        <activity android:name=".AcceptRejectLendActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,8 +84,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".BookSearchActivity" />
+        <activity android:name=".BookSearchActivity" />
     </application>
 
 </manifest>

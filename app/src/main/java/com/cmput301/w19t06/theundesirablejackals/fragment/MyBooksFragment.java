@@ -56,11 +56,6 @@ public class MyBooksFragment extends Fragment {
         RecyclerView.LayoutManager mainLayoutManager;
         RecyclerView booksRecyclerView;
 
-        //create and Handle Add book Button
-        addBookButton = (Button) view.findViewById(R.id.addBook_button);
-
-
-
         //Setting up the main page recyclerView using findViewById
         booksRecyclerView = (RecyclerView) view.findViewById(R.id.myBooks_recyclerview);
 

@@ -508,4 +508,5 @@ public class DatabaseHelper{
         currentUser = null;
 
     }
+    
 }
