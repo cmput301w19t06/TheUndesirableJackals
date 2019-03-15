@@ -52,7 +52,6 @@
         <activity android:name=".BorrowedListActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".BorrowedListActivty"/>
         <activity android:name=".NotifcationActivity"/>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
@@ -82,7 +81,8 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.BookSearch" />
+        <activity
+            android:name=".BookSearch" />
     </application>
 
 </manifest>
