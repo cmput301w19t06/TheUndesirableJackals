@@ -38,7 +38,10 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
 
     }
 
-    public FriendsRecyclerViewAdapter(){dataSet = new ArrayList<UserInformation>();}
+    public FriendsRecyclerViewAdapter(RecyclerViewClickListener listener){
+        dataSet = new ArrayList<UserInformation>();
+        myListener = listener;
+    }
 
 
 
@@ -47,7 +50,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
                                                                     int viewType) {
         // create a new view
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_books_item, parent, false);
+                .inflate(R.layout.friendslist_layout, parent, false);
 
         FriendsRecyclerViewAdapter.MyViewHolder vh = new FriendsRecyclerViewAdapter.MyViewHolder(v, myListener);
         return vh;

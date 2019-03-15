@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.FriendsRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.util.ArrayList;
@@ -30,5 +33,16 @@ public class FriendsListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriendList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Log.d("FriendsListActivity",((Integer)position).toString());
+            }
+        };
+
+        adapter = new FriendsRecyclerViewAdapter(listener);
+        recyclerView.setAdapter(adapter);
+
     }
 }
