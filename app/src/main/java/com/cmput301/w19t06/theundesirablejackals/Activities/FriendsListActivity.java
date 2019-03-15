@@ -25,7 +25,7 @@ public class FriendsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.friends_list_view);
+        setContentView(R.layout.activity_friends_list);
 
         friendsList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.Friendslist_id);

@@ -17,7 +17,7 @@ public class LentListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lend_requets);
+        setContentView(R.layout.activity_lend_requets);
         String[] lendOptions = {};
         //TODO
         //Pull values that are lend requests and add to lendOptions

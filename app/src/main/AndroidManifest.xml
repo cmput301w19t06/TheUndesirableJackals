@@ -47,7 +47,7 @@
         <activity android:name=".MainHomeViewActivity" />
         <activity android:name=".AddBookActivity" />
         <activity android:name=".PersonalProfileActivity" />
-        <activity android:name=".EditContactInfo" />
+        <activity android:name=".EditContactInfoActivity" />
         <activity android:name=".FriendsListActivity" />
         <activity android:name=".BorrowedListActivity" />
         <activity android:name=".LentListActivity" />
@@ -82,7 +82,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".BookSearch" />
+            android:name=".BookSearchActivity" />
     </application>
 
 </manifest>

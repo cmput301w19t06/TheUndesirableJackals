@@ -3,7 +3,7 @@
  * It gives the user the option to edit their phone number and see their current pick up
  * location (when the appropiate buttons are pressed)
  * @version 1 - March 8, 2019
- * @see MainHomeViewActivity, MapsActivity, EditContactInfo
+ * @see MainHomeViewActivity, MapsActivity, EditContactInfoActivity
  */
 
 package com.cmput301.w19t06.theundesirablejackals.activities;
@@ -29,7 +29,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
     /**
      * Initializes buttons and contains button handlers that begin intents to MapsActivity
-     * EditContactInfo activities
+     * EditContactInfoActivity activities
      * @param savedInstanceState
      */
     @Override
@@ -50,11 +50,11 @@ public class PersonalProfileActivity extends AppCompatActivity {
         editProfilebtn.setOnClickListener(new View.OnClickListener() {
             /**
              * Called when user presses the edit info option
-             * Sends the user to "EditContactInfo" activity
+             * Sends the user to "EditContactInfoActivity" activity
              * @param view Context passed as parameter for the intent
              */
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), EditContactInfo.class);
+                Intent intent = new Intent(view.getContext(), EditContactInfoActivity.class);
                 startActivity(intent);
             }
         });

@@ -28,7 +28,6 @@ Modifications:
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -39,11 +38,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
+
 /**
  * The WhoWroteIt app query's the Book Search API for Books based
  * on a user's search.
  */
-public class BookSearch extends AppCompatActivity {
+public class BookSearchActivity extends AppCompatActivity {
 
     // Variables for the search input field, and results TextViews.
     private EditText mBookInput;
@@ -98,7 +99,7 @@ public class BookSearch extends AppCompatActivity {
 
         // If the network is active and the search field is not empty, start a FetchBook AsyncTask.
         if (networkInfo != null && networkInfo.isConnected() && queryString.length()!=0) {
-            new com.cmput301.w19t06.theundesirablejackals.activities.FetchBook(mTitleText, mAuthorText, mPublisherText, mBookInput).execute(queryString);
+            new FetchBook(mTitleText, mAuthorText, mPublisherText, mBookInput).execute(queryString);
         }
         // Otherwise update the TextView to tell the user there is no connection or no search term.
         else {

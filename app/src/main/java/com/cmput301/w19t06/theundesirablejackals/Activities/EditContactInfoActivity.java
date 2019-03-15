@@ -21,7 +21,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 
-public class EditContactInfo extends AppCompatActivity {
+public class EditContactInfoActivity extends AppCompatActivity {
     private Button submit;
     private Button cancel;
     private DatabaseHelper databaseHelper;

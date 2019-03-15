@@ -9,9 +9,6 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -36,9 +33,6 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class MainHomeViewActivity extends AppCompatActivity {
     public static final int ADD_BOOK = 50;
@@ -106,7 +100,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
                     case R.id.itemMenuSearchBook:
-                        intent = new Intent(MainHomeViewActivity.this, BookSearch.class);
+                        intent = new Intent(MainHomeViewActivity.this, BookSearchActivity.class);
                         break;
                     case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);

@@ -1,4 +1,4 @@
-package com.cmput301.w19t06.theundesirablejackals.activities;
+package com.cmput301.w19t06.theundesirablejackals.classes;
 
 /*
 Code copied from https://github.com/google-developer-training/android-fundamentals/tree/master/WhoWroteIt
