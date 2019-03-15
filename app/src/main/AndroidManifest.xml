@@ -44,7 +44,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignInActivity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".MainHomeViewActivity" />
         <activity android:name=".AddBookActivity" />
         <activity android:name=".PersonalProfileActivity" />
