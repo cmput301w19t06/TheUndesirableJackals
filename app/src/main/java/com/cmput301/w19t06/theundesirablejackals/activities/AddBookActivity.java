@@ -49,7 +49,7 @@ import java.util.List;
 public class AddBookActivity extends AppCompatActivity {
     private FirebaseVisionBarcodeDetectorOptions options;
     public static final int IMAGE_GALLERY_REQUEST = 300;
-    private static final int IMAGE_CAPTURE_REUEST = 301;
+    private static final int IMAGE_CAPTURE_REQUEST = 301;
     private static final int BARCODE_PERMISSION_REQUEST = 302;
     private static final int GALLERY_PERMISSION_REQUEST = 303;
     private String TAG = "AddBookActivity";
@@ -69,7 +69,7 @@ public class AddBookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_book_manual);
+        setContentView(R.layout.activity_add_book);
 
         buttonAddBook = (Button) findViewById(R.id.buttonAddBookActivityAddBook);
         buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhotos);
@@ -207,7 +207,7 @@ public class AddBookActivity extends AppCompatActivity {
             }else{
                 showMyToast("Add picture was canceled");
             }
-        }else if(requestCode == IMAGE_CAPTURE_REUEST){
+        }else if(requestCode == IMAGE_CAPTURE_REQUEST){
             if (resultCode == RESULT_OK) {
 
 //                galleryAddPic();
@@ -325,7 +325,7 @@ public class AddBookActivity extends AppCompatActivity {
                         "com.cmput301.w19t06.theundesirablejackals",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, IMAGE_CAPTURE_REUEST);
+                startActivityForResult(takePictureIntent, IMAGE_CAPTURE_REQUEST);
 
             }
         }
