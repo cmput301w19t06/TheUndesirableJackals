@@ -117,7 +117,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 Geolocation b = user.getPickUpLocation();
 
                 // display the info
-                TextView userNameView = (TextView) findViewById(R.id.textViewUserName);
+                TextView userNameView = (TextView) findViewById(R.id.textViewOthersProfileActivityUserName);
                 userNameView.setText(userName);
 
                 TextView emailView = (TextView) findViewById(R.id.textViewPersonalEmail);

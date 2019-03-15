@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/textViewFriendListActivityStaticTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -23,14 +23,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonFriendListActivityAddFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Friend"
             android:textAlignment="viewStart" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/Friendslist_id"
+            android:id="@+id/recyclerViewFriendListActivityFriendList"
             android:layout_width="463dp"
             android:layout_height="447dp"
             android:clipToPadding="false"
@@ -38,12 +38,13 @@
             tools:layout_editor_absoluteY="35dp" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/textViewFriendListActivitySuggestedFriendsStaticTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Suggested Friends" />
 
         <ListView
+            android:id="@+id/listViewFriendListActivitySuggestedFriends"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

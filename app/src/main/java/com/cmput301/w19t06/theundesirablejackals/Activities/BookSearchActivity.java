@@ -65,12 +65,12 @@ public class BookSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_search);
 
         // Initialize all the view variables.
-        mBookInput = (EditText)findViewById(R.id.editText);
+        mBookInput = (EditText)findViewById(R.id.editTextSearchBookActivityBookTitle);
         mTitleText = (TextView)findViewById(R.id.title);
         mAuthorText = (TextView)findViewById(R.id.author);
         mPublisherText = (TextView)findViewById(R.id.publisher);
 
-        searchButton = (Button) findViewById(R.id.searchBook);
+        searchButton = (Button) findViewById(R.id.buttonSearchBookActivitySearchForBook);
 
         // search action
         searchButton.setOnClickListener(new View.OnClickListener() {

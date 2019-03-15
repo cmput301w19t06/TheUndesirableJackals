@@ -23,7 +23,7 @@ public class LentListActivity extends AppCompatActivity {
         //Pull values that are lend requests and add to lendOptions
 
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lendOptions);
-        ListView listview = (ListView) findViewById(R.id.listViewLendrequests);
+        ListView listview = (ListView) findViewById(R.id.listViewLendRequestActivityLendRequests);
         listview.setAdapter(adapter);
         listview.setOnClickListener((View.OnClickListener) this);
     }

@@ -55,9 +55,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home_view);
-        tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayoutMainHomeViewActivityFragmentTabs);
         toolBar = (Toolbar) findViewById(R.id.tool_bar);
-        navigationView = findViewById(R.id.navigationView);
+        navigationView = findViewById(R.id.navigationViewMainHomeViewActivity);
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -121,7 +121,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager_id);
+        viewPager = (ViewPager) findViewById(R.id.viewpagerMainHomeViewActivity);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         /* Adding Fragments */
         adapter.AddFragment(new MyBooksFragment(),"My Books");

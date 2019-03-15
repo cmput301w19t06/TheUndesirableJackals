@@ -43,12 +43,12 @@ public class EditContactInfoActivity extends AppCompatActivity {
              */
             @Override
             public void onCallback(User user) {
-                ((EditText) findViewById(R.id.editText3)).setText(user.getUserInfo().getPhoneNumber());
+                ((EditText) findViewById(R.id.editTextEditContactInfoPhoneNumber)).setText(user.getUserInfo().getPhoneNumber());
 //                updateUser(user);
             }
         });
-        submit = (Button) findViewById(R.id.submit);
-        cancel = (Button) findViewById(R.id.cancel);
+        submit = (Button) findViewById(R.id.buttonEditContactInfoActivitySubmit);
+        cancel = (Button) findViewById(R.id.buttonEditContactInfoActivityCancel);
 
         // submit action
         submit.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +100,7 @@ public class EditContactInfoActivity extends AppCompatActivity {
     public void updateUser(User user) {
         UserInformation userInfo = user.getUserInfo();
         // retrieve new phone
-        EditText phone = (EditText) findViewById(R.id.editText3);
+        EditText phone = (EditText) findViewById(R.id.editTextEditContactInfoPhoneNumber);
         String newPhone = phone.getText().toString();
 
         if (!newPhone.isEmpty()) {

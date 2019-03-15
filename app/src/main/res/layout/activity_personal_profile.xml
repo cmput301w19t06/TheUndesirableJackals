@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewUserName"
+        android:id="@+id/textViewOthersProfileActivityUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,25 +16,25 @@
         android:text="Username"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewBookThumbnail"
+        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewBookThumbnail"
+        android:id="@+id/imageViewOthersProfileActivityBookThumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/image_description_book_thumbnail"
-        app:layout_constraintBottom_toTopOf="@+id/textViewContactInfo"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOthersProfileActivityContactInfo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.052"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textViewRating"
+        android:id="@+id/textViewOthersProfileActivityRating"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,11 +43,11 @@
         android:text="Rating"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewBookThumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityUserName" />
 
     <TextView
-        android:id="@+id/textViewContactInfo"
+        android:id="@+id/textViewOthersProfileActivityContactInfo"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRating" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityRating" />
 
     <TextView
         android:id="@+id/textViewEmailStatic"
@@ -69,7 +69,7 @@
         android:text="Email:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewContactInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityContactInfo" />
 
     <TextView
         android:id="@+id/textViewPersonalEmail"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toTopOf="@+id/textViewEmailStatic" />
 
     <TextView
-        android:id="@+id/textViewPhoneStatic"
+        android:id="@+id/textViewOthersProfileActivityPhoneStaticTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -104,11 +104,11 @@
         android:layout_marginEnd="16dp"
         android:text="111-111-1111"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewPhoneStatic"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewOthersProfileActivityPhoneStaticTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewPhoneStatic"
-        app:layout_constraintTop_toTopOf="@+id/textViewPhoneStatic" />
+        app:layout_constraintStart_toEndOf="@+id/textViewOthersProfileActivityPhoneStaticTitle"
+        app:layout_constraintTop_toTopOf="@+id/textViewOthersProfileActivityPhoneStaticTitle" />
 
     <Button
         android:id="@+id/profileEditBtn_id"

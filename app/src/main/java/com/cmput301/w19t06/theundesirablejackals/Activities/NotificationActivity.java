@@ -30,7 +30,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterVi
         //Set the list notification to the UserNotificationList
 
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, notifications);
-        ListView listview = (ListView) findViewById(R.id.notfication_List);
+        ListView listview = (ListView) findViewById(R.id.listViewNotificationActivityNotificationList);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
     }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewUserName"
+        android:id="@+id/textViewOthersProfileActivityUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,24 +17,24 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewBookThumbnail"
+        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewBookThumbnail"
+        android:id="@+id/imageViewOthersProfileActivityBookThumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewContactInfo"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOthersProfileActivityContactInfo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.052"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textViewRating"
+        android:id="@+id/textViewOthersProfileActivityRating"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -43,11 +43,11 @@
         android:text="Rating"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewBookThumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityUserName" />
 
     <TextView
-        android:id="@+id/textViewContactInfo"
+        android:id="@+id/textViewOthersProfileActivityContactInfo"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
@@ -58,10 +58,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRating" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityRating" />
 
     <TextView
-        android:id="@+id/textViewEmail"
+        android:id="@+id/textViewOthersProfileActivityEmailStaticTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -69,10 +69,10 @@
         android:text="Email:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewContactInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityContactInfo" />
 
     <TextView
-        android:id="@+id/TextViewPersonalEmail"
+        android:id="@+id/textViewOthersProfileActivityPersonalEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -82,11 +82,11 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-        app:layout_constraintTop_toBottomOf="@+id/textViewContactInfo" />
+        app:layout_constraintStart_toEndOf="@+id/textViewOthersProfileActivityEmailStaticTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityContactInfo" />
 
     <TextView
-        android:id="@+id/textViewPhoneStatic"
+        android:id="@+id/textViewOthersProfileActivityPhoneStaticTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -94,10 +94,10 @@
         android:text="Phone:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityEmailStaticTitle" />
 
     <TextView
-        android:id="@+id/phone_id"
+        android:id="@+id/textViewOthersProfileActivityPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -107,11 +107,11 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewPhoneStatic"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewPersonalEmail" />
+        app:layout_constraintStart_toEndOf="@+id/textViewOthersProfileActivityPhoneStaticTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPersonalEmail" />
 
     <Button
-        android:id="@+id/editFriend_id"
+        android:id="@+id/buttonOthersProfileActivityAddFriend"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -124,14 +124,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/messagebtn_id"
+        android:id="@+id/buttonOthersProfileActivityMessageFriend"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Message"
-        app:layout_constraintBottom_toTopOf="@+id/editFriend_id"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOthersProfileActivityAddFriend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

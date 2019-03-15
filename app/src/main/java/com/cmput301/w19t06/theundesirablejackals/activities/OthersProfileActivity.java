@@ -13,16 +13,16 @@ import android.widget.TextView;
  */
 
 public class OthersProfileActivity extends AppCompatActivity {
-    private Button editFriendbtn;
-    private TextView txt;
+    private Button buttonEditFriend;
+    private TextView textViewEditFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_others_profile);
 
-        editFriendbtn = (Button) findViewById(R.id.editFriend_id);
-        txt = (TextView) findViewById(R.id.editFriend_id);
+        buttonEditFriend = (Button) findViewById(R.id.buttonOthersProfileActivityAddFriend);
+        textViewEditFriend = (TextView) findViewById(R.id.buttonOthersProfileActivityAddFriend);
     }
 
     /**
@@ -30,11 +30,11 @@ public class OthersProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void editFriend(View view){
-        if (editFriendbtn.getText() == "Unfriend") {
-            editFriendbtn.setText("Add Friend");
+        if (buttonEditFriend.getText() == "Unfriend") {
+            buttonEditFriend.setText("Add Friend");
         }
         else{
-            editFriendbtn.setText("Unfriend");
+            buttonEditFriend.setText("Unfriend");
         }
     }
 }

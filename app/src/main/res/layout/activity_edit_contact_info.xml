@@ -7,7 +7,7 @@
     tools:context=".EditContactInfoActivity">
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/textViewEditContactInfoPhoneNumberStatic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/editTextEditContactInfoPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -28,13 +28,13 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="New Phone"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditContactInfoPhoneNumberStatic" />
 
     <Button
-        android:id="@+id/submit"
+        android:id="@+id/buttonEditContactInfoActivitySubmit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/cancel"
+        android:id="@+id/buttonEditContactInfoActivityCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -53,5 +53,5 @@
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/submit" />
+        app:layout_constraintStart_toEndOf="@+id/buttonEditContactInfoActivitySubmit" />
 </android.support.constraint.ConstraintLayout>

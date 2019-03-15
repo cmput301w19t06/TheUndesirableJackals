@@ -28,7 +28,7 @@ public class FriendsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends_list);
 
         friendsList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.Friendslist_id);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriendList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
