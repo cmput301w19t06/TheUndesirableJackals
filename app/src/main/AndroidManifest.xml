@@ -52,7 +52,7 @@
         <activity android:name=".BorrowedListActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".NotifcationActivity"/>
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />

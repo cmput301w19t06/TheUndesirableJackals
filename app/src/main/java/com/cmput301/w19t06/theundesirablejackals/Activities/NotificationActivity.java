@@ -9,14 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.user.UserNotification;
-import com.cmput301.w19t06.theundesirablejackals.user.UserNotificationList;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Handles the Notification list. Shows all notifications on a clear list. Allow access to notification
  * by clicking item on list
@@ -32,7 +24,7 @@ public class NotificationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.notification_view);
+        setContentView(R.layout.activity_notification_view);
 
         //TODO
         //Set the list notification to the UserNotificationList

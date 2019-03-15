@@ -19,7 +19,7 @@ public class OthersProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.others_profile);
+        setContentView(R.layout.activity_others_profile);
 
         editFriendbtn = (Button) findViewById(R.id.editFriend_id);
         txt = (TextView) findViewById(R.id.editFriend_id);
