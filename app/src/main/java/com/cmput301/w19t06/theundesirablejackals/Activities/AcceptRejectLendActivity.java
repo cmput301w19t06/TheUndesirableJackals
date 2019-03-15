@@ -1,7 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,8 +24,8 @@ public class AcceptRejectLendActivity extends LentListActivity {
         Intent intent = getIntent();
         int postition = intent.getIntExtra("position",0);
 
-        TextView username = (TextView) findViewById(R.id.UserLendRequest_Id);
-        TextView title = (TextView) findViewById(R.id.titleLendRequest_id);
+        TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
+        TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
         //TODO
         //Get the username and book title from notification and set them

@@ -108,10 +108,5 @@ public class BorrowedFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //an empty list of books
-//        lstBook = new ArrayList<>();
-//        lstBook.add(new BorrowedModelClass("Moby Dick", " Herman Melville", "978-1-509816-14-9","AVAILABLE",R.drawable.book_icon));
-//        lstBook.add(new BorrowedModelClass("Ulysses", "James Joyce", "978-1-891830-75-4","AVAILABLE",R.drawable.book_icon));
-//        lstBook.add(new BorrowedModelClass(" In Search of Lost Time", " Marcel Proust", "978-1-60309-025-4","AVAILABLE",R.drawable.book_icon));
     }
 }

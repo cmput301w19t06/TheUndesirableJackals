@@ -7,7 +7,7 @@
     tools:context="AcceptRejectLendActivity">
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textViewAcceptRejectActivityBookTitleStatic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/titleLendRequest_id"
+        android:id="@+id/textViewAcceptRejectActivityBookTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,10 +31,10 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityBookTitleStatic" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/textViewAcceptRejectActivityUserRequestingStatic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -44,10 +44,10 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLendRequest_id" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityBookTitle" />
 
     <TextView
-        android:id="@+id/UserLendRequest_Id"
+        android:id="@+id/textViewAcceptRejectActivityUserRequesting"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,10 +57,10 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequestingStatic" />
 
     <Button
-        android:id="@+id/acceptbtn_Id"
+        android:id="@+id/buttonAcceptRejectActivityAcceptRequest"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,10 +68,10 @@
         android:onClick="accept"
         android:text="Accept"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserLendRequest_Id" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequesting" />
 
     <Button
-        android:id="@+id/rejectbtn_id"
+        android:id="@+id/buttonAcceptRejectActivityRejectRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -81,6 +81,6 @@
         android:text="Reject"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/acceptbtn_Id"
-        app:layout_constraintTop_toBottomOf="@+id/UserLendRequest_Id" />
+        app:layout_constraintStart_toEndOf="@+id/buttonAcceptRejectActivityAcceptRequest"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequesting" />
 </android.support.constraint.ConstraintLayout>
