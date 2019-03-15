@@ -163,5 +163,12 @@ public class SignInActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0,0);;
         toast.show();
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        databaseHelper.signOut();
+        
+    }
 }
 
