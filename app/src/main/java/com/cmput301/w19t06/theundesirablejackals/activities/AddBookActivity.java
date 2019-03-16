@@ -72,7 +72,7 @@ public class AddBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_book);
 
         buttonAddBook = (Button) findViewById(R.id.buttonAddBookActivityAddBook);
-        buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhotos);
+        //buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhoto);
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
