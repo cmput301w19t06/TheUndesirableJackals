@@ -78,16 +78,8 @@ public class AddBookActivity extends AppCompatActivity {
         buttonAddBook = (Button) findViewById(R.id.buttonAddBookActivityAddBook);
         //buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhoto);
 
-        // including the search book by ISBN button
-        buttonSearchISBN = (Button) findViewById(R.id.buttonSearchByISBN);
 
-        // search action
-        buttonSearchISBN.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view) {
-                searchISBN();
-            }
-        });
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
@@ -315,42 +307,7 @@ public class AddBookActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Executed when search by ISBN button is pressed
-     * if the ISBN field contains a valid input and there is network connection, it will
-     * fill the title, author and description fields for the user
-     * @version 1 - March 15, 2019
-     */
-    public void searchISBN() {
-        // give the fields where the info is going to be placed as parameters
-        EditText titleParam = (EditText)findViewById(R.id.editTextAddBookBookTitle);
-        EditText authorParam = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
-        EditText descriptionParam = (EditText)findViewById(R.id.editTextAddBookBookDescription);
-        EditText isbnParam  = (EditText)findViewById(R.id.editTextAddBookBookISBN);
-
-        // retrieve the ISBN input by the user
-        isbn = isbnParam.getText().toString();
-
-        // check internet network
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        // begin search if there is connection and isbn is not empty
-        if (networkInfo != null && networkInfo.isConnected() && isbn.length()!=0) {
-            new FetchBook(titleParam, authorParam, descriptionParam, isbnParam).execute(isbn);
-        }
-        // ad empty strings if something fails
-        else {
-            if (isbn.length() == 0) {
-                isbnParam.setText("");
-            } else {
-                isbnParam.setText("no network");
-            }
-        }
-
-    }
+    
 
     private File createImageFile() throws IOException {
         // Create an image file name
