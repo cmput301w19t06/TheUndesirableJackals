@@ -25,10 +25,8 @@ public class Book implements Serializable {
     private String description;
     private BookStatus status;
     private ArrayList<BookGenres> genres;
-    private ArrayList<Image> images;
+    private String bookPhoto;
     private UserInformation owner;
-//    private Geolocation pickUpLocation;
-
 
 
     public Book(){
@@ -49,11 +47,8 @@ public class Book implements Serializable {
         this.author = author;
         this.isbn = isbn;
         this.status = BookStatus.AVAILABLE;
-        this.genres = new ArrayList<BookGenres>();
-        // this.owner = owner;
-//        this.images = new ArrayList<Image>();
-
-
+        this.genres = new ArrayList<>();
+        this.bookPhoto = "";
     }
 
     /**
@@ -72,11 +67,30 @@ public class Book implements Serializable {
         this.description = description;
         this.status = BookStatus.AVAILABLE;
         this.genres = new ArrayList<BookGenres>();
-        // this.owner = owner;
-//        this.images = new ArrayList<Image>();
 
 
     }
+
+    /**
+     * Book constructor with all the members of the book class
+     * @param title
+     * @param author
+     * @param isbn
+     * @param owner
+     * @param bookPhoto
+     */
+    public Book(String title, String author, String isbn, UserInformation owner, String bookPhoto) {
+
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.status = BookStatus.AVAILABLE;
+        this.genres = new ArrayList<>();
+        this.owner = owner;
+        this.bookPhoto = bookPhoto;
+
+    }
+
 
 //    public Book(String title, String author, String isbn, User owner) {
 //        // status is set to "available" as default
@@ -168,21 +182,6 @@ public class Book implements Serializable {
     }
 
 
-    /**
-     *
-     * @return ArrayList of book images
-     */
-    public ArrayList<Image> getImages() {
-        return images;
-    }
-
-//    /**
-//     *
-//     * @return Geolocation of the book pickup location
-//     */
-//    public Geolocation getPickUpLocation() {
-//        return pickUpLocation;
-//    }
 
     /**
      *
@@ -234,13 +233,6 @@ public class Book implements Serializable {
         genres.add(genre);
     }
 
-    /**
-     *
-     * @param images an ArryList of Image objects to be assigned as images for the book
-     */
-    public void setImages(ArrayList<Image> images) {
-        this.images = images;
-    }
 
     /**
      *
@@ -250,37 +242,18 @@ public class Book implements Serializable {
         status = newStatus;
     }
 
-    /**
-     *
-     * @param image image to be added to the list of images of the book object
-     */
-    public void addImage(Image image) {
-        images.add(image);
+    public void deleteBookPhoto() {
+        bookPhoto = "";
     }
 
-    /**
-     *
-     * @param image image to be deleted from the list of images of the book object
-     */
-    public void deleteImage(Image image) {
-        images.remove(image);
+
+    public String getBookPhoto() {
+        return bookPhoto;
     }
 
-    @Override
-    public String toString() {
-//        private String title;
-//        private String author;
-//        private String isbn;
-//        private BookStatus status;
-//        private ArrayList<BookGenres> genres;
-//        private ArrayList<Image> images;
-        return "{" +
-                "title=" + title +
-                ", author=" + author +
-                ", isbn= " + isbn +
-                ", status= " + status +
-                ", genres= " + genres +
-                ", images= " + images + "}";
-
+    public void setBookPhoto(String bookPhoto) {
+        this.bookPhoto = bookPhoto;
     }
+
+
 }
