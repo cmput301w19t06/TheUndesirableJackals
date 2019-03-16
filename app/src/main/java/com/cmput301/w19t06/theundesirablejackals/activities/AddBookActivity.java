@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,17 +56,22 @@ public class AddBookActivity extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_REQUEST = 301;
     private static final int BARCODE_PERMISSION_REQUEST = 302;
     private static final int GALLERY_PERMISSION_REQUEST = 303;
+    private static final int PICK_IMAGE_REQUEST = 304;
+
     private String TAG = "AddBookActivity";
+
     private Button buttonAddBook;
     private Button buttonAddPhoto;
-    private Button buttonSearchISBN;
+
 //    private TabLayout tabLayout;
 //    private ViewPager viewPager;
+
     private Uri imageUri;
     private String title, author, isbn, description;
     private String currentPhotoPath;
     private ArrayList<String> barcodesFound = new ArrayList<String>();
 
+    private ImageView chosenBookPhoto;
     /**
      * General Create
      * @param savedInstanceState
@@ -75,26 +81,15 @@ public class AddBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        buttonAddBook = (Button) findViewById(R.id.buttonAddBookActivityAddBook);
-        buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhotos);
+        buttonAddBook =  findViewById(R.id.buttonAddBookActivityDone);
+        chosenBookPhoto = findViewById(R.id.imageViewAddChosenOwnedBookChosenPhoto);
 
-        // including the search book by ISBN button
-        buttonSearchISBN = (Button) findViewById(R.id.buttonSearchByISBN);
-
-        // search action
-        buttonSearchISBN.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                searchISBN();
-            }
-        });
 
         options =
                 new FirebaseVisionBarcodeDetectorOptions.Builder()
                         .setBarcodeFormats(
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
-
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
 //        viewPager = (ViewPager) findViewById(R.id.addbook_viewpage_id);
 //        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -172,7 +167,7 @@ public class AddBookActivity extends AppCompatActivity {
      * Final add book button, sends data back to MainHomeViewActivity
      * @param view
      */
-    public void finalAddbookbtn(View view){
+    public void OnClick_addBookDone(View view){
         EditText edit = (EditText)findViewById(R.id.editTextAddBookBookTitle);
         title = edit.getText().toString();
         edit = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
@@ -182,14 +177,19 @@ public class AddBookActivity extends AppCompatActivity {
         edit = (EditText)findViewById(R.id.editTextAddBookBookDescription);
         description = edit.getText().toString();
 
-        Intent intent = new Intent();
-        intent.putExtra("bookTitle", title);
-        intent.putExtra("bookAuthor", author);
-        intent.putExtra("bookIsbn", isbn);
-        intent.putExtra("bookDescription", description);
-        intent.setData(imageUri);
-        setResult(MainHomeViewActivity.RESULT_OK, intent);
-        finish();
+        if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
+
+            Intent intent = new Intent();
+            intent.putExtra("bookTitle", title);
+            intent.putExtra("bookAuthor", author);
+            intent.putExtra("bookIsbn", isbn);
+            intent.putExtra("bookDescription", description);
+            intent.setData(imageUri);
+            setResult(MainHomeViewActivity.RESULT_OK, intent);
+            finish();
+        } else {
+            showMyToast("Missing fields required!");
+        }
 
     }
 
@@ -206,7 +206,7 @@ public class AddBookActivity extends AppCompatActivity {
      * Add photos by using add photo button
      * @param view
      */
-    public void addPhotobtn(View view){
+    public void onClick_ChooseBookPhoto(View view){
         if(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED)
@@ -250,6 +250,8 @@ public class AddBookActivity extends AppCompatActivity {
                 try {
                     inputStream = getContentResolver().openInputStream(imageUri);
                     Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    chosenBookPhoto.setImageBitmap(image);
+
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -265,6 +267,7 @@ public class AddBookActivity extends AppCompatActivity {
                 scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
                 if(barcodesFound.size() > 0){
                     ((TextView) findViewById(R.id.editTextAddBookBookISBN)).setText(barcodesFound.get(0));
+                    searchISBN();
                 }else{
                     showMyToast("ISBN Not Found. Please try again");
                 }
@@ -272,9 +275,7 @@ public class AddBookActivity extends AppCompatActivity {
             } else {
                 showMyToast("Photo Scan Canceled");
             }
-
         }
-
     }
 
 
@@ -314,6 +315,7 @@ public class AddBookActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name

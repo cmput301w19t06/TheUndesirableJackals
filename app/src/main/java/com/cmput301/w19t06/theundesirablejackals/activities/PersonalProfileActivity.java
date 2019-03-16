@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
@@ -124,7 +125,12 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 emailView.setText(email);
 
                 TextView phoneView = (TextView) findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
-                phoneView.setText(phone);
+                phoneView.setText("Phone: " + phone);
+
+                ImageView profilePhoto = findViewById(R.id.imageViewPersonalProfileActivityBookThumbnail);
+                if (userInformation.getUserPhoto() == null) {
+                    profilePhoto.setImageResource(R.drawable.default_profile_photo);
+                }
             }
         });
     }

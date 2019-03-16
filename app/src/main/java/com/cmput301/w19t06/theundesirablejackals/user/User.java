@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class User {
     private Geolocation pickUpLocation;
+    private String profilePhoto;
     private UserInformation userInfo;
     private BookList ownedBooks;
     private BookList borrowedBooks;
@@ -273,6 +274,7 @@ public class User {
     public void addBorrowRequest(BookRequest request) {
         borrowRequests.addRequest(request);
     }
+
 
 
     @Override

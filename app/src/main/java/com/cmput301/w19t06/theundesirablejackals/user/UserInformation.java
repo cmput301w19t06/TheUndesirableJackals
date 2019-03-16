@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class UserInformation implements Serializable {
 
     private String userName;
+    private String userPhoto;
     private String email;
     private String phoneNumber;
 
@@ -79,6 +80,14 @@ public class UserInformation implements Serializable {
      */
     public void setUserName(String userName){ this.userName = userName;}
 
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -87,4 +96,5 @@ public class UserInformation implements Serializable {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
+
 }

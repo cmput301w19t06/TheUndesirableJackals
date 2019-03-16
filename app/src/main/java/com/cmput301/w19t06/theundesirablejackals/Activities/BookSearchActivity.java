@@ -81,7 +81,6 @@ public class BookSearchActivity extends AppCompatActivity {
         });
     }
 
-
     public void searchBooks() {
         // Get the search string from the input field.
         String queryString = mBookInput.getText().toString();

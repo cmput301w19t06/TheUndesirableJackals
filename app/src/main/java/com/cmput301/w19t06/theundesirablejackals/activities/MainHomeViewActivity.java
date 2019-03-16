@@ -9,6 +9,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -33,6 +34,8 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
+
+import java.io.InputStream;
 
 public class MainHomeViewActivity extends AppCompatActivity {
     public static final int ADD_BOOK = 50;
@@ -206,9 +209,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     String author = data.getStringExtra("bookAuthor");
                     String isbn = data.getStringExtra("bookIsbn");
                     String description = data.getStringExtra("bookDescription");
-//                    Uri imageUri = data.getData();
-//                    imageUri = data.getData();
-//                    InputStream inputStream;
+                    Uri imageUri = data.getData();
+                    imageUri = data.getData();
+                    InputStream inputStream;
 
                     final Book b = new Book(title, author, isbn, description);
                     ownedBooksAdapter.addItem(b);
