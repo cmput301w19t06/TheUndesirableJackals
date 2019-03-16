@@ -63,7 +63,7 @@ public class User {
         friends = new UserList();
 
         // pick up location as default at the U of A
-        pickUpLocation = new Geolocation(53.5232, 113.5263);
+        pickUpLocation = new Geolocation(53.5232, -113.5263);
     }
 
     /**

@@ -55,12 +55,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng coord;
 
                 if (user != null){
-                    // CANNOT ACCESS ATTRIBUTE Geolocation
                     // get the instance Geolocation from user
                     Geolocation geolocation = user.getPickUpLocation();
-//
+
                     if (geolocation == null){
-                        // SEEMS TO ALWAYS BE NULL
                         coord = new LatLng(-34, 151); // set to some random location
                     } else {
                         // get the values
