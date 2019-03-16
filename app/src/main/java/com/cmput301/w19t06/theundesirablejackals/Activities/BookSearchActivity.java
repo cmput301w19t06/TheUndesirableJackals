@@ -48,9 +48,9 @@ public class BookSearchActivity extends AppCompatActivity {
 
     // Variables for the search input field, and results TextViews.
     private EditText mBookInput;
-    private TextView mTitleText;
-    private TextView mAuthorText;
-    private TextView mPublisherText;
+    private EditText mTitleText;
+    private EditText mAuthorText;
+    private EditText mDescriptionText;
     private Button searchButton;
 
 
@@ -66,9 +66,9 @@ public class BookSearchActivity extends AppCompatActivity {
 
         // Initialize all the view variables.
         mBookInput = (EditText)findViewById(R.id.editTextSearchBookActivityBookTitle);
-        mTitleText = (TextView)findViewById(R.id.title);
-        mAuthorText = (TextView)findViewById(R.id.author);
-        mPublisherText = (TextView)findViewById(R.id.publisher);
+        mTitleText = (EditText)findViewById(R.id.title);
+        mAuthorText = (EditText)findViewById(R.id.author);
+        mDescriptionText = (EditText)findViewById(R.id.description);
 
         searchButton = (Button) findViewById(R.id.buttonSearchBookActivitySearchForBook);
 
@@ -99,16 +99,17 @@ public class BookSearchActivity extends AppCompatActivity {
 
         // If the network is active and the search field is not empty, start a FetchBook AsyncTask.
         if (networkInfo != null && networkInfo.isConnected() && queryString.length()!=0) {
-            new FetchBook(mTitleText, mAuthorText, mPublisherText, mBookInput).execute(queryString);
+            new FetchBook(mTitleText, mAuthorText, mDescriptionText, mBookInput).execute(queryString);
+
         }
         // Otherwise update the TextView to tell the user there is no connection or no search term.
         else {
             if (queryString.length() == 0) {
                 mAuthorText.setText("");
-                mTitleText.setText("no results");
+                mTitleText.setText("");
             } else {
                 mAuthorText.setText("");
-                mTitleText.setText("no network");
+                mTitleText.setText("");
             }
         }
     }
