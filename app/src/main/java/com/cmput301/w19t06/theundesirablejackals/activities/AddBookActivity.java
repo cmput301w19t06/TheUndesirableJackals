@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -214,6 +217,7 @@ public class AddBookActivity extends AppCompatActivity {
                 scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
                 if(barcodesFound.size() > 0){
                     ((TextView) findViewById(R.id.editTextAddBookBookISBN)).setText(barcodesFound.get(0));
+                    searchISBN();
                 }else{
                     showMyToast("ISBN Not Found. Please try again");
                 }
@@ -262,6 +266,42 @@ public class AddBookActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Executed when search by ISBN button is pressed
+     * if the ISBN field contains a valid input and there is network connection, it will
+     * fill the title, author and description fields for the user
+     * @version 1 - March 15, 2019
+     */
+    public void searchISBN() {
+        // give the fields where the info is going to be placed as parameters
+        EditText titleParam = (EditText)findViewById(R.id.editTextAddBookBookTitle);
+        EditText authorParam = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
+        EditText descriptionParam = (EditText)findViewById(R.id.editTextAddBookBookDescription);
+        EditText isbnParam  = (EditText)findViewById(R.id.editTextAddBookBookISBN);
+
+        // retrieve the ISBN input by the user
+        isbn = isbnParam.getText().toString();
+
+        // check internet network
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // begin search if there is connection and isbn is not empty
+        if (networkInfo != null && networkInfo.isConnected() && isbn.length()!=0) {
+            new FetchBook(titleParam, authorParam, descriptionParam, isbnParam).execute(isbn);
+        }
+        // ad empty strings if something fails
+        else {
+            if (isbn.length() == 0) {
+                isbnParam.setText("");
+            } else {
+                isbnParam.setText("no network");
+            }
+        }
+
     }
 
     private File createImageFile() throws IOException {
