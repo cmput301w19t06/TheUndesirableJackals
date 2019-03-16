@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class AddBookActivity extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_REQUEST = 301;
     private static final int BARCODE_PERMISSION_REQUEST = 302;
     private static final int GALLERY_PERMISSION_REQUEST = 303;
+    private static final int PICK_IMAGE_REQUEST = 304;
     private String TAG = "AddBookActivity";
     private Button buttonAddBook;
     private Button buttonAddPhoto;
@@ -66,6 +68,8 @@ public class AddBookActivity extends AppCompatActivity {
     private String currentPhotoPath;
     private ArrayList<String> barcodesFound = new ArrayList<String>();
 
+    private Uri bookPhotoUri; // chooses photo when adding  a book
+    private ImageView choosenBookPhoto;
     /**
      * General Create
      * @param savedInstanceState
@@ -75,9 +79,9 @@ public class AddBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        buttonAddBook = (Button) findViewById(R.id.buttonAddBookActivityAddBook);
-        //buttonAddPhoto = (Button) findViewById(R.id.buttonAddBookActivityAddPhoto);
-
+        buttonAddBook =  findViewById(R.id.buttonAddBookActivityAddBook);
+        buttonAddPhoto =  findViewById(R.id.buttonAddOwnedBookChoosePhoto);
+        choosenBookPhoto = findViewById(R.id.imageViewAddChosenOwnedBookChosenPhoto);
 
 
 
@@ -87,6 +91,12 @@ public class AddBookActivity extends AppCompatActivity {
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
 
+        buttonAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
+            }
+        });
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
 //        viewPager = (ViewPager) findViewById(R.id.addbook_viewpage_id);
 //        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -98,6 +108,16 @@ public class AddBookActivity extends AppCompatActivity {
 //        viewPager.setAdapter(adapter);
 //        tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    /**
+     * Allows the user to open the file tp chose an image
+     */
+    public void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     /**
@@ -266,6 +286,10 @@ public class AddBookActivity extends AppCompatActivity {
                 showMyToast("Photo Scan Canceled");
             }
 
+        } else if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            bookPhotoUri = data.getData();
+            choosenBookPhoto.setImageURI(bookPhotoUri);
+
         }
 
     }
@@ -307,7 +331,7 @@ public class AddBookActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
