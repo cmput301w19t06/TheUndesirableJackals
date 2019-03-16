@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Double lt = geolocation.getLatitude();
                         Double ln = geolocation.getLongitude();
 
-                        coord = new LatLng(lt.intValue(), ln.intValue()); // set to some random location
+                        coord = new LatLng(lt, ln);
                     }
 //
                 } else {

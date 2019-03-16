@@ -49,21 +49,24 @@ import java.net.URL;
  */
 public class FetchBook extends AsyncTask<String,Void,String>{
 
-    // Variables for the search input field, and results TextViews
+//    // Variables for the search input field, and results TextViews
     private EditText mBookInput;
-    private TextView mTitleText;
-    private TextView mAuthorText;
-    private TextView mPublisherText;
+    private EditText mTitleText;
+    private EditText mAuthorText;
+    private EditText mDescriptionText;
 
     // Class name for Log tag
     private static final String LOG_TAG = FetchBook.class.getSimpleName();
 
     // Constructor providing a reference to the views in MainActivity
-    public FetchBook(TextView titleText, TextView authorText, TextView publisherText, EditText bookInput) {
+    public FetchBook(EditText titleText, EditText authorText, EditText descriptionText, EditText bookInput) {
         this.mTitleText = titleText;
         this.mAuthorText = authorText;
-        this.mPublisherText = publisherText;
+        this.mDescriptionText = descriptionText;
         this.mBookInput = bookInput;
+    }
+    public FetchBook() {
+
     }
 
 
@@ -89,20 +92,15 @@ public class FetchBook extends AsyncTask<String,Void,String>{
         // Attempt to query the Books API.
         try {
             // Base URI for the Books API.
-            final String BOOK_BASE_URL =  "https://www.googleapis.com/books/v1/volumes?";
+            final String BOOK_BASE_URL =  "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 
             final String QUERY_PARAM = "q"; // Parameter for the search string.
             final String MAX_RESULTS = "maxResults"; // Parameter that limits search results.
             final String PRINT_TYPE = "printType"; // Parameter to filter by print type.
 
-            // Build up your query URI, limiting results to 10 items and printed books.
-            Uri builtURI = Uri.parse(BOOK_BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, queryString)
-                    .appendQueryParameter(MAX_RESULTS, "10")
-                    .appendQueryParameter(PRINT_TYPE, "books")
-                    .build();
-
-            URL requestURL = new URL(builtURI.toString());
+            // set the query URL modified
+            String searchURL = BOOK_BASE_URL + queryString;
+            URL requestURL = new URL(searchURL);
 
             // Open the network connection.
             urlConnection = (HttpURLConnection) requestURL.openConnection();
@@ -174,7 +172,7 @@ public class FetchBook extends AsyncTask<String,Void,String>{
             int i = 0;
             String title = null;
             String authors = null;
-            String publisher = null;
+            String description = null;
 
             // Look for results in the items array, exiting when both the title and author
             // are found or when all items have been checked.
@@ -188,7 +186,7 @@ public class FetchBook extends AsyncTask<String,Void,String>{
                 try {
                     title = volumeInfo.getString("title");
                     authors = volumeInfo.getString("authors");
-                    publisher = volumeInfo.getString("publisher");
+                    description = volumeInfo.getString("description");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -198,22 +196,35 @@ public class FetchBook extends AsyncTask<String,Void,String>{
             }
 
             // If both are found, display the result.
-            if (title != null && authors != null && publisher != null){
+            if (title != null && authors != null && description != null){
                 mTitleText.setText(title);
-                mAuthorText.setText(authors);
-                mPublisherText.setText(publisher);
-                mBookInput.setText("");
+
+                // fixing string gotten from google API
+                String author = authors.replace("[\"", "");
+                author = author.replace("\"]", "");
+
+                mAuthorText.setText(author);
+
+                mDescriptionText.setText(description);
+
+                //mBookInput.setText("");
             } else {
                 // If none are found, update the UI to show failed results.
-                mTitleText.setText("no result");
+                mTitleText.setText("");
+
                 mAuthorText.setText("");
+
+                mDescriptionText.setText("");
             }
 
         } catch (Exception e){
             // If onPostExecute does not receive a proper JSON string,
             // update the UI to show failed results.
-            mTitleText.setText("no result");
+            mTitleText.setText("");
+
             mAuthorText.setText("");
+
+            mDescriptionText.setText("");
             e.printStackTrace();
         }
     }
