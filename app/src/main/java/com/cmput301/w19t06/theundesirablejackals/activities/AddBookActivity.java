@@ -57,19 +57,21 @@ public class AddBookActivity extends AppCompatActivity {
     private static final int BARCODE_PERMISSION_REQUEST = 302;
     private static final int GALLERY_PERMISSION_REQUEST = 303;
     private static final int PICK_IMAGE_REQUEST = 304;
+
     private String TAG = "AddBookActivity";
+
     private Button buttonAddBook;
     private Button buttonAddPhoto;
-    private Button buttonSearchISBN;
+
 //    private TabLayout tabLayout;
 //    private ViewPager viewPager;
+
     private Uri imageUri;
     private String title, author, isbn, description;
     private String currentPhotoPath;
     private ArrayList<String> barcodesFound = new ArrayList<String>();
 
-    private Uri bookPhotoUri; // chooses photo when adding  a book
-    private ImageView choosenBookPhoto;
+    private ImageView chosenBookPhoto;
     /**
      * General Create
      * @param savedInstanceState
@@ -79,10 +81,8 @@ public class AddBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        buttonAddBook =  findViewById(R.id.buttonAddBookActivityAddBook);
-        buttonAddPhoto =  findViewById(R.id.buttonAddOwnedBookChoosePhoto);
-        choosenBookPhoto = findViewById(R.id.imageViewAddChosenOwnedBookChosenPhoto);
-
+        buttonAddBook =  findViewById(R.id.buttonAddBookActivityDone);
+        chosenBookPhoto = findViewById(R.id.imageViewAddChosenOwnedBookChosenPhoto);
 
 
         options =
@@ -90,13 +90,6 @@ public class AddBookActivity extends AppCompatActivity {
                         .setBarcodeFormats(
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
-
-        buttonAddPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFileChooser();
-            }
-        });
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
 //        viewPager = (ViewPager) findViewById(R.id.addbook_viewpage_id);
 //        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -108,16 +101,6 @@ public class AddBookActivity extends AppCompatActivity {
 //        viewPager.setAdapter(adapter);
 //        tabLayout.setupWithViewPager(viewPager);
 
-    }
-
-    /**
-     * Allows the user to open the file tp chose an image
-     */
-    public void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     /**
@@ -184,7 +167,7 @@ public class AddBookActivity extends AppCompatActivity {
      * Final add book button, sends data back to MainHomeViewActivity
      * @param view
      */
-    public void finalAddbookbtn(View view){
+    public void OnClick_addBookDone(View view){
         EditText edit = (EditText)findViewById(R.id.editTextAddBookBookTitle);
         title = edit.getText().toString();
         edit = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
@@ -194,14 +177,19 @@ public class AddBookActivity extends AppCompatActivity {
         edit = (EditText)findViewById(R.id.editTextAddBookBookDescription);
         description = edit.getText().toString();
 
-        Intent intent = new Intent();
-        intent.putExtra("bookTitle", title);
-        intent.putExtra("bookAuthor", author);
-        intent.putExtra("bookIsbn", isbn);
-        intent.putExtra("bookDescription", description);
-        intent.setData(imageUri);
-        setResult(MainHomeViewActivity.RESULT_OK, intent);
-        finish();
+        if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
+
+            Intent intent = new Intent();
+            intent.putExtra("bookTitle", title);
+            intent.putExtra("bookAuthor", author);
+            intent.putExtra("bookIsbn", isbn);
+            intent.putExtra("bookDescription", description);
+            intent.setData(imageUri);
+            setResult(MainHomeViewActivity.RESULT_OK, intent);
+            finish();
+        } else {
+            showMyToast("Missing fields required!");
+        }
 
     }
 
@@ -218,7 +206,7 @@ public class AddBookActivity extends AppCompatActivity {
      * Add photos by using add photo button
      * @param view
      */
-    public void addPhotobtn(View view){
+    public void onClick_ChooseBookPhoto(View view){
         if(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED)
@@ -262,6 +250,8 @@ public class AddBookActivity extends AppCompatActivity {
                 try {
                     inputStream = getContentResolver().openInputStream(imageUri);
                     Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    chosenBookPhoto.setImageBitmap(image);
+
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -285,13 +275,7 @@ public class AddBookActivity extends AppCompatActivity {
             } else {
                 showMyToast("Photo Scan Canceled");
             }
-
-        } else if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            bookPhotoUri = data.getData();
-            choosenBookPhoto.setImageURI(bookPhotoUri);
-
         }
-
     }
 
 
