@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,9 +28,10 @@ public class DatabaseHelper{
     private final static String TAG = "DatabaseHelper";
 
     private final static String PATH_USERS = "users";
-    private final static String PATH_BOOKS = "books";
+    private final static String PATH_BOOKS = "globalBooks";
     private final static String PATH_REGISTERED = "registered";
     private final static String PATH_FAVOURITE = "favourites";
+    private final static String PATH_REQUESTS = "requests";
 
 
     private FirebaseAuth firebaseAuth;
@@ -36,6 +39,7 @@ public class DatabaseHelper{
     private DatabaseReference booksReference;
     private DatabaseReference registeredReference;
     private DatabaseReference favouriteReference;
+    private DatabaseReference requestsReference;
     private FirebaseUser currentUser;
 
 
@@ -58,6 +62,7 @@ public class DatabaseHelper{
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
+        this.requestsReference = database.getReference(PATH_REQUESTS);
 
     }
 
@@ -482,9 +487,6 @@ public class DatabaseHelper{
     }
 
 
-
-
-
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -507,6 +509,263 @@ public class DatabaseHelper{
         firebaseAuth.signOut();
         currentUser = null;
 
+    }
+
+
+    //~~~~~~~~~~~~~~~~~~~~~REQUESTS~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    /**
+     * Gets the user's Borrow requests (user from userInformation)
+     * @param userInformation
+     * @param onCallback
+     */
+    public void getBorrowRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
+        requestsReference
+                .child(userInformation.getUserName())
+                .child("borrowRequests")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            onCallback.onCallback(dataSnapshot.getValue(BookRequestList.class));
+
+                        }else {
+                            onCallback.onCallback(new BookRequestList());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
+                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
+
+    /**
+     * Gets the user's Lend requests (user from userInformation)
+     * @param userInformation
+     * @param onCallback
+     */
+    public void getLendRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
+        requestsReference
+                .child(userInformation.getUserName())
+                .child("lendRequests")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            onCallback.onCallback(dataSnapshot.getValue(BookRequestList.class));
+
+                        }else {
+                            onCallback.onCallback(new BookRequestList());
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onCallback.onCallback(null);
+                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
+
+    /**
+     * Sends a borrow request to the owner of the book
+     * To be used by BORROWER ONLY
+     * @param request
+     * @param onCallback
+     */
+    public void makeBorrowRequest(final BookRequest request, final BooleanCallback onCallback){
+        final UserInformation owner = request.getBookRequested().getOwner();
+        getLendRequests(owner, new BookRequestListCallback() {
+            @Override
+            public void onCallback(BookRequestList bookRequestList) {
+                if(bookRequestList == null) {
+                    onCallback.onCallback(false);
+                    return;
+                }
+                bookRequestList.addRequest(request);
+                setLendRequests(owner, bookRequestList, new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+                        if(bool){
+                            getBorrowRequests(request.getBorrower(), new BookRequestListCallback() {
+                                @Override
+                                public void onCallback(BookRequestList bookRequestList) {
+                                    if(bookRequestList == null){
+                                        onCallback.onCallback(false);
+                                        //TODO delete lend request
+                                        return;
+                                    }
+                                    bookRequestList.addRequest(request);
+                                    setBorrowRequests(request.getBorrower(), bookRequestList, new BooleanCallback() {
+                                        @Override
+                                        public void onCallback(boolean bool) {
+                                            onCallback.onCallback(bool);
+                                        }
+                                    });
+
+                                }
+                            });
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+    }
+
+
+    /**
+     * Updates the borrower request list with new status in the book request
+     * To be used by OWNER ONLY
+     * @param bookRequest
+     * @param onCallback
+     */
+    public void updateLendRequest(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
+        getBorrowRequests(bookRequest.getBorrower(), new BookRequestListCallback() {
+            @Override
+            public void onCallback(BookRequestList bookRequestList) {
+                if(bookRequestList != null) {
+                    for (BookRequest bookRequest1 : bookRequestList.getBookRequests()) {
+                        if(bookRequest.getBookRequested().getOwner().getUserName()
+                                .equals(bookRequest1.getBookRequested().getOwner().getUserName()) &&
+                        bookRequest.getBookRequested().getIsbn()
+                                .equals(bookRequest1.getBookRequested().getIsbn()))
+                        {
+                            Integer position1 = bookRequestList.getBookRequests().indexOf(bookRequest1);
+                            updateBorrowRequest(position1, bookRequest, new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        updateLendRequestAtPosition(position, bookRequest, new BooleanCallback() {
+                                            @Override
+                                            public void onCallback(boolean bool) {
+                                                onCallback.onCallback(bool);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 
+     * @param position
+     * @param bookRequest
+     * @param onCallback
+     */
+    private void updateLendRequestAtPosition(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put(position.toString(), bookRequest);
+        requestsReference
+                .child(bookRequest.getBookRequested().getOwner().getUserName())
+                .child("lendRequests")
+                .child("bookRequests")
+                .updateChildren(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+
+    /**
+     * Updates the borrower request at Position position using the new BookRequest bookRequest
+     * @param position
+     * @param bookRequest
+     * @param onCallback
+     */
+    private void updateBorrowRequest(Integer position, BookRequest bookRequest, final BooleanCallback onCallback){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put(position.toString(), bookRequest);
+        requestsReference
+                .child(bookRequest.getBorrower().getUserName())
+                .child("borrowRequests")
+                .child("bookRequests")
+                .updateChildren(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * Sets the lender requests to the new list bookRequestList
+     * @param userInformation
+     * @param bookRequestList
+     * @param onCallback
+     */
+    private void setLendRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback onCallback){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("lendRequests", bookRequestList);
+        requestsReference
+                .child(userInformation.getUserName())
+                .updateChildren(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * Sets the borrower requests to the new list bookRequestList
+     * @param userInformation
+     * @param bookRequestList
+     * @param onCallback
+     */
+    private void setBorrowRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback onCallback){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("borrowRequests", bookRequestList);
+        requestsReference
+                .child(userInformation.getUserName())
+                .updateChildren(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
     }
     
 }

@@ -1,9 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ViewOwnedBookActivity">
+    android:layout_gravity="center">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewViewOwnedBookBookTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:text="Aliquam id odio id ipsum convallis egestas"
+            android:autoSizeTextType="uniform"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewViewOwnedBookBookAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_horizontal"
+            android:text="Author"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewOwnedBookBookTitle" />
+
+        <TextView
+            android:id="@+id/textViewViewOwnedBookBookISBN"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:text="ISBN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewOwnedBookBookAuthor" />
+
+        <TextView
+            android:id="@+id/textViewViewOwnedBookBookDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical|left|start"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non mollis quam, in ullamcorper augue. Nulla congue nisi ipsum, sit amet placerat lorem lobortis sed. Nullam scelerisque bibendum ultricies. Morbi nec nunc porttitor magna scelerisque porta at non ex. Cras consequat finibus velit id luctus. In vulputate, elit at faucibus condimentum, quam nisl ornare lectus, id lobortis nibh velit eu lorem. Sed vel suscipit neque. Maecenas eleifend felis a varius vulputate. Pellentesque faucibus risus quis erat egestas, ac sodales ante auctor. Nam quam lorem, malesuada vitae turpis eu, viverra pretium magna. Maecenas auctor sollicitudin erat. Maecenas vel nisl id turpis interdum dignissim eu nec ex. Donec nec tempor turpis, in congue lacus. Duis in dolor et dolor convallis dictum. "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewOwnedBookBookStatus" />
+
+        <ImageView
+            android:id="@+id/imageViewViewOwnedBookPhoto"
+            android:layout_width="406dp"
+            android:layout_height="294dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewOwnedBookBookISBN"
+            app:srcCompat="@drawable/default_book_photo" />
+
+        <TextView
+            android:id="@+id/textViewViewOwnedBookBookStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="STATUS"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewViewOwnedBookPhoto" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>
+
