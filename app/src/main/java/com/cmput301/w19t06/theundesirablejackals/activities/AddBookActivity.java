@@ -18,9 +18,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,9 +61,6 @@ public class AddBookActivity extends AppCompatActivity {
 
     private String TAG = "AddBookActivity";
 
-    private Button buttonAddBook;
-    private Button buttonAddPhoto;
-
 //    private TabLayout tabLayout;
 //    private ViewPager viewPager;
 
@@ -72,6 +70,7 @@ public class AddBookActivity extends AppCompatActivity {
     private ArrayList<String> barcodesFound = new ArrayList<String>();
 
     private ImageView chosenBookPhoto;
+    private EditText isbnEditText;
     /**
      * General Create
      * @param savedInstanceState
@@ -81,8 +80,8 @@ public class AddBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        buttonAddBook =  findViewById(R.id.buttonAddBookActivityDone);
-        chosenBookPhoto = findViewById(R.id.imageViewAddChosenOwnedBookChosenPhoto);
+        chosenBookPhoto = findViewById(R.id.imageViewViewOwnedBookPhoto);
+        isbnEditText = findViewById(R.id.editTextAddBookBookISBN);
 
 
         options =
@@ -90,6 +89,24 @@ public class AddBookActivity extends AppCompatActivity {
                         .setBarcodeFormats(
                                 FirebaseVisionBarcode.FORMAT_EAN_13)
                         .build();
+
+        // check for any change in isbnEditText to trigger search for additional details
+        isbnEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                searchISBN();
+            }
+        });
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
 //        viewPager = (ViewPager) findViewById(R.id.addbook_viewpage_id);
 //        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -250,7 +267,7 @@ public class AddBookActivity extends AppCompatActivity {
                 try {
                     inputStream = getContentResolver().openInputStream(imageUri);
                     Bitmap image = BitmapFactory.decodeStream(inputStream);
-                    chosenBookPhoto.setImageBitmap(image);
+                    chosenBookPhoto.setImageURI(imageUri);
 
 
                 } catch (FileNotFoundException e) {

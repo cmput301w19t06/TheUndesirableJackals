@@ -5,6 +5,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -54,6 +55,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookAuthor" />
 
+
+
+
         <TextView
             android:id="@+id/textViewAddBookBookAuthor"
             android:layout_width="0dp"
@@ -71,12 +75,40 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:text="ISBN"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookAuthor" />
+            tools:layout_editor_absoluteY="660dp" />
+
+        <TextView
+            android:id="@+id/textViewAddBookCategories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="Author"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookTitle" />
+
+        <EditText
+            android:id="@+id/editTextAddBookCategoris"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="Fiction, Thriller"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAddBookBookISBN" />
+
+
 
         <EditText
             android:id="@+id/editTextAddBookBookISBN"
@@ -153,7 +185,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonAddOwnedBookChoosePhoto" />
 
         <ImageView
-            android:id="@+id/imageViewAddChosenOwnedBookChosenPhoto"
+            android:id="@+id/imageViewViewOwnedBookPhoto"
             android:layout_width="406dp"
             android:layout_height="294dp"
             android:layout_marginStart="8dp"
@@ -176,7 +208,7 @@
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageViewAddChosenOwnedBookChosenPhoto" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewViewOwnedBookPhoto" />
 
 
     </android.support.constraint.ConstraintLayout>

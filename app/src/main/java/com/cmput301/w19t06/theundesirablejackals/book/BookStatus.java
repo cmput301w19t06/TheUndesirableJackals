@@ -11,4 +11,5 @@ public enum BookStatus {
     REQUESTED,  // book is requested by a user
     ACCEPTED,   // book request has been accepted by the owner
     BORROWED    // book was handed off to the borrower
+
 }

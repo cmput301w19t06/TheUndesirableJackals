@@ -487,9 +487,6 @@ public class DatabaseHelper{
     }
 
 
-
-
-
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 

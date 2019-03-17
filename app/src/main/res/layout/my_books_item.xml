@@ -11,7 +11,7 @@
         android:id="@+id/myBooks_img_book"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/myBooks_status"
-        android:layout_width="75dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
