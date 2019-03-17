@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.database;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -10,6 +11,8 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,8 +21,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +42,7 @@ public class DatabaseHelper{
     private final static String PATH_REQUESTS = "requests";
 
 
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersReference;
     private DatabaseReference booksReference;
@@ -41,6 +50,9 @@ public class DatabaseHelper{
     private DatabaseReference favouriteReference;
     private DatabaseReference requestsReference;
     private FirebaseUser currentUser;
+
+    private StorageReference bookPicturesReference;
+    private StorageReference userPicturesReference;
 
 
 
@@ -58,11 +70,16 @@ public class DatabaseHelper{
         this.currentUser = firebaseAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseStorage storageReference = FirebaseStorage.getInstance();
+
         this.usersReference = database.getReference(PATH_USERS);
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
         this.requestsReference = database.getReference(PATH_REQUESTS);
+
+        this.bookPicturesReference = storageReference.getReference(PATH_BOOKS);
+        this.userPicturesReference = storageReference.getReference(PATH_USERS);
 
     }
 
@@ -391,7 +408,7 @@ public class DatabaseHelper{
      * @param bookList  the new list which has already been altered (removed the book data)
      * @param onCallback  The callback which is used to tell the status of the database update
      */
-    public void deleteCurrentUsersOwnedBook(BookList bookList, final BooleanCallback onCallback){
+    public void deleteBookFromCurrentUser(BookList bookList, final BooleanCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("ownedBooks")
@@ -486,6 +503,113 @@ public class DatabaseHelper{
                 });
     }
 
+    //~~~~~~~~~~~~~~~~~~~CLOUD STORAGE~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    /**
+     * Upload a picture related the Book book
+     * @param file  the file to be uploaded to the database
+     * @param book  the book that the photo needs to be attached to
+     * @param onCallback  Boolean callback which gives upload status (success or not)
+     */
+    public void uploadBookPicture(Uri file, Book book, final BooleanCallback onCallback){
+        bookPicturesReference
+                .child(book.getIsbn())
+                .child(book.getOwner().getUserName())
+                .child(book.getBookPhoto())
+                .putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        onCallback.onCallback(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCallback.onCallback(false);
+                    }
+                });
+
+    }
+
+
+    /**
+     * Download a picture from the database related to the Book book
+     * @param file  the file location to store the picture
+     * @param book  The book that the picture relates to
+     * @param onCallback A callback so the fetch status is known, and completion can be tracked
+     */
+    public void downloadBookPicture(File file, Book book, final BooleanCallback onCallback){
+        bookPicturesReference
+                .child(book.getIsbn())
+                .child(book.getOwner().getUserName())
+                .child(book.getBookPhoto())
+                .getFile(file)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        onCallback.onCallback(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCallback.onCallback(false);
+                    }
+                });
+    }
+
+
+    /**
+     * The database helper for downloading a profile picture
+     * @param file the pre-allocated file for storing the user's profile picture.
+     * @param userInformation  The user who's profile picture we will be fetching
+     * @param onCallback  The callback so the fetch status is known, and completion can be tracked
+     */
+    public void downloadProfilePicture(File file, UserInformation userInformation, final BooleanCallback onCallback){
+        userPicturesReference
+                .child(userInformation.getUserName())
+                .getFile(file)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        onCallback.onCallback(true);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCallback.onCallback(false);
+                    }
+                });
+    }
+
+
+    /**
+     * Upload a user profile picture for use only by the current user
+     * @param file  The file location of the file to be uploaded
+     * @param userInformation  The user who is uploading their profile picture
+     * @param onCallback  The call back which tells when the process is done and if it succeeded or not
+     */
+    public void uploadProfilePicture(Uri file, UserInformation userInformation, final BooleanCallback onCallback){
+        userPicturesReference
+                .child(userInformation.getUserName())
+                .putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        onCallback.onCallback(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCallback.onCallback(false);
+                    }
+                });
+
+    }
+
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -517,8 +641,8 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Borrow requests (user from userInformation)
-     * @param userInformation
-     * @param onCallback
+     * @param userInformation  The user who's borrow requests we are fetching
+     * @param onCallback  A callback so the fetch status is known, and completion can be tracked
      */
     public void getBorrowRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
         requestsReference
@@ -546,8 +670,9 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Lend requests (user from userInformation)
-     * @param userInformation
-     * @param onCallback
+     * @param userInformation The user who's lend requests we are fetching
+     * @param onCallback  A callback so the fetch status is known, completion can be tracked, and
+     *                    the data retrieved
      */
     public void getLendRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
         requestsReference
@@ -577,8 +702,8 @@ public class DatabaseHelper{
     /**
      * Sends a borrow request to the owner of the book
      * To be used by BORROWER ONLY
-     * @param request
-     * @param onCallback
+     * @param request  The book request that is being made by Borrower to Owner
+     * @param onCallback A callback so the request status is known, and completion can be tracked
      */
     public void makeBorrowRequest(final BookRequest request, final BooleanCallback onCallback){
         final UserInformation owner = request.getBookRequested().getOwner();
@@ -628,8 +753,8 @@ public class DatabaseHelper{
     /**
      * Updates the borrower request list with new status in the book request
      * To be used by OWNER ONLY
-     * @param bookRequest
-     * @param onCallback
+     * @param bookRequest The book request that is being updated by Owner for Borrower
+     * @param onCallback  A callback so the request status is known, and completion can be tracked
      */
     public void updateLendRequest(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
         getBorrowRequests(bookRequest.getBorrower(), new BookRequestListCallback() {
