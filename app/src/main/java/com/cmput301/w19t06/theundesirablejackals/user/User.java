@@ -30,10 +30,11 @@ public class User {
 
 
     // user's requests to borrow books
-    private BookRequestList lendRequests;
+//    private BookRequestListCallback lendRequests;
 
     // requests to borrow user's books
-    private BookRequestList borrowRequests;
+//    private BookRequestListCallback borrowRequests;
+
 
     private UserNotificationList notifications;
 
@@ -57,8 +58,8 @@ public class User {
         ownedBooks = new BookList();
         borrowedBooks = new BookList();
         favouriteBooks = new BookList();
-        lendRequests = new BookRequestList();
-        borrowRequests = new BookRequestList();
+//        lendRequests = new BookRequestListCallback();
+//        borrowRequests = new BookRequestListCallback();
         notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
         friends = new UserList();
@@ -93,19 +94,19 @@ public class User {
 
     /**
      *
-     * @return BookRequestList of all the lend requests of the user
+     * @return BookRequestListCallback of all the lend requests of the user
      */
-    public BookRequestList getLendRequests() {
-        return lendRequests;
-    }
+//    public BookRequestListCallback getLendRequests() {
+//        return lendRequests;
+//    }
 
     /**
      *
-     * @return BookRequestList of all the barrow BookRequest of the user
+     * @return BookRequestListCallback of all the barrow BookRequest of the user
      */
-    public BookRequestList getBorrowRequests() {
-        return borrowRequests;
-    }
+//    public BookRequestListCallback getBorrowRequests() {
+//        return borrowRequests;
+//    }
 
     /**
      *
@@ -206,17 +207,17 @@ public class User {
      * Required setter for Firebase
      * @param borrowRequests
      */
-    public void setBorrowRequests(BookRequestList borrowRequests) {
-        this.borrowRequests = borrowRequests;
-    }
+//    public void setBorrowRequests(BookRequestListCallback borrowRequests) {
+//        this.borrowRequests = borrowRequests;
+//    }
 
     /**
      * Required setter for Firebase
      * @param lendRequests
      */
-    public void setLendRequests(BookRequestList lendRequests) {
-        this.lendRequests = lendRequests;
-    }
+//    public void setLendRequests(BookRequestListCallback lendRequests) {
+//        this.lendRequests = lendRequests;
+//    }
 
     /**
      * Required setter for Firebase
@@ -263,17 +264,17 @@ public class User {
      *
      * @param request new lend request to be added to lend request list
      */
-    public void addLendRequest(BookRequest request) {
-        lendRequests.addRequest(request);
-    }
+//    public void addLendRequest(BookRequest request) {
+//        lendRequests.addRequest(request);
+//    }
 
     /**
      *
      * @param request new book request to be added to borrow request list
      */
-    public void addBorrowRequest(BookRequest request) {
-        borrowRequests.addRequest(request);
-    }
+//    public void addBorrowRequest(BookRequest request) {
+//        borrowRequests.addRequest(request);
+//    }
 
 
 
@@ -284,8 +285,6 @@ public class User {
                 ",\nownedBooks=" + ownedBooks +
                 ",\nborrowedBooks=" + borrowedBooks +
                 ",\nfavouriteBooks=" + favouriteBooks +
-                ",\nlendRequests=" + lendRequests +
-                ",\nborrowRequests=" + borrowRequests +
                 ",\ngenreOfInterests=" + genreOfInterests +
                 ",\nfriends=" + friends +
                 ",\npickUpLocation="+ pickUpLocation +

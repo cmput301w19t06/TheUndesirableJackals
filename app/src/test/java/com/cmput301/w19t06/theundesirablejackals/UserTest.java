@@ -34,7 +34,7 @@ public class UserTest {
 
     @Test
     public void addLendRequest_isCorrect() {
-        // first get the "BookRequestList" object
+        // first get the "BookRequestListCallback" object
         BookRequestList object = owner.getLendRequests();
 
         // then get the list of books

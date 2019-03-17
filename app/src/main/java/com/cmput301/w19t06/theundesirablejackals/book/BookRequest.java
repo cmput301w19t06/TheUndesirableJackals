@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals.book;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 //import com.cmput301.w19t06.theundesirablejackals.Scanner;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 /**
  * This class mainly handles the book exchange between two users. It tracks the current situation
@@ -16,7 +17,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 public class BookRequest {
     private Book bookRequested;
     private BookRequestStatus currentStatus;
-    private User borrower;
+    private UserInformation borrower;
     private Geolocation pickuplocation;
 //    private Scanner scanner;
 
@@ -24,7 +25,7 @@ public class BookRequest {
      * @param borrower the borrower of the book
      * @param bookRequested book requested by the borrower
      */
-    public BookRequest(User borrower, Book bookRequested) {
+    public BookRequest(UserInformation borrower, Book bookRequested) {
         this.bookRequested = bookRequested;
         this.currentStatus = BookRequestStatus.PENDING;
         this.borrower = borrower;
@@ -36,7 +37,7 @@ public class BookRequest {
 //        bookRequested.getOwner().addBorrowRequest(this);
 
         // object adds itself into "borrowRequests" of sender
-        borrower.addLendRequest(this);
+//        borrower.addLendRequest(this);
 
     }
 
@@ -59,6 +60,10 @@ public class BookRequest {
         bookRequested.setStatus(BookStatus.ACCEPTED);
         currentStatus = BookRequestStatus.ACCEPTED;
     }
+
+    public UserInformation getBorrower(){return borrower;}
+
+    public void setBorrower(UserInformation userInformation){this.borrower = userInformation;}
 
     /**
      * Book has been handed off by the owner and yet to be received by the accepted borrower. This
