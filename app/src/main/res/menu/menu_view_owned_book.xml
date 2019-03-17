@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity">
+    <item
+        android:id="@+id/itemMenuOwnedBookEdit"
+        android:orderInCategory="100"
+        android:title="Edit Book"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/itemMenuOwnedBookViewRequests"
+        android:orderInCategory="100"
+        android:title="View Requests"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/itemMenuOwnedBookViewAddFavorite"
+        android:orderInCategory="100"
+        android:title="Add to Favorites"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/itemMenuOwnedBookDelete"
+        android:orderInCategory="100"
+        android:title="Delete Book"
+        app:showAsAction="never" />
+
+</menu>
