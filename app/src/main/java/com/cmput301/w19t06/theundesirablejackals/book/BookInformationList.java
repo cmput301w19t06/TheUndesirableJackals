@@ -1,9 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
-import android.content.Intent;
 
-import com.google.android.gms.common.util.BiConsumer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
