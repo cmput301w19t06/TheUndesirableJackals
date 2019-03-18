@@ -18,4 +18,12 @@ public class BookInformationList {
 
     public void add(BookInformation bookInformation){bookInformations.add(bookInformation);}
 
+    public BookInformation get(Integer integer){return bookInformations.get(integer);}
+
+    public Integer size(){return bookInformations.size();}
+
+    public void remove(Integer integer){bookInformations.remove(integer);}
+
+    public void remove(BookInformation bookInformation){bookInformations.remove(bookInformation);}
+
 }

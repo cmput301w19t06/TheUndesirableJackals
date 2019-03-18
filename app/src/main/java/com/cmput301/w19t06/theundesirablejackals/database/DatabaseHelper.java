@@ -328,7 +328,7 @@ public class DatabaseHelper{
 
 
 
-    //~~~~~~~~~~~~~~~~DATABASE SAVING DATA~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~SAVING USER OBJECT~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
 

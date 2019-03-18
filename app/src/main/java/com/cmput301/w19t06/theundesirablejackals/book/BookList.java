@@ -15,4 +15,12 @@ public class BookList {
     public ArrayList<Book>getBooks(){return books;}
 
     public void add(Book book){books.add(book);}
+
+    public Book get(Integer integer){return books.get(integer);}
+
+    public Integer size(){return books.size();}
+
+    public void remove(Integer integer){books.remove(integer);}
+
+    public void remove(Book book){books.remove(book);}
 }

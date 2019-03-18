@@ -9,7 +9,9 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -29,11 +31,15 @@ import android.support.v7.widget.Toolbar;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.InputStream;
 
@@ -205,25 +211,65 @@ public class MainHomeViewActivity extends AppCompatActivity {
         switch (requestCode) {
             case ADD_BOOK:
                 if (resultCode == RESULT_OK) {
-                    String title = data.getStringExtra("bookTitle");
-                    String author = data.getStringExtra("bookAuthor");
-                    String isbn = data.getStringExtra("bookIsbn");
-                    String description = data.getStringExtra("bookDescription");
-                    Uri imageUri = data.getData();
-                    imageUri = data.getData();
+                    final String title = data.getStringExtra("bookTitle");
+                    final String author = data.getStringExtra("bookAuthor");
+                    final String isbn = data.getStringExtra("bookIsbn");
+                    final String description = data.getStringExtra("bookDescription");
+                    final Uri imageUri = data.getData();
                     InputStream inputStream;
+                    Book book = new Book(title, author, isbn);
 
-                    final Book b = new Book(title, author, isbn, description);
-                    ownedBooksAdapter.addItem(b);
-                    databaseHelper.saveCurrentUsersOwnedBooks(ownedBooksAdapter.getDataSet(), new BooleanCallback() {
+                    ownedBooksAdapter.addItem(book);
+
+                    databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
                             if(bool){
-                                displayMessage("Book added to owned list successfully!");
+                                displayMessage("Book sent to server");
                             }else{
                                 ownedBooksAdapter.deleteItem(0);
                                 displayMessage("Sorry, something went wrong :(");
                             }
+                        }
+                    });
+                    databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+                        @Override
+                        public void onCallback(UserInformation userInformation) {
+                            BookInformation bookInformation;
+                            if(imageUri != null){
+                                bookInformation = new BookInformation(
+                                        BookStatus.AVAILABLE,
+                                        imageUri.getLastPathSegment(),
+                                        isbn,
+                                        userInformation.getUserName());
+                                databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if(bool){
+                                            //todo
+                                            displayMessage("Picture uploaded to server!");
+                                        }else{
+                                            //todo
+                                            displayMessage("Sorry, something went wrong uploading picture");
+                                        }
+                                    }
+                                });
+                            }else {
+                                bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, userInformation.getUserName());
+                            }
+
+                            databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        //todo
+                                        displayMessage("Book added to Owned Book List!");
+                                    }else{
+                                        //todo
+                                        displayMessage("Sorry, something went wrong X_X");
+                                    }
+                                }
+                            });
                         }
                     });
 //                    try {
@@ -237,6 +283,29 @@ public class MainHomeViewActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 

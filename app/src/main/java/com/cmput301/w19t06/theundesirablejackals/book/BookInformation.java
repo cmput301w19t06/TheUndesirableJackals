@@ -11,26 +11,24 @@ public class BookInformation {
     private String description;
 
 
-    public BookInformation(String bookInformationKey, String isbn, BookStatus status, String bookPhoto, String owner){
-        this.bookInformationKey = bookInformationKey;
+    public BookInformation(BookStatus status, String bookPhoto, String isbn, String owner){
         this.isbn = isbn;
         this.bookPhoto = bookPhoto;
         this.owner = owner;
         this.status = status;
     }
 
-    public BookInformation(String isbn, BookStatus status, String bookPhoto, String owner){
-        this.isbn = isbn;
-        this.bookPhoto = bookPhoto;
-        this.owner = owner;
-        this.status = status;
-    }
-
-    public BookInformation(String isbn, String bookPhoto, String owner){
+    public BookInformation(String bookPhoto, String isbn, String owner){
         this.isbn = isbn;
         this.bookPhoto = bookPhoto;
         this.owner = owner;
         this.status = BookStatus.AVAILABLE;
+    }
+
+    public BookInformation(BookStatus status, String isbn, String owner){
+        this.isbn = isbn;
+        this.owner = owner;
+        this.status = status;
     }
 
     public BookInformation(String isbn, String owner){
@@ -39,6 +37,7 @@ public class BookInformation {
         this.owner = owner;
         this.status = BookStatus.AVAILABLE;
     }
+
 
     public BookInformation(){
 
