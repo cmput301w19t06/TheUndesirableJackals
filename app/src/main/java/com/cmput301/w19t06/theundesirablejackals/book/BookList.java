@@ -1,15 +1,18 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BookList {
-    private HashMap<String, Book> books;
+    private ArrayList<Book> books;
 
     public BookList(){}
 
-    public BookList(HashMap<String, Book> books){this.books = books;}
+    public BookList(ArrayList<Book> books){this.books = books;}
 
-    public void setBooks(HashMap<String, Book> books){this.books = books;}
+    public void setBooks(ArrayList<Book> books){this.books = books;}
 
-    public HashMap<String, Book> getBooks(){return books;}
+    public ArrayList<Book>getBooks(){return books;}
+
+    public void add(Book book){books.add(book);}
 }

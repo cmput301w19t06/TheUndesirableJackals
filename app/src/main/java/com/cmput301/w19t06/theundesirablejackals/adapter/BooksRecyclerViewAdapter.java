@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
-    private BookInformationList dataSet;
+    private BookToInformationMap dataSet;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -46,18 +46,18 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 //    // Provide a suitable constructor (depends on the kind of dataset)
 //    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
 //        myListener = listener;
-//        dataSet = new BookInformationList();
+//        dataSet = new BookToInformationMap();
 //    }
 
     public BooksRecyclerViewAdapter(){
-        dataSet = new BookInformationList();
+        dataSet = new BookToInformationMap();
     }
 
     public void setMyListener(RecyclerViewClickListener    listener){
         myListener = listener;
     }
 
-    public void setDataSet(BookInformationList books){
+    public void setDataSet(BookToInformationMap books){
         dataSet = books;
         updateItems();
     }
@@ -143,7 +143,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
 
-    public void addItems(BookInformationList newItems){
+    public void addItems(BookToInformationMap newItems){
         dataSet.addBooks( newItems);
         updateItems();
     }
@@ -157,7 +157,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
 
-    public BookInformationList getDataSet(){
+    public BookToInformationMap getDataSet(){
         return dataSet;
     }
 

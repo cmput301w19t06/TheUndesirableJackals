@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
@@ -358,6 +360,31 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~~BOOK DESCRIPTION HANDLERS~~~~~~~~~~~~~~~~~~~~//
 
+    public void getAllBookInformations(Book book, final BookInformationListCallback bookInformationListCallback){
+        descriptionReference
+                .orderByChild("isbn")
+                .startAt(book.getIsbn())
+                .endAt(book.getIsbn())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookInformationList bookInformationList = new BookInformationList();
+                        if(dataSnapshot.exists()){
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookInformationList.add(dataSnapshot.getValue(BookInformation.class));
+                                }
+                            }
+                        }bookInformationListCallback.onCallback(bookInformationList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
 
 
     public void updateBookInformation(final BookInformation bookInformation, final BooleanCallback booleanCallback){
@@ -381,22 +408,22 @@ public class DatabaseHelper{
                 });
     }
 
-    public void getBookInformation(String bookInformationKey, final BookDescriptionCallback bookDescriptionCallback){
+    public void getBookInformation(String bookInformationKey, final BookInformationCallback bookInformationCallback){
         descriptionReference
                 .child(bookInformationKey)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
-                            bookDescriptionCallback.onCallback(dataSnapshot.getValue(BookInformation.class));
+                            bookInformationCallback.onCallback(dataSnapshot.getValue(BookInformation.class));
                         }else{
-                            bookDescriptionCallback.onCallback(null);
+                            bookInformationCallback.onCallback(null);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        bookDescriptionCallback.onCallback(null);
+                        bookInformationCallback.onCallback(null);
                         Log.d(TAG, "Something went wrong in getBookInformation");
                         Log.e(TAG, databaseError.getMessage());
                     }
@@ -405,6 +432,58 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~GENERIC BOOK HANDLERS~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+
+    public void getBooksAfterIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
+        booksReference
+                .orderByKey()
+                .startAt(isbn)
+                .limitToFirst(quantity)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookList bookList = new BookList();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookList.add(dataSnapshot1.getValue(Book.class));
+                                }
+                            }
+                        }
+                        bookListCallback.onCallback(bookList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void getBooksBeforeIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
+        booksReference
+                .orderByKey()
+                .endAt(isbn)
+                .limitToLast(quantity)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookList bookList = new BookList();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookList.add(dataSnapshot1.getValue(Book.class));
+                                }
+                            }
+                        }
+                        bookListCallback.onCallback(bookList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
 
     /**
@@ -451,12 +530,12 @@ public class DatabaseHelper{
 
     /**
      * This function will update all the books that the user owns
-     * @param bookInformationList  the full BookInformationList of owned books
+     * @param bookToInformationMap  the full BookToInformationMap of owned books
      * @param booleanCallback
      */
-    public void updateOwnedBooks(BookInformationList bookInformationList, final BooleanCallback booleanCallback){
+    public void updateOwnedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback booleanCallback){
         HashMap<String, Object> update = new HashMap<>();
-        update.put("ownedBooks", bookInformationList);
+        update.put("ownedBooks", bookToInformationMap);
         usersReference
                 .child(currentUser.getUid())
                 .updateChildren(update)
@@ -476,12 +555,12 @@ public class DatabaseHelper{
 
     /**
      * This function will update all the user's borrowed books
-     * @param bookInformationList  the full BookInformationList of borrowed books
+     * @param bookToInformationMap  the full BookToInformationMap of borrowed books
      * @param onCallback
      */
-    public void updateBorrowedBooks(BookInformationList bookInformationList, final BooleanCallback onCallback){
+    public void updateBorrowedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
         HashMap<String, Object> update = new HashMap<>();
-        update.put("borrowedBooks", bookInformationList);
+        update.put("borrowedBooks", bookToInformationMap);
         usersReference
                 .child(currentUser.getUid())
                 .updateChildren(update)
@@ -500,12 +579,12 @@ public class DatabaseHelper{
 
     /**
      * This function will update all the user's favourite books
-     * @param bookInformationList  the full BookInformationList of favourite books
+     * @param bookToInformationMap  the full BookToInformationMap of favourite books
      * @param onCallback
      */
-    public void updateFavouriteBooks(BookInformationList bookInformationList, final BooleanCallback onCallback){
+    public void updateFavouriteBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
         HashMap<String, Object> update = new HashMap<>();
-        update.put("favouriteBooks", bookInformationList);
+        update.put("favouriteBooks", bookToInformationMap);
         usersReference
                 .child(currentUser.getUid())
                 .updateChildren(update)

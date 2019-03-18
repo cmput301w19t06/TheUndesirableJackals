@@ -1,6 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.user;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookGenres;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
@@ -15,15 +15,15 @@ import java.util.ArrayList;
  * @see BookRequestList
  * @see UserNotification
  * @see Geolocation
- * @see BookInformationList
+ * @see BookToInformationMap
  * @see UserList
  */
 public class User {
     private Geolocation pickUpLocation;
     private UserInformation userInfo;
-    private BookInformationList ownedBooks;
-    private BookInformationList borrowedBooks;
-    private BookInformationList favouriteBooks;
+    private BookToInformationMap ownedBooks;
+    private BookToInformationMap borrowedBooks;
+    private BookToInformationMap favouriteBooks;
 
 
     // user's requests to borrow books
@@ -52,9 +52,9 @@ public class User {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
         userInfo = new UserInformation(userName, email, phoneNumber);
-        ownedBooks = new BookInformationList();
-        borrowedBooks = new BookInformationList();
-        favouriteBooks = new BookInformationList();
+        ownedBooks = new BookToInformationMap();
+        borrowedBooks = new BookToInformationMap();
+        favouriteBooks = new BookToInformationMap();
 //        lendRequests = new BookRequestListCallback();
 //        borrowRequests = new BookRequestListCallback();
         notifications = new UserNotificationList();
@@ -77,15 +77,15 @@ public class User {
      *
      * @return Books that is owned by the user
      */
-    public BookInformationList getOwnedBooks() {
+    public BookToInformationMap getOwnedBooks() {
         return ownedBooks;
     }
 
     /**
      *
-     * @return a BookInformationList of all the books borrowed  by the user
+     * @return a BookToInformationMap of all the books borrowed  by the user
      */
-    public BookInformationList getBorrowedBooks() {
+    public BookToInformationMap getBorrowedBooks() {
         return borrowedBooks;
     }
 
@@ -146,9 +146,9 @@ public class User {
 
     /**
      *
-     * @return a BookInformationList of the user's favourite books
+     * @return a BookToInformationMap of the user's favourite books
      */
-    public BookInformationList getFavouriteBooks() {
+    public BookToInformationMap getFavouriteBooks() {
         return favouriteBooks;
     }
 
@@ -164,7 +164,7 @@ public class User {
      * Overwrites the users favourite books list
      * @param favouriteBooks new favourite book list
      */
-    public void setFavouriteBooks(BookInformationList favouriteBooks) {
+    public void setFavouriteBooks(BookToInformationMap favouriteBooks) {
         this.favouriteBooks = favouriteBooks;
     }
 
@@ -196,7 +196,7 @@ public class User {
      * Required setter for Firebase
      * @param borrowedBooks
      */
-    public void setBorrowedBooks(BookInformationList borrowedBooks) {
+    public void setBorrowedBooks(BookToInformationMap borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
 
@@ -220,7 +220,7 @@ public class User {
      * Required setter for Firebase
      * @param ownedBooks
      */
-    public void setOwnedBooks(BookInformationList ownedBooks) {
+    public void setOwnedBooks(BookToInformationMap ownedBooks) {
         this.ownedBooks = ownedBooks;
     }
 
