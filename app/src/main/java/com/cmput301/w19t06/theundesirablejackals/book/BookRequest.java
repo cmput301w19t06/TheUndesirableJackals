@@ -15,7 +15,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * @see Geolocation
  */
 public class BookRequest {
-    private Book bookRequested;
+    private BookInformation bookRequested;
     private BookRequestStatus currentStatus;
     private UserInformation borrower;
     private Geolocation pickuplocation;
@@ -25,7 +25,7 @@ public class BookRequest {
      * @param borrower the borrower of the book
      * @param bookRequested book requested by the borrower
      */
-    public BookRequest(UserInformation borrower, Book bookRequested) {
+    public BookRequest(UserInformation borrower, BookInformation bookRequested) {
         this.bookRequested = bookRequested;
         this.currentStatus = BookRequestStatus.PENDING;
         this.borrower = borrower;
@@ -40,6 +40,8 @@ public class BookRequest {
 //        borrower.addLendRequest(this);
 
     }
+
+    public BookRequest(){}
 
     /**
      * Owner of the book has denied the borrowers request. This will also be called to deny all
@@ -111,7 +113,7 @@ public class BookRequest {
      *
      * @return the book requested in this book request
      */
-    public Book getBookRequested() {
+    public BookInformation getBookRequested() {
         return bookRequested;
     }
 
@@ -123,5 +125,11 @@ public class BookRequest {
     public BookRequestStatus getCurrentStatus() {
         return currentStatus;
     }
+
+    public void setBookRequested(BookInformation bookRequested){this.bookRequested = bookRequested;}
+
+    public void setCurrentStatus(BookRequestStatus status){this.currentStatus = status;}
+
+    public void setPickuplocation(Geolocation pickuplocation){this.pickuplocation = pickuplocation;}
 
 }
