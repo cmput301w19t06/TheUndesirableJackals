@@ -1,8 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
-import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +10,12 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class BookListTest {
-    private BookList bookList;
+public class BookInformationListTest {
+    private BookInformationList bookInformationList;
 
     @Before
     public void setup() {
-        bookList = new BookList();
+        bookInformationList = new BookInformationList();
     }
 
 
@@ -26,10 +25,10 @@ public class BookListTest {
         Book book1 = new Book("El filibusterismo", "José Rizal", "143322211");
 
         // add book
-        bookList.addBook(book1);
+        bookInformationList.addBook(book1);
 
         // check the book was added
-        assertTrue(bookList.contains(book1));
+        assertTrue(bookInformationList.contains(book1));
 
     }
 
@@ -38,15 +37,15 @@ public class BookListTest {
         Book book1 = new Book("Noli me tangere", "José Rizal", "143322211");
         Book book2 = new Book("El filibusterismo", "José Rizal", "143322211");
 
-        bookList.addBook(book1);
-        bookList.addBook(book2);
+        bookInformationList.addBook(book1);
+        bookInformationList.addBook(book2);
 
-        int sizeBefore = bookList.getBooks().size();
+        int sizeBefore = bookInformationList.getBooks().size();
 
-        bookList.deleteBook(book1);
+        bookInformationList.deleteBook(book1);
 
-        assertEquals(bookList.getBooks().size(),sizeBefore - 1);
-        assertFalse(bookList.getBooks().contains(book1));
+        assertEquals(bookInformationList.getBooks().size(),sizeBefore - 1);
+        assertFalse(bookInformationList.getBooks().contains(book1));
     }
 
     @Test
@@ -58,18 +57,18 @@ public class BookListTest {
         Book book4 = new Book("Promised Neverland", "Omoi Heavy", "ISBN4");
         Book book5 = new Book("Attack on Titan", "Weeabo U", "ISBN5");
 
-        bookList.addBook(book1);
-        bookList.addBook(book2);
-        bookList.addBook(book3);
-        bookList.addBook(book4);
-        bookList.addBook(book5);
+        bookInformationList.addBook(book1);
+        bookInformationList.addBook(book2);
+        bookInformationList.addBook(book3);
+        bookInformationList.addBook(book4);
+        bookInformationList.addBook(book5);
 
-        ArrayList<Book> searched =  bookList.searchByKeyword("made");
+        ArrayList<Book> searched =  bookInformationList.searchByKeyword("made");
 
         assertTrue(searched.size() == 1);
         assertTrue(searched.contains(book1));
 
-        searched =  bookList.searchByKeyword("Weeabo");
+        searched =  bookInformationList.searchByKeyword("Weeabo");
 
         assertTrue(searched.size() == 1);
         assertTrue(searched.contains(book5));
@@ -91,13 +90,13 @@ public class BookListTest {
         book4.setStatus(BookStatus.ACCEPTED);
         book5.setStatus(BookStatus.ACCEPTED);
 
-        bookList.addBook(book1);
-        bookList.addBook(book2);
-        bookList.addBook(book3);
-        bookList.addBook(book4);
-        bookList.addBook(book5);
+        bookInformationList.addBook(book1);
+        bookInformationList.addBook(book2);
+        bookInformationList.addBook(book3);
+        bookInformationList.addBook(book4);
+        bookInformationList.addBook(book5);
 
-        ArrayList<Book> searched = bookList.searchByStatus(BookStatus.ACCEPTED);
+        ArrayList<Book> searched = bookInformationList.searchByStatus(BookStatus.ACCEPTED);
 
         assertTrue(searched.contains(book4));
         assertTrue(searched.contains(book5));

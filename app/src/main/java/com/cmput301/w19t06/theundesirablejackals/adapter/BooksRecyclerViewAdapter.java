@@ -1,24 +1,22 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
-import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
-    private BookList dataSet;
+    private BookInformationList dataSet;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -48,18 +46,18 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 //    // Provide a suitable constructor (depends on the kind of dataset)
 //    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
 //        myListener = listener;
-//        dataSet = new BookList();
+//        dataSet = new BookInformationList();
 //    }
 
     public BooksRecyclerViewAdapter(){
-        dataSet = new BookList();
+        dataSet = new BookInformationList();
     }
 
     public void setMyListener(RecyclerViewClickListener    listener){
         myListener = listener;
     }
 
-    public void setDataSet(BookList books){
+    public void setDataSet(BookInformationList books){
         dataSet = books;
         updateItems();
     }
@@ -145,7 +143,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
 
-    public void addItems(BookList newItems){
+    public void addItems(BookInformationList newItems){
         dataSet.addBooks( newItems);
         updateItems();
     }
@@ -159,7 +157,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
 
-    public BookList getDataSet(){
+    public BookInformationList getDataSet(){
         return dataSet;
     }
 

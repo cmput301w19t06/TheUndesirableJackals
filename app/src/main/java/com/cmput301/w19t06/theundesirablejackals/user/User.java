@@ -1,12 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals.user;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookGenres;
-import com.cmput301.w19t06.theundesirablejackals.book.BookList;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -17,16 +15,15 @@ import java.util.ArrayList;
  * @see BookRequestList
  * @see UserNotification
  * @see Geolocation
- * @see BookList
+ * @see BookInformationList
  * @see UserList
  */
 public class User {
     private Geolocation pickUpLocation;
-    private String profilePhoto;
     private UserInformation userInfo;
-    private BookList ownedBooks;
-    private BookList borrowedBooks;
-    private BookList favouriteBooks;
+    private BookInformationList ownedBooks;
+    private BookInformationList borrowedBooks;
+    private BookInformationList favouriteBooks;
 
 
     // user's requests to borrow books
@@ -55,9 +52,9 @@ public class User {
         /* Lists containing books, requests and messages are set empty when 
         creating the User instance */
         userInfo = new UserInformation(userName, email, phoneNumber);
-        ownedBooks = new BookList();
-        borrowedBooks = new BookList();
-        favouriteBooks = new BookList();
+        ownedBooks = new BookInformationList();
+        borrowedBooks = new BookInformationList();
+        favouriteBooks = new BookInformationList();
 //        lendRequests = new BookRequestListCallback();
 //        borrowRequests = new BookRequestListCallback();
         notifications = new UserNotificationList();
@@ -80,15 +77,15 @@ public class User {
      *
      * @return Books that is owned by the user
      */
-    public BookList getOwnedBooks() {
+    public BookInformationList getOwnedBooks() {
         return ownedBooks;
     }
 
     /**
      *
-     * @return a BookList of all the books borrowed  by the user
+     * @return a BookInformationList of all the books borrowed  by the user
      */
-    public BookList getBorrowedBooks() {
+    public BookInformationList getBorrowedBooks() {
         return borrowedBooks;
     }
 
@@ -149,9 +146,9 @@ public class User {
 
     /**
      *
-     * @return a BookList of the user's favourite books
+     * @return a BookInformationList of the user's favourite books
      */
-    public BookList getFavouriteBooks() {
+    public BookInformationList getFavouriteBooks() {
         return favouriteBooks;
     }
 
@@ -159,15 +156,15 @@ public class User {
      *
      * @param book to be added to the favourite book list
      */
-    public void addFavouriteBooks(Book book) {
-        favouriteBooks.addBook(book);
+    public void addFavouriteBooks(Book book, String descriptionKey) {
+        favouriteBooks.addBook(book.getIsbn(), descriptionKey);
     }
 
     /**
      * Overwrites the users favourite books list
      * @param favouriteBooks new favourite book list
      */
-    public void setFavouriteBooks(BookList favouriteBooks) {
+    public void setFavouriteBooks(BookInformationList favouriteBooks) {
         this.favouriteBooks = favouriteBooks;
     }
 
@@ -199,7 +196,7 @@ public class User {
      * Required setter for Firebase
      * @param borrowedBooks
      */
-    public void setBorrowedBooks(BookList borrowedBooks) {
+    public void setBorrowedBooks(BookInformationList borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
 
@@ -223,20 +220,16 @@ public class User {
      * Required setter for Firebase
      * @param ownedBooks
      */
-    public void setOwnedBooks(BookList ownedBooks) {
+    public void setOwnedBooks(BookInformationList ownedBooks) {
         this.ownedBooks = ownedBooks;
-        for(Book b : this.ownedBooks.getBooks()){
-            b.setOwner(this.userInfo);
-        }
     }
 
     /**
      * Add an owned book to user's owned book list, and set user as owner
      * @param book
      */
-    public void addOwnedBook(Book book){
-        book.setOwner(this.userInfo);
-        this.ownedBooks.addBook(book);
+    public void addOwnedBook(Book book, String descriptionKey){
+        this.ownedBooks.addBook(book.getIsbn(), descriptionKey);
     }
 
     /**
@@ -260,18 +253,18 @@ public class User {
      */
     public void addFriend(User user) {}
 
-    /**
-     *
-     * @param request new lend request to be added to lend request list
-     */
+//    /**
+//     *
+//     * @param request new lend request to be added to lend request list
+//     */
 //    public void addLendRequest(BookRequest request) {
 //        lendRequests.addRequest(request);
 //    }
 
-    /**
-     *
-     * @param request new book request to be added to borrow request list
-     */
+//    /**
+//     *
+//     * @param request new book request to be added to borrow request list
+//     */
 //    public void addBorrowRequest(BookRequest request) {
 //        borrowRequests.addRequest(request);
 //    }
