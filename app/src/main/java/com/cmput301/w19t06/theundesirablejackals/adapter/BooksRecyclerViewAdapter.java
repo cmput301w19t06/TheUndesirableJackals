@@ -104,7 +104,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
             authorTextView.setText(author);
         }
         if(isbn != null) {
-            isbnTextView.setText(isbn);
+            isbnTextView.setText("ISBN: "+ isbn);
         }
         switch (status) {
             case ACCEPTED:
@@ -122,7 +122,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
             default:
                 bookThumbnail.setImageResource(R.drawable.book_icon);
         }
-
 
 
     }
