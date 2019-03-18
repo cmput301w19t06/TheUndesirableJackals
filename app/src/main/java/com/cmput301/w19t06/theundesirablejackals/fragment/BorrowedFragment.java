@@ -4,6 +4,7 @@
 
 package com.cmput301.w19t06.theundesirablejackals.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
@@ -66,10 +68,9 @@ public class BorrowedFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Book clickedBook = borrowedRecyclerViewAdapter.getItem(position);
-                //Do something with the book, maybe view it in detail?
-                Toast.makeText(getActivity(), "Borrowed book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
-
-
+                Intent intent = new Intent(getActivity(), ViewBorrowedBookActivity.class);
+                intent.putExtra(ViewBorrowedBookActivity.BORROWED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
+                startActivity(intent);
             }
         };
 

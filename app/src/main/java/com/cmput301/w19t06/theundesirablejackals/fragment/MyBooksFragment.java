@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
@@ -73,7 +74,7 @@ public class MyBooksFragment extends Fragment {
             public void onClick(View view, int position) {
                 Book clickedBook = booksRecyclerViewAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), ViewOwnedBookActivity.class);
-                intent.putExtra(ViewOwnedBookActivity.BOOK_FROM_RECYCLER_VIEW, clickedBook);
+                intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
                 startActivity(intent);
 
             }
