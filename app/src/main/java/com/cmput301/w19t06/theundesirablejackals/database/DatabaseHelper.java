@@ -36,7 +36,7 @@ public class DatabaseHelper{
     private final static String TAG = "DatabaseHelper";
 
     private final static String PATH_USERS = "users";
-    private final static String PATH_BOOKS = "globalBooks";
+    private final static String PATH_BOOKS = "books";
     private final static String PATH_REGISTERED = "registered";
     private final static String PATH_FAVOURITE = "favourites";
     private final static String PATH_REQUESTS = "requests";
@@ -234,7 +234,7 @@ public class DatabaseHelper{
 
 
 
-    //~~~~~~~~~~~DATABASE ACCESS & GETTERS~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~`USER DATABASE ACCESS & GETTERS~~~~~~~~~~~~~~~~~~~~~~//
 
 
 
@@ -317,6 +317,10 @@ public class DatabaseHelper{
     }
 
 
+
+    //~~~~~~~~~~~~~~~~~~~BOOK DATABASE GETTERS & SETTERS~~~~~~~~~~~~~~~~~~~~//
+
+
     /**
      * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
      * @param  isbn  the string representing a valid book ISBN that google books api can use/search
@@ -324,6 +328,7 @@ public class DatabaseHelper{
      */
     public void getBookFromDatabase(String isbn, final BookCallback callback){
         booksReference
+                .child("library")
                 .child(isbn)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -339,14 +344,74 @@ public class DatabaseHelper{
                 });
     }
 
-
+    /**
+     * This function will update all the books that the user owns
+     * @param bookList  the full BookList of owned books
+     * @param onCallback
+     */
+    public void saveCurrentUsersOwnedBooks(BookList bookList, final BooleanCallback onCallback){
+        HashMap<String, Object> ownedBookHashMap = new HashMap<>();
+        ownedBookHashMap.put("ownedBooks", bookList);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(ownedBookHashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
 
 
     /**
-     * Get the FirebaseAuth user object that is currently in use
-     * @return FirebaseAuth user object
+     * This requires the whole Owned book list in order to remove the book(s) that are no longer owned
+     * this is due to firebase restrictions, and the method in which it updates data
+     * @param bookList  the new list which has already been altered (removed the book data)
+     * @param onCallback  The callback which is used to tell the status of the database update
      */
-    public FirebaseUser getCurrentUser(){return currentUser;}
+    public void deleteBookFromCurrentUser(BookList bookList, final BooleanCallback onCallback){
+        usersReference
+                .child(currentUser.getUid())
+                .child("ownedBooks")
+                .child("books")
+                .setValue(bookList)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+    public void updateOwnedbook(Book book, Integer index, final BooleanCallback onCallback){
+        HashMap<String, Object> ownedBookHashMap = new HashMap<>();
+        ownedBookHashMap.put(index.toString(), book);
+        usersReference
+                .child(currentUser.getUid())
+                .child("ownedBooks")
+                .child("books")
+                .updateChildren(ownedBookHashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
 
 
 
@@ -379,52 +444,7 @@ public class DatabaseHelper{
 
     }
 
-    /**
-     * This function will update all the books that the user owns
-     * @param bookList  the full BookList of owned books
-     * @param onCallback
-     */
-    public void saveCurrentUsersOwnedBooks(BookList bookList, final BooleanCallback onCallback){
-        HashMap<String, Object> ownedBookHashMap = new HashMap<>();
-        ownedBookHashMap.put("ownedBooks", bookList);
-        usersReference
-                .child(currentUser.getUid())
-                .updateChildren(ownedBookHashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
-                        }else{
-                            onCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
 
-    /**
-     * This requires the whole Owned book list in order to remove the book(s) that are no longer owned
-     * this is due to firebase restrictions, and the method in which it updates data
-     * @param bookList  the new list which has already been altered (removed the book data)
-     * @param onCallback  The callback which is used to tell the status of the database update
-     */
-    public void deleteBookFromCurrentUser(BookList bookList, final BooleanCallback onCallback){
-        usersReference
-                .child(currentUser.getUid())
-                .child("ownedBooks")
-                .child("books")
-                .setValue(bookList)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
-                        }else{
-                            onCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
 
 
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~DATABASE UPDATE DATA~~~~~~~~~~~~~~~~~~~~//
@@ -434,7 +454,7 @@ public class DatabaseHelper{
      * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
      * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
      * @param  onCallback  The callback which is passed in, to be called upon successful data write
-     *                     used to pass completion status back to calling activity/fragment/class
+     *                     used to pass completion status back to the calling activity/fragment/class
      */
     public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
@@ -451,12 +471,7 @@ public class DatabaseHelper{
                             updateRegisteredUserInfo(userInfo, new BooleanCallback() {
                                 @Override
                                 public void onCallback(boolean bool) {
-                                    if(bool){
-                                        onCallback.onCallback(true);
-                                    }else {
-                                        onCallback.onCallback(false);
-
-                                    }
+                                    onCallback.onCallback(bool);
                                 }
                             });
 
@@ -613,7 +628,11 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-
+    /**
+     * Get the FirebaseAuth user object that is currently in use
+     * @return FirebaseAuth user object
+     */
+    public FirebaseUser getCurrentUser(){return currentUser;}
 
     /**
      * Check if the user is authenticated as a FirebaseAuth object
