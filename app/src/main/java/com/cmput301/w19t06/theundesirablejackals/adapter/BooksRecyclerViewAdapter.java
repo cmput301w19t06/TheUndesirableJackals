@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
@@ -88,13 +89,13 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.myBooks_img_book);
 
         Book b = dataSet.get(position);
-        String status = b.getStatus().toString();
+        BookStatus status = b.getStatus();
         String title = b.getTitle();
         String author = b.getAuthor();
         String isbn = b.getIsbn();
 
         if(status != null) {
-            statusTextView.setText(status);
+            statusTextView.setText(status.toString());
         }
         if(title != null) {
             titleTextView.setText(title);
@@ -105,8 +106,24 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         if(isbn != null) {
             isbnTextView.setText(isbn);
         }
+        switch (status) {
+            case ACCEPTED:
+                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                break;
+            case BORROWED:
+                bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
+                break;
+            case AVAILABLE:
+                bookThumbnail.setImageResource(R.drawable.ic_status_available);
+                break;
+            case REQUESTED:
+                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                break;
+            default:
+                bookThumbnail.setImageResource(R.drawable.book_icon);
+        }
 
-        bookThumbnail.setImageResource(R.drawable.book_icon);
+
 
     }
 

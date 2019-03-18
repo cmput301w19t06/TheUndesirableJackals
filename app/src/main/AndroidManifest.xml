@@ -36,11 +36,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".ViewBorrowedBookActivity"
+            android:label="@string/title_activity_view_borrowed_book_activty"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ViewOwnedBookActivity"
             android:label="@string/title_activity_view_owned_book"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ViewLibraryBookActivity" />
-        <activity android:name=".ViewBorrowedBookActivity" />
         <activity android:name=".AcceptRejectLendActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>

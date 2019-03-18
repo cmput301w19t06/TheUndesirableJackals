@@ -129,4 +129,5 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_view_owned_book">ViewOwnedBookActivity</string>
+    <string name="title_activity_view_borrowed_book_activty">ViewBorrowedBookActivty</string>
 </resources>
