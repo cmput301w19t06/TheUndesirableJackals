@@ -24,8 +24,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -60,6 +62,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();
 
+    private TextView mDrawerUsername;
+    private TextView mDrawerEmail;
+
     /**
      * Creates a tablayout for the fragments
      */
@@ -79,6 +84,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper();
 
+        setDrawerUserInfo();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -149,9 +155,38 @@ public class MainHomeViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        mDrawerUsername = findViewById(R.id.textViewMenuUsername);
+        mDrawerEmail = findViewById(R.id.textViewMenuEmail);
+
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
         return true;
+    }
+
+    public void setDrawerUserInfo() {
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                // retrieve user's info
+                UserInformation userInformation = user.getUserInfo();
+                String userName = userInformation.getUserName();
+                String email = userInformation.getEmail();
+
+
+                // display the info
+                TextView usernameView = (TextView) findViewById(R.id.textViewMenuUsername);
+                usernameView.setText(userName);
+
+                TextView emailView = (TextView) findViewById(R.id.textViewMenuEmail);
+                emailView.setText(email);
+
+                ImageView profilePhoto = findViewById(R.id.imageViewMenuProfile);
+
+                // TODO: Change image to profile photo from database
+                //profilePhoto.setImageResource(R.drawable.default_profile_photo);
+
+            }
+        });
     }
 
     public void setOwnedBooksAdapter(BooksRecyclerViewAdapter adapter){
