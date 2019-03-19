@@ -1,24 +1,23 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
-import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
-    private BookList dataSet;
+    private BookInformationPairing dataSet;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -48,19 +47,19 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 //    // Provide a suitable constructor (depends on the kind of dataset)
 //    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
 //        myListener = listener;
-//        dataSet = new BookList();
+//        dataSet = new BookToInformationMap();
 //    }
 
     public BooksRecyclerViewAdapter(){
-        dataSet = new BookList();
+        dataSet = new BookInformationPairing();
     }
 
-    public void setMyListener(RecyclerViewClickListener    listener){
+    public void setMyListener(RecyclerViewClickListener listener){
         myListener = listener;
     }
 
-    public void setDataSet(BookList books){
-        dataSet = books;
+    public void setDataSet(BookInformationPairing data){
+        dataSet = data;
         updateItems();
     }
 
@@ -88,8 +87,9 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         TextView isbnTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_isbn);
         ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.myBooks_img_book);
 
-        Book b = dataSet.get(position);
-        BookStatus status = b.getStatus();
+        Book b = dataSet.getBook(position);
+        BookInformation i = dataSet.getInformation(position);
+        BookStatus status = i.getStatus();
         String title = b.getTitle();
         String author = b.getAuthor();
         String isbn = b.getIsbn();
@@ -133,33 +133,38 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     public void deleteItem(int position){
-        dataSet.getBooks().remove(position);
+        dataSet.remove(position);
         this.notifyItemRemoved(position);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
         this.notifyItemRangeChanged(position, this.getItemCount());
         updateItems();
     }
 
-    public void addItem(Book newItem){
-        dataSet.addBook(newItem);
+    public void addItem(Book book, BookInformation bookInformation){
+        dataSet.addPair(book, bookInformation);
         updateItems();
     }
 
 
-    public void addItems(BookList newItems){
-        dataSet.addBooks( newItems);
+    public void addItems(BookInformationPairing newItems){
+        dataSet.addAll( newItems);
         updateItems();
     }
+
 
     private void updateItems(){
         this.notifyDataSetChanged();
     }
 
-    public Book getItem(int position){
-        return dataSet.get(position);
+    public Book getBook(int position){
+        return dataSet.getBook(position);
+    }
+
+    public BookInformation getInformation(int position){
+        return dataSet.getInformation(position);
     }
 
 
-    public BookList getDataSet(){
+    public BookInformationPairing getDataSet(){
         return dataSet;
     }
 

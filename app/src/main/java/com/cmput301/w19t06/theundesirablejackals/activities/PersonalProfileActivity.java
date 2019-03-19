@@ -128,9 +128,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 phoneView.setText("Phone: " + phone);
 
                 ImageView profilePhoto = findViewById(R.id.imageViewPersonalProfileActivityBookThumbnail);
-                if (userInformation.getUserPhoto() == null) {
-                    profilePhoto.setImageResource(R.drawable.default_profile_photo);
-                }
+
+                profilePhoto.setImageResource(R.drawable.default_profile_photo);
             }
         });
     }
