@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 
 /**
@@ -21,10 +22,12 @@ import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 public class ViewBorrowedBookActivity extends AppCompatActivity {
 
     public final static String BORROWED_BOOK_FROM_RECYCLER_VIEW = "BorrowedBookFromRecyclerView";
+    public final static String BORROWED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
 
     private Toolbar mToolbar;
 
     private Book mBorrowedBook;
+    private BookInformation mBookInformation;
 
     private Button mButtonReturnBook;
 
@@ -45,6 +48,7 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mBorrowedBook = (Book) intent.getSerializableExtra(BORROWED_BOOK_FROM_RECYCLER_VIEW);
+        mBookInformation = (BookInformation) intent.getSerializableExtra(BORROWED_INFO_FROM_RECYCLER_VIEW);
 
         mTitle = findViewById(R.id.textViewViewBorrowedBookBookTitle);
         mAuthor = findViewById(R.id.textViewViewBorrowedBookBookAuthor);
@@ -56,8 +60,8 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         mTitle.setText(mBorrowedBook.getTitle());
         mAuthor.setText(mBorrowedBook.getAuthor());
         mIsbn.setText("ISBN: " + mBorrowedBook.getIsbn());
-        mBookOwner.setText("Owner: " + mBorrowedBook.getOwner().getUserName());
-        mDescription.setText(mBorrowedBook.getDescription());
+        mBookOwner.setText("Owner: " + mBookInformation.getOwner());
+        mDescription.setText(mBookInformation.getDescription());
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

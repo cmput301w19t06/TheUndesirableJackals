@@ -15,7 +15,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
@@ -24,11 +23,14 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapte
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BorrowedFragment extends Fragment {
     View view;
@@ -67,16 +69,19 @@ public class BorrowedFragment extends Fragment {
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Book clickedBook = borrowedRecyclerViewAdapter.getItem(position);
+                Book clickedBook = borrowedRecyclerViewAdapter.getBook(position);
+                BookInformation clickedbookInformation = borrowedRecyclerViewAdapter.getInformation(position);
                 Intent intent = new Intent(getActivity(), ViewBorrowedBookActivity.class);
                 intent.putExtra(ViewBorrowedBookActivity.BORROWED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
+                intent.putExtra(ViewBorrowedBookActivity.BORROWED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
                 startActivity(intent);
             }
         };
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        borrowedRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getBorrowedBooksAdapter();
+        borrowedRecyclerViewAdapter = new BooksRecyclerViewAdapter();
+        ((MainHomeViewActivity)getActivity()).setBorrowedBooksAdapter(borrowedRecyclerViewAdapter);
         borrowedRecyclerViewAdapter.setMyListener(listener);
         borrowedRecyclerView.setAdapter(borrowedRecyclerViewAdapter);
 
@@ -88,12 +93,29 @@ public class BorrowedFragment extends Fragment {
 
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
-        DatabaseHelper databaseHelper = new DatabaseHelper();
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
-                if(user.getBorrowedBooks() != null) {
-                    borrowedRecyclerViewAdapter.setDataSet(user.getBorrowedBooks());
+                if(user != null && user.getBorrowedBooks() != null && user.getBorrowedBooks().getBooks() != null) {
+                    final HashMap<String, Object> map = user.getBorrowedBooks().getBooks();
+                    if(map.size() > 0) {
+                        for (String isbn : map.keySet()) {
+                            final String information = map.get(isbn).toString();
+                            databaseHelper.getBookFromDatabase(isbn, new BookCallback() {
+                                @Override
+                                public void onCallback(final Book book) {
+                                    databaseHelper.getBookInformation(information, new BookInformationCallback() {
+                                        @Override
+                                        public void onCallback(BookInformation bookInformation) {
+                                            borrowedRecyclerViewAdapter.addItem(book, bookInformation);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+
                 }
 
             }

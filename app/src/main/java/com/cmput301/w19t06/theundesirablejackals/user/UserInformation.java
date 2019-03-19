@@ -9,17 +9,16 @@ import java.io.Serializable;
  */
 public class UserInformation implements Serializable {
 
-    private String userName;
-    private String userPhoto;
-    private String email;
-    private String phoneNumber;
+    private String userName = new String();
+    private String userPhoto = new String();
+    private String email = new String();
+    private String phoneNumber = new String();
 
 
     /**
      * No Parameter constructor REQUIRED for firebase
      * DO NOT USE
      */
-    @Deprecated
     public UserInformation() { }
 
     /**
