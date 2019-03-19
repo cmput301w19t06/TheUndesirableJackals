@@ -182,7 +182,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
                 ImageView profilePhoto = findViewById(R.id.imageViewMenuProfile);
 
-                // TODO: Change image to profile photo from database
+                    // TODO: Change image to profile photo from database
                 //profilePhoto.setImageResource(R.drawable.default_profile_photo);
 
             }
