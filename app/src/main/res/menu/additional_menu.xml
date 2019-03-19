@@ -20,11 +20,11 @@
             android:title="Messages" />
         <item
             android:id="@+id/itemMenuBorrowRequests"
-            android:icon="@drawable/ic_request_made_grey_24dp"
+            android:icon="@drawable/ic_borrow_book"
             android:title="Borrow Requests" />
         <item
             android:id="@+id/itemMenuLendRequests"
-            android:icon="@drawable/ic_request_received_grey_24dp"
+            android:icon="@drawable/ic_lend_book"
             android:title="Lend Requests" />
         <item
             android:id="@+id/itemMenuFriends"

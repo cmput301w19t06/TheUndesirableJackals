@@ -315,9 +315,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-
-
-
                         }
                     });
 //                    try {
