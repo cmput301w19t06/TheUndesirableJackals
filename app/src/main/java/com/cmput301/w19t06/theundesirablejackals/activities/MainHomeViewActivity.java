@@ -35,10 +35,12 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.InputStream;
@@ -216,10 +218,12 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     final String isbn = data.getStringExtra("bookIsbn");
                     final String description = data.getStringExtra("bookDescription");
                     final Uri imageUri = data.getData();
-                    InputStream inputStream;
-                    Book book = new Book(title, author, isbn);
+//                    InputStream inputStream;
 
-                    ownedBooksAdapter.addItem(book);
+                    Book b = new Book(title, author, isbn);
+                    final Book book = new Book(b);
+
+
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
@@ -227,21 +231,21 @@ public class MainHomeViewActivity extends AppCompatActivity {
                             if(bool){
                                 displayMessage("Book sent to server");
                             }else{
-                                ownedBooksAdapter.deleteItem(0);
                                 displayMessage("Sorry, something went wrong :(");
                             }
                         }
                     });
-                    databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+                    databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
                         @Override
-                        public void onCallback(UserInformation userInformation) {
+                        public void onCallback(User user) {
                             BookInformation bookInformation;
                             if(imageUri != null){
                                 bookInformation = new BookInformation(
                                         BookStatus.AVAILABLE,
                                         imageUri.getLastPathSegment(),
                                         isbn,
-                                        userInformation.getUserName());
+                                        user.getUserInfo().getUserName());
+
                                 databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
                                     @Override
                                     public void onCallback(boolean bool) {
@@ -255,8 +259,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
                                     }
                                 });
                             }else {
-                                bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, userInformation.getUserName());
+                                bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
                             }
+
 
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
@@ -267,6 +272,18 @@ public class MainHomeViewActivity extends AppCompatActivity {
                                     }else{
                                         //todo
                                         displayMessage("Sorry, something went wrong X_X");
+                                    }
+                                }
+                            });
+                            ownedBooksAdapter.addItem(book, bookInformation);
+                            user.getOwnedBooks().addBook(book.getIsbn(), bookInformation.getBookInformationKey());
+                            databaseHelper.updateOwnedBooks(user.getOwnedBooks(), new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        displayMessage("Saved your book on server");
+                                    }else{
+                                        displayMessage("Didn't manage to save your book to the server");
                                     }
                                 }
                             });
@@ -286,27 +303,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
     }
 
 
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
+
 
 
 }

@@ -45,6 +45,12 @@ public class Book implements Serializable {
         this.genres = new ArrayList<>();
     }
 
+    public Book(Book book){
+        this.title = book.getTitle();
+        this.author = book.getAuthor();
+        this.isbn = book.getIsbn();
+        this.genres = book.getGenres();
+    }
 
 
 

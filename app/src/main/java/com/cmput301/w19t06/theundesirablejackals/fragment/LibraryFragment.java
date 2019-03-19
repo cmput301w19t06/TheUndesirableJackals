@@ -19,15 +19,22 @@ import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 /*
  * Created by Mohamed on 21/02/2019
@@ -48,7 +55,7 @@ public class LibraryFragment extends Fragment {
         ItemTouchHelper itemTouchhelper;
         SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
-        RecyclerView libraryRecyclerView;
+        final RecyclerView libraryRecyclerView;
 
 
 
@@ -70,7 +77,7 @@ public class LibraryFragment extends Fragment {
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Book clickedBook = libraryRecyclerViewAdapter.getItem(position);
+                Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
                 //Do something with the book, maybe view it in detail?
                 Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
 
@@ -91,16 +98,22 @@ public class LibraryFragment extends Fragment {
 
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
-        DatabaseHelper databaseHelper = new DatabaseHelper();
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override
-            public void onCallback(User user) {
-                if(user.getFavouriteBooks() != null) {
-                    libraryRecyclerViewAdapter.setDataSet(user.getFavouriteBooks());
+            public void onCallback(BookList bookList) {
+                if(bookList != null && bookList.getBooks() != null && bookList.getBooks().size() > 0) {
+                    BookInformationPairing bookInformationPairing = new BookInformationPairing();
+                    for (Book book : bookList.getBooks()) {
+                        bookInformationPairing.addSingle(book);
+                    }
+                    libraryRecyclerViewAdapter.addItems(bookInformationPairing);
                 }
-
             }
         });
+
+
+
 
         return view;
     }

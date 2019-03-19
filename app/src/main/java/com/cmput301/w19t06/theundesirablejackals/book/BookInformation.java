@@ -2,7 +2,9 @@ package com.cmput301.w19t06.theundesirablejackals.book;
 
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
-public class BookInformation {
+import java.io.Serializable;
+
+public class BookInformation implements Serializable {
     private String bookInformationKey;
     private String isbn;
     private BookStatus status;

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 
 /**
@@ -27,10 +28,12 @@ import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 public class ViewOwnedBookActivity extends AppCompatActivity {
 
     public final static String OWNED_BOOK_FROM_RECYCLER_VIEW = "OwnedBookFromRecyclerView";
+    public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
 
     private Toolbar mToolbar;
 
     private Book mOwnedBook;
+    private BookInformation mBookInformation;
 
     private TextView mTitle;
     private TextView mAuthor;
@@ -49,6 +52,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mOwnedBook = (Book) intent.getSerializableExtra(OWNED_BOOK_FROM_RECYCLER_VIEW);
+        mBookInformation = (BookInformation) intent.getSerializableExtra(OWNED_INFO_FROM_RECYCLER_VIEW);
 
         mTitle = findViewById(R.id.textViewViewOwnedBookBookTitle);
         mAuthor = findViewById(R.id.textViewViewOwnedBookBookAuthor);
@@ -59,8 +63,8 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mTitle.setText(mOwnedBook.getTitle());
         mAuthor.setText(mOwnedBook.getAuthor());
         mIsbn.setText("ISBN: " + mOwnedBook.getIsbn());
-        mStatus.setText(mOwnedBook.getStatus().toString());
-        mDescription.setText(mOwnedBook.getDescription());
+        mStatus.setText(mBookInformation.getStatus().toString());
+        mDescription.setText(mBookInformation.getDescription());
 
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

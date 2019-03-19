@@ -16,6 +16,10 @@ public class BookList {
 
     public void add(Book book){books.add(book);}
 
+    public void addAll(BookList bookList){
+        this.books.addAll(bookList.getBooks());
+    }
+
     public Book get(Integer integer){return books.get(integer);}
 
     public Integer size(){return books.size();}

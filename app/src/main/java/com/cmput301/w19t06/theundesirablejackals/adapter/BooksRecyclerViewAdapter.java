@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
-    private BookToInformationMap dataSet;
+    private BookInformationPairing dataSet;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -50,15 +51,15 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 //    }
 
     public BooksRecyclerViewAdapter(){
-        dataSet = new BookToInformationMap();
+        dataSet = new BookInformationPairing();
     }
 
-    public void setMyListener(RecyclerViewClickListener    listener){
+    public void setMyListener(RecyclerViewClickListener listener){
         myListener = listener;
     }
 
-    public void setDataSet(BookToInformationMap books){
-        dataSet = books;
+    public void setDataSet(BookInformationPairing data){
+        dataSet = data;
         updateItems();
     }
 
@@ -86,8 +87,9 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         TextView isbnTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_isbn);
         ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.myBooks_img_book);
 
-        Book b = dataSet.get(position);
-        BookStatus status = b.getStatus();
+        Book b = dataSet.getBook(position);
+        BookInformation i = dataSet.getInformation(position);
+        BookStatus status = i.getStatus();
         String title = b.getTitle();
         String author = b.getAuthor();
         String isbn = b.getIsbn();
@@ -131,33 +133,38 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     public void deleteItem(int position){
-        dataSet.getBooks().remove(position);
+        dataSet.remove(position);
         this.notifyItemRemoved(position);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
         this.notifyItemRangeChanged(position, this.getItemCount());
         updateItems();
     }
 
-    public void addItem(Book newItem){
-        dataSet.addBook(newItem);
+    public void addItem(Book book, BookInformation bookInformation){
+        dataSet.addPair(book, bookInformation);
         updateItems();
     }
 
 
-    public void addItems(BookToInformationMap newItems){
-        dataSet.addBooks( newItems);
+    public void addItems(BookInformationPairing newItems){
+        dataSet.addAll( newItems);
         updateItems();
     }
+
 
     private void updateItems(){
         this.notifyDataSetChanged();
     }
 
-    public Book getItem(int position){
-        return dataSet.get(position);
+    public Book getBook(int position){
+        return dataSet.getBook(position);
+    }
+
+    public BookInformation getInformation(int position){
+        return dataSet.getInformation(position);
     }
 
 
-    public BookToInformationMap getDataSet(){
+    public BookInformationPairing getDataSet(){
         return dataSet;
     }
 

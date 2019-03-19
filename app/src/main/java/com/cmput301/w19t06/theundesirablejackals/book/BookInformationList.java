@@ -18,6 +18,10 @@ public class BookInformationList {
 
     public void add(BookInformation bookInformation){bookInformations.add(bookInformation);}
 
+    public void addAll(BookInformationList bookInformationList){
+        this.bookInformations.addAll(bookInformationList.getBookInformations());
+    }
+
     public BookInformation get(Integer integer){return bookInformations.get(integer);}
 
     public Integer size(){return bookInformations.size();}
