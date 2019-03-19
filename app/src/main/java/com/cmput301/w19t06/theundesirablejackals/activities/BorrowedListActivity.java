@@ -18,23 +18,5 @@ public class BorrowedListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrow_requests);
 
-        String[] borrowOptions = {};
-        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, borrowOptions);
-        ListView listview = (ListView) findViewById(R.id.listViewBorrowRequestActivityBorrowRequests);
-        listview.setAdapter(adapter);
-//        listview.setOnClickListener((View.OnClickListener) this);
-    }
-
-    /**
-     * on item clicked in list, do appropriate actions
-     * @param l
-     * @param v
-     * @param position
-     * @param id
-     */
-    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        //TODO
-        //Show where pick up if accepted
-        //allow user to delete request --> bring to book and allow to unrequest by hitting request button
     }
 }

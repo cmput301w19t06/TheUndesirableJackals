@@ -14,7 +14,7 @@ import android.widget.ListView;
  * by clicking item on list
  * Author: Kaya Thiessen
  */
-public class NotificationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class NotificationActivity extends AppCompatActivity {
     private String[] notifications= {};
 
     /**
@@ -25,31 +25,6 @@ public class NotificationActivity extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_view);
-
-        //TODO
-        //Set the list notification to the UserNotificationList
-
-        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, notifications);
-        ListView listview = (ListView) findViewById(R.id.listViewNotificationActivityNotificationList);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(this);
     }
 
-    /**
-     * On click of item list adapter. Opens corresponding issue
-     * @param adapterView
-     * @param view
-     * @param i
-     * @param l
-     */
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent();
-        //TODO
-        //Depending on content open corresponding section (message, lent, borrowed ect.)
-
-        //intent.putExtra("position", position)
-        //intent.putExtra("id",id)
-        //startActivity(intent)
-    }
 }
