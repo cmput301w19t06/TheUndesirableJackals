@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
 
 
         <item
             android:id="@+id/itemMenuProfile"
+            android:icon="@drawable/ic_person_outline_grey_24dp"
             android:title="Profile" />
         <item
             android:id="@+id/itemMenuNotifications"
+            android:icon="@drawable/ic_notifications_grey_24dp"
             android:title="Notifications" />
         <item
+            android:id="@+id/itemMenuMessages"
+            android:icon="@drawable/ic_chat_gray_24dp"
+            android:title="Messages" />
+        <item
             android:id="@+id/itemMenuBorrowRequests"
+            android:icon="@drawable/ic_request_made_grey_24dp"
             android:title="Borrow Requests" />
         <item
             android:id="@+id/itemMenuLendRequests"
+            android:icon="@drawable/ic_request_received_grey_24dp"
             android:title="Lend Requests" />
         <item
             android:id="@+id/itemMenuFriends"
+            android:icon="@drawable/ic_people_grey_24dp"
             android:title="Friends" />
+
         <item
-            android:id="@+id/itemMenuSearchBook"
-            android:title="Search Book" />
+            android:id="@+id/itemMenuPreferences"
+            android:icon="@drawable/ic_settings_grey_24dp"
+            android:title="Preferences" />
+
         <item
             android:id="@+id/itemMenuLogout"
+            android:icon="@drawable/ic_exit_to_app_grey_24dp"
             android:title="Logout" />
 
     </group>

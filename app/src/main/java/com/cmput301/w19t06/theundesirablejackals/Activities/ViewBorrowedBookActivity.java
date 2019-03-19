@@ -79,9 +79,4 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         });
 
     }
-
-    private void showMyToast(String message){
-        Toast.makeText(this, message,
-                Toast.LENGTH_LONG).show();
-    }
 }

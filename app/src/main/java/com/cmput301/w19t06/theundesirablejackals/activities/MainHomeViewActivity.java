@@ -111,9 +111,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.itemMenuFriends:
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
-                    case R.id.itemMenuSearchBook:
-                        intent = new Intent(MainHomeViewActivity.this, BookSearchActivity.class);
-                        break;
                     case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
@@ -185,6 +182,12 @@ public class MainHomeViewActivity extends AppCompatActivity {
     public void OnClick_AddOwnedBookButton(View view){
         Intent intent = AddBookActivity.makeIntent(MainHomeViewActivity.this);
         startActivityForResult(intent, ADD_BOOK);
+    }
+
+    public void OnClick_ProfileImage(View view) {
+        Intent intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
