@@ -134,7 +134,11 @@ public class AddBookActivity extends AppCompatActivity {
         EditText isbnParam  = (EditText)findViewById(R.id.editTextAddBookBookISBN);
 
         // retrieve the ISBN input by the user
-        isbn = barcodesFound.get(0);
+        if(barcodesFound.size() > 0) {
+            isbn = barcodesFound.get(0);
+        }else{
+            isbn = isbnParam.getText().toString();
+        }
 
         // check internet network
         ConnectivityManager connMgr = (ConnectivityManager)

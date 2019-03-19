@@ -279,7 +279,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
                         @Override
                         public void onCallback(User user) {
-                            BookInformation bookInformation = updatebookInformation(user, imageUri, isbn);
+                            BookInformation bookInformation = updatebookInformation(user, imageUri, isbn, description);
 
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
@@ -335,14 +335,15 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
 
 
-    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn) {
+    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description) {
         BookInformation bookInformation;
         if (user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
             if (!user.getOwnedBooks().getBooks().containsKey(isbn)) {
                 if (imageUri != null) {
                     bookInformation = new BookInformation(
                             BookStatus.AVAILABLE,
-                            imageUri.getLastPathSegment(),
+                            imageUri,
+                            description,
                             isbn,
                             user.getUserInfo().getUserName());
 
@@ -359,13 +360,14 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
                 }
             } else if (user.getOwnedBooks().getBooks().containsKey(isbn)) {
                 if (imageUri != null) {
                     bookInformation = new BookInformation(
                             BookStatus.AVAILABLE,
-                            imageUri.getLastPathSegment(),
+                            imageUri,
+                            description,
                             isbn,
                             user.getUserInfo().getUserName());
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
@@ -382,7 +384,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
                 }
 

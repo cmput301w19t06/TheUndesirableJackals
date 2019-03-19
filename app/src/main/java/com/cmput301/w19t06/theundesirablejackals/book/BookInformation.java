@@ -1,5 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+import android.net.Uri;
+
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.Serializable;
@@ -13,16 +15,16 @@ public class BookInformation implements Serializable {
     private String description;
 
 
-    public BookInformation(BookStatus status, String bookPhoto, String isbn, String owner){
+    public BookInformation(BookStatus status, Uri bookPhoto, String isbn, String owner){
         this.isbn = isbn;
-        this.bookPhoto = bookPhoto;
+        this.bookPhoto = bookPhoto.getLastPathSegment();
         this.owner = owner;
         this.status = status;
     }
 
-    public BookInformation(String bookPhoto, String isbn, String owner){
+    public BookInformation(Uri bookPhoto, String isbn, String owner){
         this.isbn = isbn;
-        this.bookPhoto = bookPhoto;
+        this.bookPhoto = bookPhoto.getLastPathSegment();
         this.owner = owner;
         this.status = BookStatus.AVAILABLE;
     }
@@ -36,6 +38,36 @@ public class BookInformation implements Serializable {
     public BookInformation(String isbn, String owner){
         this.isbn = isbn;
 //        this.bookPhoto = defaultPhotoName;
+        this.owner = owner;
+        this.status = BookStatus.AVAILABLE;
+    }
+
+    public BookInformation(BookStatus status, Uri bookPhoto, String description, String isbn, String owner){
+        this.isbn = isbn;
+        this.bookPhoto = bookPhoto.getLastPathSegment();
+        this.owner = owner;
+        this.status = status;
+        this.description = description;
+    }
+
+    public BookInformation(Uri bookPhoto, String description, String isbn, String owner){
+        this.isbn = isbn;
+        this.bookPhoto = bookPhoto.getLastPathSegment();
+        this.owner = owner;
+        this.status = BookStatus.AVAILABLE;
+        this.description = description;
+    }
+
+    public BookInformation(BookStatus status, String description, String isbn, String owner){
+        this.isbn = isbn;
+        this.owner = owner;
+        this.status = status;
+        this.description = description;
+    }
+
+    public BookInformation(String description, String isbn, String owner){
+        this.isbn = isbn;
+        this.description = description;
         this.owner = owner;
         this.status = BookStatus.AVAILABLE;
     }
