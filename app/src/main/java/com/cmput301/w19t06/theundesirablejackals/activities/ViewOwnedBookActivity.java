@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
  * Allows the user to view an owned book and do certain action that only book owners can do.
@@ -31,6 +33,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
 
     private Toolbar mToolbar;
+    private DatabaseHelper databaseHelper;
 
     private Book mOwnedBook;
     private BookInformation mBookInformation;
@@ -49,6 +52,8 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_action_back);
         mToolbar.setTitle("Owned Book");
         setSupportActionBar(mToolbar);
+
+        databaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
         mOwnedBook = (Book) intent.getSerializableExtra(OWNED_BOOK_FROM_RECYCLER_VIEW);
@@ -102,12 +107,23 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 ToastMessage.show(this, "Viewing Requests...");
                 break;
             case R.id.itemMenuOwnedBookDelete:
-                ToastMessage.show(this, "Deleting...");
+                deleteBook();
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteBook() {
+        databaseHelper.deleteOwnedBook(mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                Intent intent = new Intent(getApplicationContext(), MainHomeViewActivity.class);
+                startActivity(intent);
+                finish();
+                ToastMessage.show(getApplicationContext(), "Book deleted");
+            }
+        });
     }
 
 }
