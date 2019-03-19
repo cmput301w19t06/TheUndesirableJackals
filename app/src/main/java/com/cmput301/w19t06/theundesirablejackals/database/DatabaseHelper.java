@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
@@ -36,10 +39,11 @@ public class DatabaseHelper{
     private final static String TAG = "DatabaseHelper";
 
     private final static String PATH_USERS = "users";
-    private final static String PATH_BOOKS = "globalBooks";
+    private final static String PATH_BOOKS = "books";
     private final static String PATH_REGISTERED = "registered";
     private final static String PATH_FAVOURITE = "favourites";
     private final static String PATH_REQUESTS = "requests";
+    private final static String PATH_DESCRIPTION = "descriptions";
 
 
 
@@ -49,6 +53,7 @@ public class DatabaseHelper{
     private DatabaseReference registeredReference;
     private DatabaseReference favouriteReference;
     private DatabaseReference requestsReference;
+    private DatabaseReference descriptionReference;
     private FirebaseUser currentUser;
 
     private StorageReference bookPicturesReference;
@@ -77,6 +82,7 @@ public class DatabaseHelper{
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
         this.requestsReference = database.getReference(PATH_REQUESTS);
+        this.descriptionReference = database.getReference(PATH_DESCRIPTION);
 
         this.bookPicturesReference = storageReference.getReference(PATH_BOOKS);
         this.userPicturesReference = storageReference.getReference(PATH_USERS);
@@ -89,10 +95,10 @@ public class DatabaseHelper{
     /**
      * Goes to the firebase database to register (asynchronously) the currentUser's unique Username
      * @param  usernameMap The mapping between the unique Username and the data it needs to contain in the Database
-     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
-    private void registerUsername(Map<String, Object> usernameMap, final BooleanCallback onCallback){
+    private void registerUsername(Map<String, Object> usernameMap, final BooleanCallback booleanCallback){
         registeredReference
                 .child("username")
                 .updateChildren(usernameMap)
@@ -100,8 +106,8 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
-                        }else{onCallback.onCallback(false);}
+                            booleanCallback.onCallback(true);
+                        }else{booleanCallback.onCallback(false);}
                     }
                 });
     }
@@ -109,10 +115,10 @@ public class DatabaseHelper{
     /**
      * Goes to the firebase database to register (asynchronously) the currentUser's unique UID
      * @param  uidMap The mapping between the unique UID and the data it needs to contain in the Database
-     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
-    private void registerUID(Map<String, Object> uidMap, final BooleanCallback onCallback){
+    private void registerUID(Map<String, Object> uidMap, final BooleanCallback booleanCallback){
         registeredReference
                 .child("uid")
                 .updateChildren(uidMap)
@@ -120,8 +126,8 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
-                        }else{onCallback.onCallback(false);}
+                            booleanCallback.onCallback(true);
+                        }else{booleanCallback.onCallback(false);}
                     }
                 });
     }
@@ -130,10 +136,10 @@ public class DatabaseHelper{
     /**
      * Goes to the firebase database to register and save (asynchronously) the currentUser's custom User object
      * @param  user The currentuser's custom User object that is to be written in the database
-     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
-    public void registerUser(final User user, final BooleanCallback onCallback){
+    public void registerUser(final User user, final BooleanCallback booleanCallback){
         Map<String, Object> uidMap = new HashMap<>();
         Map<String, Object> tempMap = new HashMap<>();
         uidMap.put(
@@ -157,14 +163,14 @@ public class DatabaseHelper{
                                     @Override
                                     public void onCallback(boolean bool) {
                                         if(bool){
-                                            onCallback.onCallback(true);
-                                        }else { onCallback.onCallback(false);}
+                                            booleanCallback.onCallback(true);
+                                        }else { booleanCallback.onCallback(false);}
                                     }
                                 });
-                            }else { onCallback.onCallback(false); }
+                            }else { booleanCallback.onCallback(false); }
                         }
                     });
-                }else { onCallback.onCallback(false); }
+                }else { booleanCallback.onCallback(false); }
             }
         });
 
@@ -174,10 +180,10 @@ public class DatabaseHelper{
     /**
      * Check if the current user (getCurrentUser) is registered
      * in the database as a full user object
-     * @param onCallback the callback that will be used to signal that the asynchronous
+     * @param booleanCallback the callback that will be used to signal that the asynchronous
      *                   database search has been completed
      */
-    public void isRegistered(final BooleanCallback onCallback){
+    public void isRegistered(final BooleanCallback booleanCallback){
         registeredReference
                 .child("uid")
                 .child(currentUser.getUid())
@@ -185,10 +191,10 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
 
                         }else {
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
 
                         }
                     }
@@ -202,11 +208,11 @@ public class DatabaseHelper{
 
     /**
      * @param username to be checked against registered usernames for uniqueness
-     * @param onCallback the function which will be called once the result is available
+     * @param booleanCallback the function which will be called once the result is available
      * Since database access is asynchronous, the result will not be available right away.
      * Instead, once the result comes back it can be dealt with using various Callback interfaces
      */
-    public void isUsernameAvailable(String username, final BooleanCallback onCallback){
+    public void isUsernameAvailable(String username, final BooleanCallback booleanCallback){
         registeredReference
                 .child("username")
                 .child(username)
@@ -214,10 +220,10 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
 
                         }else {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
 
                         }
                     }
@@ -234,17 +240,18 @@ public class DatabaseHelper{
 
 
 
-    //~~~~~~~~~~~DATABASE ACCESS & GETTERS~~~~~~~~~~~~~~//
+
+    //~~~~~~~~~~~USER & USERINFORMATION GETTERS~~~~~~~~~~~~~~//
 
 
 
     /**
      * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
      * @param username The username to use when searching for specific user info
-     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     * @param  userInformationCallback  The callback which is passed in, to be called upon successful data acquisition
      *                     used to pass data back to calling activity/fragment/class
      */
-    public void getUserInfoFromDatabase(String username, final UserInformationCallback onCallback){
+    public void getUserInfoFromDatabase(String username, final UserInformationCallback userInformationCallback){
         registeredReference
                 .child("username")
                 .child(username)
@@ -252,12 +259,12 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
-                        onCallback.onCallback(userInfo);
+                        userInformationCallback.onCallback(userInfo);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onCallback.onCallback(null);
+                        userInformationCallback.onCallback(null);
                         Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
                         Log.e(TAG, databaseError.getMessage());
                     }
@@ -267,10 +274,10 @@ public class DatabaseHelper{
 
     /**
      * Goes to the firebase database and fetches (asynchronously) the currentUser custom UserInformation object
-     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     * @param  userInformationCallback  The callback which is passed in, to be called upon successful data acquisition
      *                     used to pass data back to calling activity/fragment/class
      */
-    public void getCurrentUserInfoFromDatabase(final UserInformationCallback onCallback){
+    public void getCurrentUserInfoFromDatabase(final UserInformationCallback userInformationCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("userinfo")
@@ -278,12 +285,12 @@ public class DatabaseHelper{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         UserInformation userInfo = dataSnapshot.getValue(UserInformation.class);
-                        onCallback.onCallback(userInfo);
+                        userInformationCallback.onCallback(userInfo);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onCallback.onCallback(null);
+                        userInformationCallback.onCallback(null);
                         Log.d(TAG, "Cancelled in getUserInfoFromDatabase");
                         Log.e(TAG, databaseError.getMessage());
                     }
@@ -294,10 +301,10 @@ public class DatabaseHelper{
 
     /**
      * Goes to the firebase database and fetches (asynchronously) the currentUser custom User object
-     * @param  onCallback  The callback which is passed in, to be called upon successful data acquisition
+     * @param  userCallback  The callback which is passed in, to be called upon successful data acquisition
      *                     used to pass data back to calling activity/fragment/class
      */
-    public void getCurrentUserFromDatabase(final UserCallback onCallback){
+    public void getCurrentUserFromDatabase(final UserCallback userCallback){
         usersReference
                 .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -305,7 +312,7 @@ public class DatabaseHelper{
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
 //                        Log.d(TAG, user.toString());
-                        onCallback.onCallback(user);
+                        userCallback.onCallback(user);
                     }
 
                     @Override
@@ -317,19 +324,58 @@ public class DatabaseHelper{
     }
 
 
+
+
+
+
+    //~~~~~~~~~~~~~~~~SAVING USER OBJECT~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+
     /**
-     * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
-     * @param  isbn  the string representing a valid book ISBN that google books api can use/search
-     * @param  callback  The callback which is passed in, to be called upon successful data acquisition
+     * Goes to the firebase database and saves (asynchronously) the currentUser's custom User object
+     * @param  user The currentuser's custom User object that is to be written/updated in the database
+     * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to calling activity/fragment/class
      */
-    public void getBookFromDatabase(String isbn, final BookCallback callback){
-        booksReference
-                .child(isbn)
+    public void saveCurrentUser(User user, final BooleanCallback booleanCallback){
+        HashMap<String, Object> userMap = new HashMap<>();
+        userMap.put(currentUser.getUid(), user);
+        usersReference
+                .updateChildren(userMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            booleanCallback.onCallback(true);
+                                        }else{
+                                            booleanCallback.onCallback(false);
+                                        }
+                                    }
+                                });
+
+    }
+
+
+
+    //~~~~~~~~~~~~~~~~~~BOOK DESCRIPTION HANDLERS~~~~~~~~~~~~~~~~~~~~//
+
+    public void getAllBookInformations(Book book, final BookInformationListCallback bookInformationListCallback){
+        descriptionReference
+                .orderByChild("isbn")
+                .startAt(book.getIsbn())
+                .endAt(book.getIsbn())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Book book = dataSnapshot.getValue(Book.class);
-                        callback.onCallback(book);
+                        BookInformationList bookInformationList = new BookInformationList();
+                        if(dataSnapshot.exists()){
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookInformationList.add(dataSnapshot.getValue(BookInformation.class));
+                                }
+                            }
+                        }bookInformationListCallback.onCallback(bookInformationList);
                     }
 
                     @Override
@@ -341,55 +387,183 @@ public class DatabaseHelper{
 
 
 
-
-    /**
-     * Get the FirebaseAuth user object that is currently in use
-     * @return FirebaseAuth user object
-     */
-    public FirebaseUser getCurrentUser(){return currentUser;}
-
-
-
-
-    //~~~~~~~~~~~~~~~~DATABASE SAVING DATA~~~~~~~~~~~~~~~~~~~~~~~~//
-
-
-
-    /**
-     * Goes to the firebase database and saves (asynchronously) the currentUser's custom User object
-     * @param  user The currentuser's custom User object that is to be written/updated in the database
-     * @param  onCallback  The callback which is passed in, to be called upon successful data write
-     *                     used to pass completion status back to calling activity/fragment/class
-     */
-    public void saveCurrentUser(User user, final BooleanCallback onCallback){
-        HashMap<String, Object> userMap = new HashMap<>();
-        userMap.put(currentUser.getUid(), user);
-        usersReference
-                .updateChildren(userMap)
+    public void updateBookInformation(final BookInformation bookInformation, final BooleanCallback booleanCallback){
+        String tempRef;
+        if(bookInformation.getBookInformationKey() == null) {
+            tempRef = descriptionReference.push().getKey();
+            bookInformation.setBookInformationKey(tempRef);
+        }else{
+            tempRef = bookInformation.getBookInformationKey();
+        }
+        descriptionReference
+                .child(tempRef)
+                .setValue(bookInformation)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            onCallback.onCallback(true);
-                                        }else{
-                                            onCallback.onCallback(false);
-                                        }
-                                    }
-                                });
-
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            booleanCallback.onCallback(true);
+                        }else {booleanCallback.onCallback(false);}
+                    }
+                });
     }
+
+    public void getBookInformation(String bookInformationKey, final BookInformationCallback bookInformationCallback){
+        descriptionReference
+                .child(bookInformationKey)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            bookInformationCallback.onCallback(dataSnapshot.getValue(BookInformation.class));
+                        }else{
+                            bookInformationCallback.onCallback(null);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        bookInformationCallback.onCallback(null);
+                        Log.d(TAG, "Something went wrong in getBookInformation");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
+    //~~~~~~~~~~~~~~~~~GENERIC BOOK HANDLERS~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    public void getBooksAfterIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
+        booksReference
+                .orderByKey()
+                .startAt(isbn)
+                .limitToFirst(quantity)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookList bookList = new BookList();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookList.add(dataSnapshot1.getValue(Book.class));
+                                }
+                            }
+                        }
+                        bookListCallback.onCallback(bookList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void getBooksBeforeIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
+        booksReference
+                .orderByKey()
+                .endAt(isbn)
+                .limitToLast(quantity)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookList bookList = new BookList();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    bookList.add(dataSnapshot1.getValue(Book.class));
+                                }
+                            }
+                        }
+                        bookListCallback.onCallback(bookList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+    /**
+     * Goes to the firebase database and fetches (asynchronously) the Book coresponding to isbn
+     * @param  isbn  the string representing a valid book ISBN that google books api can use/search
+     * @param  bookCallback  The callback which is passed in, to be called upon successful data acquisition
+     */
+    public void getBookFromDatabase(String isbn, final BookCallback bookCallback){
+        booksReference
+                .child(isbn)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Book book = dataSnapshot.getValue(Book.class);
+                        bookCallback.onCallback(book);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+    public void addBookToDatabase(Book book, final BooleanCallback booleanCallback){
+        booksReference
+                .child(book.getIsbn())
+                .setValue(book)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            booleanCallback.onCallback(true);
+                        }else {booleanCallback.onCallback(false);}
+                    }
+                });
+    }
+
+
+    //~~~~~~~~~~~~~~~~USER'S SPECIFIC BOOK HANDLERS~~~~~~~~~~~~~~~~~~~//
+
+
 
     /**
      * This function will update all the books that the user owns
-     * @param bookList  the full BookList of owned books
-     * @param onCallback
+     * @param bookToInformationMap  the full BookToInformationMap of owned books
+     * @param booleanCallback
      */
-    public void saveCurrentUsersOwnedBooks(BookList bookList, final BooleanCallback onCallback){
-        HashMap<String, Object> ownedBookHashMap = new HashMap<>();
-        ownedBookHashMap.put("ownedBooks", bookList);
+    public void updateOwnedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback booleanCallback){
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("ownedBooks", bookToInformationMap);
         usersReference
                 .child(currentUser.getUid())
-                .updateChildren(ownedBookHashMap)
+                .updateChildren(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            booleanCallback.onCallback(true);
+                        }else{
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+
+    /**
+     * This function will update all the user's borrowed books
+     * @param bookToInformationMap  the full BookToInformationMap of borrowed books
+     * @param onCallback
+     */
+    public void updateBorrowedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("borrowedBooks", bookToInformationMap);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(update)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -402,18 +576,43 @@ public class DatabaseHelper{
                 });
     }
 
+
     /**
-     * This requires the whole Owned book list in order to remove the book(s) that are no longer owned
-     * this is due to firebase restrictions, and the method in which it updates data
-     * @param bookList  the new list which has already been altered (removed the book data)
+     * This function will update all the user's favourite books
+     * @param bookToInformationMap  the full BookToInformationMap of favourite books
+     * @param onCallback
+     */
+    public void updateFavouriteBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("favouriteBooks", bookToInformationMap);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * This requires the owned book in order to remove the book from the database
+     * @param bookInformation  the book which needs to be removed
      * @param onCallback  The callback which is used to tell the status of the database update
      */
-    public void deleteBookFromCurrentUser(BookList bookList, final BooleanCallback onCallback){
+    public void deleteOwnedBook(BookInformation bookInformation, final BooleanCallback onCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("ownedBooks")
                 .child("books")
-                .setValue(bookList)
+                .child(bookInformation.getIsbn())
+                .removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -427,14 +626,65 @@ public class DatabaseHelper{
     }
 
 
-   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~DATABASE UPDATE DATA~~~~~~~~~~~~~~~~~~~~//
+    /**
+     * This requires the borrowed book in order to remove the book from the database
+     * @param bookInformation  the book which needs to be removed
+     * @param onCallback  The callback which is used to tell the status of the database update
+     */
+    public void deleteBorrowedBook(BookInformation bookInformation, final BooleanCallback onCallback){
+        usersReference
+                .child(currentUser.getUid())
+                .child("borrowedBooks")
+                .child("books")
+                .child(bookInformation.getIsbn())
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+
+    /**
+     * This requires the favourite book in order to remove the book from the database
+     * @param bookInformation  the book which needs to be removed
+     * @param onCallback  The callback which is used to tell the status of the database update
+     */
+    public void deleteFavouriteBook(BookInformation bookInformation, final BooleanCallback onCallback){
+        usersReference
+                .child(currentUser.getUid())
+                .child("favouriteBooks")
+                .child("books")
+                .child(bookInformation.getIsbn())
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+
+   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~UPDATE USER DATA~~~~~~~~~~~~~~~~~~~~//
 
 
     /**
      * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
      * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
      * @param  onCallback  The callback which is passed in, to be called upon successful data write
-     *                     used to pass completion status back to calling activity/fragment/class
+     *                     used to pass completion status back to the calling activity/fragment/class
      */
     public void updateUserInfo(final UserInformation userInfo, final BooleanCallback onCallback){
         Map<String, Object> userInfoMap = new HashMap<>();
@@ -451,12 +701,7 @@ public class DatabaseHelper{
                             updateRegisteredUserInfo(userInfo, new BooleanCallback() {
                                 @Override
                                 public void onCallback(boolean bool) {
-                                    if(bool){
-                                        onCallback.onCallback(true);
-                                    }else {
-                                        onCallback.onCallback(false);
-
-                                    }
+                                    onCallback.onCallback(bool);
                                 }
                             });
 
@@ -509,14 +754,14 @@ public class DatabaseHelper{
     /**
      * Upload a picture related the Book book
      * @param file  the file to be uploaded to the database
-     * @param book  the book that the photo needs to be attached to
+     * @param bookInformation  the book that the photo needs to be attached to
      * @param onCallback  Boolean callback which gives upload status (success or not)
      */
-    public void uploadBookPicture(Uri file, Book book, final BooleanCallback onCallback){
+    public void uploadBookPicture(Uri file, BookInformation bookInformation, final BooleanCallback onCallback){
         bookPicturesReference
-                .child(book.getIsbn())
-                .child(book.getOwner().getUserName())
-                .child(book.getBookPhoto())
+                .child(bookInformation.getIsbn())
+                .child(bookInformation.getOwner())
+                .child(bookInformation.getBookPhoto())
                 .putFile(file)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -537,14 +782,14 @@ public class DatabaseHelper{
     /**
      * Download a picture from the database related to the Book book
      * @param file  the file location to store the picture
-     * @param book  The book that the picture relates to
+     * @param bookInformation  The book that the picture relates to
      * @param onCallback A callback so the fetch status is known, and completion can be tracked
      */
-    public void downloadBookPicture(File file, Book book, final BooleanCallback onCallback){
+    public void downloadBookPicture(File file, BookInformation bookInformation, final BooleanCallback onCallback){
         bookPicturesReference
-                .child(book.getIsbn())
-                .child(book.getOwner().getUserName())
-                .child(book.getBookPhoto())
+                .child(bookInformation.getIsbn())
+                .child(bookInformation.getOwner())
+                .child(bookInformation.getBookPhoto())
                 .getFile(file)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
@@ -570,6 +815,7 @@ public class DatabaseHelper{
     public void downloadProfilePicture(File file, UserInformation userInformation, final BooleanCallback onCallback){
         userPicturesReference
                 .child(userInformation.getUserName())
+                .child(userInformation.getUserPhoto())
                 .getFile(file)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
@@ -594,6 +840,7 @@ public class DatabaseHelper{
     public void uploadProfilePicture(Uri file, UserInformation userInformation, final BooleanCallback onCallback){
         userPicturesReference
                 .child(userInformation.getUserName())
+                .child(userInformation.getUserPhoto())
                 .putFile(file)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -613,7 +860,11 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-
+    /**
+     * Get the FirebaseAuth user object that is currently in use
+     * @return FirebaseAuth user object
+     */
+    public FirebaseUser getCurrentUser(){return currentUser;}
 
     /**
      * Check if the user is authenticated as a FirebaseAuth object
@@ -641,12 +892,12 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Borrow requests (user from userInformation)
-     * @param userInformation  The user who's borrow requests we are fetching
+     * @param user  The user who's borrow requests we are fetching
      * @param onCallback  A callback so the fetch status is known, and completion can be tracked
      */
-    public void getBorrowRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
+    public void getBorrowRequests(String user, final BookRequestListCallback onCallback){
         requestsReference
-                .child(userInformation.getUserName())
+                .child(user)
                 .child("borrowRequests")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -670,13 +921,13 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Lend requests (user from userInformation)
-     * @param userInformation The user who's lend requests we are fetching
+     * @param user The user who's lend requests we are fetching
      * @param onCallback  A callback so the fetch status is known, completion can be tracked, and
      *                    the data retrieved
      */
-    public void getLendRequests(UserInformation userInformation, final BookRequestListCallback onCallback){
+    public void getLendRequests(String user, final BookRequestListCallback onCallback){
         requestsReference
-                .child(userInformation.getUserName())
+                .child(user)
                 .child("lendRequests")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -706,7 +957,7 @@ public class DatabaseHelper{
      * @param onCallback A callback so the request status is known, and completion can be tracked
      */
     public void makeBorrowRequest(final BookRequest request, final BooleanCallback onCallback){
-        final UserInformation owner = request.getBookRequested().getOwner();
+        final String owner = request.getBookRequested().getOwner();
         getLendRequests(owner, new BookRequestListCallback() {
             @Override
             public void onCallback(BookRequestList bookRequestList) {
@@ -719,7 +970,7 @@ public class DatabaseHelper{
                     @Override
                     public void onCallback(boolean bool) {
                         if(bool){
-                            getBorrowRequests(request.getBorrower(), new BookRequestListCallback() {
+                            getBorrowRequests(request.getBorrower().getUserName(), new BookRequestListCallback() {
                                 @Override
                                 public void onCallback(BookRequestList bookRequestList) {
                                     if(bookRequestList == null){
@@ -757,13 +1008,13 @@ public class DatabaseHelper{
      * @param onCallback  A callback so the request status is known, and completion can be tracked
      */
     public void updateLendRequest(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
-        getBorrowRequests(bookRequest.getBorrower(), new BookRequestListCallback() {
+        getBorrowRequests(bookRequest.getBorrower().getUserName(), new BookRequestListCallback() {
             @Override
             public void onCallback(BookRequestList bookRequestList) {
                 if(bookRequestList != null) {
                     for (BookRequest bookRequest1 : bookRequestList.getBookRequests()) {
-                        if(bookRequest.getBookRequested().getOwner().getUserName()
-                                .equals(bookRequest1.getBookRequested().getOwner().getUserName()) &&
+                        if(bookRequest.getBookRequested().getOwner()
+                                .equals(bookRequest1.getBookRequested().getOwner()) &&
                         bookRequest.getBookRequested().getIsbn()
                                 .equals(bookRequest1.getBookRequested().getIsbn()))
                         {
@@ -793,13 +1044,13 @@ public class DatabaseHelper{
      * 
      * @param position
      * @param bookRequest
-     * @param onCallback
+     * @param booleanCallback
      */
-    private void updateLendRequestAtPosition(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
+    private void updateLendRequestAtPosition(final Integer position, final BookRequest bookRequest, final BooleanCallback booleanCallback){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put(position.toString(), bookRequest);
         requestsReference
-                .child(bookRequest.getBookRequested().getOwner().getUserName())
+                .child(bookRequest.getBookRequested().getOwner())
                 .child("lendRequests")
                 .child("bookRequests")
                 .updateChildren(hashMap)
@@ -807,9 +1058,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -821,9 +1072,9 @@ public class DatabaseHelper{
      * Updates the borrower request at Position position using the new BookRequest bookRequest
      * @param position
      * @param bookRequest
-     * @param onCallback
+     * @param booleanCallback
      */
-    private void updateBorrowRequest(Integer position, BookRequest bookRequest, final BooleanCallback onCallback){
+    private void updateBorrowRequest(Integer position, BookRequest bookRequest, final BooleanCallback booleanCallback){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put(position.toString(), bookRequest);
         requestsReference
@@ -835,9 +1086,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -846,23 +1097,23 @@ public class DatabaseHelper{
 
     /**
      * Sets the lender requests to the new list bookRequestList
-     * @param userInformation
+     * @param user
      * @param bookRequestList
-     * @param onCallback
+     * @param booleanCallback
      */
-    private void setLendRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback onCallback){
+    private void setLendRequests(String user, BookRequestList bookRequestList, final BooleanCallback booleanCallback){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("lendRequests", bookRequestList);
         requestsReference
-                .child(userInformation.getUserName())
+                .child(user)
                 .updateChildren(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -873,9 +1124,9 @@ public class DatabaseHelper{
      * Sets the borrower requests to the new list bookRequestList
      * @param userInformation
      * @param bookRequestList
-     * @param onCallback
+     * @param booleanCallback
      */
-    private void setBorrowRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback onCallback){
+    private void setBorrowRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback booleanCallback){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("borrowRequests", bookRequestList);
         requestsReference
@@ -885,9 +1136,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
