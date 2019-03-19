@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
-import com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
@@ -89,7 +88,8 @@ public class MyBooksFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        booksRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getOwnedBooksAdapter();
+        booksRecyclerViewAdapter = new BooksRecyclerViewAdapter();
+        ((MainHomeViewActivity)getActivity()).setOwnedBooksAdapter(booksRecyclerViewAdapter);
         booksRecyclerViewAdapter.setMyListener(listener);
         booksRecyclerView.setAdapter(booksRecyclerViewAdapter);
 

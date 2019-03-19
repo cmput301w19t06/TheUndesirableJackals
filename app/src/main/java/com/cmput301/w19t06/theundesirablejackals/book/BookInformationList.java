@@ -6,7 +6,7 @@ public class BookInformationList {
     ArrayList<BookInformation> bookInformations;
 
 
-    public BookInformationList(){}
+    public BookInformationList(){this.bookInformations = new ArrayList<BookInformation>();}
 
     public void setBookInformations(ArrayList<BookInformation> bookInformations) {
         this.bookInformations = bookInformations;

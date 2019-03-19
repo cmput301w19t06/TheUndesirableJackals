@@ -20,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,8 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import java.io.InputStream;
 
 public class MainHomeViewActivity extends AppCompatActivity {
+    public static final String TAG = "MainHomeViewActivity";
+
     public static final int ADD_BOOK = 50;
     private TabLayout tabLayout;
     private Toolbar toolBar;
@@ -154,16 +157,16 @@ public class MainHomeViewActivity extends AppCompatActivity {
         return true;
     }
 
-    public BooksRecyclerViewAdapter getOwnedBooksAdapter(){
-        return ownedBooksAdapter;
+    public void setOwnedBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.ownedBooksAdapter = adapter;
     }
 
-    public BooksRecyclerViewAdapter getLibraryBooksAdapter(){
-        return libraryBooksAdapter;
+    public void setLibraryBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.libraryBooksAdapter = adapter;
     }
 
-    public BooksRecyclerViewAdapter getBorrowedBooksAdapter(){
-        return borrowedBooksAdapter;
+    public void setBorrowedBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.borrowedBooksAdapter = adapter;
     }
 
     /**
@@ -229,64 +232,54 @@ public class MainHomeViewActivity extends AppCompatActivity {
                         @Override
                         public void onCallback(boolean bool) {
                             if(bool){
-                                displayMessage("Book sent to server");
+                                Log.d(TAG, "Book sent to server");
                             }else{
-                                displayMessage("Sorry, something went wrong :(");
+                                Log.d(TAG, "Sorry, something went wrong :(");
                             }
                         }
                     });
                     databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
                         @Override
                         public void onCallback(User user) {
-                            BookInformation bookInformation;
-                            if(imageUri != null){
-                                bookInformation = new BookInformation(
-                                        BookStatus.AVAILABLE,
-                                        imageUri.getLastPathSegment(),
-                                        isbn,
-                                        user.getUserInfo().getUserName());
-
-                                databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
-                                    @Override
-                                    public void onCallback(boolean bool) {
-                                        if(bool){
-                                            //todo
-                                            displayMessage("Picture uploaded to server!");
-                                        }else{
-                                            //todo
-                                            displayMessage("Sorry, something went wrong uploading picture");
-                                        }
-                                    }
-                                });
-                            }else {
-                                bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
-                            }
-
+                            BookInformation bookInformation = updatebookInformation(user, imageUri, isbn);
 
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
                                 public void onCallback(boolean bool) {
                                     if(bool){
                                         //todo
-                                        displayMessage("Book added to Owned Book List!");
+                                        Log.d(TAG, "All good in update book information");
                                     }else{
                                         //todo
-                                        displayMessage("Sorry, something went wrong X_X");
+                                        Log.d(TAG, "NOT good in update book information");
                                     }
                                 }
                             });
-                            ownedBooksAdapter.addItem(book, bookInformation);
-                            user.getOwnedBooks().addBook(book.getIsbn(), bookInformation.getBookInformationKey());
-                            databaseHelper.updateOwnedBooks(user.getOwnedBooks(), new BooleanCallback() {
-                                @Override
-                                public void onCallback(boolean bool) {
-                                    if(bool){
-                                        displayMessage("Saved your book on server");
-                                    }else{
-                                        displayMessage("Didn't manage to save your book to the server");
-                                    }
+                            Boolean check = false;
+
+                            for(Book b :ownedBooksAdapter.getDataSet().getBookList().getBooks()) {
+                                if(b.getIsbn().equals(isbn)){
+                                    check = true;
+                                    break;
                                 }
-                            });
+                            }
+                            if(!check) {
+                                ownedBooksAdapter.addItem(book, bookInformation);
+                                user.getOwnedBooks().addBook(book.getIsbn(), bookInformation.getBookInformationKey());
+                                databaseHelper.updateOwnedBooks(user.getOwnedBooks(), new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if (bool) {
+                                            displayMessage("Saved your book on server");
+                                        } else {
+                                            displayMessage("Didn't manage to save your book to the server");
+                                        }
+                                    }
+                                });
+                            }
+
+
+
                         }
                     });
 //                    try {
@@ -303,6 +296,64 @@ public class MainHomeViewActivity extends AppCompatActivity {
     }
 
 
+
+    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn) {
+        BookInformation bookInformation;
+        if (user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
+            if (!user.getOwnedBooks().getBooks().containsKey(isbn)) {
+                if (imageUri != null) {
+                    bookInformation = new BookInformation(
+                            BookStatus.AVAILABLE,
+                            imageUri.getLastPathSegment(),
+                            isbn,
+                            user.getUserInfo().getUserName());
+
+                    databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if (bool) {
+                                //todo
+                                displayMessage("Picture uploaded to server!");
+                            } else {
+                                //todo
+                                displayMessage("Sorry, something went wrong uploading picture");
+                            }
+                        }
+                    });
+                } else {
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
+                }
+            } else if (user.getOwnedBooks().getBooks().containsKey(isbn)) {
+                if (imageUri != null) {
+                    bookInformation = new BookInformation(
+                            BookStatus.AVAILABLE,
+                            imageUri.getLastPathSegment(),
+                            isbn,
+                            user.getUserInfo().getUserName());
+                    bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
+                    databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if (bool) {
+                                //todo
+                                displayMessage("Picture uploaded to server!");
+                            } else {
+                                //todo
+                                displayMessage("Sorry, something went wrong uploading picture");
+                            }
+                        }
+                    });
+                } else {
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, isbn, user.getUserInfo().getUserName());
+                    bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
+                }
+
+            } else {
+                bookInformation = new BookInformation(isbn, user.getUserInfo().getUserName());
+            }
+        }else{bookInformation = new BookInformation();}
+        return bookInformation;
+    }
 
 
 

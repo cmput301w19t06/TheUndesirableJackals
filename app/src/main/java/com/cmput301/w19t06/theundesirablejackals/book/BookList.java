@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class BookList {
     private ArrayList<Book> books;
 
-    public BookList(){}
+    public BookList(){this.books = new ArrayList<Book>();}
 
     public BookList(ArrayList<Book> books){this.books = books;}
 

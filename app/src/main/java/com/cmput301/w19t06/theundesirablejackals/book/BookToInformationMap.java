@@ -31,8 +31,8 @@ public class BookToInformationMap {
         return books.size();
     }
 
-    public Object get(String isbn){
-        return books.get(isbn);
+    public String get(String isbn){
+        return (String) books.get(isbn);
     }
 
     /**

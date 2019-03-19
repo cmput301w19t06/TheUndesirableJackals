@@ -15,7 +15,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
@@ -25,14 +24,12 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListen
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
-import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BorrowedFragment extends Fragment {
@@ -83,7 +80,8 @@ public class BorrowedFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        borrowedRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getBorrowedBooksAdapter();
+        borrowedRecyclerViewAdapter = new BooksRecyclerViewAdapter();
+        ((MainHomeViewActivity)getActivity()).setBorrowedBooksAdapter(borrowedRecyclerViewAdapter);
         borrowedRecyclerViewAdapter.setMyListener(listener);
         borrowedRecyclerView.setAdapter(borrowedRecyclerViewAdapter);
 

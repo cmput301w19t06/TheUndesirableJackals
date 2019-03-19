@@ -40,7 +40,20 @@ public class User {
 
     private UserList friends;
 
-    public User() {}
+    public User() {
+        userInfo = new UserInformation();
+        ownedBooks = new BookToInformationMap();
+        borrowedBooks = new BookToInformationMap();
+        favouriteBooks = new BookToInformationMap();
+//        lendRequests = new BookRequestListCallback();
+//        borrowRequests = new BookRequestListCallback();
+        notifications = new UserNotificationList();
+        genreOfInterests = new ArrayList<BookGenres>();
+        friends = new UserList();
+
+        // pick up location as default at the U of A
+        pickUpLocation = new Geolocation(53.5232, -113.5263);
+    }
 
     /**
      * Instantiates a user with the following username, email, and phone number
