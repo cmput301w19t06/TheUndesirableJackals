@@ -894,13 +894,13 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Borrow requests (user from userInformation)
-     * @param user  The user who's borrow requests we are fetching
-     * @param onCallback  A callback so the fetch status is known, and completion can be tracked
+     * @param userName  The user who's borrow requests we are fetching
+     * @param bookRequestListCallback  A callback so the fetch status is known, and completion can be tracked
      */
-    public void getBorrowRequests(String user, final BookRequestListCallback onCallback){
+    public void getBorrowRequests(String userName, final BookRequestListCallback bookRequestListCallback){
         requestsReference
                 .child("borrowRequests")
-                .child(user)
+                .child(userName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -909,15 +909,15 @@ public class DatabaseHelper{
                             for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                                 bookRequestList.addRequest(dataSnapshot1.getValue(BookRequest.class));
                             }
-                            onCallback.onCallback(bookRequestList);
+                            bookRequestListCallback.onCallback(bookRequestList);
                         }else {
-                            onCallback.onCallback(new BookRequestList());
+                            bookRequestListCallback.onCallback(new BookRequestList());
 
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onCallback.onCallback(null);
+                        bookRequestListCallback.onCallback(null);
                         Log.d(TAG, "getBorrowRequests ERROR HAPPENED");
                         Log.e(TAG, databaseError.getMessage());
                     }
@@ -927,14 +927,14 @@ public class DatabaseHelper{
 
     /**
      * Gets the user's Lend requests (user from userInformation)
-     * @param user The user who's lend requests we are fetching
-     * @param onCallback  A callback so the fetch status is known, completion can be tracked, and
+     * @param userName The user who's lend requests we are fetching
+     * @param bookRequestListCallback  A callback so the fetch status is known, completion can be tracked, and
      *                    the data retrieved
      */
-    public void getLendRequests(String user, final BookRequestListCallback onCallback){
+    public void getLendRequests(String userName, final BookRequestListCallback bookRequestListCallback){
         requestsReference
                 .child("lendRequests")
-                .child(user)
+                .child(userName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -943,15 +943,15 @@ public class DatabaseHelper{
                             for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                                 bookRequestList.addRequest(dataSnapshot1.getValue(BookRequest.class));
                             }
-                            onCallback.onCallback(bookRequestList);
+                            bookRequestListCallback.onCallback(bookRequestList);
                         }else {
-                            onCallback.onCallback(new BookRequestList());
+                            bookRequestListCallback.onCallback(new BookRequestList());
 
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onCallback.onCallback(null);
+                        bookRequestListCallback.onCallback(null);
                         Log.d(TAG, "isRegistered ERROR HAPPENED");
                         Log.e(TAG, databaseError.getMessage());
                     }
@@ -1027,7 +1027,7 @@ public class DatabaseHelper{
 
 
 
-    //~~~~~~~~~~~~~~~~~NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~MESSAGING NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//
 
 
     /**
