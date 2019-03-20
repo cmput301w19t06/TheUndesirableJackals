@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cmput301.w19t06.theundesirablejackals.activities">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -35,10 +36,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name="com.cmput301.w19t06.theundesirablejackals.BookBookMessagingService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="false"></service>
+
         <activity
             android:name=".ViewBorrowedBookActivity"
             android:label="@string/title_activity_view_borrowed_book_activty"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ViewOwnedBookActivity"
             android:label="@string/title_activity_view_owned_book"
