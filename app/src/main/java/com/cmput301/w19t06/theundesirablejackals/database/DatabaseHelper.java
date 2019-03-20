@@ -11,6 +11,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,10 +42,9 @@ public class DatabaseHelper{
     private final static String PATH_USERS = "users";
     private final static String PATH_BOOKS = "books";
     private final static String PATH_REGISTERED = "registered";
-    private final static String PATH_FAVOURITE = "favourites";
     private final static String PATH_REQUESTS = "requests";
     private final static String PATH_DESCRIPTION = "descriptions";
-    private final static String PATH_NOTIFICATION = "notifications";
+    private final static String PATH_MESSAGES = "messages";
 
 
 
@@ -52,10 +52,9 @@ public class DatabaseHelper{
     private DatabaseReference usersReference;
     private DatabaseReference booksReference;
     private DatabaseReference registeredReference;
-    private DatabaseReference favouriteReference;
     private DatabaseReference requestsReference;
     private DatabaseReference descriptionReference;
-    private DatabaseReference notificationsReference;
+    private DatabaseReference messagesReference;
     private FirebaseUser currentUser;
 
     private StorageReference bookPicturesReference;
@@ -82,10 +81,9 @@ public class DatabaseHelper{
         this.usersReference = database.getReference(PATH_USERS);
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
-        this.favouriteReference = database.getReference(PATH_FAVOURITE);
         this.requestsReference = database.getReference(PATH_REQUESTS);
         this.descriptionReference = database.getReference(PATH_DESCRIPTION);
-        this.notificationsReference = database.getReference(PATH_NOTIFICATION);
+        this.messagesReference = database.getReference(PATH_MESSAGES);
 
         this.bookPicturesReference = storageReference.getReference(PATH_BOOKS);
         this.userPicturesReference = storageReference.getReference(PATH_USERS);
@@ -901,22 +899,26 @@ public class DatabaseHelper{
      */
     public void getBorrowRequests(String user, final BookRequestListCallback onCallback){
         requestsReference
-                .child(user)
                 .child("borrowRequests")
+                .child(user)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            onCallback.onCallback(dataSnapshot.getValue(BookRequestList.class));
-
+                            BookRequestList bookRequestList = new BookRequestList();
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                bookRequestList.addRequest(dataSnapshot1.getValue(BookRequest.class));
+                            }
+                            onCallback.onCallback(bookRequestList);
                         }else {
                             onCallback.onCallback(new BookRequestList());
+
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         onCallback.onCallback(null);
-                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.d(TAG, "getBorrowRequests ERROR HAPPENED");
                         Log.e(TAG, databaseError.getMessage());
                     }
                 });
@@ -931,14 +933,17 @@ public class DatabaseHelper{
      */
     public void getLendRequests(String user, final BookRequestListCallback onCallback){
         requestsReference
-                .child(user)
                 .child("lendRequests")
+                .child(user)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            onCallback.onCallback(dataSnapshot.getValue(BookRequestList.class));
-
+                            BookRequestList bookRequestList = new BookRequestList();
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                bookRequestList.addRequest(dataSnapshot1.getValue(BookRequest.class));
+                            }
+                            onCallback.onCallback(bookRequestList);
                         }else {
                             onCallback.onCallback(new BookRequestList());
 
@@ -957,50 +962,27 @@ public class DatabaseHelper{
     /**
      * Sends a borrow request to the owner of the book
      * To be used by BORROWER ONLY
-     * @param request  The book request that is being made by Borrower to Owner
-     * @param onCallback A callback so the request status is known, and completion can be tracked
+     * @param bookRequest  The book request that is being made by Borrower to Owner
+     * @param booleanCallback A callback so the request status is known, and completion can be tracked
      */
-    public void makeBorrowRequest(final BookRequest request, final BooleanCallback onCallback){
-        final String owner = request.getBookRequested().getOwner();
-        getLendRequests(owner, new BookRequestListCallback() {
+    public void makeBorrowRequest(BookRequest bookRequest, final BooleanCallback booleanCallback){
+        bookRequest.setBookRequestLendKey(requestsReference
+                                                .child("lendRequest")
+                                                .child(bookRequest.getBookRequested().getOwner())
+                                                .push()
+                                                .getKey());
+        bookRequest.setBookRequestBorrowKey(requestsReference
+                                                .child("borrowRequest")
+                                                .child(bookRequest.getBorrower().getUserName())
+                                                .push()
+                                                .getKey());
+        updateLendRequest(bookRequest, new BooleanCallback() {
             @Override
-            public void onCallback(BookRequestList bookRequestList) {
-                if(bookRequestList == null) {
-                    onCallback.onCallback(false);
-                    return;
-                }
-                bookRequestList.addRequest(request);
-                setLendRequests(owner, bookRequestList, new BooleanCallback() {
-                    @Override
-                    public void onCallback(boolean bool) {
-                        if(bool){
-                            getBorrowRequests(request.getBorrower().getUserName(), new BookRequestListCallback() {
-                                @Override
-                                public void onCallback(BookRequestList bookRequestList) {
-                                    if(bookRequestList == null){
-                                        onCallback.onCallback(false);
-                                        //TODO delete lend request
-                                        return;
-                                    }
-                                    bookRequestList.addRequest(request);
-                                    setBorrowRequests(request.getBorrower(), bookRequestList, new BooleanCallback() {
-                                        @Override
-                                        public void onCallback(boolean bool) {
-                                            onCallback.onCallback(bool);
-                                        }
-                                    });
-
-                                }
-                            });
-                        }else{
-                            onCallback.onCallback(false);
-                        }
-                    }
-                });
-
-
+            public void onCallback(boolean bool) {
+                booleanCallback.onCallback(bool);
             }
         });
+
 
     }
 
@@ -1009,169 +991,81 @@ public class DatabaseHelper{
      * Updates the borrower request list with new status in the book request
      * To be used by OWNER ONLY
      * @param bookRequest The book request that is being updated by Owner for Borrower
-     * @param onCallback  A callback so the request status is known, and completion can be tracked
+     * @param booleanCallback  A callback so the request status is known, and completion can be tracked
      */
-    public void updateLendRequest(final Integer position, final BookRequest bookRequest, final BooleanCallback onCallback){
-        getBorrowRequests(bookRequest.getBorrower().getUserName(), new BookRequestListCallback() {
+    public void updateLendRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
+        requestsReference
+                .child("lendRequest")
+                .child(bookRequest.getBookRequested().getOwner())
+                .child(bookRequest.getBookRequestLendKey())
+                .setValue(bookRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onCallback(BookRequestList bookRequestList) {
-                if(bookRequestList != null) {
-                    for (BookRequest bookRequest1 : bookRequestList.getBookRequests()) {
-                        if(bookRequest.getBookRequested().getOwner()
-                                .equals(bookRequest1.getBookRequested().getOwner()) &&
-                        bookRequest.getBookRequested().getIsbn()
-                                .equals(bookRequest1.getBookRequested().getIsbn()))
-                        {
-                            Integer position1 = bookRequestList.getBookRequests().indexOf(bookRequest1);
-                            updateBorrowRequest(position1, bookRequest, new BooleanCallback() {
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    requestsReference
+                            .child("borrowRequest")
+                            .child(bookRequest.getBorrower().getUserName())
+                            .child(bookRequest.getBookRequestBorrowKey())
+                            .setValue(bookRequest)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onCallback(boolean bool) {
-                                    if(bool){
-                                        updateLendRequestAtPosition(position, bookRequest, new BooleanCallback() {
-                                            @Override
-                                            public void onCallback(boolean bool) {
-                                                onCallback.onCallback(bool);
-                                            }
-                                        });
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        booleanCallback.onCallback(true);
+                                    }else{
+                                        booleanCallback.onCallback(false);
                                     }
                                 }
                             });
-                        }
-                    }
+                }else{
+                    booleanCallback.onCallback(false);
                 }
             }
         });
     }
 
 
-    /**
-     * 
-     * @param position
-     * @param bookRequest
-     * @param booleanCallback
-     */
-    private void updateLendRequestAtPosition(final Integer position, final BookRequest bookRequest, final BooleanCallback booleanCallback){
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put(position.toString(), bookRequest);
-        requestsReference
-                .child(bookRequest.getBookRequested().getOwner())
-                .child("lendRequests")
-                .child("bookRequests")
-                .updateChildren(hashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            booleanCallback.onCallback(true);
-                        }else{
-                            booleanCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
-
-
-
-    /**
-     * Updates the borrower request at Position position using the new BookRequest bookRequest
-     * @param position
-     * @param bookRequest
-     * @param booleanCallback
-     */
-    private void updateBorrowRequest(Integer position, BookRequest bookRequest, final BooleanCallback booleanCallback){
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put(position.toString(), bookRequest);
-        requestsReference
-                .child(bookRequest.getBorrower().getUserName())
-                .child("borrowRequests")
-                .child("bookRequests")
-                .updateChildren(hashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            booleanCallback.onCallback(true);
-                        }else{
-                            booleanCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
-
-
-    /**
-     * Sets the lender requests to the new list bookRequestList
-     * @param user
-     * @param bookRequestList
-     * @param booleanCallback
-     */
-    private void setLendRequests(String user, BookRequestList bookRequestList, final BooleanCallback booleanCallback){
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("lendRequests", bookRequestList);
-        requestsReference
-                .child(user)
-                .updateChildren(hashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            booleanCallback.onCallback(true);
-                        }else{
-                            booleanCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
-
-
-    /**
-     * Sets the borrower requests to the new list bookRequestList
-     * @param userInformation
-     * @param bookRequestList
-     * @param booleanCallback
-     */
-    private void setBorrowRequests(UserInformation userInformation, BookRequestList bookRequestList, final BooleanCallback booleanCallback){
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("borrowRequests", bookRequestList);
-        requestsReference
-                .child(userInformation.getUserName())
-                .updateChildren(hashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            booleanCallback.onCallback(true);
-                        }else{
-                            booleanCallback.onCallback(false);
-                        }
-                    }
-                });
-    }
-
-
 
     //~~~~~~~~~~~~~~~~~NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//
 
-    public void sendTestNotification(String username, final BooleanCallback booleanCallback){
-        HashMap<String, String> testNotification = new HashMap<>();
-        testNotification.put("from", currentUser.getUid());
-        testNotification.put("status", "test");
-        notificationsReference
-                .child(username)
-                .push()
-                .setValue(testNotification)
+
+    /**
+     *
+     * @param messaging
+     * @param booleanCallback
+     */
+    public void sendMessageNotification(Messaging messaging, final BooleanCallback booleanCallback){
+        messaging.setSenderKey(messagesReference.child(messaging.getFrom()).push().getKey());
+        messaging.setReceiverKey(messagesReference.child(messaging.getTo()).push().getKey());
+        final Messaging tempMessage = new Messaging(messaging);
+        messagesReference
+                .child(messaging.getFrom())
+                .child(messaging.getSenderKey())
+                .setValue(messaging)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            booleanCallback.onCallback(true);
+                            messagesReference
+                                    .child(tempMessage.getTo())
+                                    .child(tempMessage.getReceiverKey())
+                                    .setValue(tempMessage)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                booleanCallback.onCallback(true);
+                                            }else{
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
                         } else {
                             booleanCallback.onCallback(false);
                         }
                     }
                 });
-
-
     }
     
 }

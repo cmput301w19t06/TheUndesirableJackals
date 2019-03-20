@@ -15,6 +15,8 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * @see Geolocation
  */
 public class BookRequest {
+    private String bookRequestLendKey;
+    private String bookRequestBorrowKey;
     private BookInformation bookRequested;
     private BookRequestStatus currentStatus;
     private UserInformation borrower;
@@ -41,7 +43,36 @@ public class BookRequest {
 
     }
 
+    public BookRequest(BookRequest bookRequest){
+        this.bookRequestLendKey = bookRequest.getBookRequestLendKey();
+        this.bookRequestBorrowKey = bookRequest.getBookRequestBorrowKey();
+        this.bookRequested = bookRequest.getBookRequested();
+        this.currentStatus = bookRequest.getCurrentStatus();
+        this.borrower = bookRequest.getBorrower();
+        this.pickuplocation = bookRequest.getPickuplocation();
+    }
+
     public BookRequest(){}
+
+    public Geolocation getPickuplocation() {
+        return pickuplocation;
+    }
+
+    public String getBookRequestBorrowKey() {
+        return bookRequestBorrowKey;
+    }
+
+    public String getBookRequestLendKey() {
+        return bookRequestLendKey;
+    }
+
+    public void setBookRequestBorrowKey(String bookRequestBorrowKey) {
+        this.bookRequestBorrowKey = bookRequestBorrowKey;
+    }
+
+    public void setBookRequestLendKey(String bookRequestLendKey) {
+        this.bookRequestLendKey = bookRequestLendKey;
+    }
 
     /**
      * Owner of the book has denied the borrowers request. This will also be called to deny all
