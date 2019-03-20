@@ -23,8 +23,12 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapte
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /*
@@ -67,8 +71,28 @@ public class LibraryFragment extends Fragment {
         //into the recyclerView directly.
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View view, final int position) {
                 Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+                final DatabaseHelper databaseHelper = new DatabaseHelper();
+                databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
+                    @Override
+                    public void onCallback(BookInformationList bookInformationList) {
+                        if(bookInformationList != null){
+                            final BookInformation bookInformation = bookInformationList.get(0);
+                            databaseHelper.sendTestNotification(bookInformation.getOwner(), new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
+                                    if(bool){
+                                        Toast.makeText(getActivity(), "Notification sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(getActivity(), "Notification not sent", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
                 //Do something with the book, maybe view it in detail?
                 Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
 
