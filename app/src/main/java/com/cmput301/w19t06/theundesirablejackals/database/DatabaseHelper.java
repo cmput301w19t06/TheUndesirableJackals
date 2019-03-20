@@ -44,6 +44,7 @@ public class DatabaseHelper{
     private final static String PATH_FAVOURITE = "favourites";
     private final static String PATH_REQUESTS = "requests";
     private final static String PATH_DESCRIPTION = "descriptions";
+    private final static String PATH_NOTIFICATION = "notifications";
 
 
 
@@ -54,6 +55,7 @@ public class DatabaseHelper{
     private DatabaseReference favouriteReference;
     private DatabaseReference requestsReference;
     private DatabaseReference descriptionReference;
+    private DatabaseReference notificationsReference;
     private FirebaseUser currentUser;
 
     private StorageReference bookPicturesReference;
@@ -83,6 +85,7 @@ public class DatabaseHelper{
         this.favouriteReference = database.getReference(PATH_FAVOURITE);
         this.requestsReference = database.getReference(PATH_REQUESTS);
         this.descriptionReference = database.getReference(PATH_DESCRIPTION);
+        this.notificationsReference = database.getReference(PATH_NOTIFICATION);
 
         this.bookPicturesReference = storageReference.getReference(PATH_BOOKS);
         this.userPicturesReference = storageReference.getReference(PATH_USERS);
@@ -372,7 +375,8 @@ public class DatabaseHelper{
                         if(dataSnapshot.exists()){
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                                 if(dataSnapshot1.exists()){
-                                    bookInformationList.add(dataSnapshot.getValue(BookInformation.class));
+                                    Log.d(TAG, dataSnapshot1.toString());
+                                    bookInformationList.add(dataSnapshot1.getValue(BookInformation.class));
                                 }
                             }
                         }bookInformationListCallback.onCallback(bookInformationList);
@@ -1142,6 +1146,32 @@ public class DatabaseHelper{
                         }
                     }
                 });
+    }
+
+
+
+    //~~~~~~~~~~~~~~~~~NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//
+
+    public void sendTestNotification(String username, final BooleanCallback booleanCallback){
+        HashMap<String, String> testNotification = new HashMap<>();
+        testNotification.put("from", currentUser.getUid());
+        testNotification.put("status", "test");
+        notificationsReference
+                .child(username)
+                .push()
+                .setValue(testNotification)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            booleanCallback.onCallback(true);
+                        } else {
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+
+
     }
     
 }
