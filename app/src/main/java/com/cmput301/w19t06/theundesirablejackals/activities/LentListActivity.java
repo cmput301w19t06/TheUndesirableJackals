@@ -66,8 +66,8 @@ public class LentListActivity extends AppCompatActivity{
             case R.id.itemMenuLentRequested:
                 ToastMessage.show(this, "Viewing Requested...");
                 break;
-            case R.id.itemMenuOwnedBookDelete:
-                ToastMessage.show(this, "Title Search");
+            case R.id.itemMenuLentTitle:
+                ToastMessage.show(this, "Title Search...");
                 break;
 
         }
