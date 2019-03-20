@@ -91,20 +91,12 @@ public class AddBookActivity extends AppCompatActivity {
                         .build();
 
         // check for any change in isbnEditText to trigger search for additional details
-        isbnEditText.addTextChangedListener(new TextWatcher() {
+        isbnEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                searchISBN();
+            public void onFocusChange(View view, boolean b) {
+                if(!b) {
+                    searchISBN();
+                }
             }
         });
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
