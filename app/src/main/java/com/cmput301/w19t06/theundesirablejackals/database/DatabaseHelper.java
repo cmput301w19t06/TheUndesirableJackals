@@ -899,7 +899,7 @@ public class DatabaseHelper{
      */
     public void getBorrowRequests(String userName, final BookRequestListCallback bookRequestListCallback){
         requestsReference
-                .child("borrowRequests")
+                .child("borrowRequest")
                 .child(userName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -933,7 +933,7 @@ public class DatabaseHelper{
      */
     public void getLendRequests(String userName, final BookRequestListCallback bookRequestListCallback){
         requestsReference
-                .child("lendRequests")
+                .child("lendRequest")
                 .child(userName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
