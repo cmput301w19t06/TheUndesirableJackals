@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,8 +15,8 @@ import android.widget.ListView;
  * by clicking item on list
  * Author: Kaya Thiessen
  */
-public class NotificationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private String[] notifications= {};
+public class NotificationActivity extends AppCompatActivity {
+    private Toolbar toolbar;
 
     /**
      * On create method
@@ -26,30 +27,18 @@ public class NotificationActivity extends AppCompatActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_view);
 
-        //TODO
-        //Set the list notification to the UserNotificationList
+        toolbar = findViewById(R.id.tool_barNotification);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Notifications");
+        setSupportActionBar(toolbar);
 
-        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, notifications);
-        ListView listview = (ListView) findViewById(R.id.listViewNotificationActivityNotificationList);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
+                finish();
+            }
+        });
     }
 
-    /**
-     * On click of item list adapter. Opens corresponding issue
-     * @param adapterView
-     * @param view
-     * @param i
-     * @param l
-     */
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent();
-        //TODO
-        //Depending on content open corresponding section (message, lent, borrowed ect.)
-
-        //intent.putExtra("position", position)
-        //intent.putExtra("id",id)
-        //startActivity(intent)
-    }
 }
