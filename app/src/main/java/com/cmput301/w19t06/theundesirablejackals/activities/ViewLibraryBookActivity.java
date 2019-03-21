@@ -133,6 +133,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                                 if(image.exists()){
                                     Uri photoData = Uri.fromFile(image);
                                     mBookPhotoView.setImageURI(photoData);
+                                    Log.d("ViewBookActiv", "image now exists... COOL");
                                 }else{
                                     ToastMessage.show(getApplicationContext(),"Something went quite wrong...");
                                 }
@@ -147,6 +148,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
             }else{
                 Uri photoData = Uri.fromFile(image);
                 mBookPhotoView.setImageURI(photoData);
+                Log.d("ViewBookActiv", "image already exists... COOL");
             }
         }
     }
