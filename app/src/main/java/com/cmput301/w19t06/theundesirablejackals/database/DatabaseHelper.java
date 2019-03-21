@@ -383,7 +383,8 @@ public class DatabaseHelper{
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        bookInformationListCallback.onCallback(null);
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
