@@ -892,17 +892,19 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-    public void sendRegistrationToServer(final String token){
-        getCurrentUserInfoFromDatabase(new UserInformationCallback() {
-            @Override
-            public void onCallback(UserInformation userInformation) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference reference = database.getReference("deviceToken");
-                reference
-                        .child(userInformation.getUserName())
-                        .setValue(token);
-            }
-        });
+    public void sendRegistrationToServer(final String token) {
+        if (isUserLoggedin()) {
+            getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+                @Override
+                public void onCallback(UserInformation userInformation) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("deviceToken");
+                    reference
+                            .child(userInformation.getUserName())
+                            .setValue(token);
+                }
+            });
+        }
     }
 
     /**
