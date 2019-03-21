@@ -86,7 +86,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
                     @Override
                     public void onCallback(BookInformationList bookInformationList) {
-                        if (bookInformationList != null) {
+                        if (bookInformationList != null && bookInformationList.size() > 0) {
                             Intent intent;
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
