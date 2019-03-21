@@ -86,27 +86,37 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
                     @Override
                     public void onCallback(BookInformationList bookInformationList) {
-                        if (bookInformationList != null && bookInformationList.size() > 0) {
-                            Intent intent;
+                        if (bookInformationList != null) {
+
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
-                                intent = new Intent(getActivity(), ShowBookOwners.class);
+                                Intent intent = new Intent(getActivity(), ShowBookOwners.class);
+                                startActivity(intent);
+
+                            } else if (bookInformationList.size() == 0) {
+                                // book was added by someone in the past but is now deleted
+                                // and no other copies exist in our database
+                                ToastMessage.show(getActivity(),
+                                        "Book is not owned by anyone at this moment");
 
                             } else {
+
                                 // If there is only one owner of the book display his/her book
-                                intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
+
+                                Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
                                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
                                                 clickedBook);
                                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
                                                 bookInformationList.get(0));
+                                startActivity(intent);
                             }
-                            startActivity(intent);
+
 
                         } else {
                             // book was added by someone in the past but is now deleted
                             // and no other copies exist in our database
                             ToastMessage.show(getActivity(),
-                                    "Book is not owned by anyone at this moment");
+                                    "Database error");
                         }
                     }
                 });

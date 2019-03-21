@@ -166,6 +166,4 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }
