@@ -380,7 +380,6 @@ public class DatabaseHelper{
                             }
                         }bookInformationListCallback.onCallback(bookInformationList);
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
