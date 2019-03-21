@@ -7,7 +7,7 @@ import android.widget.Toast;
 public class ToastMessage {
 
     public static void show(Context context, String message){
-        Toast mToast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        Toast mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         mToast.show();
     }
