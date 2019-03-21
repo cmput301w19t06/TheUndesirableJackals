@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +22,8 @@ import com.cmput301.w19t06.theundesirablejackals.database.BookPhotoUrlCallBack;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * Allows the user to view an owned book and do certain action that only book owners can do.
@@ -133,21 +136,35 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     }
 
     private void setBookPhotoView() {
-
-        try {
-            databaseHelper.getBookPictureUri(mBookInformation, new BookPhotoUrlCallBack() {
-                @Override
-                public void onCallback(Uri imageUri) {
-                    Picasso.get()
-                            .load(imageUri)
-                            .placeholder(R.drawable.ic_hourglass_empty_grey_24dp)
-                            .error(R.drawable.ic_book)
-                            .rotate(90)
-                            .into(mBookPhotoView);
+        if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
+            if(!image.exists()) {
+                try {
+                    databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if(bool){
+                                if(image.exists()){
+                                    Uri photoData = Uri.fromFile(image);
+                                    mBookPhotoView.setImageURI(photoData);
+                                    Log.d("ViewBookActiv", "image now exists... COOL");
+                                }else{
+                                    ToastMessage.show(getApplicationContext(),"Something went quite wrong...");
+                                }
+                            }else{
+                                ToastMessage.show(getApplicationContext(), "Photo not downloaded");
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(ERROR_TAG_LOAD_IMAGE, e.getMessage());
                 }
-            });
-        } catch (Exception e) {
-            Log.e(ERROR_TAG_LOAD_IMAGE,e.getMessage());
+            }else{
+                Uri photoData = Uri.fromFile(image);
+                mBookPhotoView.setImageURI(photoData);
+                Log.d("ViewBookActiv", "image already exists... COOL");
+            }
         }
     }
 
