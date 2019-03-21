@@ -30,10 +30,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseHelper databaseHelper;
     // contains new coordinates
-    Double newLat = null;
-    Double newLng = null;
-    Button submit;
-    Button cancel;
+    private Double newLat = null;
+    private Double newLng = null;
+    private Button submit;
+    private Button cancel;
 
     private GoogleMap mMap;
 
@@ -128,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * Given new lat and lng creates new object "Geolocation" and saves it for the new user
+     * @version 1 march 21, 2019
      */
     public void updatePickUpLocation() {
         Geolocation newGeolocation;

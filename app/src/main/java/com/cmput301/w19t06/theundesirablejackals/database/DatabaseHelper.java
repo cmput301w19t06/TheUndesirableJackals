@@ -752,7 +752,7 @@ public class DatabaseHelper{
     }
 
     /**
-     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * Goes to the firebase database to update (asynchronously) the currentUser's Geolocation object
      * @param  geolocation lat and lgn representing the new default pick up location of user
      * @param  onCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to the calling activity/fragment/class

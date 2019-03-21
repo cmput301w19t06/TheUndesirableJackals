@@ -30,7 +30,10 @@
             android:id="@+id/itemMenuFriends"
             android:icon="@drawable/ic_people_grey_24dp"
             android:title="Friends" />
-
+        <item
+            android:id="@+id/itemMenuSearchUser"
+            android:icon="@drawable/ic_person_outline_grey_24dp"
+            android:title="Search for User" />
         <item
             android:id="@+id/itemMenuPreferences"
             android:icon="@drawable/ic_settings_grey_24dp"
