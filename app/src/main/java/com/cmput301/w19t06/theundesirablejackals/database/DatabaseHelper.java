@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -281,7 +282,7 @@ public class DatabaseHelper{
     public void getCurrentUserInfoFromDatabase(final UserInformationCallback userInformationCallback){
         usersReference
                 .child(currentUser.getUid())
-                .child("userinfo")
+                .child("userInfo")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -807,7 +808,24 @@ public class DatabaseHelper{
                 });
     }
 
-
+    /**
+     * Get the Uri of a picture from the database related to BookInformation
+     * @param bookInformation the book that picture relates to
+     * @param bookPhotoUrlCallBack a callback so that the uri is passed upon completion
+     */
+    public void getBookPictureUri(BookInformation bookInformation, final BookPhotoUrlCallBack bookPhotoUrlCallBack) {
+        bookPicturesReference
+                .child(bookInformation.getIsbn())
+                .child(bookInformation.getOwner())
+                .child(bookInformation.getBookPhoto())
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Uri imageUri = uri;
+                bookPhotoUrlCallBack.onCallback(imageUri);
+            }
+        });
+    }
     /**
      * The database helper for downloading a profile picture
      * @param file the pre-allocated file for storing the user's profile picture.
@@ -861,6 +879,19 @@ public class DatabaseHelper{
 
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    public void sendRegistrationToServer(final String token){
+        getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("deviceToken");
+                reference
+                        .child(userInformation.getUserName())
+                        .setValue(token);
+            }
+        });
+    }
 
     /**
      * Get the FirebaseAuth user object that is currently in use
@@ -1064,6 +1095,30 @@ public class DatabaseHelper{
                         } else {
                             booleanCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    public void getMessages(String username, final MessageListcallback messageListcallback){
+        messagesReference
+                .child(username)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<Messaging> messagingArrayList = new ArrayList<>();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    messagingArrayList.add(dataSnapshot1.getValue(Messaging.class));
+                                }
+                            }
+                        }
+                        messageListcallback.onCallback(messagingArrayList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }

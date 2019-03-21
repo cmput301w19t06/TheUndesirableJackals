@@ -97,7 +97,7 @@
                 app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewViewBorrowedBookBookISBN"
-                app:srcCompat="@drawable/default_book_photo" />
+                app:srcCompat="@drawable/ic_book" />
 
             <Button
                 android:id="@+id/buttonBorrowedBookReturnBook"

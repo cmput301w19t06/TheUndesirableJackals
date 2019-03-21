@@ -264,8 +264,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     Book b = new Book(title, author, isbn);
                     final Book book = new Book(b);
 
-
-
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {

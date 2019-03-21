@@ -40,7 +40,11 @@
             android:name="com.cmput301.w19t06.theundesirablejackals.BookBookMessagingService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="false"></service>
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".ViewBorrowedBookActivity"
