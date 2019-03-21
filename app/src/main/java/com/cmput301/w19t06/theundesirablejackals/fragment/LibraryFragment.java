@@ -4,6 +4,7 @@
 
 package com.cmput301.w19t06.theundesirablejackals.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.activities.ShowBookOwners;
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
@@ -28,6 +31,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
@@ -76,39 +80,78 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         //into the recyclerView directly.
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
-            public void onClick(View view, final int position) {
-                Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+            public void onClick(View view, int position) {
+                final Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
                 final DatabaseHelper databaseHelper = new DatabaseHelper();
                 databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
                     @Override
                     public void onCallback(BookInformationList bookInformationList) {
-                        if(bookInformationList != null){
-                            final BookInformation bookInformation = bookInformationList.get(0);
-                            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
-                                @Override
-                                public void onCallback(UserInformation userInformation) {
-                                    BookRequest bookRequest = new BookRequest(userInformation, bookInformation);
-                                    databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
-                                        @Override
-                                        public void onCallback(boolean bool) {
-                                            Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
-                                            if(bool){
-                                                Toast.makeText(getActivity(), "Request sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
-                                            }else{
-                                                Toast.makeText(getActivity(), "Request not sent", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
+                        if (bookInformationList != null) {
+                            Intent intent;
+                            if (bookInformationList.size() > 1) {
+                                // List all owners of the book
+                                intent = new Intent(getActivity(), ShowBookOwners.class);
 
+                            } else {
+                                // If there is only one owner of the book display his/her book
+                                intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
+                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
+                                                clickedBook);
+                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
+                                                bookInformationList.get(0));
+                            }
+                            startActivity(intent);
+
+                        } else {
+                            // book was added by someone in the past but is now deleted
+                            // and no other copies exist in our database
+                            ToastMessage.show(getActivity(),
+                                    "Book is not owned by anyone at this moment");
                         }
                     }
                 });
-                //Do something with the book, maybe view it in detail?
-                Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
             }
         };
+
+//        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+//            @Override
+//            public void onClick(View view, final int position) {
+//                Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+//                final DatabaseHelper databaseHelper = new DatabaseHelper();
+//                databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
+//                    @Override
+//                    public void onCallback(BookInformationList bookInformationList) {
+//                        if(bookInformationList != null){
+//                            final BookInformation bookInformation = bookInformationList.get(0);
+//                            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+//                                @Override
+//                                public void onCallback(UserInformation userInformation) {
+//                                    BookRequest bookRequest = new BookRequest(userInformation, bookInformation);
+//                                    databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
+//                                        @Override
+//                                        public void onCallback(boolean bool) {
+//                                            Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
+//                                            if(bool){
+//                                                Toast.makeText(getActivity(), "Request sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
+//                                                Intent intent = new Intent(getActivity(), ShowBookOwners.class);
+////                                                intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
+////                                                intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
+//                                                startActivity(intent);
+//                                            }else{
+//                                                Toast.makeText(getActivity(), "Request not sent", Toast.LENGTH_LONG).show();
+//                                            }
+//                                        }
+//                                    });
+//                                }
+//                            });
+//
+//                        }
+//                    }
+//                });
+//                //Do something with the book, maybe view it in detail?
+//                Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
+//            }
+//        };
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
