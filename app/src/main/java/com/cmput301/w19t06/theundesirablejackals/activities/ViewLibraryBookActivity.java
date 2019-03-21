@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
@@ -117,10 +118,13 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
     }
 
     private void setBookPhotoView() {
+        // display download image
+
         if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
             if(!image.exists()) {
+                mBookPhotoView.setImageResource(R.drawable.ic_loading_with_text);
                 try {
                     databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
                         @Override
@@ -129,7 +133,6 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                                 if(image.exists()){
                                     Uri photoData = Uri.fromFile(image);
                                     mBookPhotoView.setImageURI(photoData);
-                                    Log.d("ViewBookActiv", "image now exists... COOL");
                                 }else{
                                     ToastMessage.show(getApplicationContext(),"Something went quite wrong...");
                                 }
@@ -144,7 +147,6 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
             }else{
                 Uri photoData = Uri.fromFile(image);
                 mBookPhotoView.setImageURI(photoData);
-                Log.d("ViewBookActiv", "image already exists... COOL");
             }
         }
     }

@@ -95,7 +95,7 @@ public class LibraryFragment extends Fragment {
                                 // book was added by someone in the past but is now deleted
                                 // and no other copies exist in our database
                                 ToastMessage.show(getActivity(),
-                                        "Book is not owned by anyone at this moment");
+                                        "This book is not owned by any users.");
 
                             } else {
 
