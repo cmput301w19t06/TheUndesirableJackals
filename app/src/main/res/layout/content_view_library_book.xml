@@ -76,16 +76,15 @@
             android:id="@+id/textViewViewLibraryBookBookDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_margin="16dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical|left|start"
             android:text="@string/large_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLibraryBookReturnBook" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonLibraryBookReturnBook"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/imageViewViewLibraryBookPhoto"
