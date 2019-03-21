@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ShowBookOwners" android:theme="@style/AppTheme.ShowBookOwners"></activity>
+        <activity android:name=".ShowBookOwners" android:theme="@style/AppTheme"></activity>
 
         <service
             android:name="com.cmput301.w19t06.theundesirablejackals.BookBookMessagingService"
