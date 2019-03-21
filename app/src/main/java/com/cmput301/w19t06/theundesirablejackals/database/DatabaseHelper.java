@@ -11,6 +11,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
@@ -32,6 +33,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -281,7 +283,7 @@ public class DatabaseHelper{
     public void getCurrentUserInfoFromDatabase(final UserInformationCallback userInformationCallback){
         usersReference
                 .child(currentUser.getUid())
-                .child("userinfo")
+                .child("userInfo")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -719,7 +721,6 @@ public class DatabaseHelper{
                 });
     }
 
-
     /**
      * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
      * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
@@ -745,6 +746,37 @@ public class DatabaseHelper{
                             if(task.getException() != null) {
                                 Log.e(TAG, task.getException().toString());
                             }
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's Geolocation object
+     * @param  geolocation lat and lgn representing the new default pick up location of user
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to the calling activity/fragment/class
+     */
+    public void updatePickUpLocation(final Geolocation geolocation, final BooleanCallback onCallback){
+        Map<String, Object> pickUpLocationMap = new HashMap<>();
+        pickUpLocationMap.put(
+                "pickUpLocation",
+                geolocation);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(pickUpLocationMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                            Log.d(TAG, "Something went wrong updating user info");
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
+
                         }
                     }
                 });
@@ -807,7 +839,24 @@ public class DatabaseHelper{
                 });
     }
 
-
+    /**
+     * Get the Uri of a picture from the database related to BookInformation
+     * @param bookInformation the book that picture relates to
+     * @param bookPhotoUrlCallBack a callback so that the uri is passed upon completion
+     */
+    public void getBookPictureUri(BookInformation bookInformation, final BookPhotoUrlCallBack bookPhotoUrlCallBack) {
+        bookPicturesReference
+                .child(bookInformation.getIsbn())
+                .child(bookInformation.getOwner())
+                .child(bookInformation.getBookPhoto())
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Uri imageUri = uri;
+                bookPhotoUrlCallBack.onCallback(imageUri);
+            }
+        });
+    }
     /**
      * The database helper for downloading a profile picture
      * @param file the pre-allocated file for storing the user's profile picture.
@@ -861,6 +910,19 @@ public class DatabaseHelper{
 
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    public void sendRegistrationToServer(final String token){
+        getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("deviceToken");
+                reference
+                        .child(userInformation.getUserName())
+                        .setValue(token);
+            }
+        });
+    }
 
     /**
      * Get the FirebaseAuth user object that is currently in use
@@ -1064,6 +1126,30 @@ public class DatabaseHelper{
                         } else {
                             booleanCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    public void getMessages(String username, final MessageListcallback messageListcallback){
+        messagesReference
+                .child(username)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<Messaging> messagingArrayList = new ArrayList<>();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    messagingArrayList.add(dataSnapshot1.getValue(Messaging.class));
+                                }
+                            }
+                        }
+                        messageListcallback.onCallback(messagingArrayList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }

@@ -117,6 +117,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.itemMenuFriends:
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
+                    case R.id.itemMenuSearchUser:
+                        intent = new Intent(MainHomeViewActivity.this, OthersProfileActivity.class);
+                        break;
                     case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
@@ -263,8 +266,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
                     Book b = new Book(title, author, isbn);
                     final Book book = new Book(b);
-
-
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
