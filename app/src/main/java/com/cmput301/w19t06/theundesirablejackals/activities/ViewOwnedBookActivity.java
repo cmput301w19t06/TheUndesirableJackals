@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,9 @@ import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 import java.io.File;
+import java.io.IOException;
+
+import static android.net.Uri.fromFile;
 
 /**
  * Allows the user to view an owned book and do certain action that only book owners can do.
@@ -83,23 +87,34 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mStatus.setText(mBookInformation.getStatus().toString());
         mDescription.setText(mBookInformation.getDescription());
 
-        databaseHelper.downloadBookPicture(mDownloadedImage, mBookInformation, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
+        try{
+            final File image = File.createTempFile(
+                    mBookInformation.getBookPhoto(),  /* prefix */
+                    ".jpg",         /* suffix */
+                    mDownloadedImage      /* directory */
+            );
 
-                if (bool) {
-                    mBookPhotoPath = mDownloadedImage.getPath();
-                    Uri photoData = Uri.parse(mBookPhotoPath + "/" + mBookInformation.getBookPhoto());
-                    if (photoData == null) {
-                        ToastMessage.show(getApplicationContext(), "NULL IMAGE");
+            databaseHelper.downloadBookPicture(image , mBookInformation, new BooleanCallback() {
+                @Override
+                public void onCallback(boolean bool) {
+
+                    if (bool) {
+//                        mBookPhotoPath = mDownloadedImage.getPath();
+                        Uri photoData = Uri.fromFile(image);
+                        if (photoData == null) {
+                            ToastMessage.show(getApplicationContext(), "NULL IMAGE");
+                        } else {
+                            mBookPhoto.setImageURI(photoData);
+                        }
                     } else {
-                        mBookPhoto.setImageURI(photoData);
+                        ToastMessage.show(getApplicationContext(), "Download failed");
                     }
-                } else {
-                    ToastMessage.show(getApplicationContext(), "Download failed");
                 }
-            }
-        });
+            });
+        }catch(IOException e){
+            Log.e("ViewBookExcept", e.getMessage());
+        }
+
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
