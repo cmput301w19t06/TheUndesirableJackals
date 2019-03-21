@@ -74,7 +74,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
         });
 
         // buttonDefaultLocation action
-        buttonDefaultLocation.setOnClickListener(new View.OnClickListener() {
+        buttonDefaultLocation.setOnClickListener(
+                new View.OnClickListener() {
             /**
              * Called when user presses the my pick up buttonDefaultLocation option
              * Sends the user to "MapsActivity" activity

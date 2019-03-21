@@ -11,6 +11,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
@@ -720,7 +721,6 @@ public class DatabaseHelper{
                 });
     }
 
-
     /**
      * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
      * @param  userInfo The currentuser's custom UserInfo object that is to be updated in the database
@@ -746,6 +746,37 @@ public class DatabaseHelper{
                             if(task.getException() != null) {
                                 Log.e(TAG, task.getException().toString());
                             }
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Goes to the firebase database to update (asynchronously) the currentUser's custom UserInfo object
+     * @param  geolocation lat and lgn representing the new default pick up location of user
+     * @param  onCallback  The callback which is passed in, to be called upon successful data write
+     *                     used to pass completion status back to the calling activity/fragment/class
+     */
+    public void updatePickUpLocation(final Geolocation geolocation, final BooleanCallback onCallback){
+        Map<String, Object> pickUpLocationMap = new HashMap<>();
+        pickUpLocationMap.put(
+                "pickUpLocation",
+                geolocation);
+        usersReference
+                .child(currentUser.getUid())
+                .updateChildren(pickUpLocationMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onCallback.onCallback(true);
+                        }else{
+                            onCallback.onCallback(false);
+                            Log.d(TAG, "Something went wrong updating user info");
+                            if(task.getException() != null) {
+                                Log.e(TAG, task.getException().toString());
+                            }
+
                         }
                     }
                 });

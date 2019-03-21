@@ -6,13 +6,19 @@
 
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +29,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseHelper databaseHelper;
+    // contains new coordinates
+    Double newLat = null;
+    Double newLng = null;
+    Button submit;
+    Button cancel;
 
     private GoogleMap mMap;
 
@@ -37,6 +48,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // declare buttons and their actions
+        submit = (Button) findViewById(R.id.buttonSubmitNewLocation);
+        cancel = (Button) findViewById(R.id.buttonCancel);
+
+        // submit action
+        submit.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when user presses the submit info option
+             * Saves the location and sends the user back to "MainHomeView" activity
+             * @param view Context passed as parameter for the intent
+             */
+            public void onClick(View view) {
+                updatePickUpLocation();
+            }
+        });
+
+        // cancel action
+        cancel.setOnClickListener(new View.OnClickListener() {
+            // goes back without saving
+            public void onClick(View view) {
+                startMainHomeView();
+            }
+        });
     }
 
     /**
@@ -57,26 +92,76 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (user != null){
                     // get the instance Geolocation from user
                     Geolocation geolocation = user.getPickUpLocation();
+                    // get the values
+                    Double lt = geolocation.getLatitude();
+                    Double ln = geolocation.getLongitude();
 
-                    if (geolocation == null){
-                        coord = new LatLng(-34, 151); // set to some random location
-                    } else {
-                        // get the values
-                        Double lt = geolocation.getLatitude();
-                        Double ln = geolocation.getLongitude();
+                    coord = new LatLng(lt, ln);
 
-                        coord = new LatLng(lt, ln);
-                    }
-//
                 } else {
                     coord = new LatLng(-34, 151); // set to some random location
                 }
 
                 // Add a marker in coord and move the camera
-                mMap.addMarker(new MarkerOptions().position(coord).title("Marker"));
+                mMap.addMarker(new MarkerOptions().position(coord).title("Current pick up location")).showInfoWindow();;
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
             }
         });
 
+        // handles clicks on the map and modifications to the coordinates
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                // clear the previous marker
+                mMap.clear();
+
+                // updates lat and lng to newly selected position
+                newLocation(point.latitude, point.longitude);
+
+                // add marker in new coord and move the camera
+                mMap.addMarker(new MarkerOptions().position(point).title("New pick up location")).showInfoWindow();;
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+            }
+        });
+
+    }
+
+    /**
+     * Given new lat and lng creates new object "Geolocation" and saves it for the new user
+     */
+    public void updatePickUpLocation() {
+        Geolocation newGeolocation;
+
+        if (newLat != null && newLng != null) {
+            newGeolocation = new Geolocation(newLat, newLng);
+
+            // now saves the new object on Firebase
+            databaseHelper.updatePickUpLocation(newGeolocation, new BooleanCallback() {
+                /**
+                 * Writes the data and goes back to main activity if successful
+                 * @param bool Value representing the success of the operation
+                 */
+                @Override
+                public void onCallback(boolean bool) {
+                    if(bool){
+                        startMainHomeView();
+                    }
+                }
+            });
+
+        }
+    }
+
+    private void newLocation(Double lat, Double lng) {
+        newLat = lat;
+        newLng = lng;
+    }
+
+    /**
+     * Called to return to main activity
+     */
+    public void startMainHomeView(){
+        Intent intent = new Intent(this, MainHomeViewActivity.class);
+        startActivity(intent);
     }
 }

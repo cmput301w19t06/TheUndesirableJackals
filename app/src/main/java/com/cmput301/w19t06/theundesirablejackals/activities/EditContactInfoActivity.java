@@ -120,13 +120,6 @@ public class EditContactInfoActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        // updates object User on "registered/uid" on Firebase
-//        databaseHelper.saveCurrentUser(user, new BooleanCallback() {
-//            @Override
-//            public void onCallback(boolean bool) {
-//            }
-//        });
     }
 
     /**
