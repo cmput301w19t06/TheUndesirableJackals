@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -64,6 +65,8 @@ public class AddBookActivity extends AppCompatActivity {
 //    private TabLayout tabLayout;
 //    private ViewPager viewPager;
 
+    private Toolbar mToolbar;
+
     private Uri imageUri;
     private String title, author, isbn, description;
     private String currentPhotoPath;
@@ -79,6 +82,10 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
+        mToolbar = findViewById(R.id.tool_bar);
+        mToolbar.setNavigationIcon(R.drawable.ic_action_back);
+        mToolbar.setTitle("Add Book");
+        setSupportActionBar(mToolbar);
 
         chosenBookPhoto = findViewById(R.id.imageViewViewOwnedBookPhoto);
         isbnEditText = findViewById(R.id.editTextAddBookBookISBN);
@@ -109,6 +116,14 @@ public class AddBookActivity extends AppCompatActivity {
 //        //adapter setup
 //        viewPager.setAdapter(adapter);
 //        tabLayout.setupWithViewPager(viewPager);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
+                finish();
+            }
+        });
 
     }
 
