@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +33,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -281,7 +283,7 @@ public class DatabaseHelper{
     public void getCurrentUserInfoFromDatabase(final UserInformationCallback userInformationCallback){
         usersReference
                 .child(currentUser.getUid())
-                .child("userinfo")
+                .child("userInfo")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -862,6 +864,19 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+    public void sendRegistrationToServer(final String token){
+        getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("deviceToken");
+                reference
+                        .child(userInformation.getUserName())
+                        .setValue(token);
+            }
+        });
+    }
+
     /**
      * Get the FirebaseAuth user object that is currently in use
      * @return FirebaseAuth user object
@@ -1064,6 +1079,30 @@ public class DatabaseHelper{
                         } else {
                             booleanCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    public void getMessages(String username, final MessageListcallback messageListcallback){
+        messagesReference
+                .child(username)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<Messaging> messagingArrayList = new ArrayList<>();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    messagingArrayList.add(dataSnapshot1.getValue(Messaging.class));
+                                }
+                            }
+                        }
+                        messageListcallback.onCallback(messagingArrayList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }
