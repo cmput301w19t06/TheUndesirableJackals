@@ -391,7 +391,6 @@ public class AddBookActivity extends AppCompatActivity {
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, IMAGE_CAPTURE_REQUEST);
-
             }
         }
     }

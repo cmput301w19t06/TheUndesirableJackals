@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -809,7 +808,24 @@ public class DatabaseHelper{
                 });
     }
 
-
+    /**
+     * Get the Uri of a picture from the database related to BookInformation
+     * @param bookInformation the book that picture relates to
+     * @param bookPhotoUrlCallBack a callback so that the uri is passed upon completion
+     */
+    public void getBookPictureUri(BookInformation bookInformation, final BookPhotoUrlCallBack bookPhotoUrlCallBack) {
+        bookPicturesReference
+                .child(bookInformation.getIsbn())
+                .child(bookInformation.getOwner())
+                .child(bookInformation.getBookPhoto())
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Uri imageUri = uri;
+                bookPhotoUrlCallBack.onCallback(imageUri);
+            }
+        });
+    }
     /**
      * The database helper for downloading a profile picture
      * @param file the pre-allocated file for storing the user's profile picture.

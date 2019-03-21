@@ -129,7 +129,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
 
                 ImageView profilePhoto = findViewById(R.id.imageViewPersonalProfileActivityBookThumbnail);
 
-                profilePhoto.setImageResource(R.drawable.default_profile_photo);
+                profilePhoto.setImageResource(R.drawable.ic_person_outline_grey_24dp);
             }
         });
     }
