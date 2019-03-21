@@ -1,7 +1,24 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookPhotoUrlCallBack;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -11,6 +28,24 @@ import android.os.Bundle;
  * @author Art Limbaga
  */
 public class ViewLibraryBookActivity extends AppCompatActivity {
+    private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
+
+    public final static String LIBRARY_BOOK_FROM_RECYCLER_VIEW = "LibraryBookFromRecyclerView";
+    public final static String LIBRARY_INFO_FROM_RECYCLER_VIEW = "LibraryBookInfoFromRecyclerView";
+
+    private Toolbar mToolbar;
+
+    private DatabaseHelper databaseHelper;
+
+    private BookInformation mBookInformation;
+    private Book mLibraryBook;
+
+    private ImageView mBookPhotoView;
+    private TextView mTitle;
+    private TextView mAuthor;
+    private TextView mIsbn;
+    private TextView mStatus;
+    private TextView mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +53,82 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_library_book);
 
 
+        Intent intent = getIntent();
+        mLibraryBook = (Book) intent.getSerializableExtra(LIBRARY_BOOK_FROM_RECYCLER_VIEW);
+        mBookInformation = (BookInformation) intent.getSerializableExtra(LIBRARY_INFO_FROM_RECYCLER_VIEW);
+
+        mToolbar = findViewById(R.id.tool_bar);
+        mToolbar.setNavigationIcon(R.drawable.ic_action_back);
+        mToolbar.setTitle("Library Book");
+        setSupportActionBar(mToolbar);
+
+        databaseHelper = new DatabaseHelper();
+
+        mBookPhotoView = findViewById(R.id.imageViewViewLibraryBookPhoto);
+        mTitle = findViewById(R.id.textViewViewLibraryBookBookTitle);
+        mAuthor = findViewById(R.id.textViewViewLibraryBookBookAuthor);
+        mIsbn = findViewById(R.id.textViewViewLibraryBookBookISBN);
+        mStatus = findViewById(R.id.textViewViewLibraryBookBookStatus);
+        mDescription = findViewById(R.id.textViewViewLibraryBookBookDescription);
+
+        mTitle.setText(mLibraryBook.getTitle());
+        mAuthor.setText(mLibraryBook.getAuthor());
+        mIsbn.setText("ISBN: " + mLibraryBook.getIsbn());
+        mStatus.setText(mBookInformation.getStatus().toString());
+        mDescription.setText(mBookInformation.getDescription());
+
+        setBookPhotoView();
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_view_library_book, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        // switch case just in case we add another option
+        switch (id) {
+            case R.id.itemMenuLibraryBookViewFavorite:
+                //TODO: Add/Delete from user's favorite
+                item.setIcon(R.drawable.ic_is_favorite);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setBookPhotoView() {
+
+        try {
+            databaseHelper.getBookPictureUri(mBookInformation, new BookPhotoUrlCallBack() {
+                @Override
+                public void onCallback(Uri imageUri) {
+                    Picasso.get()
+                            .load(imageUri)
+                            .placeholder(R.drawable.ic_hourglass_empty_grey_24dp)
+                            .error(R.drawable.ic_book)
+                            .rotate(90)
+                            .into(mBookPhotoView);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(ERROR_TAG_LOAD_IMAGE,e.getMessage());
+        }
+    }
+
 }
