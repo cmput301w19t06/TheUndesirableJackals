@@ -3,8 +3,10 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+
+import java.io.File;
 
 /**
  * Allows the user to view an owned book and do certain action that only book owners can do.
@@ -35,9 +40,13 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DatabaseHelper databaseHelper;
 
+    private File mDownloadedImage;
+    private String mBookPhotoPath;
+
     private Book mOwnedBook;
     private BookInformation mBookInformation;
 
+    private ImageView mBookPhoto;
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mIsbn;
@@ -53,12 +62,15 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mToolbar.setTitle("Owned Book");
         setSupportActionBar(mToolbar);
 
+        mDownloadedImage = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
         databaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
         mOwnedBook = (Book) intent.getSerializableExtra(OWNED_BOOK_FROM_RECYCLER_VIEW);
         mBookInformation = (BookInformation) intent.getSerializableExtra(OWNED_INFO_FROM_RECYCLER_VIEW);
 
+        mBookPhoto = findViewById(R.id.imageViewViewOwnedBookPhoto);
         mTitle = findViewById(R.id.textViewViewOwnedBookBookTitle);
         mAuthor = findViewById(R.id.textViewViewOwnedBookBookAuthor);
         mIsbn = findViewById(R.id.textViewViewOwnedBookBookISBN);
@@ -71,6 +83,23 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mStatus.setText(mBookInformation.getStatus().toString());
         mDescription.setText(mBookInformation.getDescription());
 
+        databaseHelper.downloadBookPicture(mDownloadedImage, mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+
+                if (bool) {
+                    mBookPhotoPath = mDownloadedImage.getPath();
+                    Uri photoData = Uri.parse(mBookPhotoPath + "/" + mBookInformation.getBookPhoto());
+                    if (photoData == null) {
+                        ToastMessage.show(getApplicationContext(), "NULL IMAGE");
+                    } else {
+                        mBookPhoto.setImageURI(photoData);
+                    }
+                } else {
+                    ToastMessage.show(getApplicationContext(), "Download failed");
+                }
+            }
+        });
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
