@@ -105,9 +105,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
-                    case R.id.itemMenuNotifications:
-                        intent = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
-                        break;
                     case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         break;
