@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity">
+
+<item
+    android:id="@+id/itemMenuBorrowedRequestBorrowed"
+    android:orderInCategory="100"
+    android:title="Borrowed"
+    app:showAsAction="never" />
+
+<item
+    android:id="@+id/itemMenuBorrowedRequestAccepted"
+    android:orderInCategory="100"
+    android:title="Accepted"
+    app:showAsAction="never" />
+<item
+    android:id="@+id/itemMenuBorrowedRequestPending"
+    android:orderInCategory="100"
+    android:title="Pending"
+    app:showAsAction="never" />
+
+<item
+    android:id="@+id/itemMenuBorrowedRequestTitle"
+    android:orderInCategory="100"
+    android:title="Title Search"
+    app:showAsAction="never" />
+
+
+</menu>

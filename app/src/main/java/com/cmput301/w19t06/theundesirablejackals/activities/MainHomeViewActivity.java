@@ -9,7 +9,9 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,26 +20,37 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.InputStream;
 
 public class MainHomeViewActivity extends AppCompatActivity {
+    public static final String TAG = "MainHomeViewActivity";
+
     public static final int ADD_BOOK = 50;
     private TabLayout tabLayout;
     private Toolbar toolBar;
@@ -48,6 +61,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
     private BooksRecyclerViewAdapter ownedBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();
+
+    private TextView mDrawerUsername;
+    private TextView mDrawerEmail;
 
     /**
      * Creates a tablayout for the fragments
@@ -68,6 +84,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper();
 
+        setDrawerUserInfo();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -100,8 +117,8 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.itemMenuFriends:
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
-                    case R.id.itemMenuSearchBook:
-                        intent = new Intent(MainHomeViewActivity.this, BookSearchActivity.class);
+                    case R.id.itemMenuSearchUser:
+                        intent = new Intent(MainHomeViewActivity.this, OthersProfileActivity.class);
                         break;
                     case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
@@ -141,21 +158,50 @@ public class MainHomeViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        mDrawerUsername = findViewById(R.id.textViewMenuUsername);
+        mDrawerEmail = findViewById(R.id.textViewMenuEmail);
+
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
         return true;
     }
 
-    public BooksRecyclerViewAdapter getOwnedBooksAdapter(){
-        return ownedBooksAdapter;
+    public void setDrawerUserInfo() {
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                // retrieve user's info
+                UserInformation userInformation = user.getUserInfo();
+                String userName = userInformation.getUserName();
+                String email = userInformation.getEmail();
+
+
+                // display the info
+                TextView usernameView = (TextView) findViewById(R.id.textViewMenuUsername);
+                usernameView.setText(userName);
+
+                TextView emailView = (TextView) findViewById(R.id.textViewMenuEmail);
+                emailView.setText(email);
+
+                ImageView profilePhoto = findViewById(R.id.imageViewMenuProfile);
+
+                    // TODO: Change image to profile photo from database
+                //profilePhoto.setImageResource(R.drawable.default_profile_photo);
+
+            }
+        });
     }
 
-    public BooksRecyclerViewAdapter getLibraryBooksAdapter(){
-        return libraryBooksAdapter;
+    public void setOwnedBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.ownedBooksAdapter = adapter;
     }
 
-    public BooksRecyclerViewAdapter getBorrowedBooksAdapter(){
-        return borrowedBooksAdapter;
+    public void setLibraryBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.libraryBooksAdapter = adapter;
+    }
+
+    public void setBorrowedBooksAdapter(BooksRecyclerViewAdapter adapter){
+        this.borrowedBooksAdapter = adapter;
     }
 
     /**
@@ -174,6 +220,12 @@ public class MainHomeViewActivity extends AppCompatActivity {
     public void OnClick_AddOwnedBookButton(View view){
         Intent intent = AddBookActivity.makeIntent(MainHomeViewActivity.this);
         startActivityForResult(intent, ADD_BOOK);
+    }
+
+    public void OnClick_ProfileImage(View view) {
+        Intent intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -205,24 +257,64 @@ public class MainHomeViewActivity extends AppCompatActivity {
         switch (requestCode) {
             case ADD_BOOK:
                 if (resultCode == RESULT_OK) {
-                    String title = data.getStringExtra("bookTitle");
-                    String author = data.getStringExtra("bookAuthor");
-                    String isbn = data.getStringExtra("bookIsbn");
-                    String description = data.getStringExtra("bookDescription");
-                    Uri imageUri = data.getData();
-                    imageUri = data.getData();
-                    InputStream inputStream;
+                    final String title = data.getStringExtra("bookTitle");
+                    final String author = data.getStringExtra("bookAuthor");
+                    final String isbn = data.getStringExtra("bookIsbn");
+                    final String description = data.getStringExtra("bookDescription");
+                    final Uri imageUri = data.getData();
+//                    InputStream inputStream;
 
-                    final Book b = new Book(title, author, isbn, description);
-                    ownedBooksAdapter.addItem(b);
-                    databaseHelper.saveCurrentUsersOwnedBooks(ownedBooksAdapter.getDataSet(), new BooleanCallback() {
+                    Book b = new Book(title, author, isbn);
+                    final Book book = new Book(b);
+
+                    databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
                             if(bool){
-                                displayMessage("Book added to owned list successfully!");
+                                Log.d(TAG, "Book sent to server");
                             }else{
-                                ownedBooksAdapter.deleteItem(0);
-                                displayMessage("Sorry, something went wrong :(");
+                                Log.d(TAG, "Sorry, something went wrong :(");
+                            }
+                        }
+                    });
+                    databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+                        @Override
+                        public void onCallback(User user) {
+                            BookInformation bookInformation = updatebookInformation(user, imageUri, isbn, description);
+
+                            databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
+                                @Override
+                                public void onCallback(boolean bool) {
+                                    if(bool){
+                                        //todo
+                                        Log.d(TAG, "All good in update book information");
+                                    }else{
+                                        //todo
+                                        Log.d(TAG, "NOT good in update book information");
+                                    }
+                                }
+                            });
+                            Boolean check = false;
+
+                            for(Book b :ownedBooksAdapter.getDataSet().getBookList().getBooks()) {
+                                if(b.getIsbn().equals(isbn)){
+                                    check = true;
+                                    break;
+                                }
+                            }
+                            if(!check) {
+                                ownedBooksAdapter.addItem(book, bookInformation);
+                                user.getOwnedBooks().addBook(book.getIsbn(), bookInformation.getBookInformationKey());
+                                databaseHelper.updateOwnedBooks(user.getOwnedBooks(), new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if (bool) {
+                                            displayMessage("Saved your book on server");
+                                        } else {
+                                            displayMessage("Didn't manage to save your book to the server");
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -238,6 +330,69 @@ public class MainHomeViewActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+
+    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description) {
+        BookInformation bookInformation;
+        if (user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
+            if (!user.getOwnedBooks().getBooks().containsKey(isbn)) {
+                if (imageUri != null) {
+                    bookInformation = new BookInformation(
+                            BookStatus.AVAILABLE,
+                            imageUri,
+                            description,
+                            isbn,
+                            user.getUserInfo().getUserName());
+
+                    databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if (bool) {
+                                //todo
+                                displayMessage("Picture uploaded to server!");
+                            } else {
+                                //todo
+                                displayMessage("Sorry, something went wrong uploading picture");
+                            }
+                        }
+                    });
+                } else {
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
+                }
+            } else if (user.getOwnedBooks().getBooks().containsKey(isbn)) {
+                if (imageUri != null) {
+                    bookInformation = new BookInformation(
+                            BookStatus.AVAILABLE,
+                            imageUri,
+                            description,
+                            isbn,
+                            user.getUserInfo().getUserName());
+                    bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
+                    databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if (bool) {
+                                //todo
+                                displayMessage("Picture uploaded to server!");
+                            } else {
+                                //todo
+                                displayMessage("Sorry, something went wrong uploading picture");
+                            }
+                        }
+                    });
+                } else {
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
+                    bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
+                }
+
+            } else {
+                bookInformation = new BookInformation(isbn, user.getUserInfo().getUserName());
+            }
+        }else{bookInformation = new BookInformation();}
+        return bookInformation;
+    }
+
 
 
 }

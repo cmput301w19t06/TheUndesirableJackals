@@ -74,7 +74,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
         });
 
         // buttonDefaultLocation action
-        buttonDefaultLocation.setOnClickListener(new View.OnClickListener() {
+        buttonDefaultLocation.setOnClickListener(
+                new View.OnClickListener() {
             /**
              * Called when user presses the my pick up buttonDefaultLocation option
              * Sends the user to "MapsActivity" activity
@@ -128,9 +129,8 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 phoneView.setText("Phone: " + phone);
 
                 ImageView profilePhoto = findViewById(R.id.imageViewPersonalProfileActivityBookThumbnail);
-                if (userInformation.getUserPhoto() == null) {
-                    profilePhoto.setImageResource(R.drawable.default_profile_photo);
-                }
+
+                profilePhoto.setImageResource(R.drawable.ic_person_outline_grey_24dp);
             }
         });
     }

@@ -21,16 +21,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
-import com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
+
+import java.util.HashMap;
 
 /*
 * Created by Mohamed on 21/02/2019
@@ -46,13 +50,13 @@ public class MyBooksFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.my_books_fragment,container,false);
 
         ItemTouchHelper itemTouchhelper;
         SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
-        RecyclerView booksRecyclerView;
+        final RecyclerView booksRecyclerView;
 
         //Setting up the main page recyclerView using findViewById
         booksRecyclerView = (RecyclerView) view.findViewById(R.id.myBooks_recyclerview);
@@ -72,9 +76,11 @@ public class MyBooksFragment extends Fragment {
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Book clickedBook = booksRecyclerViewAdapter.getItem(position);
+                Book clickedBook = booksRecyclerViewAdapter.getBook(position);
+                BookInformation clickedbookInformation = booksRecyclerViewAdapter.getInformation(position);
                 Intent intent = new Intent(getActivity(), ViewOwnedBookActivity.class);
                 intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
+                intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
                 startActivity(intent);
 
             }
@@ -82,7 +88,8 @@ public class MyBooksFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        booksRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getOwnedBooksAdapter();
+        booksRecyclerViewAdapter = new BooksRecyclerViewAdapter();
+        ((MainHomeViewActivity)getActivity()).setOwnedBooksAdapter(booksRecyclerViewAdapter);
         booksRecyclerViewAdapter.setMyListener(listener);
         booksRecyclerView.setAdapter(booksRecyclerViewAdapter);
 
@@ -94,12 +101,29 @@ public class MyBooksFragment extends Fragment {
 
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
-        DatabaseHelper databaseHelper = new DatabaseHelper();
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
-                if(user.getOwnedBooks() != null) {
-                    booksRecyclerViewAdapter.setDataSet(user.getOwnedBooks());
+                if(user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
+                    final HashMap<String, Object> map = user.getOwnedBooks().getBooks();
+                    if(map.size() > 0) {
+                        for (String isbn : map.keySet()) {
+                            final String information = map.get(isbn).toString();
+                            databaseHelper.getBookFromDatabase(isbn, new BookCallback() {
+                                @Override
+                                public void onCallback(final Book book) {
+                                    databaseHelper.getBookInformation(information, new BookInformationCallback() {
+                                        @Override
+                                        public void onCallback(BookInformation bookInformation) {
+                                            booksRecyclerViewAdapter.addItem(book, bookInformation);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+
                 }
 
             }

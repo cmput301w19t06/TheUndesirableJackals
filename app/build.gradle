@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.cmput301.w19t06.theundesirablejackals"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
@@ -45,6 +46,7 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
     testImplementation 'junit:junit:4.12'
 
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
@@ -54,6 +56,9 @@ dependencies {
 
     // GSON
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    // image view
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }

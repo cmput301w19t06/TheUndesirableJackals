@@ -10,7 +10,7 @@ import android.widget.TextView;
  * Author: Kaya Thiessen
  * @see LentListActivity
  */
-public class AcceptRejectLendActivity extends LentListActivity {
+public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity {
 
     /**
      * General creation
@@ -24,8 +24,8 @@ public class AcceptRejectLendActivity extends LentListActivity {
         Intent intent = getIntent();
         int postition = intent.getIntExtra("position",0);
 
-        TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
-        TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
+        //TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
+        //TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
         //TODO
         //Get the username and book title from notification and set them

@@ -14,21 +14,26 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
-import java.util.ArrayList;
-import java.util.List;
 /*
  * Created by Mohamed on 21/02/2019
  */
@@ -48,7 +53,7 @@ public class LibraryFragment extends Fragment {
         ItemTouchHelper itemTouchhelper;
         SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
-        RecyclerView libraryRecyclerView;
+        final RecyclerView libraryRecyclerView;
 
 
 
@@ -69,8 +74,35 @@ public class LibraryFragment extends Fragment {
         //into the recyclerView directly.
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
-            public void onClick(View view, int position) {
-                Book clickedBook = libraryRecyclerViewAdapter.getItem(position);
+            public void onClick(View view, final int position) {
+                Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+                final DatabaseHelper databaseHelper = new DatabaseHelper();
+                databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
+                    @Override
+                    public void onCallback(BookInformationList bookInformationList) {
+                        if(bookInformationList != null){
+                            final BookInformation bookInformation = bookInformationList.get(0);
+                            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+                                @Override
+                                public void onCallback(UserInformation userInformation) {
+                                    BookRequest bookRequest = new BookRequest(userInformation, bookInformation);
+                                    databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
+                                        @Override
+                                        public void onCallback(boolean bool) {
+                                            Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
+                                            if(bool){
+                                                Toast.makeText(getActivity(), "Request sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
+                                            }else{
+                                                Toast.makeText(getActivity(), "Request not sent", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    }
+                });
                 //Do something with the book, maybe view it in detail?
                 Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
 
@@ -79,7 +111,8 @@ public class LibraryFragment extends Fragment {
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
-        libraryRecyclerViewAdapter = ((MainHomeViewActivity)getActivity()).getLibraryBooksAdapter();
+        libraryRecyclerViewAdapter = new BooksRecyclerViewAdapter();
+        ((MainHomeViewActivity)getActivity()).setLibraryBooksAdapter(libraryRecyclerViewAdapter);
         libraryRecyclerViewAdapter.setMyListener(listener);
         libraryRecyclerView.setAdapter(libraryRecyclerViewAdapter);
 
@@ -91,16 +124,22 @@ public class LibraryFragment extends Fragment {
 
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
-        DatabaseHelper databaseHelper = new DatabaseHelper();
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override
-            public void onCallback(User user) {
-                if(user.getFavouriteBooks() != null) {
-                    libraryRecyclerViewAdapter.setDataSet(user.getFavouriteBooks());
+            public void onCallback(BookList bookList) {
+                if(bookList != null && bookList.getBooks() != null && bookList.getBooks().size() > 0) {
+                    BookInformationPairing bookInformationPairing = new BookInformationPairing();
+                    for (Book book : bookList.getBooks()) {
+                        bookInformationPairing.addSingle(book);
+                    }
+                    libraryRecyclerViewAdapter.addItems(bookInformationPairing);
                 }
-
             }
         });
+
+
+
 
         return view;
     }

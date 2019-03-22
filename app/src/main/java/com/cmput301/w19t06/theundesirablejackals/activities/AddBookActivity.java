@@ -91,20 +91,12 @@ public class AddBookActivity extends AppCompatActivity {
                         .build();
 
         // check for any change in isbnEditText to trigger search for additional details
-        isbnEditText.addTextChangedListener(new TextWatcher() {
+        isbnEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                searchISBN();
+            public void onFocusChange(View view, boolean b) {
+                if(!b) {
+                    searchISBN();
+                }
             }
         });
 //        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
@@ -134,7 +126,11 @@ public class AddBookActivity extends AppCompatActivity {
         EditText isbnParam  = (EditText)findViewById(R.id.editTextAddBookBookISBN);
 
         // retrieve the ISBN input by the user
-        isbn = isbnParam.getText().toString();
+        if(barcodesFound.size() > 0) {
+            isbn = barcodesFound.get(0);
+        }else{
+            isbn = isbnParam.getText().toString();
+        }
 
         // check internet network
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -258,7 +254,7 @@ public class AddBookActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
         if (requestCode== AddBookActivity.IMAGE_GALLERY_REQUEST){
             if(resultCode == RESULT_OK) {
                 imageUri = data.getData();
@@ -282,12 +278,7 @@ public class AddBookActivity extends AppCompatActivity {
 
 //                galleryAddPic();
                 scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
-                if(barcodesFound.size() > 0){
-                    ((TextView) findViewById(R.id.editTextAddBookBookISBN)).setText(barcodesFound.get(0));
-                    searchISBN();
-                }else{
-                    showMyToast("ISBN Not Found. Please try again");
-                }
+
 
             } else {
                 showMyToast("Photo Scan Canceled");
@@ -368,6 +359,10 @@ public class AddBookActivity extends AppCompatActivity {
                 case FirebaseVisionBarcode.TYPE_ISBN:
                     //Add data to list
                     barcodesFound.add(rawValue);
+
+                    ((TextView) findViewById(R.id.editTextAddBookBookISBN)).setText(barcodesFound.get(0));
+                    searchISBN();
+
                     Log.d(TAG, ((Integer)barcodesFound.size()).toString());
                     break;
                 default:
@@ -396,7 +391,6 @@ public class AddBookActivity extends AppCompatActivity {
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, IMAGE_CAPTURE_REQUEST);
-
             }
         }
     }
