@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.LentRequestsAdapter;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 
 /**
@@ -21,6 +23,7 @@ import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
  */
 public class LentListActivity extends AppCompatActivity{
     private Toolbar toolbar;
+    private LentRequestsAdapter lentRequestsAdapter = new LentRequestsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,4 +78,7 @@ public class LentListActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    public void setLentRequestsAdapter(LentRequestsAdapter adapter){
+        this.lentRequestsAdapter= adapter;
+    }
 }
