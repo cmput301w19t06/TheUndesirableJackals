@@ -11,17 +11,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
-import com.cmput301.w19t06.theundesirablejackals.database.BookPhotoUrlCallBack;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.squareup.picasso.Picasso;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.File;
 
@@ -57,7 +60,13 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_library_book);
 
-
+        Button buttonLibraryBookBorrowBook = (Button) findViewById(R.id.buttonLibraryBookBorrowBook);
+        buttonLibraryBookBorrowBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doAllBorrowRequest();
+            }
+        });
         Intent intent = getIntent();
         mLibraryBook = (Book) intent.getSerializableExtra(LIBRARY_BOOK_FROM_RECYCLER_VIEW);
         mBookInformation = (BookInformation) intent.getSerializableExtra(LIBRARY_INFO_FROM_RECYCLER_VIEW);
@@ -149,6 +158,58 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                 mBookPhotoView.setImageURI(photoData);
             }
         }
+    }
+
+    private void doAllBorrowRequest(){
+        databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(final UserInformation userInformation) {
+                if(userInformation != null){
+                    databaseHelper.getBorrowRequests(userInformation.getUserName(), new BookRequestListCallback() {
+                        @Override
+                        public void onCallback(BookRequestList bookRequestList) {
+                            if(bookRequestList != null){
+                                if(bookRequestList.size() > 0){
+                                    Boolean requestExists = false;
+                                    for(BookRequest bookRequest : bookRequestList.getBookRequests()){
+                                        String currentRequestKey = bookRequest.getBookRequested().getBookInformationKey();
+                                        String newRequestKey = mBookInformation.getBookInformationKey();
+                                        if(currentRequestKey.equals(newRequestKey)){
+                                            requestExists = true;
+                                        }
+                                    }if(!requestExists){
+                                        makeNewBorrowRequest(userInformation);
+                                    }else{
+                                        ToastMessage.show(getBaseContext(), "you already requested this book");
+                                    }
+                                }else{
+                                    makeNewBorrowRequest(userInformation);
+                                }
+                            }else{
+                                ToastMessage.show(getBaseContext(), "Something went wrong getting your current requests");
+                            }
+                        }
+                    });
+
+                }else{
+                    ToastMessage.show(getBaseContext(), "Something happened while fetching your user data");
+                }
+            }
+        });
+    }
+
+    private void makeNewBorrowRequest(UserInformation userInformation){
+        BookRequest bookRequest = new BookRequest(userInformation, mBookInformation);
+        databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool) {
+                    ToastMessage.show(getBaseContext(), "Request has been sent to owner");
+                }else{
+                    ToastMessage.show(getBaseContext(), "Request not sent correctly");
+                }
+            }
+        });
     }
 
 }
