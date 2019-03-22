@@ -14,6 +14,9 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
@@ -166,6 +169,16 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public BookInformationPairing getDataSet(){
         return dataSet;
+    }
+
+    // performs filter operation for the recyclerview
+    public  void setFilter(List<String> listItem){
+
+        List<String> titles = new ArrayList<>();
+        titles.addAll(listItem);
+        notifyDataSetChanged();
+
+
     }
 
 }

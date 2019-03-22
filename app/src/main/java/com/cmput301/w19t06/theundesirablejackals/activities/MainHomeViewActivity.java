@@ -47,8 +47,10 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainHomeViewActivity extends AppCompatActivity {
+public class MainHomeViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     public static final String TAG = "MainHomeViewActivity";
 
     public static final int ADD_BOOK = 50;
@@ -162,6 +164,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
         mDrawerEmail = findViewById(R.id.textViewMenuEmail);
 
         getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -394,5 +399,19 @@ public class MainHomeViewActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        String userInput = s.toLowerCase();
+        List<String> listItem = new ArrayList<>();
+
+
+
+        return false;
+    }
 }
