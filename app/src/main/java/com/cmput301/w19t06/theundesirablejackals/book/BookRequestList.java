@@ -82,4 +82,6 @@ public class BookRequestList {
         return bookRequests.contains(bookRequest);
     }
 
+    public int size(){return bookRequests.size();}
+
 }
