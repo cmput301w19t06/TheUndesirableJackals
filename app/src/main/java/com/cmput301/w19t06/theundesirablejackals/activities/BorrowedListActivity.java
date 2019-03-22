@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BorrowedRequestViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.LentRequestsAdapter;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 
 /**
@@ -17,6 +19,7 @@ import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
  */
 public class BorrowedListActivity extends AppCompatActivity {
     private Toolbar toolbar;
+    private BorrowedRequestViewAdapter borrowedRequestsAdapter = new BorrowedRequestViewAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class BorrowedListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void setLentRequestsAdapter(BorrowedRequestViewAdapter adapter){
+        this.borrowedRequestsAdapter= adapter;
     }
 
 }
