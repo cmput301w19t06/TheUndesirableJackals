@@ -17,7 +17,7 @@ tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedList
 <item
     android:id="@+id/itemMenuBorrowedRequestPending"
     android:orderInCategory="100"
-    android:title="Pending"
+    android:title="Requested"
     app:showAsAction="never" />
 
 <item
