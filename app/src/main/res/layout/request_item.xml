@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageViewRequesteditemBook"
+        android:id="@+id/imageViewRequestItemBook"
         android:layout_width="77dp"
         android:layout_height="73dp"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         tools:srcCompat="@drawable/book_icon" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemTitle"
+        android:id="@+id/textViewRequestItemTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -28,11 +28,11 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewRequesteditemBook"
+        app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemAuthor"
+        android:id="@+id/textViewRequestItemAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -41,11 +41,11 @@
         android:text="Author"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewRequesteditemBook"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRequesteditemTitle" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemTitle" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemUsername"
+        android:id="@+id/textViewRequestItemUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,11 +54,11 @@
         android:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewRequesteditemOwnerStatic"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewRequesteditemBook" />
+        app:layout_constraintStart_toEndOf="@+id/textViewRequestItemOwnerStatic"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemStatusChange"
+        android:id="@+id/textViewRequestItemStatusChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,12 +68,12 @@
         android:text="Actual Status here please"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewRequesteditemStatusStatic"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRequesteditemUsername"
+        app:layout_constraintStart_toEndOf="@+id/textViewRequestItemStatusStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemStatusStatic"
+        android:id="@+id/textViewRequestItemStatusStatic"
         android:layout_width="92dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -82,19 +82,18 @@
         android:textAlignment="textEnd"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRequesteditemUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername" />
 
     <TextView
-        android:id="@+id/textViewRequesteditemOwnerStatic"
+        android:id="@+id/textViewRequestItemOwnerStatic"
         android:layout_width="92dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
-        android:text="Owner:"
-        android:textAlignment="textEnd"
+        android:text="Requested by:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewRequesteditemBook" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <View
         android:id="@+id/divider"

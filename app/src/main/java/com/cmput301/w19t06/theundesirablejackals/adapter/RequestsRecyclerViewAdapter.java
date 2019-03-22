@@ -14,7 +14,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
-public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapter.MyViewHolder> {
+public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRecyclerViewAdapter.MyViewHolder> {
 
     private BookInformationPairing dataSet;
     private RecyclerViewClickListener myListener;
@@ -49,7 +49,7 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 //        dataSet = new BookToInformationMap();
 //    }
 
-    public LentRequestsAdapter(){
+    public RequestsRecyclerViewAdapter(){
         dataSet = new BookInformationPairing();
     }
 
@@ -65,11 +65,11 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 
     // Create new views (invoked by the layout manager)
     @Override
-    public LentRequestsAdapter.MyViewHolder onCreateViewHolder(final ViewGroup parent,
-                                                                    int viewType) {
+    public RequestsRecyclerViewAdapter.MyViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                                       int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.lent_item, parent, false);
+                .inflate(R.layout.request_item, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
@@ -77,14 +77,14 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(LentRequestsAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(RequestsRecyclerViewAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequesteditemTitle);
-        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemAuthor);
-        TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequesteditemUsername);
-        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemStatusChange);
-        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequesteditemBook);
+        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemTitle);
+        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemAuthor);
+        TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemUsername);
+        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemStatusChange);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequestItemBook);
 
         Book b = dataSet.getBook(position);
         BookInformation i = dataSet.getInformation(position);
