@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity;
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
@@ -32,9 +34,10 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.HashMap;
 
-public class BorrowedFragment extends Fragment {
+public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     View view;
     private BooksRecyclerViewAdapter borrowedRecyclerViewAdapter;
+    private SwipeRefreshLayout borrowedBoosSwipeRefreshLayout;
 
 
     public BorrowedFragment() {
@@ -53,6 +56,7 @@ public class BorrowedFragment extends Fragment {
 
         //Setting up the main page recyclerView using findViewById
         borrowedRecyclerView = (RecyclerView) view.findViewById(R.id.borrowed_recyclerview);
+        borrowedBoosSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.borrowedBoosSwipeRefreshLayout);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -84,6 +88,15 @@ public class BorrowedFragment extends Fragment {
         ((MainHomeViewActivity)getActivity()).setBorrowedBooksAdapter(borrowedRecyclerViewAdapter);
         borrowedRecyclerViewAdapter.setMyListener(listener);
         borrowedRecyclerView.setAdapter(borrowedRecyclerViewAdapter);
+        borrowedBoosSwipeRefreshLayout.setOnRefreshListener(this);
+        borrowedBoosSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                borrowedBoosSwipeRefreshLayout.setRefreshing(true);
+                getBooks();
+                borrowedBoosSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(borrowedRecyclerViewAdapter);
@@ -93,7 +106,30 @@ public class BorrowedFragment extends Fragment {
 
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
+
+
+        return view;
+    }
+
+    /**
+     * adds a book in the lstBook by creating an object of MyBooksModelClass
+     * @param savedInstanceState
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onRefresh() {
+        borrowedBoosSwipeRefreshLayout.setRefreshing(true);
+        getBooks();
+        borrowedBoosSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
+        borrowedRecyclerViewAdapter.setDataSet(new BookInformationPairing());
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
@@ -120,16 +156,5 @@ public class BorrowedFragment extends Fragment {
 
             }
         });
-
-        return view;
-    }
-
-    /**
-     * adds a book in the lstBook by creating an object of MyBooksModelClass
-     * @param savedInstanceState
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 }
