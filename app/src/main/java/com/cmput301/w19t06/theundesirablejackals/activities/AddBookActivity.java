@@ -250,7 +250,7 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
     private void dispatchImageGalleryIntent(){
-        Intent photoIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String pictureDirectoryPath = pictureDirectory.getPath();
         Uri data = Uri.parse(pictureDirectoryPath);
