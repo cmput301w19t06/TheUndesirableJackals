@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -37,9 +38,10 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 /*
  * Created by Mohamed on 21/02/2019
  */
-public class LibraryFragment extends Fragment {
+public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     View view;
     private BooksRecyclerViewAdapter libraryRecyclerViewAdapter;
+    private SwipeRefreshLayout librarySwipeRefreshLayout;
 
 
     public LibraryFragment() {
@@ -58,8 +60,8 @@ public class LibraryFragment extends Fragment {
 
 
         //Setting up the main page recyclerView using findViewById
-        libraryRecyclerView = (RecyclerView) view.findViewById(R.id.library_recyclerview);
-
+        libraryRecyclerView = (RecyclerView) view.findViewById(R.id.libraryRecyclerView);
+        librarySwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.librarySwipeRefreshLayout);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         libraryRecyclerView.setHasFixedSize(true);
@@ -105,7 +107,6 @@ public class LibraryFragment extends Fragment {
                 });
                 //Do something with the book, maybe view it in detail?
                 Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
-
             }
         };
 
@@ -115,6 +116,20 @@ public class LibraryFragment extends Fragment {
         ((MainHomeViewActivity)getActivity()).setLibraryBooksAdapter(libraryRecyclerViewAdapter);
         libraryRecyclerViewAdapter.setMyListener(listener);
         libraryRecyclerView.setAdapter(libraryRecyclerViewAdapter);
+        librarySwipeRefreshLayout.setOnRefreshListener(this);
+        librarySwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+
+                librarySwipeRefreshLayout.setRefreshing(true);
+
+                // TODO Fetching data from server
+                getBooks();
+                librarySwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+
 
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(libraryRecyclerViewAdapter);
@@ -122,23 +137,7 @@ public class LibraryFragment extends Fragment {
 //        itemTouchhelper.attachToRecyclerView(libraryRecyclerView);
 
 
-        //If we got any data from file, add it to the
-        //(now finished with setup) recyclerViewAdapter
-        final DatabaseHelper databaseHelper = new DatabaseHelper();
-        databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
-            @Override
-            public void onCallback(BookList bookList) {
-                if(bookList != null && bookList.getBooks() != null && bookList.getBooks().size() > 0) {
-                    BookInformationPairing bookInformationPairing = new BookInformationPairing();
-                    for (Book book : bookList.getBooks()) {
-                        bookInformationPairing.addSingle(book);
-                    }
-                    libraryRecyclerViewAdapter.addItems(bookInformationPairing);
-                }
-            }
-        });
-
-
+//        getBooks();
 
 
         return view;
@@ -151,5 +150,31 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void getBooks(){
+        //If we got any data from file, add it to the
+        //(now finished with setup) recyclerViewAdapter
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
+            @Override
+            public void onCallback(BookList bookList) {
+                if(bookList != null && bookList.getBooks() != null && bookList.getBooks().size() > 0) {
+                    BookInformationPairing bookInformationPairing = new BookInformationPairing();
+                    for (Book book : bookList.getBooks()) {
+                        bookInformationPairing.addSingle(book);
+                    }
+                    libraryRecyclerViewAdapter.setDataSet(bookInformationPairing);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onRefresh(){
+        librarySwipeRefreshLayout.setRefreshing(true);
+        getBooks();
+        librarySwipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -22,6 +23,7 @@ import android.widget.Button;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity;
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
@@ -39,10 +41,11 @@ import java.util.HashMap;
 /*
 * Created by Mohamed on 21/02/2019
  */
-public class MyBooksFragment extends Fragment {
+public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private Button addBookButton;
     private View view;
     private BooksRecyclerViewAdapter booksRecyclerViewAdapter;
+    private SwipeRefreshLayout ownedBooksSwipeRefreshLayout;
 
     public MyBooksFragment(){
 
@@ -60,6 +63,7 @@ public class MyBooksFragment extends Fragment {
 
         //Setting up the main page recyclerView using findViewById
         booksRecyclerView = (RecyclerView) view.findViewById(R.id.myBooks_recyclerview);
+        ownedBooksSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ownedBooksSwipeRefreshLayout);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -92,6 +96,16 @@ public class MyBooksFragment extends Fragment {
         ((MainHomeViewActivity)getActivity()).setOwnedBooksAdapter(booksRecyclerViewAdapter);
         booksRecyclerViewAdapter.setMyListener(listener);
         booksRecyclerView.setAdapter(booksRecyclerViewAdapter);
+        ownedBooksSwipeRefreshLayout.setOnRefreshListener(this);
+        ownedBooksSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                ownedBooksSwipeRefreshLayout.setRefreshing(true);
+                getBooks();
+                ownedBooksSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
 
         //interactivity helpers (touch for edit, swipe for delete)
         swipeController = new SwipeController(booksRecyclerViewAdapter);
@@ -99,9 +113,24 @@ public class MyBooksFragment extends Fragment {
 //        itemTouchhelper.attachToRecyclerView(booksRecyclerView);
 
 
-        //If we got any data from file, add it to the
-        //(now finished with setup) recyclerViewAdapter
+        return view;
+
+    }
+
+    /**
+     * adds a book in the lstBook by creating an object of MyBooksModelClass
+     * @param savedInstanceState
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+
+    private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
+        booksRecyclerViewAdapter.setDataSet(new BookInformationPairing());
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
@@ -128,18 +157,13 @@ public class MyBooksFragment extends Fragment {
 
             }
         });
-
-        return view;
-
     }
 
-    /**
-     * adds a book in the lstBook by creating an object of MyBooksModelClass
-     * @param savedInstanceState
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+    @Override
+    public void onRefresh(){
+        ownedBooksSwipeRefreshLayout.setRefreshing(true);
+        getBooks();
+        ownedBooksSwipeRefreshLayout.setRefreshing(false);
     }
 }
