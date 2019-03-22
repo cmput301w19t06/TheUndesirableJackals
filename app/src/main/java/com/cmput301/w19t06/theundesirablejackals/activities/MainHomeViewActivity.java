@@ -266,8 +266,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     final Uri imageUri = data.getData();
 //                    InputStream inputStream;
 
-                    Book b = new Book(title, author, isbn);
-                    final Book book = new Book(b);
+                    final Book book = new Book(title, author, isbn);
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
