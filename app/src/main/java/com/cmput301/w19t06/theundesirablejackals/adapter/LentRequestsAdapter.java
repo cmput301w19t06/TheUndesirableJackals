@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
-import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 
@@ -82,11 +80,11 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
     public void onBindViewHolder(LentRequestsAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemTitle);
+        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequesteditemTitle);
         TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemAuthor);
-        TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemUsername);
+        TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequesteditemUsername);
         TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemStatusChange);
-        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewLentitemBook);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequesteditemBook);
 
         Book b = dataSet.getBook(position);
         BookInformation i = dataSet.getInformation(position);

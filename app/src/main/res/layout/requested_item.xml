@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewLentitemAuthor"
+        android:id="@+id/textViewRequesteditemAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewRequesteditemBook" />
 
     <TextView
-        android:id="@+id/textViewLentitemStatusChange"
+        android:id="@+id/textViewRequesteditemStatusChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -90,7 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
-        android:text="Requested by:"
+        android:text="Owner:"
+        android:textAlignment="textEnd"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewRequesteditemBook" />
