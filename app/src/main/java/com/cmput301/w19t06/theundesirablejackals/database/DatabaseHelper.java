@@ -1041,7 +1041,7 @@ public class DatabaseHelper{
      * @param bookRequest  The book request that is being made by Borrower to Owner
      * @param booleanCallback A callback so the request status is known, and completion can be tracked
      */
-    public void makeBorrowRequest(BookRequest bookRequest, final BooleanCallback booleanCallback){
+    public void makeBorrowRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
         bookRequest.setBookRequestLendKey(requestsReference
                                                 .child("lendRequest")
                                                 .child(bookRequest.getBookRequested().getOwner())
@@ -1055,7 +1055,11 @@ public class DatabaseHelper{
         updateLendRequest(bookRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
-                booleanCallback.onCallback(bool);
+                if(bool) {
+                    booleanCallback.onCallback(true);
+                }else{
+                    booleanCallback.onCallback(false);
+                }
             }
         });
 
@@ -1088,7 +1092,16 @@ public class DatabaseHelper{
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        booleanCallback.onCallback(true);
+                                        updateBookInformation(bookRequest.getBookRequested(), new BooleanCallback() {
+                                            @Override
+                                            public void onCallback(boolean bool) {
+                                                if(bool){
+                                                    booleanCallback.onCallback(true);
+                                                }else{
+                                                    booleanCallback.onCallback(false);
+                                                }
+                                            }
+                                        });
                                     }else{
                                         booleanCallback.onCallback(false);
                                     }
