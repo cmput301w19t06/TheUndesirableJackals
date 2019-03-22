@@ -18,12 +18,24 @@
         app:layout_constraintTop_toTopOf="parent">
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewLendRequests"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activityLendRequestSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_barLend" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_barLend">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewLendRequests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </android.support.constraint.ConstraintLayout>

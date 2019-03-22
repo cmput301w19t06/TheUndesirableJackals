@@ -53,7 +53,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         ItemTouchHelper itemTouchhelper;
         SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
-        final RecyclerView libraryRecyclerView;
+        RecyclerView libraryRecyclerView;
 
 
 
