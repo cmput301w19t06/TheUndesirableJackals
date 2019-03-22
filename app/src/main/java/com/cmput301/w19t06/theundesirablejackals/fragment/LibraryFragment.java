@@ -28,7 +28,6 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
