@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_person_outline_grey_24dp"
             android:title="Profile" />
         <item
-            android:id="@+id/itemMenuNotifications"
-            android:icon="@drawable/ic_notifications_grey_24dp"
-            android:title="Notifications" />
-        <item
             android:id="@+id/itemMenuMessages"
             android:icon="@drawable/ic_chat_gray_24dp"
             android:title="Messages" />

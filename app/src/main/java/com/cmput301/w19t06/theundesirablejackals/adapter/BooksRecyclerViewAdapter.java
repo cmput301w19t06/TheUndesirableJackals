@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
-import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
@@ -81,11 +83,11 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     public void onBindViewHolder(BooksRecyclerViewAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_status);
-        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_book_title);
-        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_author);
-        TextView isbnTextView = (TextView) holder.mainTextView.findViewById(R.id.myBooks_isbn);
-        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.myBooks_img_book);
+        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewMyBooksItemStatus);
+        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewMyBooksItemTitle);
+        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewMyBooksItemAuthor);
+        TextView isbnTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewMyBooksItemIsbn);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewMyBooksItemPhoto);
 
         Book b = dataSet.getBook(position);
         BookInformation i = dataSet.getInformation(position);
@@ -166,6 +168,16 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public BookInformationPairing getDataSet(){
         return dataSet;
+    }
+
+    // performs filter operation for the recyclerview
+    public  void setFilter(List<String> listItem){
+
+        List<String> titles = new ArrayList<>();
+        titles.addAll(listItem);
+        notifyDataSetChanged();
+
+
     }
 
 }

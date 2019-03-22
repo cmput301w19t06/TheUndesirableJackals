@@ -20,13 +20,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -47,8 +47,10 @@ import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainHomeViewActivity extends AppCompatActivity {
+public class MainHomeViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     public static final String TAG = "MainHomeViewActivity";
 
     public static final int ADD_BOOK = 50;
@@ -105,9 +107,6 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
-                    case R.id.itemMenuNotifications:
-                        intent = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
-                        break;
                     case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         break;
@@ -162,6 +161,9 @@ public class MainHomeViewActivity extends AppCompatActivity {
         mDrawerEmail = findViewById(R.id.textViewMenuEmail);
 
         getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -209,7 +211,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
      * @param message to indicate which item is se
      */
     public void displayMessage(String message){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -264,8 +266,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
                     final Uri imageUri = data.getData();
 //                    InputStream inputStream;
 
-                    Book b = new Book(title, author, isbn);
-                    final Book book = new Book(b);
+                    final Book book = new Book(title, author, isbn);
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
@@ -394,5 +395,19 @@ public class MainHomeViewActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        String userInput = s.toLowerCase();
+        List<String> listItem = new ArrayList<>();
+
+
+
+        return false;
+    }
 }

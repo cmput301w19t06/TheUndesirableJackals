@@ -10,5 +10,6 @@ public enum BookStatus {
     AVAILABLE,  // book is available for all users to be borrowed
     REQUESTED,  // book is requested by a user
     ACCEPTED,   // book request has been accepted by the owner
-    BORROWED    // book was handed off to the borrower
+    BORROWED,    // book was handed off to the borrower
+    UNKNOWN     //Book status is unknown, perhaps there is no owner
 }
