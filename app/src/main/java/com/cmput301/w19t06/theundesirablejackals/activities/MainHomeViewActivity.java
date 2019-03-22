@@ -203,7 +203,7 @@ public class MainHomeViewActivity extends AppCompatActivity {
      * @param message to indicate which item is se
      */
     public void displayMessage(String message){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
     /**

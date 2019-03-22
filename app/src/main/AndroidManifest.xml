@@ -35,7 +35,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ShowBookOwners" android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".EditOwnedBookActivity"
+            android:label="@string/title_activity_edit_owned_book"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ShowBookOwnersActivity"
+            android:theme="@style/AppTheme" />
 
         <service
             android:name="com.cmput301.w19t06.theundesirablejackals.BookBookMessagingService"

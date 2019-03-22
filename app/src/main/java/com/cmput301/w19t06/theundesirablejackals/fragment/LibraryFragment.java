@@ -15,28 +15,22 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
-import com.cmput301.w19t06.theundesirablejackals.activities.ShowBookOwners;
+import com.cmput301.w19t06.theundesirablejackals.activities.ShowBookOwnersActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
-import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 /*
  * Created by Mohamed on 21/02/2019
@@ -88,7 +82,7 @@ public class LibraryFragment extends Fragment {
 
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
-                                Intent intent = new Intent(getActivity(), ShowBookOwners.class);
+                                Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
                                 startActivity(intent);
 
                             } else if (bookInformationList.size() == 0) {
@@ -141,7 +135,7 @@ public class LibraryFragment extends Fragment {
 //                                            Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
 //                                            if(bool){
 //                                                Toast.makeText(getActivity(), "Request sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
-//                                                Intent intent = new Intent(getActivity(), ShowBookOwners.class);
+//                                                Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
 ////                                                intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
 ////                                                intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
 //                                                startActivity(intent);
