@@ -73,7 +73,7 @@ public class LentListActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public void setRequestsRecyclerViewAdapter(RequestsRecyclerViewAdapter adapter){
+    public void setLentRequestsAdapter(RequestsRecyclerViewAdapter adapter){
         this.requestsRecyclerViewAdapter = adapter;
     }
 }
