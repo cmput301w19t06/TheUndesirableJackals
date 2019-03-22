@@ -381,10 +381,10 @@ public class DatabaseHelper{
                             }
                         }bookInformationListCallback.onCallback(bookInformationList);
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        bookInformationListCallback.onCallback(null);
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
@@ -608,22 +608,34 @@ public class DatabaseHelper{
     /**
      * This requires the owned book in order to remove the book from the database
      * @param bookInformation  the book which needs to be removed
-     * @param onCallback  The callback which is used to tell the status of the database update
+     * @param booleanCallback  The callback which is used to tell the status of the database update
      */
-    public void deleteOwnedBook(BookInformation bookInformation, final BooleanCallback onCallback){
-        usersReference
-                .child(currentUser.getUid())
-                .child("ownedBooks")
-                .child("books")
-                .child(bookInformation.getIsbn())
+    public void deleteOwnedBook(final BookInformation bookInformation, final BooleanCallback booleanCallback){
+        descriptionReference
+                .child(bookInformation.getBookInformationKey())
                 .removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
+                        if(task.isSuccessful()){
+                            usersReference
+                                    .child(currentUser.getUid())
+                                    .child("ownedBooks")
+                                    .child("books")
+                                    .child(bookInformation.getIsbn())
+                                    .removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                booleanCallback.onCallback(true);
+                                            }else{
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });

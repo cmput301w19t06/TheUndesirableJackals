@@ -4,6 +4,7 @@
 
 package com.cmput301.w19t06.theundesirablejackals.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,25 +16,22 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.activities.ShowBookOwnersActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
-import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 /*
  * Created by Mohamed on 21/02/2019
@@ -76,39 +74,50 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         //into the recyclerView directly.
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
-            public void onClick(View view, final int position) {
-                Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+            public void onClick(View view, int position) {
+                final Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
                 final DatabaseHelper databaseHelper = new DatabaseHelper();
                 databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
                     @Override
                     public void onCallback(BookInformationList bookInformationList) {
-                        if(bookInformationList != null){
-                            final BookInformation bookInformation = bookInformationList.get(0);
-                            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
-                                @Override
-                                public void onCallback(UserInformation userInformation) {
-                                    BookRequest bookRequest = new BookRequest(userInformation, bookInformation);
-                                    databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
-                                        @Override
-                                        public void onCallback(boolean bool) {
-                                            Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
-                                            if(bool){
-                                                Toast.makeText(getActivity(), "Request sent to " + bookInformation.getOwner(), Toast.LENGTH_LONG).show();
-                                            }else{
-                                                Toast.makeText(getActivity(), "Request not sent", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
+                        if (bookInformationList != null) {
 
+                            if (bookInformationList.size() > 1) {
+                                // List all owners of the book
+                                Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
+                                startActivity(intent);
+
+                            } else if (bookInformationList.size() == 0) {
+                                // book was added by someone in the past but is now deleted
+                                // and no other copies exist in our database
+                                ToastMessage.show(getActivity(),
+                                        "This book is not owned by any users.");
+
+                            } else {
+
+                                // If there is only one owner of the book display his/her book
+
+                                Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
+                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
+                                                clickedBook);
+                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
+                                                bookInformationList.get(0));
+                                startActivity(intent);
+                            }
+
+
+                        } else {
+                            // book was added by someone in the past but is now deleted
+                            // and no other copies exist in our database
+                            ToastMessage.show(getActivity(),
+                                    "Database error");
                         }
                     }
                 });
-                //Do something with the book, maybe view it in detail?
-                Toast.makeText(getActivity(), "Library book clicked at " + ((Integer) position).toString(), Toast.LENGTH_LONG).show();
             }
         };
+
+
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
@@ -155,6 +164,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void getBooks(){
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
+        libraryRecyclerViewAdapter.setDataSet(new BookInformationPairing());
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override

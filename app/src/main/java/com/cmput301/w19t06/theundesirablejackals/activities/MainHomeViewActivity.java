@@ -107,9 +107,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
-                    case R.id.itemMenuNotifications:
-                        intent = new Intent(MainHomeViewActivity.this, NotificationActivity.class);
-                        break;
                     case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         break;
@@ -214,7 +211,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
      * @param message to indicate which item is se
      */
     public void displayMessage(String message){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -269,8 +266,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     final Uri imageUri = data.getData();
 //                    InputStream inputStream;
 
-                    Book b = new Book(title, author, isbn);
-                    final Book book = new Book(b);
+                    final Book book = new Book(title, author, isbn);
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override

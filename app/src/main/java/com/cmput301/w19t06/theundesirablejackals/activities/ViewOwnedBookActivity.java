@@ -1,9 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +24,8 @@ import com.cmput301.w19t06.theundesirablejackals.database.BookPhotoUrlCallBack;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * Allows the user to view an owned book and do certain action that only book owners can do.
@@ -81,7 +86,6 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
                 finish();
             }
         });
@@ -107,7 +111,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 item.setIcon(R.drawable.ic_is_favorite);
                 break;
             case R.id.itemMenuOwnedBookEdit:
-                ToastMessage.show(this, "Editing..");
+                editBook();
                 break;
             case R.id.itemMenuOwnedBookViewRequests:
                 ToastMessage.show(this, "Viewing Requests...");
@@ -121,35 +125,75 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     }
 
     private void deleteBook() {
-        databaseHelper.deleteOwnedBook(mBookInformation, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                Intent intent = new Intent(getApplicationContext(), MainHomeViewActivity.class);
-                startActivity(intent);
-                finish();
-                ToastMessage.show(getApplicationContext(), "Book deleted");
-            }
-        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewOwnedBookActivity.this);
+        builder.setMessage("Deleting this book will send it to oblivion, never to be found again. " +
+                            "Do You wish to continue?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        databaseHelper.deleteOwnedBook(mBookInformation, new BooleanCallback() {
+                            @Override
+                            public void onCallback(boolean bool) {
+                                Intent intent = new Intent(getApplicationContext(), MainHomeViewActivity.class);
+                                startActivity(intent);
+                                finish();
+                                ToastMessage.show(getApplicationContext(), "Book deleted");
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.setTitle("Warning!");
+        alert.show();
+
     }
 
+
+    private void editBook() {
+        Intent intent = new Intent(ViewOwnedBookActivity.this, EditOwnedBookActivity.class);
+        intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_OBJECT, mOwnedBook);
+        intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_INFO, mBookInformation);
+        startActivity(intent);
+
+    }
     private void setBookPhotoView() {
 
-        try {
-            databaseHelper.getBookPictureUri(mBookInformation, new BookPhotoUrlCallBack() {
-                @Override
-                public void onCallback(Uri imageUri) {
-                    Picasso.get()
-                            .load(imageUri)
-                            .placeholder(R.drawable.ic_hourglass_empty_grey_24dp)
-                            .error(R.drawable.ic_book)
-                            .rotate(90)
-                            .into(mBookPhotoView);
+        if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
+            if(!image.exists()) {
+                mBookPhotoView.setImageResource(R.drawable.ic_loading_with_text);
+                try {
+                    databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
+                        @Override
+                        public void onCallback(boolean bool) {
+                            if(bool){
+                                if(image.exists()){
+                                    Uri photoData = Uri.fromFile(image);
+                                    mBookPhotoView.setImageURI(photoData);
+                                    Log.d("ViewBookActiv", "image now exists... COOL");
+                                }else{
+                                    ToastMessage.show(getApplicationContext(),"Something went quite wrong...");
+                                }
+                            }else{
+                                ToastMessage.show(getApplicationContext(), "Photo not downloaded");
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(ERROR_TAG_LOAD_IMAGE, e.getMessage());
                 }
-            });
-        } catch (Exception e) {
-            Log.e(ERROR_TAG_LOAD_IMAGE,e.getMessage());
+            }else{
+                Uri photoData = Uri.fromFile(image);
+                mBookPhotoView.setImageURI(photoData);
+                Log.d("ViewBookActiv", "image already exists... COOL");
+            }
         }
     }
-
-
 }
