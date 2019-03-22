@@ -1,10 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -109,7 +111,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 item.setIcon(R.drawable.ic_is_favorite);
                 break;
             case R.id.itemMenuOwnedBookEdit:
-                ToastMessage.show(this, "Editing..");
+                editBook();
                 break;
             case R.id.itemMenuOwnedBookViewRequests:
                 ToastMessage.show(this, "Viewing Requests...");
@@ -123,22 +125,50 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     }
 
     private void deleteBook() {
-        databaseHelper.deleteOwnedBook(mBookInformation, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                Intent intent = new Intent(getApplicationContext(), MainHomeViewActivity.class);
-                startActivity(intent);
-                finish();
-                ToastMessage.show(getApplicationContext(), "Book deleted");
-            }
-        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewOwnedBookActivity.this);
+        builder.setMessage("Deleting this book will send it to oblivion, never to be found again. " +
+                            "Do You wish to continue?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        databaseHelper.deleteOwnedBook(mBookInformation, new BooleanCallback() {
+                            @Override
+                            public void onCallback(boolean bool) {
+                                Intent intent = new Intent(getApplicationContext(), MainHomeViewActivity.class);
+                                startActivity(intent);
+                                finish();
+                                ToastMessage.show(getApplicationContext(), "Book deleted");
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.setTitle("Warning!");
+        alert.show();
+
     }
 
+
+    private void editBook() {
+        Intent intent = new Intent(ViewOwnedBookActivity.this, EditOwnedBookActivity.class);
+        intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_OBJECT, mOwnedBook);
+        intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_INFO, mBookInformation);
+        startActivity(intent);
+
+    }
     private void setBookPhotoView() {
+
         if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
             if(!image.exists()) {
+                mBookPhotoView.setImageResource(R.drawable.ic_loading_with_text);
                 try {
                     databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
                         @Override

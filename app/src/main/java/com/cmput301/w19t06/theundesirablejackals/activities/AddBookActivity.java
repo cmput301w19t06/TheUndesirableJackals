@@ -218,7 +218,6 @@ public class AddBookActivity extends AppCompatActivity {
         } else {
             showMyToast("Missing fields required!");
         }
-
     }
 
     /**
