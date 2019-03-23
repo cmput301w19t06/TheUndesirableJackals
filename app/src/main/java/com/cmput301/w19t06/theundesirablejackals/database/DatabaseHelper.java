@@ -416,7 +416,7 @@ public class DatabaseHelper{
      *                        written back to the database
      * @param booleanCallback A boolean callback which says whether the write was successful
      */
-    public void updateBookInformation(@NonNull final BookInformation bookInformation, final BooleanCallback booleanCallback){
+    public void updateBookInformation(@NonNull BookInformation bookInformation, final BooleanCallback booleanCallback){
         String tempRef;
         if(bookInformation.getBookInformationKey() == null) {
             tempRef = descriptionReference.push().getKey();
