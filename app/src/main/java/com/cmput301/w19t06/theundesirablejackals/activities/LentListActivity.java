@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.AcceptRejectLendActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
@@ -119,7 +120,11 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
-        ToastMessage.show(this, "You clicked" + ((Integer)position).toString());
+
+        Intent intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
+        //put in the intent!!
+        startActivity(intent);
+        //ToastMessage.show(this, "You clicked" + ((Integer)position).toString());
     }
 
     @Override

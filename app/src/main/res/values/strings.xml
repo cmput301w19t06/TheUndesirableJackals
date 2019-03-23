@@ -131,4 +131,7 @@
     <string name="title_activity_view_owned_book">ViewOwnedBookActivity</string>
     <string name="title_activity_view_borrowed_book_activty">ViewBorrowedBookActivty</string>
     <string name="title_activity_edit_owned_book">EditOwnedBook</string>
+    <string name="requested_book_image_content_description">Requested Book Image</string>
+    <string name="view_other_users_profile_picture">View Other Users Profile Picture</string>
+
 </resources>

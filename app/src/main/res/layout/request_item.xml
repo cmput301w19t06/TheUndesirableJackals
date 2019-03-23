@@ -15,7 +15,8 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/book_icon" />
+        tools:srcCompat="@drawable/book_icon"
+        android:contentDescription="@string/requested_book_image_content_description" />
 
     <TextView
         android:id="@+id/textViewRequestItemTitle"

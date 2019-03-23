@@ -30,7 +30,8 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewOthersProfileActivityContactInfo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextUserName"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="@string/view_other_users_profile_picture" />
 
     <TextView
         android:id="@+id/textViewOthersProfileActivityRating"
