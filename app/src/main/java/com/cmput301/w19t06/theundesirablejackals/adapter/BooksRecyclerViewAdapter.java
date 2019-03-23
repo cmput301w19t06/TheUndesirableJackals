@@ -171,10 +171,10 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     // performs filter operation for the recyclerview
-    public  void setFilter(List<String> listItem){
+    public  void setFilter(BookInformationPairing listItem){
 
-        List<String> titles = new ArrayList<>();
-        titles.addAll(listItem);
+        dataSet = new BookInformationPairing();
+        dataSet.addAll(listItem);
         notifyDataSetChanged();
 
 

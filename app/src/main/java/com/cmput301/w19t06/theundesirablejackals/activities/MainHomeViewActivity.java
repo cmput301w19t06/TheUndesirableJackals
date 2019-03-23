@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
@@ -404,10 +405,21 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     public boolean onQueryTextChange(String s) {
 
         String userInput = s.toLowerCase();
-        List<String> listItem = new ArrayList<>();
+        BookInformationPairing listItem = new BookInformationPairing();
+
+        for (int i = 0; i < listItem.size();i++){
+
+            Book b = listItem.getBook(i);
+            if (b.getTitle().toLowerCase().contains(userInput)){
+
+                listItem.addSingle(b);
+            }
 
 
+        }
+        libraryBooksAdapter.setDataSet(listItem);
 
-        return false;
+
+        return true;
     }
 }
