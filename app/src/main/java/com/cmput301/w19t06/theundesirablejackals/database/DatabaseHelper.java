@@ -39,9 +39,10 @@ import java.util.Map;
 
 
 /**
- * Database Helper is a class meant to abstract away the details of the database
- * Instead the app will use callbacks provided in the database package in order to
- * collect data once it is available, or to check the status of a database call
+ * Database Helper is a class meant to abstract away the details of the database.
+ * Instead of making all calls within the activity or class the app will use
+ * callbacks provided in the database package in order to collect data once it is
+ * available, or to check the status of a database call
  */
 @SuppressWarnings("unused")
 public class DatabaseHelper{
