@@ -84,4 +84,6 @@ public class BookRequestList {
 
     public int size(){return bookRequests.size();}
 
+    public BookRequest get(Integer integer){return bookRequests.get(integer);}
+
 }

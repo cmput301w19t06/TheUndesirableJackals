@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageViewLentitemBook"
+        android:id="@+id/imageViewRequestItemBook"
         android:layout_width="77dp"
         android:layout_height="73dp"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         tools:srcCompat="@drawable/book_icon" />
 
     <TextView
-        android:id="@+id/textViewLentitemTitle"
+        android:id="@+id/textViewRequestItemTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -28,11 +28,11 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLentitemBook"
+        app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewLentitemAuthor"
+        android:id="@+id/textViewRequestItemAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -41,11 +41,11 @@
         android:text="Author"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLentitemBook"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLentitemTitle" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemTitle" />
 
     <TextView
-        android:id="@+id/textViewLentitemUsername"
+        android:id="@+id/textViewRequestItemUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,11 +54,11 @@
         android:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLentitemBook" />
+        app:layout_constraintStart_toEndOf="@+id/textViewRequestItemOwnerStatic"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <TextView
-        android:id="@+id/textViewLentitemStatusChange"
+        android:id="@+id/textViewRequestItemStatusChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,12 +68,12 @@
         android:text="Actual Status here please"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewLentitemStatusStatic"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLentitemUsername"
+        app:layout_constraintStart_toEndOf="@+id/textViewRequestItemStatusStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/textViewLentitemStatusStatic"
+        android:id="@+id/textViewRequestItemStatusStatic"
         android:layout_width="92dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -82,10 +82,10 @@
         android:textAlignment="textEnd"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLentitemUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textViewRequestItemOwnerStatic"
         android:layout_width="92dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -93,7 +93,7 @@
         android:text="Requested by:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLentitemBook" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <View
         android:id="@+id/divider"

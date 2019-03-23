@@ -72,7 +72,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                                                                      int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_books_item, parent, false);
+                .inflate(R.layout.books_item, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;

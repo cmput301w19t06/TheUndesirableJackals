@@ -8,17 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
-import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 
-public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapter.MyViewHolder> {
+public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRecyclerViewAdapter.MyViewHolder> {
 
-    private BookInformationPairing dataSet;
+    private BookRequestList dataSet;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -51,15 +54,15 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 //        dataSet = new BookToInformationMap();
 //    }
 
-    public LentRequestsAdapter(){
-        dataSet = new BookInformationPairing();
+    public RequestsRecyclerViewAdapter(){
+        dataSet = new BookRequestList();
     }
 
     public void setMyListener(RecyclerViewClickListener listener){
         myListener = listener;
     }
 
-    public void setDataSet(BookInformationPairing data){
+    public void setDataSet(BookRequestList data){
         dataSet = data;
         updateItems();
     }
@@ -67,11 +70,11 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 
     // Create new views (invoked by the layout manager)
     @Override
-    public LentRequestsAdapter.MyViewHolder onCreateViewHolder(final ViewGroup parent,
-                                                                    int viewType) {
+    public RequestsRecyclerViewAdapter.MyViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                                       int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.lent_item, parent, false);
+                .inflate(R.layout.request_item, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
@@ -79,44 +82,48 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(LentRequestsAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(RequestsRecyclerViewAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemTitle);
-        TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemAuthor);
-        TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemUsername);
-        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewLentitemStatusChange);
-        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewLentitemBook);
+        final TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemTitle);
+        final TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemAuthor);
+        TextView requesterTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemUsername);
+        TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemStatusChange);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequestItemBook);
 
-        Book b = dataSet.getBook(position);
-        BookInformation i = dataSet.getInformation(position);
-        BookStatus status = i.getStatus();
-        String title = b.getTitle();
-        String author = b.getAuthor();
-        //String username = b.getUsername();
+        BookRequest bookRequest = dataSet.get(position);
+        BookInformation i = bookRequest.getBookRequested();
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getBookFromDatabase(i.getIsbn(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                if(book != null){
+                    titleTextView.setText(book.getTitle());
+                    authorTextView.setText(book.getAuthor());
+                }
+            }
+        });
+        BookRequestStatus status = bookRequest.getCurrentStatus();
+
+        String requester = bookRequest.getBorrower().getUserName();
 
         if(status != null) {
             statusTextView.setText(status.toString());
         }
-        if(title != null) {
-            titleTextView.setText(title);
+
+
+        if(requester != null) {
+            requesterTextView.setText(requester);
         }
-        if(author != null) {
-            authorTextView.setText(author);
-        }
-        /*
-        if(username != null) {
-            usernameTextView.setText(username);
-        }
-        */
+
         switch (status) {
-            case BORROWED:
+            case PENDING:
                 bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
                 break;
             case ACCEPTED:
                 bookThumbnail.setImageResource(R.drawable.ic_status_available);
                 break;
-            case REQUESTED:
+            case CANCELLED:
                 bookThumbnail.setImageResource(R.drawable.ic_status_requested);
                 break;
             default:
@@ -136,15 +143,7 @@ public class LentRequestsAdapter extends RecyclerView.Adapter<LentRequestsAdapte
         this.notifyDataSetChanged();
     }
 
-    public Book getBook(int position){
-        return dataSet.getBook(position);
-    }
-
-    public BookInformation getInformation(int position){
-        return dataSet.getInformation(position);
-    }
-
-    public BookInformationPairing getDataSet(){
+    public BookRequestList getDataSet(){
         return dataSet;
     }
 
