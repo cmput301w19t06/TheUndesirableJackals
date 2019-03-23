@@ -48,13 +48,12 @@
         android:id="@+id/textViewRequestItemUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="104dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewRequestItemOwnerStatic"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <TextView
@@ -74,7 +73,7 @@
 
     <TextView
         android:id="@+id/textViewRequestItemStatusStatic"
-        android:layout_width="92dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
@@ -83,17 +82,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername" />
-
-    <TextView
-        android:id="@+id/textViewRequestItemOwnerStatic"
-        android:layout_width="92dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:text="Requested by:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewRequestItemBook" />
 
     <View
         android:id="@+id/divider"
