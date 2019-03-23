@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
