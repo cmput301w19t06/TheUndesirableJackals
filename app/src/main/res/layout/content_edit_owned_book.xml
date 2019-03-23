@@ -12,77 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/editTextEditOwnedBookTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="Book Title"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookTitle" />
-
         <TextView
             android:id="@+id/textViewEditOwnedBookTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="8dp"
             android:text="Title"
+            android:textAlignment="center"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEditOwnedBookISBN" />
-
-        <EditText
-            android:id="@+id/editTextEditOwnedBookAuthor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="John Smith"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedAuthor" />
-
-
-        <TextView
-            android:id="@+id/textViewEditOwnedBookCategories"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:text="Categories"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEditOwnedBookAuthor" />
-
-        <EditText
-            android:id="@+id/editTextEditOwnedBookCategories"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="Fiction, Thriller"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookCategories" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -93,23 +36,27 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="ISBN"
+            android:textAlignment="center"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonEditOwnedBookChoosePhoto" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedAuthor" />
 
         <TextView
             android:id="@+id/textViewEditOwnedAuthor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Author"
+            android:textAlignment="center"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEditOwnedBookTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookTitle" />
 
 
         <TextView
@@ -123,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEditOwnedBookCategories" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonEditOwnedBookChoosePhoto" />
 
         <EditText
             android:id="@+id/editTextEditOwnedBookDescription"
@@ -141,32 +88,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookDescription" />
 
-        <EditText
-            android:id="@+id/editTextEditOwnedBookISBN"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="1408834960"
-            android:inputType="textCapSentences|textMultiLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookISBN" />
-
         <ImageView
             android:id="@+id/imageViewEditOwnedBookPhoto"
             android:layout_width="406dp"
             android:layout_height="294dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.509"
+            app:layout_constraintHorizontal_bias="0.545"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookISBN"
             app:srcCompat="@drawable/ic_image_grey_24dp" />
 
         <Button
@@ -174,14 +106,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:onClick="OnClick_buttonEditOwnedBookChoosePhoto"
             android:text="Choose book photo"
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewEditOwnedBookPhoto" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditOwnedBookDeletePhoto" />
 
         <Button
             android:id="@+id/buttonEditOwnedBookActivityDone"
@@ -199,6 +131,20 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextEditOwnedBookDescription" />
+
+        <TextView
+            android:id="@+id/textViewEditOwnedBookDeletePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Delete Book Photo"
+            android:onClick="OnClick_textViewEditOwnedBookDeletePhoto"
+            android:textColor="@color/fui_bgEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewEditOwnedBookPhoto" />
 
 
     </android.support.constraint.ConstraintLayout>

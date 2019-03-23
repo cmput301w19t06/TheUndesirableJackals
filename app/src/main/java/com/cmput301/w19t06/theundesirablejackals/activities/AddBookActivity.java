@@ -396,7 +396,6 @@ public class AddBookActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {

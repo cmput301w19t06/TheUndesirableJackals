@@ -36,6 +36,8 @@ import java.io.File;
 public class ViewOwnedBookActivity extends AppCompatActivity {
     private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
 
+    public final static int EDIT_BOOK = 51;
+
     public final static String OWNED_BOOK_FROM_RECYCLER_VIEW = "OwnedBookFromRecyclerView";
     public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
 
@@ -160,8 +162,9 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_OBJECT, mOwnedBook);
         intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_INFO, mBookInformation);
         startActivity(intent);
-
     }
+
+
     private void setBookPhotoView() {
 
         if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {

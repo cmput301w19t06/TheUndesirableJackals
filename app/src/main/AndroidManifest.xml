@@ -38,7 +38,11 @@
         <activity
             android:name=".EditOwnedBookActivity"
             android:label="@string/title_activity_edit_owned_book"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity" />
+        </activity>
         <activity
             android:name=".ShowBookOwnersActivity"
             android:theme="@style/AppTheme" />
