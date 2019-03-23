@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
@@ -61,8 +60,8 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
     public void accept(View view){
     //TODO
         //Return True, If True delete all other requests regarding this book, update Book status
-        Intent intentMap = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
-        startActivity(intentMap);
+        //Intent intentMap = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
+        //startActivity(intentMap);
         Intent intent = new Intent();
         intent.putExtra("resultAD",true);
         setResult(Activity.RESULT_OK,intent);

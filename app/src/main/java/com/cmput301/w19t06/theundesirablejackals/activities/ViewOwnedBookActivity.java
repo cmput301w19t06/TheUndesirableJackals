@@ -20,10 +20,8 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
-import com.cmput301.w19t06.theundesirablejackals.database.BookPhotoUrlCallBack;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 

@@ -35,13 +35,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.cmput301.w19t06.theundesirablejackals.Activities.MapHandoff"></activity>
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.MapHandoff"/>
         <activity
-            android:name=".EditOwnedBookActivity"
+            android:name="com.cmput301.w19t06.theundesirablejackals.activities.EditOwnedBookActivity"
             android:label="@string/title_activity_edit_owned_book"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ShowBookOwnersActivity"
+            android:name="com.cmput301.w19t06.theundesirablejackals.activities.ShowBookOwnersActivity"
             android:theme="@style/AppTheme" />
 
         <service
@@ -55,32 +55,32 @@
         </service>
 
         <activity
-            android:name=".ViewBorrowedBookActivity"
+            android:name="com.cmput301.w19t06.theundesirablejackals.activities.ViewBorrowedBookActivity"
             android:label="@string/title_activity_view_borrowed_book_activty"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ViewOwnedBookActivity"
+            android:name="com.cmput301.w19t06.theundesirablejackals.activities.ViewOwnedBookActivity"
             android:label="@string/title_activity_view_owned_book"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewLibraryBookActivity" />
-        <activity android:name=".AcceptRejectLendActivity" />
-        <activity android:name=".StartActivity">
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.AcceptRejectLendActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".MainHomeViewActivity" />
-        <activity android:name=".AddBookActivity" />
-        <activity android:name=".PersonalProfileActivity" />
-        <activity android:name=".EditContactInfoActivity" />
-        <activity android:name=".FriendsListActivity" />
-        <activity android:name=".BorrowedListActivity" />
-        <activity android:name=".LentListActivity" />
-        <activity android:name=".NotificationActivity" />
-        <activity android:name=".OthersProfileActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.SignInActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.AddBookActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.PersonalProfileActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.EditContactInfoActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.FriendsListActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.NotificationActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.OthersProfileActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
@@ -108,9 +108,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".BookSearchActivity" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.BookSearchActivity" />
     </application>
 
 </manifest>

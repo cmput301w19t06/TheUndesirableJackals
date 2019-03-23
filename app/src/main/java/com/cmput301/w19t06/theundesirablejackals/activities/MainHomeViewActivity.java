@@ -9,9 +9,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -26,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -39,14 +36,12 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
