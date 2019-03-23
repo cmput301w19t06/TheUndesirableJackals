@@ -1,11 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
@@ -58,9 +60,12 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
      */
     public void accept(View view){
     //TODO
-        Intent intent = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
-        startActivity(intent);
-        //Return True, If True delete all other requests regarding this book
+        //Return True, If True delete all other requests regarding this book, update Book status
+        Intent intentMap = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
+        startActivity(intentMap);
+        Intent intent = new Intent();
+        intent.putExtra("resultAD",true);
+        setResult(Activity.RESULT_OK,intent);
         finish();
     }
 
@@ -71,6 +76,9 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
     public void reject(View view){
         //TODO
         //Return False, If False delete only this request
+        Intent intent = new Intent();
+        intent.putExtra("resultAD",false);
+        setResult(Activity.RESULT_OK,intent);
         finish();
     }
 }
