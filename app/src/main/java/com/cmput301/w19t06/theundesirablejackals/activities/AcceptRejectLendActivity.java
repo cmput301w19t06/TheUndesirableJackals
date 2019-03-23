@@ -35,11 +35,10 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
         Intent intent = getIntent();
         //pull the intent
 
-
-
         TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
         TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
+        //Set the values
         //username.setText();
         //title.setText();
 
@@ -59,7 +58,9 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
      */
     public void accept(View view){
     //TODO
-
+        Intent intent = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
+        startActivity(intent);
+        //Return True, If True delete all other requests regarding this book
         finish();
     }
 
@@ -69,7 +70,7 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
      */
     public void reject(View view){
         //TODO
-        //delete request
+        //Return False, If False delete only this request
         finish();
     }
 }
