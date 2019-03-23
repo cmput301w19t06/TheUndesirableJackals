@@ -37,10 +37,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Database Helper is a class meant to abstract away the details of the database
+ * Instead the app will use callbacks provided in the database package in order to
+ * collect data once it is available, or to check the status of a database call
+ */
+@SuppressWarnings("unused")
 public class DatabaseHelper{
-    // database path to users
+    //The tag used for this function when working with 'Log'
     private final static String TAG = "DatabaseHelper";
 
+    //The pats used for categorising data in the database and in firebase storage
     private final static String PATH_USERS = "users";
     private final static String PATH_BOOKS = "books";
     private final static String PATH_REGISTERED = "registered";
@@ -50,6 +58,7 @@ public class DatabaseHelper{
 
 
 
+    //The database references used by the database helper functions
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersReference;
     private DatabaseReference booksReference;
@@ -57,8 +66,11 @@ public class DatabaseHelper{
     private DatabaseReference requestsReference;
     private DatabaseReference descriptionReference;
     private DatabaseReference messagesReference;
+
+    //The current authenticated user
     private FirebaseUser currentUser;
 
+    //Storage locations in our firebase database
     private StorageReference bookPicturesReference;
     private StorageReference userPicturesReference;
 
@@ -70,8 +82,8 @@ public class DatabaseHelper{
 
 
     /**
-     * Constructor for database helper, Requires that the user is already
-     * authenticated to firebase in the calling activity
+     * Constructor for database helper, sets up all
+     * the database references that could be needed
      */
     public DatabaseHelper() {
         this.firebaseAuth = FirebaseAuth.getInstance();
@@ -341,7 +353,7 @@ public class DatabaseHelper{
      * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
-    public void saveCurrentUser(User user, final BooleanCallback booleanCallback){
+    private void saveCurrentUser(User user, final BooleanCallback booleanCallback){
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put(currentUser.getUid(), user);
         usersReference
@@ -363,6 +375,14 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~~BOOK DESCRIPTION HANDLERS~~~~~~~~~~~~~~~~~~~~//
 
+
+    /**
+     * goes into the database and searches for all instances of book information
+     * which are related to the book that was passed in (by isbn)
+     * @param book The book for which the user specific information objects are requested
+     * @param bookInformationListCallback  Callback used to pass the complete data set back
+     *                                     to the calling function
+     */
     public void getAllBookInformations(Book book, final BookInformationListCallback bookInformationListCallback){
         descriptionReference
                 .orderByChild("isbn")
@@ -390,14 +410,22 @@ public class DatabaseHelper{
     }
 
 
-
-    public void updateBookInformation(final BookInformation bookInformation, final BooleanCallback booleanCallback){
+    /**
+     * go to the database and update this instance of book Information
+     * @param bookInformation the book information which has been updated and needs to be
+     *                        written back to the database
+     * @param booleanCallback A boolean callback which says whether the write was successful
+     */
+    public void updateBookInformation(@NonNull final BookInformation bookInformation, final BooleanCallback booleanCallback){
         String tempRef;
         if(bookInformation.getBookInformationKey() == null) {
             tempRef = descriptionReference.push().getKey();
             bookInformation.setBookInformationKey(tempRef);
         }else{
             tempRef = bookInformation.getBookInformationKey();
+        }
+        if(tempRef == null){
+            tempRef = "DERP";
         }
         descriptionReference
                 .child(tempRef)
@@ -412,6 +440,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Get one specific instance of BookInformation from the database using it's database key lookup
+     * @param bookInformationKey The database key for looking up ONE SPECIFIC book information object
+     * @param bookInformationCallback The callback which will pass back the book information object
+     */
     public void getBookInformation(String bookInformationKey, final BookInformationCallback bookInformationCallback){
         descriptionReference
                 .child(bookInformationKey)
@@ -437,6 +471,14 @@ public class DatabaseHelper{
     //~~~~~~~~~~~~~~~~~GENERIC BOOK HANDLERS~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
+    /**
+     * This function will go to the database and will grab a number of books less than or equal
+     * to @param quantity, the function will sort all the books available in the database and
+     * will start fetching the books that occur AFTER @param isbn
+     * @param isbn The isbn that needs to appear at the start of the list of books
+     * @param quantity The MAXIMUM number of books to fetch from the database
+     * @param bookListCallback The callback used to pass data back to the calling function/class
+     */
     public void getBooksAfterIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
         booksReference
                 .orderByKey()
@@ -463,6 +505,15 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * This function will go to the database and will grab a number of books less than or equal
+     * to @param quantity, the function will sort all the books available in the database and
+     * will fetch a quantity of books that occur BEFORE @param isbn
+     * @param isbn The isbn that needs to appear at the end of the list of books
+     * @param quantity The MAXIMUM number of books to fetch from the database
+     * @param bookListCallback The callback used to pass data back to the calling function/class
+     */
     public void getBooksBeforeIsbn(String isbn, Integer quantity, final BookListCallback bookListCallback){
         booksReference
                 .orderByKey()
@@ -513,6 +564,11 @@ public class DatabaseHelper{
     }
 
 
+    /**
+     * will save a book object to the database, overwriting old information if it exists already
+     * @param book the book that needs to be written to the database
+     * @param booleanCallback A callback used to tell the status of the book write
+     */
     public void addBookToDatabase(Book book, final BooleanCallback booleanCallback){
         booksReference
                 .child(book.getIsbn())
@@ -535,7 +591,7 @@ public class DatabaseHelper{
     /**
      * This function will update all the books that the user owns
      * @param bookToInformationMap  the full BookToInformationMap of owned books
-     * @param booleanCallback
+     * @param booleanCallback A callback used to tell the status of the database write
      */
     public void updateOwnedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback booleanCallback){
         HashMap<String, Object> update = new HashMap<>();
@@ -560,7 +616,7 @@ public class DatabaseHelper{
     /**
      * This function will update all the user's borrowed books
      * @param bookToInformationMap  the full BookToInformationMap of borrowed books
-     * @param onCallback
+     * @param onCallback A callback used to tell the status of the database write
      */
     public void updateBorrowedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
         HashMap<String, Object> update = new HashMap<>();
@@ -584,7 +640,7 @@ public class DatabaseHelper{
     /**
      * This function will update all the user's favourite books
      * @param bookToInformationMap  the full BookToInformationMap of favourite books
-     * @param onCallback
+     * @param onCallback A callback used to tell the status of the database write
      */
     public void updateFavouriteBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
         HashMap<String, Object> update = new HashMap<>();
@@ -851,11 +907,13 @@ public class DatabaseHelper{
                 });
     }
 
+
     /**
      * Get the Uri of a picture from the database related to BookInformation
      * @param bookInformation the book that picture relates to
      * @param bookPhotoUrlCallBack a callback so that the uri is passed upon completion
      */
+    @Deprecated
     public void getBookPictureUri(BookInformation bookInformation, final BookPhotoUrlCallBack bookPhotoUrlCallBack) {
         bookPicturesReference
                 .child(bookInformation.getIsbn())
@@ -864,11 +922,12 @@ public class DatabaseHelper{
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Uri imageUri = uri;
-                bookPhotoUrlCallBack.onCallback(imageUri);
+                bookPhotoUrlCallBack.onCallback(uri);
             }
         });
     }
+
+
     /**
      * The database helper for downloading a profile picture
      * @param file the pre-allocated file for storing the user's profile picture.
@@ -923,6 +982,12 @@ public class DatabaseHelper{
 
     //~~~~~~~~~~~~~~~~~MISC FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+
+    /**
+     * Used to save the runnign device's specific token to the database for sending notifications
+     * to the user
+     * @param token The user-device combination specific token for notification sending
+     */
     public void sendRegistrationToServer(final String token) {
         if (isUserLoggedin()) {
             getCurrentUserInfoFromDatabase(new UserInformationCallback() {
@@ -1073,6 +1138,7 @@ public class DatabaseHelper{
      * @param bookRequest The book request that is being updated by Owner for Borrower
      * @param booleanCallback  A callback so the request status is known, and completion can be tracked
      */
+    @SuppressWarnings("WeakerAccess")
     public void updateLendRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
         requestsReference
                 .child("lendRequest")
@@ -1120,18 +1186,19 @@ public class DatabaseHelper{
 
 
     /**
-     *
-     * @param messaging
-     * @param booleanCallback
+     * Creates a message in the database between two users.
+     * It will be written two times, one for each user (sender and receiver)
+     * @param message the message which needs to be written to the database
+     * @param booleanCallback A callback used to tell the status of the database write
      */
-    public void sendMessageNotification(Messaging messaging, final BooleanCallback booleanCallback){
-        messaging.setSenderKey(messagesReference.child(messaging.getFrom()).push().getKey());
-        messaging.setReceiverKey(messagesReference.child(messaging.getTo()).push().getKey());
-        final Messaging tempMessage = new Messaging(messaging);
+    public void sendMessage(Messaging message, final BooleanCallback booleanCallback){
+        message.setSenderKey(messagesReference.child(message.getFrom()).push().getKey());
+        message.setReceiverKey(messagesReference.child(message.getTo()).push().getKey());
+        final Messaging tempMessage = new Messaging(message);
         messagesReference
-                .child(messaging.getFrom())
-                .child(messaging.getSenderKey())
-                .setValue(messaging)
+                .child(message.getFrom())
+                .child(message.getSenderKey())
+                .setValue(message)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -1157,7 +1224,15 @@ public class DatabaseHelper{
                 });
     }
 
-    public void getMessages(String username, final MessageListcallback messageListcallback){
+
+    /**
+     * Gets a non-discriminatory list of messages which were sent by or received by @param username
+     * This means that EVERY message will be retrieved in chronological order.  It is up to the
+     * calling function to parse through the messages and decide which conversation they belong to.
+     * @param username The user who's messages we need to retrieve
+     * @param messageListCallback the list of messages this user has sent and received
+     */
+    public void getMessages(String username, final MessageListCallback messageListCallback){
         messagesReference
                 .child(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1171,7 +1246,7 @@ public class DatabaseHelper{
                                 }
                             }
                         }
-                        messageListcallback.onCallback(messagingArrayList);
+                        messageListCallback.onCallback(messagingArrayList);
                     }
 
                     @Override
