@@ -99,5 +99,7 @@ public class BookInformation implements Serializable {
 
     public void setBookPhoto(String bookPhoto){this.bookPhoto = bookPhoto;}
 
-    private void setOwner(String owner){this.owner = owner;}
+    public void setOwner(String owner){this.owner = owner;}
+
+    public void setBookPhotoByUri(Uri uri){this.bookPhoto = uri.getLastPathSegment();}
 }

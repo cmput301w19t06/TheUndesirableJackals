@@ -31,10 +31,14 @@ import java.io.File;
  * Allows the user to view an owned book and do certain action that only book owners can do.
  * These  actions include editing information about the book, viewing a list of request on the book,
  * Delete the book from owned book list.
+ *
  * @author Art Limbaga
  */
 public class ViewOwnedBookActivity extends AppCompatActivity {
     private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
+    private final static String ACTIVITY_TAG = "ViewOwnedBookACtivity";
+
+    public final static int EDIT_BOOK = 51;
 
     public final static String OWNED_BOOK_FROM_RECYCLER_VIEW = "OwnedBookFromRecyclerView";
     public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
@@ -127,7 +131,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     private void deleteBook() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewOwnedBookActivity.this);
         builder.setMessage("Deleting this book will send it to oblivion, never to be found again. " +
-                            "Do You wish to continue?")
+                "Do You wish to continue?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -159,29 +163,30 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         Intent intent = new Intent(ViewOwnedBookActivity.this, EditOwnedBookActivity.class);
         intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_OBJECT, mOwnedBook);
         intent.putExtra(EditOwnedBookActivity.EDIT_BOOK_INFO, mBookInformation);
-        startActivity(intent);
-
+        startActivityForResult(intent, EDIT_BOOK);
     }
+
+
     private void setBookPhotoView() {
 
         if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
-            if(!image.exists()) {
+            if (!image.exists()) {
                 mBookPhotoView.setImageResource(R.drawable.ic_loading_with_text);
                 try {
                     databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
-                            if(bool){
-                                if(image.exists()){
+                            if (bool) {
+                                if (image.exists()) {
                                     Uri photoData = Uri.fromFile(image);
                                     mBookPhotoView.setImageURI(photoData);
                                     Log.d("ViewBookActiv", "image now exists... COOL");
-                                }else{
-                                    ToastMessage.show(getApplicationContext(),"Something went quite wrong...");
+                                } else {
+                                    ToastMessage.show(getApplicationContext(), "Something went quite wrong...");
                                 }
-                            }else{
+                            } else {
                                 ToastMessage.show(getApplicationContext(), "Photo not downloaded");
                             }
                         }
@@ -189,11 +194,28 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e(ERROR_TAG_LOAD_IMAGE, e.getMessage());
                 }
-            }else{
+            } else {
                 Uri photoData = Uri.fromFile(image);
                 mBookPhotoView.setImageURI(photoData);
                 Log.d("ViewBookActiv", "image already exists... COOL");
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDIT_BOOK) {
+            if (resultCode == RESULT_OK) {
+                mDescription.setText(data.getStringExtra("description"));
+                Uri imageURI = data.getData();
+                if (imageURI != null) {
+                    mBookPhotoView.setImageURI(imageURI);
+                } else {
+                    mBookPhotoView.setImageResource(R.drawable.ic_book);
+                }
+            }
+        } else {
+            Log.d(ACTIVITY_TAG, "Unrecognized request code");
         }
     }
 }

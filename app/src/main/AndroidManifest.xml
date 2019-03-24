@@ -43,7 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShowBookOwnersActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.ShowBookOwners" />
 
         <service
             android:name="com.cmput301.w19t06.theundesirablejackals.BookBookMessagingService"
