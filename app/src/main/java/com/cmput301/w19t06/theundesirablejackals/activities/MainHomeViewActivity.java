@@ -406,18 +406,50 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
         String userInput = s.toLowerCase();
         BookInformationPairing listItem = new BookInformationPairing();
+        Log.d(TAG,"Well, I'm at the beginning of the for loop");
+        //TODO figure out what fragmetnt we are seeing
+        //Switch case or if between them to get the correct adapter
+        BookInformationPairing toSearchThrough = libraryBooksAdapter.getDataSet();
+//        if(getSupportFragmentManager().getFragments().get(0) !=null && getSupportFragmentManager().getFragments().get(0).isVisible()){
+//            toSearchThrough = ownedBooksAdapter.getDataSet();
+//
+//        } else if(getSupportFragmentManager().getFragments().get(2) !=null && getSupportFragmentManager().getFragments().get(2).isVisible()){
+//            toSearchThrough = borrowedBooksAdapter.getDataSet();
+//        } else{
+//
+//            toSearchThrough = libraryBooksAdapter.getDataSet();
+//        }
 
-        for (int i = 0; i < listItem.size();i++){
+        for (int i = 0; i < toSearchThrough.size();i++){
 
-            Book b = listItem.getBook(i);
-            if (b.getTitle().toLowerCase().contains(userInput)){
-
-                listItem.addSingle(b);
+            String isbn = toSearchThrough.getBook(i).getIsbn();
+            String author = toSearchThrough.getBook(i).getAuthor();
+            String title = toSearchThrough.getBook(i).getTitle();
+            Log.d(TAG,"what is going on");
+//            if (isbn.toLowerCase().contains(userInput)) {
+//            }
+//            if (author.toLowerCase().contains(userInput)) {
+//            }
+            if (title.toLowerCase().contains(userInput)){
+                Log.d(TAG,"I've got here");
+                Log.d(TAG, title.toLowerCase());
+                Log.d(TAG,"I've reached here");
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
-
-
         }
         libraryBooksAdapter.setDataSet(listItem);
+
+//        if(getSupportFragmentManager().getFragments().get(0) !=null && getSupportFragmentManager().getFragments().get(0).isVisible()){
+//
+//            ownedBooksAdapter.setDataSet(listItem);
+//
+//        } else if(getSupportFragmentManager().getFragments().get(2) !=null && getSupportFragmentManager().getFragments().get(2).isVisible()){
+//
+//            borrowedBooksAdapter.setDataSet(listItem);
+//        } else{
+//
+//            libraryBooksAdapter.setDataSet(listItem);
+//        }
 
 
         return true;
