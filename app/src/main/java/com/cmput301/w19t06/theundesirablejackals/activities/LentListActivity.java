@@ -116,9 +116,11 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     public void setLentRequestsAdapter(RequestsRecyclerViewAdapter adapter){
         this.requestsRecyclerViewAdapter = adapter;
     }
+    */
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
