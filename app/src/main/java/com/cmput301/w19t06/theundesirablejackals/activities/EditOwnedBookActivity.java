@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -80,7 +81,7 @@ public class EditOwnedBookActivity extends AppCompatActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_action_back);
         mToolbar.setTitle("Editing owned book");
         setSupportActionBar(mToolbar);
-
+        databaseHelper = new DatabaseHelper();
         Intent intent = getIntent();
         mBookToBeEdited = (Book) intent.getSerializableExtra(EDIT_BOOK_OBJECT);
         mBookInformation = (BookInformation) intent.getSerializableExtra(EDIT_BOOK_INFO);
@@ -230,7 +231,7 @@ public class EditOwnedBookActivity extends AppCompatActivity {
     }
 
     private void dispatchImageGalleryIntent() {
-        Intent photoIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String pictureDirectoryPath = pictureDirectory.getPath();
         Uri data = Uri.parse(pictureDirectoryPath);
@@ -241,16 +242,23 @@ public class EditOwnedBookActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
-        if (requestCode == AddBookActivity.IMAGE_GALLERY_REQUEST) {
-            if (resultCode == RESULT_OK) {
+        Log.d(ACTIVITY_TAG, ((Integer)requestCode).toString());
+        Log.d(ACTIVITY_TAG, ((Integer)resultCode).toString());
+        Log.d(ACTIVITY_TAG, (data).getDataString());
+
+        if (requestCode == IMAGE_GALLERY_REQUEST) {
+            Log.d(ACTIVITY_TAG, "We are inside the first IF");
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d(ACTIVITY_TAG, "We are inside the second IF");
+                Toast.makeText(this, "Image Added", Toast.LENGTH_LONG).show();
                 mImageUri = data.getData();
+                mBookInformation.setBookPhotoByUri(mImageUri);
                 InputStream inputStream;
 
                 try {
                     inputStream = getContentResolver().openInputStream(mImageUri);
                     Bitmap image = BitmapFactory.decodeStream(inputStream);
-                    mImageViewEditBookPhoto.setImageURI(mImageUri);
+                    mImageViewEditBookPhoto.setImageBitmap(image);
                     mFieldsEdited = true;
 
                 } catch (FileNotFoundException e) {

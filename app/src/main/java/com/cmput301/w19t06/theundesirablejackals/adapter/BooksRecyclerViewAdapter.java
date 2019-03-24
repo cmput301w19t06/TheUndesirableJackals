@@ -96,6 +96,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         String author = b.getAuthor();
         String isbn = b.getIsbn();
 
+
         if(status != null) {
             statusTextView.setText(status.toString());
         }
