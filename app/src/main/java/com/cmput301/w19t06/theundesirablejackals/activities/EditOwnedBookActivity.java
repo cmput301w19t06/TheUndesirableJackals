@@ -62,7 +62,7 @@ public class EditOwnedBookActivity extends AppCompatActivity {
     private TextView mTextViewISBN;
     private TextView mTextViewBookTitle;
     private TextView mTextViewAuthor;
-    private EditText mEdiTextEditCategories;
+    private EditText mTextViewCategories;
     private EditText mEdiTextDescription;
 
     private Button mButtonEditOwnedBookDone;
@@ -209,6 +209,8 @@ public class EditOwnedBookActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            mBookInformation.setBookPhoto(null);
         }
 
         databaseHelper.updateBookInformation(mBookInformation, new BooleanCallback() {
@@ -216,6 +218,7 @@ public class EditOwnedBookActivity extends AppCompatActivity {
             public void onCallback(boolean bool) {
                 if (bool) {
                     //todo
+
                     Log.d(ACTIVITY_TAG, "Book information update success");
                 } else {
                     //todo
@@ -225,9 +228,10 @@ public class EditOwnedBookActivity extends AppCompatActivity {
         });
 
         Intent intent = new Intent(EditOwnedBookActivity.this, ViewOwnedBookActivity.class);
-        intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, mBookToBeEdited);
-        intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, mBookInformation);
-        startActivity(intent);
+        intent.putExtra("description", mEdiTextDescription.getText().toString());
+        intent.setData(mImageUri);
+        setResult(ViewOwnedBookActivity.RESULT_OK, intent);
+        finish();
     }
 
     private void dispatchImageGalleryIntent() {
@@ -272,38 +276,15 @@ public class EditOwnedBookActivity extends AppCompatActivity {
     }
 
     private void setBookPhotoView() {
-
-        if (mBookInformation.getBookPhoto() != null && !mBookInformation.getBookPhoto().isEmpty()) {
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
-            if (!image.exists()) {
-                mImageViewEditBookPhoto.setImageResource(R.drawable.ic_loading_with_text);
-                try {
-                    databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
-                        @Override
-                        public void onCallback(boolean bool) {
-                            if (bool) {
-                                if (image.exists()) {
-                                    Uri photoData = Uri.fromFile(image);
-                                    mImageViewEditBookPhoto.setImageURI(photoData);
-                                    Log.d("ViewBookActiv", "image now exists... COOL");
-                                } else {
-                                    ToastMessage.show(getApplicationContext(), "Something went quite wrong...");
-                                }
-                            } else {
-                                ToastMessage.show(getApplicationContext(), "Photo not downloaded");
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    Log.e(ERROR_TAG_LOAD_IMAGE, e.getMessage());
-                }
-            } else {
-                Uri photoData = Uri.fromFile(image);
-                mImageViewEditBookPhoto.setImageURI(photoData);
-                Log.d("ViewBookActiv", "image already exists... COOL");
-            }
+        if (mBookInformation.getBookPhoto() == null) {
+            mImageViewEditBookPhoto.setImageResource(R.drawable.ic_book);
+            return;
         }
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        final File image = new File(storageDir, mBookInformation.getBookPhoto() + ".jpg");
+        Uri photoData = Uri.fromFile(image);
+        mImageViewEditBookPhoto.setImageURI(photoData);
+        mImageUri = photoData;
     }
 
     private void warningChangesMade() {
