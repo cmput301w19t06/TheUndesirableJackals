@@ -103,7 +103,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
                 newLocation(point.latitude, point.longitude);
 
                 // add marker in new coord and move the camera
-                mMap.addMarker(new MarkerOptions().position(point).title("New pick up location")).showInfoWindow();;
+                mMap.addMarker(new MarkerOptions().position(point).title("New pick up location")).showInfoWindow();
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
             }
         });
