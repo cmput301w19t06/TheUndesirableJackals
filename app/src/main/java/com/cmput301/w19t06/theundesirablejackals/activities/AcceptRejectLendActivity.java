@@ -71,10 +71,10 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
         // ask the user to select a pick up location
         retrieveLocation();
 
-        Intent intent = new Intent();
-        intent.putExtra("resultAD",true);
-        setResult(Activity.RESULT_OK,intent);
-        finish();
+//        Intent intent = new Intent();
+//        intent.putExtra("resultAD",true);
+//        setResult(Activity.RESULT_OK,intent);
+//        finish();
     }
 
     /**
@@ -102,6 +102,12 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
                 longitude = Double.parseDouble(data.getStringExtra("lng"));
             }
         }
+
+        // continue here
+        Intent intent = new Intent();
+        intent.putExtra("resultAD",true);
+        setResult(Activity.RESULT_OK,intent);
+        finish();
     }
 
     /**
