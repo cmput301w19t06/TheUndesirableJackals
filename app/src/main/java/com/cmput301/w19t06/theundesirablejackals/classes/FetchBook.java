@@ -5,10 +5,12 @@ Code copied from https://github.com/google-developer-training/android-fundamenta
 
 Modifications:
     Added a new attribute "mPublisherText" as a TextView (line 53)
-    Added additional parameter for "FetchBook" constructor (line 59, 62)
+    Added a new attribute "mCategoryText" as a TextView
+    Added additional three parameters for "FetchBook" constructor (line 59, 62)
     Added String publisher (line 174)
     Set string to variable publisher (line 189)
     Set string to TextView "mPublisherText" (line 202)
+    Set string to TextView "mCategoryText"
 
  */
 
@@ -54,17 +56,21 @@ public class FetchBook extends AsyncTask<String,Void,String>{
     private EditText mTitleText;
     private EditText mAuthorText;
     private EditText mDescriptionText;
+    private EditText mCategoriesText;
 
     // Class name for Log tag
     private static final String LOG_TAG = FetchBook.class.getSimpleName();
 
     // Constructor providing a reference to the views in MainActivity
-    public FetchBook(EditText titleText, EditText authorText, EditText descriptionText, EditText bookInput) {
+    public FetchBook(EditText titleText, EditText authorText, EditText descriptionText, EditText bookInput,
+                     EditText categoriesInput) {
         this.mTitleText = titleText;
         this.mAuthorText = authorText;
         this.mDescriptionText = descriptionText;
         this.mBookInput = bookInput;
+        this.mCategoriesText = categoriesInput;
     }
+
     public FetchBook() {
 
     }
@@ -173,6 +179,7 @@ public class FetchBook extends AsyncTask<String,Void,String>{
             String title = null;
             String authors = null;
             String description = null;
+            String categories = null;
 
             // Look for results in the items array, exiting when both the title and author
             // are found or when all items have been checked.
@@ -187,6 +194,7 @@ public class FetchBook extends AsyncTask<String,Void,String>{
                     title = volumeInfo.getString("title");
                     authors = volumeInfo.getString("authors");
                     description = volumeInfo.getString("description");
+                    categories = volumeInfo.getString("categories");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -196,16 +204,24 @@ public class FetchBook extends AsyncTask<String,Void,String>{
             }
 
             // If both are found, display the result.
-            if (title != null && authors != null && description != null){
+            if (title != null && authors != null && description != null && categories != null){
                 mTitleText.setText(title);
 
-                // fixing string gotten from google API
+                // fixing author string gotten from google API
                 String author = authors.replace("[\"", "");
                 author = author.replace("\"]", "");
+                author = author.replace("\"", "");
 
                 mAuthorText.setText(author);
 
                 mDescriptionText.setText(description);
+
+                // fixing categories string gotten from google API
+                String cat = categories.replace("[\"", "");
+                cat = cat.replace("\"]", "");
+                cat = cat.replace("\"", "");
+
+                mCategoriesText.setText(cat);
 
                 //mBookInput.setText("");
             } else {
