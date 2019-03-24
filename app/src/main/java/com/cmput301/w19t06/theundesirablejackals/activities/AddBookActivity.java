@@ -185,12 +185,21 @@ public class AddBookActivity extends AppCompatActivity {
     public void OnClick_addBookDone(View view){
         EditText edit = findViewById(R.id.editTextAddBookBookTitle);
         String title = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookAuthor);
         String author = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookISBN);
         isbn = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookDescription);
         String description = edit.getText().toString();
+
+        edit = findViewById(R.id.editTextAddBookBookCategories);
+        String categories = edit.getText().toString();
+
+        edit = findViewById(R.id.editTextAddBookBookThumbnail);
+        String thumbnail = edit.getText().toString();
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
 
@@ -199,6 +208,8 @@ public class AddBookActivity extends AppCompatActivity {
             intent.putExtra("bookAuthor", author);
             intent.putExtra("bookIsbn", isbn);
             intent.putExtra("bookDescription", description);
+            intent.putExtra("categories", categories);
+            intent.putExtra("thumbnail", thumbnail);
             intent.setData(imageUri);
             setResult(MainHomeViewActivity.RESULT_OK, intent);
             finish();
