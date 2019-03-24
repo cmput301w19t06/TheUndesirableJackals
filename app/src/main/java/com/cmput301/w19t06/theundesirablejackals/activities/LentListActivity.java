@@ -1,5 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,11 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.AcceptRejectLendActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
@@ -26,6 +29,8 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * Author: Kaya Thiessen
  */
 public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+    public static final int DELETE_OR_ACCEPT = 420;
+    public static final int LENT_OR_ACCEPTED = 430;
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -119,7 +124,16 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
-        ToastMessage.show(this, "You clicked" + ((Integer)position).toString());
+
+        //if status = Pending
+        Intent intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
+        //put in the intent!!
+        startActivityForResult(intent, DELETE_OR_ACCEPT);
+
+        //if status = Accepted or Lent
+        //Open up previously set map
+        //option to scan ISBN
+        //on return update book status
     }
 
     @Override
@@ -154,4 +168,37 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
             });
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case DELETE_OR_ACCEPT:
+                if (resultCode == Activity.RESULT_OK){
+                    String result = data.getStringExtra("resultAD");
+                    if (result == "true"){
+                        //for all elements in Recycler view. If book title = same title, delete
+                        ToastMessage.show(getApplicationContext(), "Request Accepted");
+                    }
+                    else if (result == "false"){
+                        //databaseHelper.deleteRequest()
+                                ToastMessage.show(getApplicationContext(), "Request Deleted");
+                        //    }
+                       // });
+
+                    }
+                }
+            case LENT_OR_ACCEPTED:
+                if (resultCode == Activity.RESULT_OK){
+                    String result2 = data.getStringExtra("lentAccept");
+                    if (result2 == "lent"){
+                        //delete request, update status of book to available
+                    }
+                    else if (result2 == "accepted"){
+                        //update status to lent
+                    }
+                }
+        }
+    }
+
+
 }

@@ -96,20 +96,21 @@ public class BookSearchActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        // If the network is active and the search field is not empty, start a FetchBook AsyncTask.
-        if (networkInfo != null && networkInfo.isConnected() && queryString.length()!=0) {
-            new FetchBook(mTitleText, mAuthorText, mDescriptionText, mBookInput).execute(queryString);
-
-        }
-        // Otherwise update the TextView to tell the user there is no connection or no search term.
-        else {
-            if (queryString.length() == 0) {
-                mAuthorText.setText("");
-                mTitleText.setText("");
-            } else {
-                mAuthorText.setText("");
-                mTitleText.setText("");
-            }
-        }
+        // TODO: add aditional parameter
+//        // If the network is active and the search field is not empty, start a FetchBook AsyncTask.
+//        if (networkInfo != null && networkInfo.isConnected() && queryString.length()!=0) {
+//            new FetchBook(mTitleText, mAuthorText, mDescriptionText, mBookInput).execute(queryString);
+//
+//        }
+//        // Otherwise update the TextView to tell the user there is no connection or no search term.
+//        else {
+//            if (queryString.length() == 0) {
+//                mAuthorText.setText("");
+//                mTitleText.setText("");
+//            } else {
+//                mAuthorText.setText("");
+//                mTitleText.setText("");
+//            }
+//        }
     }
 }

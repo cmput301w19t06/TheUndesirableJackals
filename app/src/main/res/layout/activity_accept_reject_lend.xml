@@ -6,19 +6,33 @@
     android:layout_height="match_parent"
     tools:context="AcceptRejectLendActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_barAcceptReject"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </android.support.v7.widget.Toolbar>
+
     <TextView
         android:id="@+id/textViewAcceptRejectActivityBookTitleStatic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Book Title:"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_barAcceptReject" />
 
     <TextView
         android:id="@+id/textViewAcceptRejectActivityBookTitle"

@@ -1,9 +1,16 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
  * Allows use to accept of reject lend requests
@@ -11,6 +18,11 @@ import android.widget.TextView;
  * @see LentListActivity
  */
 public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity {
+    private Toolbar toolbar;
+    private DatabaseHelper databaseHelper;
+
+    private Double latitude;
+    private Double longitude;
 
     /**
      * General creation
@@ -21,17 +33,30 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_reject_lend);
 
+        toolbar = findViewById(R.id.tool_barAcceptReject);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Lend Requests");
+        setSupportActionBar(toolbar);
+
+        databaseHelper = new DatabaseHelper();
+
         Intent intent = getIntent();
-        int postition = intent.getIntExtra("position",0);
+        //pull the intent
 
-        //TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
-        //TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
+        TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
+        TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
-        //TODO
-        //Get the username and book title from notification and set them
-
+        //Set the values
         //username.setText();
-        //title.setText()
+        //title.setText();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity.class));
+                finish();
+            }
+        });
 
     }
 
@@ -41,7 +66,47 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
      */
     public void accept(View view){
     //TODO
-        //update status of book, and open map layout
+        //Return True, If True delete all other requests regarding this book, update Book status
+
+        // ask the user to select a pick up location
+        retrieveLocation();
+
+//        Intent intent = new Intent();
+//        intent.putExtra("resultAD",true);
+//        setResult(Activity.RESULT_OK,intent);
+//        finish();
+    }
+
+    /**
+     * Calls "PersonalProfileActivity" to allow the user to select a location on the map
+     */
+    public void retrieveLocation() {
+        Intent i = new Intent(this, SelectLocationActivity.class);
+        startActivityForResult(i, 1);
+    }
+
+    /**
+     * Triggers after the activity for result of "PersonalProfileActivity" is completed
+     * Will save the returned result on "longitude" and "latitude" attributes
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                // the coordinates to do whatever you need to do with them
+                latitude = Double.parseDouble(data.getStringExtra("lat"));
+                longitude = Double.parseDouble(data.getStringExtra("lng"));
+            }
+        }
+
+        // continue here
+        Intent intent = new Intent();
+        intent.putExtra("resultAD",true);
+        setResult(Activity.RESULT_OK,intent);
         finish();
     }
 
@@ -51,7 +116,10 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
      */
     public void reject(View view){
         //TODO
-        //delete request
+        //Return False, If False delete only this request
+        Intent intent = new Intent();
+        intent.putExtra("resultAD",false);
+        setResult(Activity.RESULT_OK,intent);
         finish();
     }
 }

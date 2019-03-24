@@ -120,6 +120,7 @@ public class AddBookActivity extends AppCompatActivity {
         EditText authorParam = findViewById(R.id.editTextAddBookBookAuthor);
         EditText descriptionParam = findViewById(R.id.editTextAddBookBookDescription);
         EditText isbnParam  = findViewById(R.id.editTextAddBookBookISBN);
+        EditText categoriesParam = findViewById(R.id.editTextAddBookBookCategories);
 
         // retrieve the ISBN input by the user
         if(barcodesFound.size() > 0) {
@@ -136,7 +137,8 @@ public class AddBookActivity extends AppCompatActivity {
 
             // begin search if there is connection and isbn is not empty
             if (networkInfo != null && networkInfo.isConnected() && isbn.length() != 0) {
-                new FetchBook(titleParam, authorParam, descriptionParam, isbnParam).execute(isbn);
+                new FetchBook(titleParam, authorParam, descriptionParam, isbnParam, categoriesParam)
+                        .execute(isbn);
             }
             // ad empty strings if something fails
             else {
