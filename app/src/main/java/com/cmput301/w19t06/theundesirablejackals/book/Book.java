@@ -22,9 +22,7 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String isbn;
-    private ArrayList<BookGenres> genres;
-
-
+    private String category;
 
 
     public Book(){ }
@@ -42,14 +40,30 @@ public class Book implements Serializable {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.genres = new ArrayList<>();
+    }
+
+    /**
+     * Default constructor which creates a new book object
+     * @param title of the book
+     * @param author of the book
+     * @param isbn of the book
+     * @param category category that the book belongs to
+     */
+    public Book(String title, String author, String isbn, String category) {
+        // status is set to "available" as default
+        // images is set to null as default
+        // TODO: Images will need to be set to a default image in the future
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.category = category;
     }
 
     public Book(Book book){
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.isbn = book.getIsbn();
-        this.genres = book.getGenres();
+        this.category = book.getCategory();
     }
 
 
@@ -110,26 +124,17 @@ public class Book implements Serializable {
 
     /**
      *
-     * @return ArrayList of all the book genres of the book
+     * @return String of all the categories that the boo belongs to
      */
-    public ArrayList<BookGenres> getGenres() {
-        return genres;
+    public String getCategory() {
+        return category;
     }
 
     /**
      *
-     * @param genres an ArrayList of genres that the book belongs to
+     * @param category the category this book belongs to
      */
-    public void setGenres(ArrayList<BookGenres> genres) {
-        this.genres = genres;
+    public void setCategory(String category) {
+        this.category = category;
     }
-
-    /**
-     * Adds a new genre to the list of book genre that the book object belongs to
-     * @param genre the genre to be added
-     */
-    public void addGenre(BookGenres genre) {
-        genres.add(genre);
-    }
-
 }

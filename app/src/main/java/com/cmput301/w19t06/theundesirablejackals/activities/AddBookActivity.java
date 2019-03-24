@@ -187,6 +187,8 @@ public class AddBookActivity extends AppCompatActivity {
         String author = edit.getText().toString();
         edit = findViewById(R.id.editTextAddBookBookISBN);
         isbn = edit.getText().toString();
+        edit = findViewById(R.id.editTextAddBookBookCategories);
+        String category = edit.getText().toString();
         edit = findViewById(R.id.editTextAddBookBookDescription);
         String description = edit.getText().toString();
 
@@ -196,6 +198,7 @@ public class AddBookActivity extends AppCompatActivity {
             intent.putExtra("bookTitle", title);
             intent.putExtra("bookAuthor", author);
             intent.putExtra("bookIsbn", isbn);
+            intent.putExtra("category", category);
             intent.putExtra("bookDescription", description);
             intent.setData(imageUri);
             setResult(MainHomeViewActivity.RESULT_OK, intent);

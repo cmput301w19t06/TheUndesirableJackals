@@ -77,14 +77,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
             android:autoSizeTextType="uniform"
             android:gravity="center_vertical|left|start"
             android:text="@string/large_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLibraryBookBorrowBook"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewViewLibraryBookCategory" />
 
         <ImageView
             android:id="@+id/imageViewViewLibraryBookPhoto"
@@ -111,6 +111,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewViewLibraryBookBookStatus" />
+
+        <TextView
+            android:id="@+id/textViewViewLibraryBookCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical|left|start"
+            android:text="Category: Fiction, Adventure"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLibraryBookBorrowBook" />
+
+
 
     </android.support.constraint.ConstraintLayout>
 
