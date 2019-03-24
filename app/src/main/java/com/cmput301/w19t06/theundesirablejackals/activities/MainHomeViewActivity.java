@@ -426,10 +426,14 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             String author = toSearchThrough.getBook(i).getAuthor();
             String title = toSearchThrough.getBook(i).getTitle();
             Log.d(TAG,"what is going on");
-//            if (isbn.toLowerCase().contains(userInput)) {
-//            }
-//            if (author.toLowerCase().contains(userInput)) {
-//            }
+            if (isbn.toLowerCase().contains(userInput)) {
+
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+
+            }
+            if (author.toLowerCase().contains(userInput)) {
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+            }
             if (title.toLowerCase().contains(userInput)){
                 Log.d(TAG,"I've got here");
                 Log.d(TAG, title.toLowerCase());
