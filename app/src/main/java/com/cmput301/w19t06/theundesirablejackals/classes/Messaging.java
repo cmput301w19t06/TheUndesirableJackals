@@ -1,5 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.classes;
 
+import android.support.annotation.NonNull;
+
+/**
+ * Message class used by our app to keep track of the messages between users
+ */
+@SuppressWarnings("unused")
 public class Messaging{
     private String from;
     private String to;
@@ -7,9 +13,12 @@ public class Messaging{
     private String senderKey;
     private String message;
 
+    /**
+     * Default constructor, required for Firebase
+     */
     public Messaging(){}
 
-    public Messaging(Messaging messaging){
+    public Messaging(@NonNull Messaging messaging){
         this.from = messaging.getFrom();
         this.to = messaging.getTo();
         this.receiverKey = messaging.getReceiverKey();
@@ -17,14 +26,27 @@ public class Messaging{
         this.message = messaging.getMessage();
     }
 
+    /**
+     * Getter for the from field of this message
+     * @return A string containing the username of the sender
+     */
     public String getFrom() {
         return from;
     }
 
+
+    /**
+     * Getter for the message field of this message
+     * @return A string containing the message itself
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Getter for the Recieverkey (for use by DatabaseHerlper and Firebase)
+     * @return
+     */
     public String getReceiverKey() {
         return receiverKey;
     }

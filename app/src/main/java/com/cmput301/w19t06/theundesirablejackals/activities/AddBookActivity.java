@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,8 +17,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -31,7 +27,6 @@ import android.widget.Toast;
 import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -39,13 +34,12 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOption
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This Activity adds books to a persons library. This is the main access to the two fragments
@@ -54,47 +48,43 @@ import java.util.List;
 
 public class AddBookActivity extends AppCompatActivity {
     private FirebaseVisionBarcodeDetectorOptions options;
-    public static final int IMAGE_GALLERY_REQUEST = 300;
-    private static final int IMAGE_CAPTURE_REQUEST = 301;
-    private static final int BARCODE_PERMISSION_REQUEST = 302;
-    private static final int GALLERY_PERMISSION_REQUEST = 303;
-    private static final int PICK_IMAGE_REQUEST = 304;
+    public static final int IMAGE_GALLERY_REQUEST = 500;
+    private static final int IMAGE_CAPTURE_REQUEST = 501;
+    private static final int BARCODE_PERMISSION_REQUEST = 502;
+    private static final int GALLERY_PERMISSION_REQUEST = 503;
 
-    private String TAG = "AddBookActivity";
+    private static final String TAG = "AddBookActivity";
 
-//    private TabLayout tabLayout;
-//    private ViewPager viewPager;
-
-    private Toolbar mToolbar;
 
     private Uri imageUri;
-    private String title, author, isbn, description;
+    private String isbn;
     private String currentPhotoPath;
-    private ArrayList<String> barcodesFound = new ArrayList<String>();
+    private ArrayList<String> barcodesFound = new ArrayList<>();
 
     private ImageView chosenBookPhoto;
-    private EditText isbnEditText;
+
+
     /**
      * General Create
-     * @param savedInstanceState
+     * @param savedInstanceState The default onCreate method with it's data bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
-        mToolbar = findViewById(R.id.tool_bar);
+        Toolbar mToolbar = findViewById(R.id.tool_bar);
         mToolbar.setNavigationIcon(R.drawable.ic_action_back);
         mToolbar.setTitle("Add Book");
         setSupportActionBar(mToolbar);
 
         chosenBookPhoto = findViewById(R.id.imageViewViewOwnedBookPhoto);
-        isbnEditText = findViewById(R.id.editTextAddBookBookISBN);
+        EditText isbnEditText = findViewById(R.id.editTextAddBookBookISBN);
 
-
-        options =
-                new FirebaseVisionBarcodeDetectorOptions.Builder()
+        //Set up options for the barcode scanner to add book by ISBN barcode
+        options = new FirebaseVisionBarcodeDetectorOptions.Builder()
                         .setBarcodeFormats(
-                                FirebaseVisionBarcode.FORMAT_EAN_13)
+                                FirebaseVisionBarcode.FORMAT_EAN_13,
+                                FirebaseVisionBarcode.TYPE_ISBN)
                         .build();
 
         // check for any change in isbnEditText to trigger search for additional details
@@ -106,17 +96,8 @@ public class AddBookActivity extends AppCompatActivity {
                 }
             }
         });
-//        tabLayout = (TabLayout) findViewById(R.id.addbooktablayout_id);
-//        viewPager = (ViewPager) findViewById(R.id.addbook_viewpage_id);
-//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //Adding Fragments
-//        adapter.AddFragment(new AddBookCameraFragment(), "ISBN Scanner");
-//        adapter.AddFragment(new AddBookManualFragment(), "Edit");
-//
-//        //adapter setup
-//        viewPager.setAdapter(adapter);
-//        tabLayout.setupWithViewPager(viewPager);
 
+        //Set back button to stop this activity and go back to main home view
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,14 +112,14 @@ public class AddBookActivity extends AppCompatActivity {
      * Executed when search by ISBN button is pressed
      * if the ISBN field contains a valid input and there is network connection, it will
      * fill the title, author and description fields for the user
-     * @version 1 - March 15, 2019
+     * version 1 - March 15, 2019
      */
     public void searchISBN() {
         // give the fields where the info is going to be placed as parameters
-        EditText titleParam = (EditText)findViewById(R.id.editTextAddBookBookTitle);
-        EditText authorParam = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
-        EditText descriptionParam = (EditText)findViewById(R.id.editTextAddBookBookDescription);
-        EditText isbnParam  = (EditText)findViewById(R.id.editTextAddBookBookISBN);
+        EditText titleParam = findViewById(R.id.editTextAddBookBookTitle);
+        EditText authorParam = findViewById(R.id.editTextAddBookBookAuthor);
+        EditText descriptionParam = findViewById(R.id.editTextAddBookBookDescription);
+        EditText isbnParam  = findViewById(R.id.editTextAddBookBookISBN);
 
         // retrieve the ISBN input by the user
         if(barcodesFound.size() > 0) {
@@ -150,26 +131,30 @@ public class AddBookActivity extends AppCompatActivity {
         // check internet network
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if(connMgr != null) {
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        // begin search if there is connection and isbn is not empty
-        if (networkInfo != null && networkInfo.isConnected() && isbn.length()!=0) {
-            new FetchBook(titleParam, authorParam, descriptionParam, isbnParam).execute(isbn);
-        }
-        // ad empty strings if something fails
-        else {
-            if (isbn.length() == 0) {
-                isbnParam.setText("");
-            } else {
-                isbnParam.setText("no network");
+            // begin search if there is connection and isbn is not empty
+            if (networkInfo != null && networkInfo.isConnected() && isbn.length() != 0) {
+                new FetchBook(titleParam, authorParam, descriptionParam, isbnParam).execute(isbn);
             }
+            // ad empty strings if something fails
+            else {
+                if (isbn.length() == 0) {
+                    isbnParam.setText("");
+                } else {
+                    showMyToast("no network");
+                }
+            }
+        }else{
+            showMyToast("no network");
         }
 
     }
 
     /**
      * Allows access to ISBN reader
-     * @param view
+     * Either gets permission or prevents activation of camera if the permission is not granted
      */
     public void isbnReader(View view){
         if(ContextCompat.checkSelfPermission(this,
@@ -177,8 +162,7 @@ public class AddBookActivity extends AppCompatActivity {
                                     == PackageManager.PERMISSION_GRANTED
                                 && ContextCompat.checkSelfPermission(this,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    == PackageManager.PERMISSION_GRANTED
-                                    )
+                                    == PackageManager.PERMISSION_GRANTED)
         {
 
                 dispatchTakePictureIntent();
@@ -193,17 +177,16 @@ public class AddBookActivity extends AppCompatActivity {
 
     /**
      * Final add book button, sends data back to MainHomeViewActivity
-     * @param view
      */
     public void OnClick_addBookDone(View view){
-        EditText edit = (EditText)findViewById(R.id.editTextAddBookBookTitle);
-        title = edit.getText().toString();
-        edit = (EditText)findViewById(R.id.editTextAddBookBookAuthor);
-        author = edit.getText().toString();
-        edit = (EditText)findViewById(R.id.editTextAddBookBookISBN);
+        EditText edit = findViewById(R.id.editTextAddBookBookTitle);
+        String title = edit.getText().toString();
+        edit = findViewById(R.id.editTextAddBookBookAuthor);
+        String author = edit.getText().toString();
+        edit = findViewById(R.id.editTextAddBookBookISBN);
         isbn = edit.getText().toString();
-        edit = (EditText)findViewById(R.id.editTextAddBookBookDescription);
-        description = edit.getText().toString();
+        edit = findViewById(R.id.editTextAddBookBookDescription);
+        String description = edit.getText().toString();
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
 
@@ -222,8 +205,8 @@ public class AddBookActivity extends AppCompatActivity {
 
     /**
      * Used to create intent so info can be pushed back
-     * @param context
-     * @return intent
+     * @param context the context from which this activity is called
+     * @return intent  the intent returned by this function meant to start this activity
      */
     public static Intent makeIntent(Context context){
         return new Intent(context,AddBookActivity.class);
@@ -231,7 +214,6 @@ public class AddBookActivity extends AppCompatActivity {
 
     /**
      * Add photos by using add photo button
-     * @param view
      */
     public void onClick_ChooseBookPhoto(View view){
         if(ContextCompat.checkSelfPermission(this,
@@ -249,6 +231,10 @@ public class AddBookActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates and dispatches an intent to select an image from the gallery
+     * which will be returned by getExtra on activity result
+     */
     private void dispatchImageGalleryIntent(){
         Intent photoIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -262,9 +248,10 @@ public class AddBookActivity extends AppCompatActivity {
 
     /**
      * Fetches image using gallery address provided in addPhotobtn
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * Also gets the photo taken by the ISBN scanner camera Intent
+     * @param requestCode super : the code of the intent which made the request for result
+     * @param resultCode super : the finish code of the activity that finished
+     * @param data super : the data found on the finished intent
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -272,25 +259,14 @@ public class AddBookActivity extends AppCompatActivity {
         if (requestCode== AddBookActivity.IMAGE_GALLERY_REQUEST){
             if(resultCode == RESULT_OK) {
                 imageUri = data.getData();
-                InputStream inputStream;
+                chosenBookPhoto.setImageURI(imageUri);
 
-                try {
-                    inputStream = getContentResolver().openInputStream(imageUri);
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
-                    chosenBookPhoto.setImageURI(imageUri);
-
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    showMyToast("Unable to open image");
-                }
             }else{
                 showMyToast("Add picture was canceled");
             }
         }else if(requestCode == IMAGE_CAPTURE_REQUEST){
             if (resultCode == RESULT_OK) {
 
-//                galleryAddPic();
                 scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
 
 
@@ -301,8 +277,10 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * called after successful completion of camera capture intent in order to scan for barcodes
+     * in the photo
+     */
     private void scanBarcode(){
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
@@ -316,7 +294,7 @@ public class AddBookActivity extends AppCompatActivity {
 
 
 
-            Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
+            detector.detectInImage(image)
                     .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
                         @Override
                         public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
@@ -335,15 +313,22 @@ public class AddBookActivity extends AppCompatActivity {
                     });
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
 
+    /**
+     * Create a temporary file to store the picture being requests for the barcode scanner
+     * @return A File object used to store the picture taken for barcode scanning
+     * @throws IOException if the permissions are not correct or writing is prevented for some
+     * reason the function will throw an IO Exception
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         File image;
         if(currentPhotoPath == null) {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             image = File.createTempFile(
@@ -354,12 +339,14 @@ public class AddBookActivity extends AppCompatActivity {
             currentPhotoPath = image.getAbsolutePath();
         }else{image = new File(currentPhotoPath);}
         return image;
-
-        // Save a file: path for use with ACTION_VIEW intents
-
     }
 
 
+    /**
+     * Passed a list of barcodes found by the Firebase ML vision scanner this will extract the
+     * ISBN's found
+     * @param barcodes the List of firebase ML vision barcodes that were found
+     */
     private void checkForBarcodeData(List<FirebaseVisionBarcode> barcodes){
         for (FirebaseVisionBarcode barcode: barcodes) {
 
@@ -387,6 +374,9 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Creates an intent to take a picture and store the picture in the provided file
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -396,6 +386,8 @@ public class AddBookActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                Log.e(TAG, ex.getMessage());
+                showMyToast("Couldn't create temporary file for the scanner");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -409,11 +401,20 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * show a quick toast with the message provided
+     * @param message the message to show in the toast
+     */
     private void showMyToast(String message){
         Toast.makeText(this, message,
                 Toast.LENGTH_LONG).show();
     }
 
+
+    /**
+     * The activity onStop method, has been overridden to delete ISBN scanner pictures to
+     * prevent taking up space on user's phone
+     */
     @Override
     public void onStop(){
         super.onStop();
