@@ -8,13 +8,16 @@
 
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -22,7 +25,8 @@ import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
-public class PersonalProfileActivity extends AppCompatActivity {
+public class
+PersonalProfileActivity extends AppCompatActivity {
     private Button buttonEditProfile;
     private Button buttonBack;
     private Button buttonDefaultLocation;
@@ -82,8 +86,9 @@ public class PersonalProfileActivity extends AppCompatActivity {
              * @param view Context passed as parameter for the intent
              */
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+//                startActivity(intent);
+                testLocation();
             }
         });
     }
@@ -133,6 +138,27 @@ public class PersonalProfileActivity extends AppCompatActivity {
                 profilePhoto.setImageResource(R.drawable.ic_person_outline_grey_24dp);
             }
         });
+    }
+
+    public void testLocation() {
+        Intent i = new Intent(this, SelectLocationActivity.class);
+        startActivityForResult(i, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String lat = data.getStringExtra("lat");
+                String lng = data.getStringExtra("lng");
+
+                Toast toast = Toast.makeText(getApplicationContext(), lat+" "+lng,
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        }
     }
 }
 
