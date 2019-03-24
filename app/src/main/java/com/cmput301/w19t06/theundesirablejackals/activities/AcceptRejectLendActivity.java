@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.MapsActivity;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -18,6 +20,10 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity {
     private Toolbar toolbar;
     private DatabaseHelper databaseHelper;
+
+    private Double latitude;
+    private Double longitude;
+
     /**
      * General creation
      * @param savedInstanceState
@@ -61,12 +67,41 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
     public void accept(View view){
     //TODO
         //Return True, If True delete all other requests regarding this book, update Book status
-        Intent intentMap = new Intent(AcceptRejectLendActivity.this, MapsActivity.class);
-        startActivity(intentMap);
+
+        // ask the user to select a pick up location
+        retrieveLocation();
+
         Intent intent = new Intent();
         intent.putExtra("resultAD",true);
         setResult(Activity.RESULT_OK,intent);
         finish();
+    }
+
+    /**
+     * Calls "PersonalProfileActivity" to allow the user to select a location on the map
+     */
+    public void retrieveLocation() {
+        Intent i = new Intent(this, SelectLocationActivity.class);
+        startActivityForResult(i, 1);
+    }
+
+    /**
+     * Triggers after the activity for result of "PersonalProfileActivity" is completed
+     * Will save the returned result on "longitude" and "latitude" attributes
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                // the coordinates to do whatever you need to do with them
+                latitude = Double.parseDouble(data.getStringExtra("lat"));
+                longitude = Double.parseDouble(data.getStringExtra("lng"));
+            }
+        }
     }
 
     /**

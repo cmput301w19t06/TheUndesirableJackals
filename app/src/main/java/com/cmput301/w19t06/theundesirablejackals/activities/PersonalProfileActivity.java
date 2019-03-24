@@ -42,11 +42,6 @@ PersonalProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_profile);
 
-//        databaseHelper = new DatabaseHelper(this);
-//
-//        // display personal information on the activity
-//        getUserInfo();
-
         buttonEditProfile = (Button) findViewById(R.id.buttonPersonalProfileActivityEditInfo);
         buttonBack = (Button) findViewById(R.id.buttonPersonalProfileActivityBack);
         buttonDefaultLocation = (Button) findViewById(R.id.buttonPersonalProfileActivityDefaultLocation);
@@ -86,9 +81,9 @@ PersonalProfileActivity extends AppCompatActivity {
              * @param view Context passed as parameter for the intent
              */
             public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-//                startActivity(intent);
-                testLocation();
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                startActivity(intent);
+//                testLocation();
             }
         });
     }
@@ -140,25 +135,25 @@ PersonalProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void testLocation() {
-        Intent i = new Intent(this, SelectLocationActivity.class);
-        startActivityForResult(i, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                String lat = data.getStringExtra("lat");
-                String lng = data.getStringExtra("lng");
-
-                Toast toast = Toast.makeText(getApplicationContext(), lat+" "+lng,
-                        Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            }
-        }
-    }
+//    public void testLocation() {
+//        Intent i = new Intent(this, SelectLocationActivity.class);
+//        startActivityForResult(i, 1);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if (requestCode == 1) {
+//            if(resultCode == Activity.RESULT_OK){
+//                Double lat = Double.parseDouble(data.getStringExtra("lat"));
+//                Double lng = Double.parseDouble(data.getStringExtra("lng"));
+//
+//                Toast toast = Toast.makeText(getApplicationContext(), lat+" "+lng,
+//                        Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER, 0, 0);
+//                toast.show();
+//            }
+//        }
+//    }
 }
 
