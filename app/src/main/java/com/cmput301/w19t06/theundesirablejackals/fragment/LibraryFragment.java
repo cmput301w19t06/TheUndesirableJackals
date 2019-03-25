@@ -85,6 +85,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
                                 Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
+                                intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
+                                intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
                                 startActivity(intent);
 
                             } else if (bookInformationList.size() == 0) {
