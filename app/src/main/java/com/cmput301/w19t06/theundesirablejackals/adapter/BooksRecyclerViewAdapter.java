@@ -12,6 +12,7 @@ import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.books_item, parent, false);
-
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
     }
@@ -98,7 +98,12 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
 
         if(status != null) {
-            statusTextView.setText(status.toString());
+            if(status == BookStatus.UNKNOWN) {
+                statusTextView.setText("");
+            } else {
+                statusTextView.setText(status.toString());
+            }
+
         }
         if(title != null) {
             titleTextView.setText(title);
@@ -122,11 +127,15 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
             case REQUESTED:
                 bookThumbnail.setImageResource(R.drawable.ic_status_requested);
                 break;
+            case UNKNOWN:
+                Picasso.get()
+                        .load(b.getThumbnail())
+                        .error(R.drawable.book_icon)
+                        .placeholder(R.drawable.book_icon)
+                        .into(bookThumbnail);
             default:
                 bookThumbnail.setImageResource(R.drawable.book_icon);
         }
-
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
