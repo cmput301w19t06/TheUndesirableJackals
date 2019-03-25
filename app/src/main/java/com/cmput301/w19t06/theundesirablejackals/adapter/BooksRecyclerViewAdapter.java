@@ -98,7 +98,12 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
 
         if(status != null) {
-            statusTextView.setText(status.toString());
+            if(status == BookStatus.UNKNOWN) {
+                statusTextView.setText("");
+            } else {
+                statusTextView.setText(status.toString());
+            }
+
         }
         if(title != null) {
             titleTextView.setText(title);
