@@ -308,7 +308,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             String status = toFilterThrough.getInformation(i).getStatus().toString();
             Log.d(TAG, "I'm inside the filterthrough method");
             Log.d(TAG, status);
-            if(status == menuTitle){
+            Log.d(TAG, menuTitle);
+
+            if(status.equals(menuTitle)){
+                Log.d(TAG,"I'm inside the if statement");
                 filteredItem.addPair(toFilterThrough.getBook(i), toFilterThrough.getInformation(i));
             }
         }
