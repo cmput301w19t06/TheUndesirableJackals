@@ -412,46 +412,54 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
         String userInput = s.toLowerCase();
         BookInformationPairing listItem = new BookInformationPairing();
-        Log.d(TAG,"Well, I'm at the beginning of the for loop");
-        //TODO figure out what fragmetnt we are seeing
-        //Switch case or if between them to get the correct adapter
-        //BookInformationPairing toSearchThrough;
-        int m = tabLayout.getSelectedTabPosition();
-        Log.d(TAG, String.valueOf(m));
-
+        // figures out which fragment a user is viewing
         switch (tabLayout.getSelectedTabPosition()){
 
-            // User is viewing MyBooks tab
+            // if User is viewing MyBooks tab
             case 0:
+                //get the adapter data of MyBooks Fragment
                 BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataSet();
+                // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
                 ownedBooksAdapter.setDataSet(listItem);
                 break;
             // User is viewing Library tab
             case 1:
+                //get the adapter data of Library Fragment
                 toSearchThrough = libraryBooksAdapter.getDataSet();
+                // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
                 libraryBooksAdapter.setDataSet(listItem);
                 break;
             // User is viewing Library tab
             case 2:
+                //get the adapter data of Library Fragment
                 toSearchThrough = borrowedBooksAdapter.getDataSet();
+                // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
                 borrowedBooksAdapter.setDataSet(listItem);
                 break;
         }
-
 
         return true;
     }
 
     /**
      * this function searches through a list of books
-     * and compares the userinput to the title,isbn, author of each books
-     * if the title/isbn/author matches the user input that specific book is added to listItem
+     * and compares the userInput to the title,isbn, author of each book
+     * if the title/isbn/author matches the user input, that specific book is added to listItem
      * @param toSearchThrough the bookInformationPairing class
      * @param userInput string characters
-     * @param listItem initially it's an empty bookInformationPairing list
+     * @param listItem initially it's an empty bookInformationPairing list.
      * @return listItem
      */
     private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
