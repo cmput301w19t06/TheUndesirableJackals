@@ -36,7 +36,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.cmput301.w19t06.theundesirablejackals.Activities.MapHandoff" />
+        <activity android:name="com.cmput301.w19t06.theundesirablejackals.activities.MapHandoff" />
         <activity
             android:name=".EditOwnedBookActivity"
             android:label="@string/title_activity_edit_owned_book"

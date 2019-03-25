@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.squareup.picasso.Picasso;
 
@@ -128,11 +129,15 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                 bookThumbnail.setImageResource(R.drawable.ic_status_requested);
                 break;
             case UNKNOWN:
-                Picasso.get()
-                        .load(b.getThumbnail())
-                        .error(R.drawable.book_icon)
-                        .placeholder(R.drawable.book_icon)
-                        .into(bookThumbnail);
+                if(b.getThumbnail() != null && !b.getThumbnail().isEmpty()) {
+                    Picasso.get()
+                            .load(b.getThumbnail())
+                            .error(R.drawable.book_icon)
+                            .placeholder(R.drawable.book_icon)
+                            .into(bookThumbnail);
+                }else{
+                    bookThumbnail.setImageResource(R.drawable.book_icon);
+                }
             default:
                 bookThumbnail.setImageResource(R.drawable.book_icon);
         }
@@ -142,6 +147,25 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(BooksRecyclerViewAdapter.MyViewHolder holder){
+        super.onViewAttachedToWindow(holder);
+        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewMyBooksItemPhoto);
+        int position = holder.getAdapterPosition();
+        Book book = dataSet.getBook(position);
+        BookInformation bookInformation = dataSet.getInformation(position);
+        BookStatus bookStatus = bookInformation.getStatus();
+        if(bookStatus == BookStatus.UNKNOWN){
+            if(book.getThumbnail() != null && !book.getThumbnail().isEmpty()){
+                Picasso.get()
+                        .load(book.getThumbnail())
+                        .error(R.drawable.book_icon)
+                        .placeholder(R.drawable.book_icon)
+                        .into(bookThumbnail);
+            }
+        }
     }
 
     public void deleteItem(int position){
