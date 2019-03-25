@@ -262,7 +262,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     final String title = data.getStringExtra("bookTitle");
                     final String author = data.getStringExtra("bookAuthor");
                     final String isbn = data.getStringExtra("bookIsbn");
-                    final String category = data.getStringExtra("category");
                     final String description = data.getStringExtra("bookDescription");
                     final String categories = data.getStringExtra("categories");
                     final String thumbnail = data.getStringExtra("thumbnail");
