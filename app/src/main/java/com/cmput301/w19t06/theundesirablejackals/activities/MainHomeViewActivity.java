@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -409,17 +410,46 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         Log.d(TAG,"Well, I'm at the beginning of the for loop");
         //TODO figure out what fragmetnt we are seeing
         //Switch case or if between them to get the correct adapter
-        BookInformationPairing toSearchThrough = libraryBooksAdapter.getDataSet();
-//        if(getSupportFragmentManager().getFragments().get(0) !=null && getSupportFragmentManager().getFragments().get(0).isVisible()){
-//            toSearchThrough = ownedBooksAdapter.getDataSet();
-//
-//        } else if(getSupportFragmentManager().getFragments().get(2) !=null && getSupportFragmentManager().getFragments().get(2).isVisible()){
-//            toSearchThrough = borrowedBooksAdapter.getDataSet();
-//        } else{
-//
-//            toSearchThrough = libraryBooksAdapter.getDataSet();
-//        }
+        //BookInformationPairing toSearchThrough;
+        int m = tabLayout.getSelectedTabPosition();
+        Log.d(TAG, String.valueOf(m));
 
+        switch (tabLayout.getSelectedTabPosition()){
+
+            // User is viewing MyBooks tab
+            case 0:
+                BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataSet();
+                searchThrough(toSearchThrough,userInput,listItem);
+                ownedBooksAdapter.setDataSet(listItem);
+                break;
+            // User is viewing Library tab
+            case 1:
+                toSearchThrough = libraryBooksAdapter.getDataSet();
+                searchThrough(toSearchThrough,userInput,listItem);
+                libraryBooksAdapter.setDataSet(listItem);
+                break;
+            // User is viewing Library tab
+            case 2:
+                toSearchThrough = borrowedBooksAdapter.getDataSet();
+                searchThrough(toSearchThrough,userInput,listItem);
+                borrowedBooksAdapter.setDataSet(listItem);
+                break;
+        }
+
+
+        return true;
+    }
+
+    /**
+     * this function searches through a list of books
+     * and compares the userinput to the title,isbn, author of each books
+     * if the title/isbn/author matches the user input that specific book is added to listItem
+     * @param toSearchThrough the bookInformationPairing class
+     * @param userInput string characters
+     * @param listItem initially it's an empty bookInformationPairing list
+     * @return listItem
+     */
+    private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
         for (int i = 0; i < toSearchThrough.size();i++){
 
             String isbn = toSearchThrough.getBook(i).getIsbn();
@@ -440,22 +470,8 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 Log.d(TAG,"I've reached here");
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
+
         }
-        libraryBooksAdapter.setDataSet(listItem);
-
-//        if(getSupportFragmentManager().getFragments().get(0) !=null && getSupportFragmentManager().getFragments().get(0).isVisible()){
-//
-//            ownedBooksAdapter.setDataSet(listItem);
-//
-//        } else if(getSupportFragmentManager().getFragments().get(2) !=null && getSupportFragmentManager().getFragments().get(2).isVisible()){
-//
-//            borrowedBooksAdapter.setDataSet(listItem);
-//        } else{
-//
-//            libraryBooksAdapter.setDataSet(listItem);
-//        }
-
-
-        return true;
+    return listItem;
     }
 }
