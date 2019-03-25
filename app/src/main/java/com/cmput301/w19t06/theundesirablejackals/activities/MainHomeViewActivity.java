@@ -460,7 +460,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             String isbn = toSearchThrough.getBook(i).getIsbn();
             String author = toSearchThrough.getBook(i).getAuthor();
             String title = toSearchThrough.getBook(i).getTitle();
-            Log.d(TAG,"what is going on");
             if (isbn.toLowerCase().contains(userInput)) {
 
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
@@ -470,9 +469,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
             if (title.toLowerCase().contains(userInput)){
-                Log.d(TAG,"I've got here");
-                Log.d(TAG, title.toLowerCase());
-                Log.d(TAG,"I've reached here");
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
 
