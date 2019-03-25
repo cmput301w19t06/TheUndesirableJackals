@@ -240,6 +240,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        BookInformationPairing filteredItem = new BookInformationPairing();
+        BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataSet();
+        String menuTitle;
         // open navigation drawer by tabbing the menu icon
         switch (item.getItemId()) {
 
@@ -247,24 +250,47 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.itemFilterMenuAvailable:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                Log.d(TAG, menuTitle);
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
                 // TODO: Handle available status select
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by AVAILABLE");
                 break;
             case R.id.itemFilterMenuRequested:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                Log.d(TAG, menuTitle);
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
                 // TODO: Handle requested status select
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by REQUESTED");
                 break;
             case R.id.itemFilterMenuAccepted:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                Log.d(TAG, menuTitle);
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
                 // TODO: Handle accepted status select
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by ACCEPTED");
                 break;
             case R.id.itemFilterMenuBorrowed:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                Log.d(TAG, menuTitle);
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
                 // TODO: Handle borrowed status select
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by BORROWED");
                 break;
         }
         return super.onOptionsItemSelected(item);
 
+    }
+    // filters through books by status
+    private void filterThrough(BookInformationPairing filteredItem, BookInformationPairing toFilterThrough, String menuTitle) {
+        for(int i = 0; i < toFilterThrough.size(); i++){
+            String status = toFilterThrough.getInformation(i).getStatus().toString();
+            Log.d(TAG, "I'm inside the filterthrough method");
+            Log.d(TAG, status);
+            if(status == menuTitle){
+                filteredItem.addPair(toFilterThrough.getBook(i), toFilterThrough.getInformation(i));
+            }
+        }
     }
 
     /**
