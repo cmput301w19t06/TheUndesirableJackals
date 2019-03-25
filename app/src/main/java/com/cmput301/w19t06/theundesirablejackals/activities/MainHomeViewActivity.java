@@ -2,6 +2,7 @@
  * The First Activity that is launched when the user signs in the app
  * it contains three Fragments. "My Books", "Library" and "Borrowed" Fragment and a hidden
  * menu
+ *
  * @Version 1 - Jan - 2019
  * @see MyBooksFragemt, LibraryFragment, BorrowedFragment
  */
@@ -38,6 +39,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -52,7 +54,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainHomeViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class MainHomeViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     public static final String TAG = "MainHomeViewActivity";
 
     public static final int ADD_BOOK = 50;
@@ -105,7 +107,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 drawerLayout.closeDrawers();
                 Intent intent;
                 boolean bool = true;
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
@@ -133,7 +135,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         bool = false;
                         break;
                 }
-                if(bool){
+                if (bool) {
                     startActivity(intent);
                 }
                 return bool;
@@ -143,9 +145,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         viewPager = (ViewPager) findViewById(R.id.viewpagerMainHomeViewActivity);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         /* Adding Fragments */
-        adapter.AddFragment(new MyBooksFragment(),"My Books");
-        adapter.AddFragment(new LibraryFragment(),"Library");
-        adapter.AddFragment(new BorrowedFragment(),"Borrowed");
+        adapter.AddFragment(new MyBooksFragment(), "My Books");
+        adapter.AddFragment(new LibraryFragment(), "Library");
+        adapter.AddFragment(new BorrowedFragment(), "Borrowed");
 
         /* adapter setup */
         viewPager.setAdapter(adapter);
@@ -154,7 +156,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     *  displays the search icon on the app bar
+     * displays the search icon on the app bar
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,6 +171,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
         return true;
     }
+
 
     public void setDrawerUserInfo() {
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
@@ -189,39 +192,40 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
                 ImageView profilePhoto = findViewById(R.id.imageViewMenuProfile);
 
-                    // TODO: Change image to profile photo from database
+                // TODO: Change image to profile photo from database
                 //profilePhoto.setImageResource(R.drawable.default_profile_photo);
 
             }
         });
     }
 
-    public void setOwnedBooksAdapter(BooksRecyclerViewAdapter adapter){
+    public void setOwnedBooksAdapter(BooksRecyclerViewAdapter adapter) {
         this.ownedBooksAdapter = adapter;
     }
 
-    public void setLibraryBooksAdapter(BooksRecyclerViewAdapter adapter){
+    public void setLibraryBooksAdapter(BooksRecyclerViewAdapter adapter) {
         this.libraryBooksAdapter = adapter;
     }
 
-    public void setBorrowedBooksAdapter(BooksRecyclerViewAdapter adapter){
+    public void setBorrowedBooksAdapter(BooksRecyclerViewAdapter adapter) {
         this.borrowedBooksAdapter = adapter;
     }
 
     /**
      * Checks if the additional menu tabs are clickable
+     *
      * @param message to indicate which item is se
      */
-    public void displayMessage(String message){
-        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+    public void displayMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Add book Button for my books
-     * @param view
-     * Author: Kaya Thiessen
+     *
+     * @param view Author: Kaya Thiessen
      */
-    public void OnClick_AddOwnedBookButton(View view){
+    public void OnClick_AddOwnedBookButton(View view) {
         Intent intent = AddBookActivity.makeIntent(MainHomeViewActivity.this);
         startActivityForResult(intent, ADD_BOOK);
     }
@@ -234,27 +238,43 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
     /**
      * To open Navigation Drawer when user tabs the menu icon
+     *
      * @param item a menu item
      * @return true for selecting the icon
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // open navigation drawer by tabbing the menu icon
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case android.R.id.home:
-                  drawerLayout.openDrawer(GravityCompat.START);
-                  return true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.itemFilterMenuAvailable:
+                // TODO: Handle available status select
+                ToastMessage.show(MainHomeViewActivity.this, "Filtering by AVAILABLE");
+                break;
+            case R.id.itemFilterMenuRequested:
+                // TODO: Handle requested status select
+                ToastMessage.show(MainHomeViewActivity.this, "Filtering by REQUESTED");
+                break;
+            case R.id.itemFilterMenuAccepted:
+                // TODO: Handle accepted status select
+                ToastMessage.show(MainHomeViewActivity.this, "Filtering by ACCEPTED");
+                break;
+            case R.id.itemFilterMenuBorrowed:
+                // TODO: Handle borrowed status select
+                ToastMessage.show(MainHomeViewActivity.this, "Filtering by BORROWED");
+                break;
         }
-
         return super.onOptionsItemSelected(item);
+
     }
 
     /**
      * @param requestCode
      * @param resultCode
-     * @param data
-     * Author Kaya Thiessen
+     * @param data        Author Kaya Thiessen
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -275,9 +295,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
-                            if(bool){
+                            if (bool) {
                                 Log.d(TAG, "Book sent to server");
-                            }else{
+                            } else {
                                 Log.d(TAG, "Sorry, something went wrong :(");
                             }
                         }
@@ -291,10 +311,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
                                 public void onCallback(boolean bool) {
-                                    if(bool){
+                                    if (bool) {
                                         //todo
                                         Log.d(TAG, "All good in update book information");
-                                    }else{
+                                    } else {
                                         //todo
                                         Log.d(TAG, "NOT good in update book information");
                                     }
@@ -302,13 +322,13 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             });
                             Boolean check = false;
 
-                            for(Book b :ownedBooksAdapter.getDataSet().getBookList().getBooks()) {
-                                if(b.getIsbn().equals(isbn)){
+                            for (Book b : ownedBooksAdapter.getDataSet().getBookList().getBooks()) {
+                                if (b.getIsbn().equals(isbn)) {
                                     check = true;
                                     break;
                                 }
                             }
-                            if(!check) {
+                            if (!check) {
                                 ownedBooksAdapter.addItem(book, bookInformation);
                                 user.getOwnedBooks().addBook(book.getIsbn(), bookInformation.getBookInformationKey());
                                 databaseHelper.updateOwnedBooks(user.getOwnedBooks(), new BooleanCallback() {
@@ -336,7 +356,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 break;
         }
     }
-
 
 
     public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description) {
@@ -397,7 +416,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             } else {
                 bookInformation = new BookInformation(isbn, user.getUserInfo().getUserName());
             }
-        }else{bookInformation = new BookInformation();}
+        } else {
+            bookInformation = new BookInformation();
+        }
         return bookInformation;
     }
 
@@ -413,14 +434,14 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         String userInput = s.toLowerCase();
         BookInformationPairing listItem = new BookInformationPairing();
         // figures out which fragment a user is viewing
-        switch (tabLayout.getSelectedTabPosition()){
+        switch (tabLayout.getSelectedTabPosition()) {
 
             // if User is viewing MyBooks tab
             case 0:
                 //get the adapter data of MyBooks Fragment
                 BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataSet();
                 // search through the data
-                searchThrough(toSearchThrough,userInput,listItem);
+                searchThrough(toSearchThrough, userInput, listItem);
                 // set the adapter data to the list of books that match the user input
                 // in this case, the recyclerview adapter shrinks and
                 // it only shows books matching the search result
@@ -431,7 +452,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 //get the adapter data of Library Fragment
                 toSearchThrough = libraryBooksAdapter.getDataSet();
                 // search through the data
-                searchThrough(toSearchThrough,userInput,listItem);
+                searchThrough(toSearchThrough, userInput, listItem);
                 // set the adapter data to the list of books that match the user input
                 // in this case, the recyclerview adapter shrinks and
                 // it only shows books matching the search result
@@ -442,7 +463,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 //get the adapter data of Library Fragment
                 toSearchThrough = borrowedBooksAdapter.getDataSet();
                 // search through the data
-                searchThrough(toSearchThrough,userInput,listItem);
+                searchThrough(toSearchThrough, userInput, listItem);
                 // set the adapter data to the list of books that match the user input
                 // in this case, the recyclerview adapter shrinks and
                 // it only shows books matching the search result
@@ -457,13 +478,14 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
      * this function searches through a list of books
      * and compares the userInput to the title,isbn, author of each book
      * if the title/isbn/author matches the user input, that specific book is added to listItem
+     *
      * @param toSearchThrough the bookInformationPairing class
-     * @param userInput string characters
-     * @param listItem initially it's an empty bookInformationPairing list.
+     * @param userInput       string characters
+     * @param listItem        initially it's an empty bookInformationPairing list.
      * @return listItem
      */
-    private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
-        for (int i = 0; i < toSearchThrough.size();i++){
+    private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough, String userInput, BookInformationPairing listItem) {
+        for (int i = 0; i < toSearchThrough.size(); i++) {
 
             String isbn = toSearchThrough.getBook(i).getIsbn();
             String author = toSearchThrough.getBook(i).getAuthor();
@@ -472,15 +494,13 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
 
-            }
-            else if (author.toLowerCase().contains(userInput)) {
+            } else if (author.toLowerCase().contains(userInput)) {
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
-            }
-            else if (title.toLowerCase().contains(userInput)){
+            } else if (title.toLowerCase().contains(userInput)) {
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
 
         }
-    return listItem;
+        return listItem;
     }
 }
