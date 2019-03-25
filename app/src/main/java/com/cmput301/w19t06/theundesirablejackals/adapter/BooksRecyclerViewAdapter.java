@@ -27,6 +27,7 @@ import java.util.List;
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
 
     private BookInformationPairing dataSet;
+    private BookInformationPairing dataCopy;
     private RecyclerViewClickListener myListener;
 
     // Provide a reference to the views for each data item
@@ -61,6 +62,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public BooksRecyclerViewAdapter(){
         dataSet = new BookInformationPairing();
+        dataCopy = new BookInformationPairing();
     }
 
     public void setMyListener(RecyclerViewClickListener listener){
@@ -136,7 +138,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                 bookThumbnail.setImageResource(R.drawable.ic_status_requested);
                 break;
             case UNKNOWN:
-                if(b.getThumbnail() != null && !b.getThumbnail().isEmpty()) {
+                if(thumbnail != null && !thumbnail.isEmpty()) {
                     Picasso.get()
                             .load(b.getThumbnail())
                             .error(R.drawable.book_icon)
@@ -178,6 +180,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public void deleteItem(int position){
         dataSet.remove(position);
+        dataCopy.remove(position);
         this.notifyItemRemoved(position);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
         this.notifyItemRangeChanged(position, this.getItemCount());
         updateItems();
@@ -185,6 +188,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public void addItem(Book book, BookInformation bookInformation){
         dataSet.addPair(book, bookInformation);
+        dataCopy.addPair(book, bookInformation);
         updateItems();
     }
 
@@ -212,41 +216,39 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         return dataSet;
     }
 
-    // performs filter operation for the recyclerview
-    public  void setFilter(BookInformationPairing listItem){
+    public BookInformationPairing getDataCopy() {
+        return dataCopy;
+    }
 
-        dataSet = new BookInformationPairing();
-        dataSet.addAll(listItem);
-        notifyDataSetChanged();
-
-
+    public void setDataCopy(BookInformationPairing dataCopy) {
+        this.dataCopy = dataCopy;
     }
 
     // copied by Felipe on 24-03-2019 from:
     // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
+//    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+//        ImageView bmImage;
+//
+//        public DownloadImageTask(ImageView bmImage) {
+//            this.bmImage = bmImage;
+//        }
+//
+//        protected Bitmap doInBackground(String... urls) {
+//            String urldisplay = urls[0];
+//            Bitmap mIcon11 = null;
+//            try {
+//                InputStream in = new java.net.URL(urldisplay).openStream();
+//                mIcon11 = BitmapFactory.decodeStream(in);
+//            } catch (Exception e) {
+//                Log.e("Error", e.getMessage());
+//                e.printStackTrace();
+//            }
+//            return mIcon11;
+//        }
+//
+//        protected void onPostExecute(Bitmap result) {
+//            bmImage.setImageBitmap(result);
+//        }
+//    }
 
 }
