@@ -249,41 +249,62 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            // Handle available status selection
             case R.id.itemFilterMenuAvailable:
+                // get the status the user wants to filter the book list
                 menuTitle = item.getTitle().toString().toUpperCase();
                 Log.d(TAG, menuTitle);
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
-                // TODO: Handle available status select
+                ownedBooksAdapter.setDataSet(filteredItem);
+
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by AVAILABLE");
                 break;
+            // Handle requested status selection
             case R.id.itemFilterMenuRequested:
+                // get the status the user wants to filter the book list
                 menuTitle = item.getTitle().toString().toUpperCase();
                 Log.d(TAG, menuTitle);
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
-                // TODO: Handle requested status select
+                ownedBooksAdapter.setDataSet(filteredItem);
+
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by REQUESTED");
                 break;
+            // Handle accepted status selection
             case R.id.itemFilterMenuAccepted:
+                // get the status the user wants to filter the book list
                 menuTitle = item.getTitle().toString().toUpperCase();
                 Log.d(TAG, menuTitle);
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
-                // TODO: Handle accepted status select
+                ownedBooksAdapter.setDataSet(filteredItem);
+
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by ACCEPTED");
                 break;
+
+            // Handle borrowed status selection
             case R.id.itemFilterMenuBorrowed:
+                // get the status the user wants to filter the book list
                 menuTitle = item.getTitle().toString().toUpperCase();
                 Log.d(TAG, menuTitle);
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
-                // TODO: Handle borrowed status select
+                ownedBooksAdapter.setDataSet(filteredItem);
+
                 ToastMessage.show(MainHomeViewActivity.this, "Filtering by BORROWED");
                 break;
         }
         return super.onOptionsItemSelected(item);
 
     }
+
+    /**
+     * Filters the list of books visible on My Books tab by status
+     * @param filteredItem a collection of book list with a specific status specified by a user
+     * @param toFilterThrough the bookInformationPairing class
+     * @param menuTitle status to be used when filtering the books
+     */
     // filters through books by status
     private void filterThrough(BookInformationPairing filteredItem, BookInformationPairing toFilterThrough, String menuTitle) {
         for(int i = 0; i < toFilterThrough.size(); i++){
+            //get the status of the book
             String status = toFilterThrough.getInformation(i).getStatus().toString();
             Log.d(TAG, "I'm inside the filterthrough method");
             Log.d(TAG, status);
