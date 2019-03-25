@@ -241,7 +241,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         BookInformationPairing filteredItem = new BookInformationPairing();
-        BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataSet();
+        BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataCopy();
         String menuTitle;
         // open navigation drawer by tabbing the menu icon
         switch (item.getItemId()) {
@@ -308,7 +308,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             String status = toFilterThrough.getInformation(i).getStatus().toString();
             Log.d(TAG, "I'm inside the filterthrough method");
             Log.d(TAG, status);
-            if(status == menuTitle){
+            Log.d(TAG, menuTitle);
+
+            if(status.equals(menuTitle)){
+                Log.d(TAG,"I'm inside the if statement");
                 filteredItem.addPair(toFilterThrough.getBook(i), toFilterThrough.getInformation(i));
             }
         }
