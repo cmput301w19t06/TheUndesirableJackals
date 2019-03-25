@@ -1,7 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +101,8 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         String author = b.getAuthor();
         String isbn = b.getIsbn();
 
+        // get URL of the thumbnail
+        String thumbnail = b.getThumbnail();
 
         if(status != null) {
             if(status == BookStatus.UNKNOWN) {
@@ -114,28 +121,32 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         if(isbn != null) {
             isbnTextView.setText("ISBN: "+ isbn);
         }
-        switch (status) {
-            case ACCEPTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                break;
-            case BORROWED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
-                break;
-            case AVAILABLE:
-                bookThumbnail.setImageResource(R.drawable.ic_status_available);
-                break;
-            case REQUESTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                break;
-            case UNKNOWN:
-                Picasso.get()
-                        .load(b.getThumbnail())
-                        .error(R.drawable.book_icon)
-                        .placeholder(R.drawable.book_icon)
-                        .into(bookThumbnail);
-            default:
-                bookThumbnail.setImageResource(R.drawable.book_icon);
+
+        if (thumbnail != null) {
+            try {
+                new DownloadImageTask(bookThumbnail).execute(thumbnail);
+            } catch (Exception e) {
+                // TODO: write an alternative
+            }
+        } else {
+            switch (status) {
+                case ACCEPTED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                    break;
+                case BORROWED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
+                    break;
+                case AVAILABLE:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_available);
+                    break;
+                case REQUESTED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                    break;
+                default:
+                    bookThumbnail.setImageResource(R.drawable.book_icon);
+            }
         }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -181,13 +192,40 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     // performs filter operation for the recyclerview
-    public  void setFilter(List<String> listItem){
+    public  void setFilter(BookInformationPairing listItem){
 
-        List<String> titles = new ArrayList<>();
-        titles.addAll(listItem);
+        dataSet = new BookInformationPairing();
+        dataSet.addAll(listItem);
         notifyDataSetChanged();
 
 
+    }
+
+    // copied by Felipe on 24-03-2019 from:
+    // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 }

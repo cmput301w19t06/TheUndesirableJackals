@@ -27,10 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
@@ -409,10 +411,76 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     public boolean onQueryTextChange(String s) {
 
         String userInput = s.toLowerCase();
-        List<String> listItem = new ArrayList<>();
+        BookInformationPairing listItem = new BookInformationPairing();
+        // figures out which fragment a user is viewing
+        switch (tabLayout.getSelectedTabPosition()){
 
+            // if User is viewing MyBooks tab
+            case 0:
+                //get the adapter data of MyBooks Fragment
+                BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataSet();
+                // search through the data
+                searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
+                ownedBooksAdapter.setDataSet(listItem);
+                break;
+            // User is viewing Library tab
+            case 1:
+                //get the adapter data of Library Fragment
+                toSearchThrough = libraryBooksAdapter.getDataSet();
+                // search through the data
+                searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
+                libraryBooksAdapter.setDataSet(listItem);
+                break;
+            // User is viewing Library tab
+            case 2:
+                //get the adapter data of Library Fragment
+                toSearchThrough = borrowedBooksAdapter.getDataSet();
+                // search through the data
+                searchThrough(toSearchThrough,userInput,listItem);
+                // set the adapter data to the list of books that match the user input
+                // in this case, the recyclerview adapter shrinks and
+                // it only shows books matching the search result
+                borrowedBooksAdapter.setDataSet(listItem);
+                break;
+        }
 
+        return true;
+    }
 
-        return false;
+    /**
+     * this function searches through a list of books
+     * and compares the userInput to the title,isbn, author of each book
+     * if the title/isbn/author matches the user input, that specific book is added to listItem
+     * @param toSearchThrough the bookInformationPairing class
+     * @param userInput string characters
+     * @param listItem initially it's an empty bookInformationPairing list.
+     * @return listItem
+     */
+    private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
+        for (int i = 0; i < toSearchThrough.size();i++){
+
+            String isbn = toSearchThrough.getBook(i).getIsbn();
+            String author = toSearchThrough.getBook(i).getAuthor();
+            String title = toSearchThrough.getBook(i).getTitle();
+            if (isbn.toLowerCase().contains(userInput)) {
+
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+
+            }
+            else if (author.toLowerCase().contains(userInput)) {
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+            }
+            else if (title.toLowerCase().contains(userInput)){
+                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+            }
+
+        }
+    return listItem;
     }
 }
