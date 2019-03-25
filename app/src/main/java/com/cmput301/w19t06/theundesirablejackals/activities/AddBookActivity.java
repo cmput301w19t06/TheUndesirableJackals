@@ -106,6 +106,17 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
 
+
+        isbnEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b) {
+                    searchISBN();
+                }
+            }
+        });
+
+
     }
 
     /**
