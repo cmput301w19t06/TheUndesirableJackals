@@ -241,7 +241,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         BookInformationPairing filteredItem = new BookInformationPairing();
-        BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataSet();
+        BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataCopy();
         String menuTitle;
         // open navigation drawer by tabbing the menu icon
         switch (item.getItemId()) {
