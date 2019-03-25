@@ -165,6 +165,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
         libraryRecyclerViewAdapter.setDataSet(new BookInformationPairing());
+        libraryRecyclerViewAdapter.setDataCopy(new BookInformationPairing());
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override
