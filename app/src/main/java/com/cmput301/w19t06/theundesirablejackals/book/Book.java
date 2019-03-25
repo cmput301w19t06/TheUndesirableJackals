@@ -22,7 +22,9 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String isbn;
-    private String category;
+    private String thumbnail; // holds the URL of thumbnail
+    private String categories;
+    private ArrayList<BookGenres> genres;
 
 
     public Book(){ }
@@ -42,28 +44,25 @@ public class Book implements Serializable {
         this.isbn = isbn;
     }
 
-    /**
-     * Default constructor which creates a new book object
-     * @param title of the book
-     * @param author of the book
-     * @param isbn of the book
-     * @param category category that the book belongs to
-     */
-    public Book(String title, String author, String isbn, String category) {
+    public Book(String title, String author, String isbn, String categories, String thumbnail) {
         // status is set to "available" as default
         // images is set to null as default
         // TODO: Images will need to be set to a default image in the future
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.category = category;
+        this.categories = categories;
+        this.thumbnail = thumbnail;
+        this.genres = new ArrayList<>();
     }
 
     public Book(Book book){
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.isbn = book.getIsbn();
-        this.category = book.getCategory();
+        this.categories = book.getCategories();
+        this.thumbnail = book.getThumbnail();
+        this.genres = book.getGenres();
     }
 
 
@@ -94,6 +93,37 @@ public class Book implements Serializable {
         return isbn;
     }
 
+    /**
+     *
+     * @return thumbnail of the book in String  format
+     */
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    /**
+     *
+     * @return Categories of the book in String  format
+     */
+    public String getCategories() {
+        return categories;
+    }
+
+    /**
+     *
+     * @param newThumbnail replacement of thumbnail of the book
+     */
+    public void setThumbnail(String newThumbnail) {
+        thumbnail = newThumbnail;
+    }
+
+    /**
+     *
+     * @param newCategories replacement of thumbnail of the book
+     */
+    public void setCategories(String newCategories) {
+        categories = newCategories;
+    }
 
 
     /**

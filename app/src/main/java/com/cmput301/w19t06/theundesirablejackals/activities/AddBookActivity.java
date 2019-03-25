@@ -121,6 +121,7 @@ public class AddBookActivity extends AppCompatActivity {
         EditText descriptionParam = findViewById(R.id.editTextAddBookBookDescription);
         EditText isbnParam  = findViewById(R.id.editTextAddBookBookISBN);
         EditText categoriesParam = findViewById(R.id.editTextAddBookBookCategories);
+        EditText thumbnailParam = findViewById(R.id.editTextAddBookBookThumbnail);
 
         // retrieve the ISBN input by the user
         if(barcodesFound.size() > 0) {
@@ -137,7 +138,8 @@ public class AddBookActivity extends AppCompatActivity {
 
             // begin search if there is connection and isbn is not empty
             if (networkInfo != null && networkInfo.isConnected() && isbn.length() != 0) {
-                new FetchBook(titleParam, authorParam, descriptionParam, isbnParam, categoriesParam)
+                new FetchBook(titleParam, authorParam, descriptionParam, isbnParam, categoriesParam,
+                        thumbnailParam)
                         .execute(isbn);
             }
             // ad empty strings if something fails
@@ -183,14 +185,21 @@ public class AddBookActivity extends AppCompatActivity {
     public void OnClick_addBookDone(View view){
         EditText edit = findViewById(R.id.editTextAddBookBookTitle);
         String title = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookAuthor);
         String author = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookISBN);
         isbn = edit.getText().toString();
-        edit = findViewById(R.id.editTextAddBookBookCategories);
-        String category = edit.getText().toString();
+
         edit = findViewById(R.id.editTextAddBookBookDescription);
         String description = edit.getText().toString();
+
+        edit = findViewById(R.id.editTextAddBookBookCategories);
+        String categories = edit.getText().toString();
+
+        edit = findViewById(R.id.editTextAddBookBookThumbnail);
+        String thumbnail = edit.getText().toString();
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
 
@@ -200,6 +209,8 @@ public class AddBookActivity extends AppCompatActivity {
             intent.putExtra("bookIsbn", isbn);
             intent.putExtra("category", category);
             intent.putExtra("bookDescription", description);
+            intent.putExtra("categories", categories);
+            intent.putExtra("thumbnail", thumbnail);
             intent.setData(imageUri);
             setResult(MainHomeViewActivity.RESULT_OK, intent);
             finish();
