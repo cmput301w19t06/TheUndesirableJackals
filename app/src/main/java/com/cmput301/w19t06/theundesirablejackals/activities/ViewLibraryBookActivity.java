@@ -95,7 +95,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mIsbn.setText("ISBN: " + mLibraryBook.getIsbn());
         mStatus.setText(mBookInformation.getStatus().toString());
         mBookOwner.setText("Owner: " + mBookInformation.getOwner());
-        mCategory.setText("Category: "+ mLibraryBook.getCategory());
+        mCategory.setText("Category: "+ mLibraryBook.getCategories());
         mDescription.setText(mBookInformation.getDescription());
 
         setBookPhotoView();

@@ -207,7 +207,7 @@ public class AddBookActivity extends AppCompatActivity {
             intent.putExtra("bookTitle", title);
             intent.putExtra("bookAuthor", author);
             intent.putExtra("bookIsbn", isbn);
-            intent.putExtra("category", category);
+            intent.putExtra("categories", categories);
             intent.putExtra("bookDescription", description);
             intent.putExtra("categories", categories);
             intent.putExtra("thumbnail", thumbnail);

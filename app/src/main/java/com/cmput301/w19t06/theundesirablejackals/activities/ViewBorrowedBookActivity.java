@@ -63,7 +63,7 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         mAuthor.setText(mBorrowedBook.getAuthor());
         mIsbn.setText("ISBN: " + mBorrowedBook.getIsbn());
         mBookOwner.setText("Owner: " + mBookInformation.getOwner());
-        mCategory.setText("Category: "+ mBorrowedBook.getCategory());
+        mCategory.setText("Category: "+ mBorrowedBook.getCategories());
         mDescription.setText(mBookInformation.getDescription());
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

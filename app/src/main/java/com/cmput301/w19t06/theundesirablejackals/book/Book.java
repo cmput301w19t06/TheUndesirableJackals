@@ -24,7 +24,6 @@ public class Book implements Serializable {
     private String isbn;
     private String thumbnail; // holds the URL of thumbnail
     private String categories;
-    private ArrayList<BookGenres> genres;
 
 
     public Book(){ }
@@ -53,7 +52,6 @@ public class Book implements Serializable {
         this.isbn = isbn;
         this.categories = categories;
         this.thumbnail = thumbnail;
-        this.genres = new ArrayList<>();
     }
 
     public Book(Book book){
@@ -62,7 +60,7 @@ public class Book implements Serializable {
         this.isbn = book.getIsbn();
         this.categories = book.getCategories();
         this.thumbnail = book.getThumbnail();
-        this.genres = book.getGenres();
+
     }
 
 
@@ -151,20 +149,4 @@ public class Book implements Serializable {
         isbn = newISBN;
     }
 
-
-    /**
-     *
-     * @return String of all the categories that the boo belongs to
-     */
-    public String getCategory() {
-        return category;
-    }
-
-    /**
-     *
-     * @param category the category this book belongs to
-     */
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }
