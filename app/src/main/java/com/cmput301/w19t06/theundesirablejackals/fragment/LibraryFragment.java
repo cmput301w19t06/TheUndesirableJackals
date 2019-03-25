@@ -85,6 +85,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
                                 Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
+                                intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
+                                intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
                                 startActivity(intent);
 
                             } else if (bookInformationList.size() == 0) {
@@ -165,6 +167,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
         libraryRecyclerViewAdapter.setDataSet(new BookInformationPairing());
+        libraryRecyclerViewAdapter.setDataCopy(new BookInformationPairing());
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override

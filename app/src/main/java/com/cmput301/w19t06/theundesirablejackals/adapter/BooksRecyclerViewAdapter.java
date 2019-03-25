@@ -65,15 +65,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         dataCopy = new BookInformationPairing();
     }
 
-    public void setMyListener(RecyclerViewClickListener listener){
-        myListener = listener;
-    }
-
-    public void setDataSet(BookInformationPairing data){
-        dataSet = data;
-        updateItems();
-    }
-
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -124,33 +115,30 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         if(isbn != null) {
             isbnTextView.setText("ISBN: "+ isbn);
         }
-        switch (status) {
-            case ACCEPTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                break;
-            case BORROWED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
-                break;
-            case AVAILABLE:
-                bookThumbnail.setImageResource(R.drawable.ic_status_available);
-                break;
-            case REQUESTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                break;
-            case UNKNOWN:
-                if(thumbnail != null && !thumbnail.isEmpty()) {
-                    Picasso.get()
-                            .load(b.getThumbnail())
-                            .error(R.drawable.book_icon)
-                            .placeholder(R.drawable.book_icon)
-                            .into(bookThumbnail);
-                }else{
+        if(thumbnail != null && !thumbnail.isEmpty()) {
+            Picasso.get()
+                    .load(b.getThumbnail())
+                    .error(R.drawable.book_icon)
+                    .placeholder(R.drawable.book_icon)
+                    .into(bookThumbnail);
+        }else {
+            switch (status) {
+                case ACCEPTED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                    break;
+                case BORROWED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
+                    break;
+                case AVAILABLE:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_available);
+                    break;
+                case REQUESTED:
+                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+                    break;
+                default:
                     bookThumbnail.setImageResource(R.drawable.book_icon);
-                }
-            default:
-                bookThumbnail.setImageResource(R.drawable.book_icon);
+            }
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -161,7 +149,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     @Override
     public void onViewAttachedToWindow(BooksRecyclerViewAdapter.MyViewHolder holder){
-        super.onViewAttachedToWindow(holder);
+//        super.onViewAttachedToWindow(holder);
         ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewMyBooksItemPhoto);
         int position = holder.getAdapterPosition();
         Book book = dataSet.getBook(position);
@@ -187,14 +175,15 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
     }
 
     public void addItem(Book book, BookInformation bookInformation){
-        dataSet.addPair(book, bookInformation);
-        dataCopy.addPair(book, bookInformation);
+        dataSet.addPair(new Book(book), new BookInformation(bookInformation));
+        dataCopy.addPair(new Book(book), new BookInformation(bookInformation));
         updateItems();
     }
 
 
     public void addItems(BookInformationPairing newItems){
-        dataSet.addAll( newItems);
+        dataSet.addAll(new BookInformationPairing(newItems.getBookList(), newItems.getBookInformationList()));
+        dataCopy.addAll(new BookInformationPairing(newItems.getBookList(), newItems.getBookInformationList()));
         updateItems();
     }
 
@@ -222,6 +211,16 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     public void setDataCopy(BookInformationPairing dataCopy) {
         this.dataCopy = dataCopy;
+    }
+
+
+    public void setMyListener(RecyclerViewClickListener listener){
+        myListener = listener;
+    }
+
+    public void setDataSet(BookInformationPairing data){
+        dataSet = new BookInformationPairing(data.getBookList(), data.getBookInformationList());
+        updateItems();
     }
 
     // copied by Felipe on 24-03-2019 from:

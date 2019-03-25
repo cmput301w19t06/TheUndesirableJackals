@@ -130,6 +130,7 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         borrowedRecyclerViewAdapter.setDataSet(new BookInformationPairing());
+        borrowedRecyclerViewAdapter.setDataCopy(new BookInformationPairing());
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {

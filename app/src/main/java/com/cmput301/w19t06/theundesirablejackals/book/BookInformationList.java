@@ -1,8 +1,9 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BookInformationList {
+public class BookInformationList implements Serializable {
     ArrayList<BookInformation> bookInformations;
 
 
