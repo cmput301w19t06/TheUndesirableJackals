@@ -175,6 +175,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         bookInformationPairing.addSingle(book);
                     }
                     libraryRecyclerViewAdapter.setDataSet(bookInformationPairing);
+                    libraryRecyclerViewAdapter.setDataCopy(bookInformationPairing);
                 }
             }
         });

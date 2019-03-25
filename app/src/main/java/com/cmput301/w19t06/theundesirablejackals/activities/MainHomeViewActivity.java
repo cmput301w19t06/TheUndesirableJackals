@@ -9,9 +9,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -41,14 +39,12 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -418,7 +414,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             // if User is viewing MyBooks tab
             case 0:
                 //get the adapter data of MyBooks Fragment
-                BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataSet();
+                BookInformationPairing toSearchThrough = ownedBooksAdapter.getDataCopy();
                 // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
                 // set the adapter data to the list of books that match the user input
@@ -429,7 +425,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             // User is viewing Library tab
             case 1:
                 //get the adapter data of Library Fragment
-                toSearchThrough = libraryBooksAdapter.getDataSet();
+                toSearchThrough = libraryBooksAdapter.getDataCopy();
                 // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
                 // set the adapter data to the list of books that match the user input
@@ -440,7 +436,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             // User is viewing Library tab
             case 2:
                 //get the adapter data of Library Fragment
-                toSearchThrough = borrowedBooksAdapter.getDataSet();
+                toSearchThrough = borrowedBooksAdapter.getDataCopy();
                 // search through the data
                 searchThrough(toSearchThrough,userInput,listItem);
                 // set the adapter data to the list of books that match the user input
@@ -462,7 +458,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
      * @param listItem initially it's an empty bookInformationPairing list.
      * @return listItem
      */
-    private BookInformationPairing searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
+    private void searchThrough(BookInformationPairing toSearchThrough,String userInput, BookInformationPairing listItem) {
         for (int i = 0; i < toSearchThrough.size();i++){
 
             String isbn = toSearchThrough.getBook(i).getIsbn();
@@ -481,6 +477,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             }
 
         }
-    return listItem;
+//    return listItem;
     }
 }
