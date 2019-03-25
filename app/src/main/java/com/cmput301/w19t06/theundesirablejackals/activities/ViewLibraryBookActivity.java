@@ -53,6 +53,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
     private TextView mAuthor;
     private TextView mIsbn;
     private TextView mStatus;
+    private TextView mBookOwner;
     private TextView mDescription;
     private TextView mCategory;
 
@@ -84,6 +85,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mAuthor = findViewById(R.id.textViewViewLibraryBookBookAuthor);
         mIsbn = findViewById(R.id.textViewViewLibraryBookBookISBN);
         mStatus = findViewById(R.id.textViewViewLibraryBookBookStatus);
+        mBookOwner = findViewById(R.id.textViewViewLibraryBookBookOwner);
         mCategory = findViewById(R.id.textViewViewLibraryBookCategory);
         mDescription = findViewById(R.id.textViewViewLibraryBookBookDescription);
 
@@ -92,6 +94,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mAuthor.setText(mLibraryBook.getAuthor());
         mIsbn.setText("ISBN: " + mLibraryBook.getIsbn());
         mStatus.setText(mBookInformation.getStatus().toString());
+        mBookOwner.setText("Owner: " + mBookInformation.getOwner());
         mCategory.setText("Category: "+ mLibraryBook.getCategory());
         mDescription.setText(mBookInformation.getDescription());
 
