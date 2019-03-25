@@ -5,11 +5,12 @@ Code copied from https://github.com/google-developer-training/android-fundamenta
 
 Modifications:
     Added a new attribute "mPublisherText" as a TextView (line 53)
-    Added a new attribute "mCategoryText" as a TextView
-    Added additional three parameters for "FetchBook" constructor (line 59, 62)
-    Added String publisher (line 174)
-    Set string to variable publisher (line 189)
-    Set string to TextView "mPublisherText" (line 202)
+    Added a new attributes "mCategoryText" and "mThumbnailText" as a TextView
+    Added additional four parameters for "FetchBook" constructor (line 59, 62)
+    Added Strings publisher, categories and thumbnail
+    Set string to variables publisher, categories and thumbnail
+    Set string to TextView "mThumbnailText"
+    Set string to TextView "mPublisherText"
     Set string to TextView "mCategoryText"
 
  */
@@ -57,18 +58,20 @@ public class FetchBook extends AsyncTask<String,Void,String>{
     private EditText mAuthorText;
     private EditText mDescriptionText;
     private EditText mCategoriesText;
+    private EditText mThumbnailText;
 
     // Class name for Log tag
     private static final String LOG_TAG = FetchBook.class.getSimpleName();
 
     // Constructor providing a reference to the views in MainActivity
     public FetchBook(EditText titleText, EditText authorText, EditText descriptionText, EditText bookInput,
-                     EditText categoriesInput) {
+                     EditText categoriesInput, EditText thumbnailInput) {
         this.mTitleText = titleText;
         this.mAuthorText = authorText;
         this.mDescriptionText = descriptionText;
         this.mBookInput = bookInput;
         this.mCategoriesText = categoriesInput;
+        this.mThumbnailText = thumbnailInput;
     }
 
     public FetchBook() {
@@ -180,6 +183,7 @@ public class FetchBook extends AsyncTask<String,Void,String>{
             String authors = null;
             String description = null;
             String categories = null;
+            String thumbnail = null;
 
             // Look for results in the items array, exiting when both the title and author
             // are found or when all items have been checked.
@@ -187,14 +191,17 @@ public class FetchBook extends AsyncTask<String,Void,String>{
                 // Get the current item information.
                 JSONObject book = itemsArray.getJSONObject(i);
                 JSONObject volumeInfo = book.getJSONObject("volumeInfo");
+                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
 
                 // Try to get the author and title from the current item,
                 // catch if either field is empty and move on.
                 try {
+                    //title = volumeInfo.getString("title");
                     title = volumeInfo.getString("title");
                     authors = volumeInfo.getString("authors");
                     description = volumeInfo.getString("description");
                     categories = volumeInfo.getString("categories");
+                    thumbnail = imageLinks.getString("thumbnail");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -203,44 +210,82 @@ public class FetchBook extends AsyncTask<String,Void,String>{
                 i++;
             }
 
-            // If both are found, display the result.
-            if (title != null && authors != null && description != null && categories != null){
+            // If found, display the result.
+            if (title != null) {
                 mTitleText.setText(title);
+            } else {
+                mTitleText.setText("");
+            }
 
+            if (authors != null) {
                 // fixing author string gotten from google API
                 String author = authors.replace("[\"", "");
                 author = author.replace("\"]", "");
                 author = author.replace("\"", "");
-
                 mAuthorText.setText(author);
+            } else {
+                mAuthorText.setText("");
+            }
 
+            if (description != null) {
                 mDescriptionText.setText(description);
+            } else {
+                mDescriptionText.setText("");
+            }
 
+            if (categories != null) {
                 // fixing categories string gotten from google API
                 String cat = categories.replace("[\"", "");
                 cat = cat.replace("\"]", "");
                 cat = cat.replace("\"", "");
-
                 mCategoriesText.setText(cat);
-
-                //mBookInput.setText("");
-            } else {
-                // If none are found, update the UI to show failed results.
-                mTitleText.setText("");
-
-                mAuthorText.setText("");
-
-                mDescriptionText.setText("");
+            } else{
+                mCategoriesText.setText("");
             }
+
+            if (thumbnail != null) {
+                mThumbnailText.setText(thumbnail);
+            } else {
+                mThumbnailText.setText("");
+            }
+
+//            if (title != null && authors != null && description != null && categories != null){
+//                mTitleText.setText(title);
+//
+//                // fixing author string gotten from google API
+//                String author = authors.replace("[\"", "");
+//                author = author.replace("\"]", "");
+//                author = author.replace("\"", "");
+//
+//                mAuthorText.setText(author);
+//
+//                mDescriptionText.setText(description);
+//
+//                // fixing categories string gotten from google API
+//                String cat = categories.replace("[\"", "");
+//                cat = cat.replace("\"]", "");
+//                cat = cat.replace("\"", "");
+//
+//                mCategoriesText.setText(cat);
+//
+//                //mBookInput.setText("");
+//            } else {
+//                // If none are found, update the UI to show failed results.
+//                mTitleText.setText("");
+//
+//                mAuthorText.setText("");
+//
+//                mDescriptionText.setText("");
+//            }
 
         } catch (Exception e){
             // If onPostExecute does not receive a proper JSON string,
             // update the UI to show failed results.
-            mTitleText.setText("");
-
-            mAuthorText.setText("");
-
-            mDescriptionText.setText("");
+//            mTitleText.setText("");
+//
+//            mAuthorText.setText("");
+//
+//            mDescriptionText.setText("");
             e.printStackTrace();
         }
     }

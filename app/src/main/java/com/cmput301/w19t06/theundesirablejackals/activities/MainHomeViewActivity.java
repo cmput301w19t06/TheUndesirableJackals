@@ -263,10 +263,12 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     final String author = data.getStringExtra("bookAuthor");
                     final String isbn = data.getStringExtra("bookIsbn");
                     final String description = data.getStringExtra("bookDescription");
+                    final String categories = data.getStringExtra("categories");
+                    final String thumbnail = data.getStringExtra("thumbnail");
                     final Uri imageUri = data.getData();
 //                    InputStream inputStream;
 
-                    final Book book = new Book(title, author, isbn);
+                    final Book book = new Book(title, author, isbn, categories, thumbnail);
 
                     databaseHelper.addBookToDatabase(book, new BooleanCallback() {
                         @Override
@@ -281,7 +283,8 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
                         @Override
                         public void onCallback(User user) {
-                            BookInformation bookInformation = updatebookInformation(user, imageUri, isbn, description);
+                            BookInformation bookInformation = updatebookInformation(user, imageUri,
+                                    isbn, description, categories, thumbnail);
 
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
@@ -334,7 +337,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
 
 
-    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description) {
+    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description, String categories, String thumbnail) {
         BookInformation bookInformation;
         if (user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
             if (!user.getOwnedBooks().getBooks().containsKey(isbn)) {
@@ -344,7 +347,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             imageUri,
                             description,
                             isbn,
-                            user.getUserInfo().getUserName());
+                            user.getUserInfo().getUserName(),
+                            categories,
+                            thumbnail);
 
                     databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
                         @Override
@@ -359,7 +364,8 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         }
                     });
                 } else {
-                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn,
+                            user.getUserInfo().getUserName(), categories, thumbnail);
                 }
             } else if (user.getOwnedBooks().getBooks().containsKey(isbn)) {
                 if (imageUri != null) {
@@ -368,7 +374,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             imageUri,
                             description,
                             isbn,
-                            user.getUserInfo().getUserName());
+                            user.getUserInfo().getUserName(),
+                            categories,
+                            thumbnail);
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
                     databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
                         @Override
@@ -383,7 +391,8 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         }
                     });
                 } else {
-                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn, user.getUserInfo().getUserName());
+                    bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn,
+                            user.getUserInfo().getUserName(), categories, thumbnail);
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
                 }
 
