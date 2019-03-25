@@ -473,10 +473,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
 
             }
-            if (author.toLowerCase().contains(userInput)) {
+            else if (author.toLowerCase().contains(userInput)) {
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
-            if (title.toLowerCase().contains(userInput)){
+            else if (title.toLowerCase().contains(userInput)){
                 listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
             }
 
