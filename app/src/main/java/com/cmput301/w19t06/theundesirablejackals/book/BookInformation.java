@@ -14,10 +14,6 @@ public class BookInformation implements Serializable {
     private String owner;
     private String description;
 
-    // newly added
-    private String categories;
-    private String thumbnail;
-
 
     public BookInformation(BookStatus status, Uri bookPhoto, String isbn, String owner){
         this.isbn = isbn;
@@ -46,14 +42,12 @@ public class BookInformation implements Serializable {
         this.status = BookStatus.AVAILABLE;
     }
 
-    public BookInformation(BookStatus status, Uri bookPhoto, String description, String isbn, String owner, String categories, String thumbnail){
+    public BookInformation(BookStatus status, Uri bookPhoto, String description, String isbn, String owner){
         this.isbn = isbn;
         this.bookPhoto = bookPhoto.getLastPathSegment();
         this.owner = owner;
         this.status = status;
         this.description = description;
-        this.categories = categories;
-        this.thumbnail = thumbnail;
     }
 
     public BookInformation(Uri bookPhoto, String description, String isbn, String owner){
@@ -64,13 +58,11 @@ public class BookInformation implements Serializable {
         this.description = description;
     }
 
-    public BookInformation(BookStatus status, String description, String isbn, String owner, String categories, String thumbnail){
+    public BookInformation(BookStatus status, String description, String isbn, String owner){
         this.isbn = isbn;
         this.owner = owner;
         this.status = status;
         this.description = description;
-        this.categories = categories;
-        this.thumbnail = thumbnail;
     }
 
     public BookInformation(String description, String isbn, String owner){
@@ -96,18 +88,6 @@ public class BookInformation implements Serializable {
     public String getOwner(){return owner;}
 
     public String getDescription(){return description;}
-
-    public String getCategories() {return categories;}
-
-    public String getThumbnail() {return thumbnail;}
-
-    public void setCategories(String newCategories) {
-        categories = newCategories;
-    }
-
-    public void setThumbnail(String newThumbnail) {
-        thumbnail = newThumbnail;
-    }
 
     public void setBookInformationKey(String bookInformationKey){this.bookInformationKey = bookInformationKey;}
 

@@ -284,7 +284,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         @Override
                         public void onCallback(User user) {
                             BookInformation bookInformation = updatebookInformation(user, imageUri,
-                                    isbn, description, categories, thumbnail);
+                                    isbn, description);
 
                             databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
                                 @Override
@@ -337,7 +337,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
 
 
 
-    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description, String categories, String thumbnail) {
+    public BookInformation updatebookInformation(User user, Uri imageUri, String isbn, String description) {
         BookInformation bookInformation;
         if (user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
             if (!user.getOwnedBooks().getBooks().containsKey(isbn)) {
@@ -347,9 +347,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             imageUri,
                             description,
                             isbn,
-                            user.getUserInfo().getUserName(),
-                            categories,
-                            thumbnail);
+                            user.getUserInfo().getUserName());
 
                     databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
                         @Override
@@ -365,7 +363,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     });
                 } else {
                     bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn,
-                            user.getUserInfo().getUserName(), categories, thumbnail);
+                            user.getUserInfo().getUserName());
                 }
             } else if (user.getOwnedBooks().getBooks().containsKey(isbn)) {
                 if (imageUri != null) {
@@ -374,9 +372,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             imageUri,
                             description,
                             isbn,
-                            user.getUserInfo().getUserName(),
-                            categories,
-                            thumbnail);
+                            user.getUserInfo().getUserName());
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
                     databaseHelper.uploadBookPicture(imageUri, bookInformation, new BooleanCallback() {
                         @Override
@@ -392,7 +388,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     });
                 } else {
                     bookInformation = new BookInformation(BookStatus.AVAILABLE, description, isbn,
-                            user.getUserInfo().getUserName(), categories, thumbnail);
+                            user.getUserInfo().getUserName());
                     bookInformation.setBookInformationKey(user.getOwnedBooks().get(isbn));
                 }
 
