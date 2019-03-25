@@ -53,7 +53,9 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
     private TextView mAuthor;
     private TextView mIsbn;
     private TextView mStatus;
+    private TextView mBookOwner;
     private TextView mDescription;
+    private TextView mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +85,17 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mAuthor = findViewById(R.id.textViewViewLibraryBookBookAuthor);
         mIsbn = findViewById(R.id.textViewViewLibraryBookBookISBN);
         mStatus = findViewById(R.id.textViewViewLibraryBookBookStatus);
+        mBookOwner = findViewById(R.id.textViewViewLibraryBookBookOwner);
+        mCategory = findViewById(R.id.textViewViewLibraryBookCategory);
         mDescription = findViewById(R.id.textViewViewLibraryBookBookDescription);
+
 
         mTitle.setText(mLibraryBook.getTitle());
         mAuthor.setText(mLibraryBook.getAuthor());
         mIsbn.setText("ISBN: " + mLibraryBook.getIsbn());
         mStatus.setText(mBookInformation.getStatus().toString());
+        mBookOwner.setText("Owner: " + mBookInformation.getOwner());
+        mCategory.setText("Category: "+ mLibraryBook.getCategories());
         mDescription.setText(mBookInformation.getDescription());
 
         setBookPhotoView();

@@ -24,9 +24,6 @@ public class Book implements Serializable {
     private String isbn;
     private String thumbnail; // holds the URL of thumbnail
     private String categories;
-    private ArrayList<BookGenres> genres;
-
-
 
 
     public Book(){ }
@@ -44,7 +41,6 @@ public class Book implements Serializable {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.genres = new ArrayList<>();
     }
 
     public Book(String title, String author, String isbn, String categories, String thumbnail) {
@@ -56,7 +52,6 @@ public class Book implements Serializable {
         this.isbn = isbn;
         this.categories = categories;
         this.thumbnail = thumbnail;
-        this.genres = new ArrayList<>();
     }
 
     public Book(Book book){
@@ -65,7 +60,7 @@ public class Book implements Serializable {
         this.isbn = book.getIsbn();
         this.categories = book.getCategories();
         this.thumbnail = book.getThumbnail();
-        this.genres = book.getGenres();
+
     }
 
 
@@ -152,31 +147,6 @@ public class Book implements Serializable {
      */
     public void setIsbn(String newISBN) {
         isbn = newISBN;
-    }
-
-
-    /**
-     *
-     * @return ArrayList of all the book genres of the book
-     */
-    public ArrayList<BookGenres> getGenres() {
-        return genres;
-    }
-
-    /**
-     *
-     * @param genres an ArrayList of genres that the book belongs to
-     */
-    public void setGenres(ArrayList<BookGenres> genres) {
-        this.genres = genres;
-    }
-
-    /**
-     * Adds a new genre to the list of book genre that the book object belongs to
-     * @param genre the genre to be added
-     */
-    public void addGenre(BookGenres genre) {
-        genres.add(genre);
     }
 
 }

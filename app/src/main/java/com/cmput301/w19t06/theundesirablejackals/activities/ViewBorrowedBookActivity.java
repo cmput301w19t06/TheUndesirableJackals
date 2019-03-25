@@ -36,6 +36,7 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
     private TextView mIsbn;
     private TextView mBookOwner;
     private TextView mDescription;
+    private TextView mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,14 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         mIsbn = findViewById(R.id.textViewViewBorrowedBookBookISBN);
         mDescription = findViewById(R.id.textViewViewBorrowedBookBookDescription);
         mBookOwner = findViewById(R.id.textViewViewBorrowedBookBookOwner);
+        mCategory = findViewById(R.id.textViewViewBorrowedBookCategory);
         mButtonReturnBook = findViewById(R.id.buttonBorrowedBookReturnBook);
 
         mTitle.setText(mBorrowedBook.getTitle());
         mAuthor.setText(mBorrowedBook.getAuthor());
         mIsbn.setText("ISBN: " + mBorrowedBook.getIsbn());
         mBookOwner.setText("Owner: " + mBookInformation.getOwner());
+        mCategory.setText("Category: "+ mBorrowedBook.getCategories());
         mDescription.setText(mBookInformation.getDescription());
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
