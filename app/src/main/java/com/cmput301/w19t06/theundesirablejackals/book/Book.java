@@ -125,7 +125,7 @@ public class Book implements Serializable {
      * @param newCategories replacement of thumbnail of the book
      */
     public void setCategories(String newCategories) {
-        thumbnail = newCategories;
+        categories = newCategories;
     }
 
 
