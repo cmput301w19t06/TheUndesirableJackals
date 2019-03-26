@@ -26,7 +26,7 @@
         android:layout_marginTop="4dp"
         android:maxLines="1"
         android:text="Status"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewMyBooksItemPhoto" />
 
@@ -91,4 +91,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemIsbn" />
+
 </android.support.constraint.ConstraintLayout>

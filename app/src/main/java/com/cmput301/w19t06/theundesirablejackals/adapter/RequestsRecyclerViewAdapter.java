@@ -107,7 +107,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
         String requester = bookRequest.getBorrower().getUserName();
 
         if(status != null) {
-            statusTextView.setText(status.toString());
+            statusTextView.setText(status.getStatusDescription());
         }
 
 
