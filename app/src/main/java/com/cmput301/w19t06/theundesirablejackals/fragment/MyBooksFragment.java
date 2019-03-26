@@ -131,6 +131,7 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         booksRecyclerViewAdapter.setDataSet(new BookInformationPairing());
+        booksRecyclerViewAdapter.setDataCopy(new BookInformationPairing());
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {

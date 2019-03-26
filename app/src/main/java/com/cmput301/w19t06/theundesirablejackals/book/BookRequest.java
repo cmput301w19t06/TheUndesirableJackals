@@ -5,6 +5,8 @@ import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
+import java.io.Serializable;
+
 /**
  * This class mainly handles the book exchange between two users. It tracks the current situation
  * of the book request through the use of BookStatus enum.
@@ -14,7 +16,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * @see User
  * @see Geolocation
  */
-public class BookRequest {
+public class BookRequest implements Serializable {
     private String bookRequestLendKey;
     private String bookRequestBorrowKey;
     private BookInformation bookRequested;

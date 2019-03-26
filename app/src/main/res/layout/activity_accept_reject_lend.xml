@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context="AcceptRejectLendActivity">
 
+    <fragment
+        android:id="@+id/mapHandoff2"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="399dp"
+        android:layout_height="313dp"
+        android:layout_marginTop="56dp"
+        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail"
+        tools:context=".MapsActivity"
+        tools:layout_editor_absoluteX="8dp" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_barAcceptReject"
         android:layout_width="match_parent"
@@ -26,11 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Book Title:"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_barAcceptReject" />
 
@@ -39,24 +47,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Book title"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityBookTitleStatic" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewAcceptRejectActivityBookTitleStatic"
+        app:layout_constraintTop_toBottomOf="@+id/tool_barAcceptReject" />
 
     <TextView
         android:id="@+id/textViewAcceptRejectActivityUserRequestingStatic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="User Requesting book"
+        android:layout_marginTop="12dp"
+        android:text="Requested By:"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityBookTitle" />
 
@@ -65,36 +72,95 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:text="username"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequestingStatic" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewAcceptRejectActivityUserRequestingStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityBookTitle" />
 
     <Button
         android:id="@+id/buttonAcceptRejectActivityAcceptRequest"
-        android:layout_width="193dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="accept"
         android:text="Accept"
+        app:layout_constraintEnd_toStartOf="@+id/space"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequesting" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail" />
 
     <Button
         android:id="@+id/buttonAcceptRejectActivityRejectRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:onClick="reject"
         android:text="Reject"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/buttonAcceptRejectActivityAcceptRequest"
+        app:layout_constraintStart_toEndOf="@+id/space"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail" />
+
+    <TextView
+        android:id="@+id/textViewAcceptRejectLendPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewAcceptRejectActivityUserRequestingStatic"
         app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectActivityUserRequesting" />
+
+    <TextView
+        android:id="@+id/textViewAcceptRejectLendEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewAcceptRejectActivityUserRequestingStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendPhone" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail"
+        tools:layout_editor_absoluteX="199dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="586dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="281dp"
+        tools:layout_editor_absoluteY="582dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="666dp" />
 </android.support.constraint.ConstraintLayout>

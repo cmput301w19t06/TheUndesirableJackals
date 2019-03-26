@@ -36,6 +36,7 @@ import java.io.File;
  * @author Art Limbaga
  */
 public class ViewLibraryBookActivity extends AppCompatActivity {
+    private final static String TAG_ACTIVITY = "ViewLibraryBookActivity";
     private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
 
     public final static String LIBRARY_BOOK_FROM_RECYCLER_VIEW = "LibraryBookFromRecyclerView";
@@ -207,16 +208,23 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
 
     private void makeNewBorrowRequest(UserInformation userInformation){
         BookRequest bookRequest = new BookRequest(userInformation, mBookInformation);
-        databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                if(bool) {
-                    ToastMessage.show(getBaseContext(), "Request has been sent to owner");
-                }else{
-                    ToastMessage.show(getBaseContext(), "Request not sent correctly");
+
+        // check if the book requested is a book owned by the current user
+        if (!userInformation.getUserName().equals(mBookInformation.getOwner())) {
+
+            databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
+                @Override
+                public void onCallback(boolean bool) {
+                    if(bool) {
+                        ToastMessage.show(getBaseContext(), "Request has been sent to owner");
+                    }else{
+                        ToastMessage.show(getBaseContext(), "Request not sent correctly");
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ToastMessage.show(ViewLibraryBookActivity.this, "Can't request a book that you own");
+        }
     }
 
 }
