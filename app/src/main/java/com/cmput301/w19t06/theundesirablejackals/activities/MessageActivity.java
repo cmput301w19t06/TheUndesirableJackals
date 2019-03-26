@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -41,6 +42,7 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     private static final String TAG = "MessageActivity";
     private static final int CHAT_CODE = 1200;
     public static final String CHAT_DATA = "convo";
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,11 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
         RecyclerView messagesRecyclerView;
         FloatingActionButton floatingActionButton;
 
+        toolbar = findViewById(R.id.toolbarMessageActivity);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Messages");
+        setSupportActionBar(toolbar);
+
         messagesRecyclerView = findViewById(R.id.recyclerViewMessageActivityPersonalMessages);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMessageActivityPersonalMessages);
         floatingActionButton = findViewById(R.id.floatingActionButtonMessageActivity);
@@ -94,6 +101,14 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 //        swipeController = new SwipeController(messagesRecyclerViewAdapter);
 //        itemTouchHelper = new ItemTouchHelper(swipeController);
 //        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity.class));
+                finish();
+            }
+        });
 
     }
 
