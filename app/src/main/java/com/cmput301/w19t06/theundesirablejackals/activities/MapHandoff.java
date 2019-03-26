@@ -14,7 +14,7 @@ public class MapHandoff extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_handoff);
 
-        toolbar = findViewById(R.id.tool_barLend);
+        toolbar = findViewById(R.id.tool_barMapHandoff);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Book Hand-off");
         setSupportActionBar(toolbar);
@@ -22,7 +22,7 @@ public class MapHandoff extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
+                startActivity(new Intent(getApplicationContext(), BorrowedListActivity.class));
                 finish();
             }
         });
