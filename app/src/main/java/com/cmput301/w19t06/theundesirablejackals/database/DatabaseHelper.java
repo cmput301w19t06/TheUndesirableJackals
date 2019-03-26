@@ -958,7 +958,7 @@ public class DatabaseHelper{
      * @param userInformation the user's information who has uploaded a picture
      * @param uriCallback the uri retrieved from firebase Cloud Storage
      */
-    public void getProfilePictureUri(UserInformation userInformation, final uriCallback uriCallback){
+    public void getProfilePictureUri(UserInformation userInformation, final UriCallback uriCallback){
         userPicturesReference
                 .child(userInformation.getUserName())
                 .child(userInformation.getUserPhoto())
