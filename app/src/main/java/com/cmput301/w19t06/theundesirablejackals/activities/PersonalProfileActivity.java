@@ -2,39 +2,55 @@
  * Class launched from "MainHomeViewActivity" that displays the user's personal information
  * It gives the user the option to edit their phone number and see their current pick up
  * buttonDefaultLocation (when the appropiate buttons are pressed)
+ *
  * @version 1 - March 8, 2019
  * @see MainHomeViewActivity, MapsActivity, EditContactInfoActivity
  */
 
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+import com.squareup.picasso.Picasso;
 
 public class
 PersonalProfileActivity extends AppCompatActivity {
-    private Button buttonEditProfile;
-    private Button buttonBack;
-    private Button buttonDefaultLocation;
-    private DatabaseHelper databaseHelper;
+
+
+    // ratio in relation to the original display
+    private final Double WIDTH_RATIO = 0.9;
+    private final Double HEIGHT_RATIO = 0.6;
+
+
+    private DatabaseHelper mDatabaseHelper;
+
+    private UserInformation mUserInformation;
+
+    private ImageView mProfilePhoto;
+    private TextView mTextViewUsername;
+    private TextView mTextViewEmail;
+    private TextView mTextViewPhoneNumber;
+    private TextView mTextViewEditProfile;
+
 
     /**
      * Initializes buttons and contains button handlers that begin intents to MapsActivity
      * EditContactInfoActivity activities
+     *
      * @param savedInstanceState
      */
     @Override
@@ -42,62 +58,31 @@ PersonalProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_profile);
 
-        buttonEditProfile = (Button) findViewById(R.id.buttonPersonalProfileActivityEditInfo);
-        buttonBack = (Button) findViewById(R.id.buttonPersonalProfileActivityBack);
-        buttonDefaultLocation = (Button) findViewById(R.id.buttonPersonalProfileActivityDefaultLocation);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        // edit action
-        buttonEditProfile.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Called when user presses the edit info option
-             * Sends the user to "EditContactInfoActivity" activity
-             * @param view Context passed as parameter for the intent
-             */
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        // set size of the popup window
+        getWindow().setLayout((int) (width * WIDTH_RATIO), (int) (height * HEIGHT_RATIO));
+
+        mDatabaseHelper = new DatabaseHelper();
+
+        mProfilePhoto = findViewById(R.id.imageViewPersonalProfilePhoto);
+        mTextViewUsername = findViewById(R.id.textViewPersonalProfileActivityUserName);
+        mTextViewEmail = findViewById(R.id.textViewPersonalProfileActivityEmail);
+        mTextViewPhoneNumber = findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
+        mTextViewEditProfile = findViewById(R.id.textViewPersonalProfileActivityEditProfile);
+
+        mTextViewEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), EditContactInfoActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(PersonalProfileActivity.this, EditPersonalProfileActivity.class);
+                //intent.putExtra()
             }
         });
 
-        // buttonBack action
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Called when user presses the buttonBack option
-             * Sends the user buttonBack to "MainHomeView" activity
-             * @param view Context passed as parameter for the intent
-             */
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MainHomeViewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // buttonDefaultLocation action
-        buttonDefaultLocation.setOnClickListener(
-                new View.OnClickListener() {
-            /**
-             * Called when user presses the my pick up buttonDefaultLocation option
-             * Sends the user to "MapsActivity" activity
-             * @param view Context passed as parameter for the intent
-             */
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-                startActivity(intent);
-//                testLocation();
-            }
-        });
-    }
-
-    /**
-     * Initializes the database helper which will be used to retrieve contact information
-     * from current user
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        databaseHelper = new DatabaseHelper();
-
-        // display personal information on the activity
         getUserInfo();
     }
 
@@ -106,31 +91,34 @@ PersonalProfileActivity extends AppCompatActivity {
      * Retrieves user name, email and phone number and set those values to their respective
      * text view
      */
-    public void getUserInfo () {
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+    public void getUserInfo() {
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
                 // retrieve user's info
-                UserInformation userInformation = user.getUserInfo();
-                String userName = userInformation.getUserName();
-                String email = userInformation.getEmail();
-                String phone = userInformation.getPhoneNumber();
-
-                Geolocation b = user.getPickUpLocation();
+                mUserInformation = user.getUserInfo();
 
                 // display the info
-                TextView userNameView = (TextView) findViewById(R.id.textViewPersonalProfileActivityUserName);
-                userNameView.setText(userName);
+                mTextViewUsername.setText(mUserInformation.getUserName());
+                mTextViewEmail.setText("Email: " + mUserInformation.getEmail());
+                mTextViewPhoneNumber.setText("Phone: " + mUserInformation.getPhoneNumber());
 
-                TextView emailView = (TextView) findViewById(R.id.textViewPersonalProfileActivityEmail);
-                emailView.setText(email);
+                if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
+                    mDatabaseHelper.getProfilePictureUri(mUserInformation, new UriCallback() {
+                        @Override
+                        public void onCallback(Uri uri) {
+                            if (uri !=null) {
+                                Picasso.get()
+                                        .load(uri)
+                                        .error(R.drawable.ic_person_outline_grey_24dp)
+                                        .placeholder(R.drawable.ic_loading_with_text)
+                                        .into(mProfilePhoto);
 
-                TextView phoneView = (TextView) findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
-                phoneView.setText("Phone: " + phone);
+                            }
+                        }
 
-                ImageView profilePhoto = findViewById(R.id.imageViewPersonalProfileActivityBookThumbnail);
-
-                profilePhoto.setImageResource(R.drawable.ic_person_outline_grey_24dp);
+                    });
+                }
             }
         });
     }
