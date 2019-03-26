@@ -238,7 +238,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     public void OnClick_ProfileImage(View view) {
         Intent intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
         startActivity(intent);
-        finish();
     }
 
     /**
