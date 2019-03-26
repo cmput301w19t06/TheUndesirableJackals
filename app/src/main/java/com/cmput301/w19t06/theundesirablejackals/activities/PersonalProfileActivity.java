@@ -10,6 +10,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.uriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
@@ -48,6 +50,7 @@ PersonalProfileActivity extends AppCompatActivity {
     /**
      * Initializes buttons and contains button handlers that begin intents to MapsActivity
      * EditContactInfoActivity activities
+     *
      * @param savedInstanceState
      */
     @Override
@@ -62,7 +65,7 @@ PersonalProfileActivity extends AppCompatActivity {
         int height = displayMetrics.heightPixels;
 
         // set size of the popup window
-        getWindow().setLayout((int)(width*WIDTH_RATIO), (int) (height*HEIGHT_RATIO));
+        getWindow().setLayout((int) (width * WIDTH_RATIO), (int) (height * HEIGHT_RATIO));
 
         mDatabaseHelper = new DatabaseHelper();
 
@@ -99,14 +102,23 @@ PersonalProfileActivity extends AppCompatActivity {
                 mTextViewUsername.setText(mUserInformation.getUserName());
                 mTextViewEmail.setText("Email: " + mUserInformation.getEmail());
                 mTextViewPhoneNumber.setText("Phone: " + mUserInformation.getPhoneNumber());
-//                if (mUserInformation.getUserPhoto() != null || !mUserInformation.getUserPhoto().isEmpty()) {
-//                    Picasso.get()
-//                            .load(mUserInformation.getUserPhoto())
-//                            .error(R.drawable.ic_person_outline_grey_24dp)
-//                            .placeholder(R.drawable.ic_loading_with_text)
-//                            .into(mProfilePhoto);
-//                }
 
+                if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
+                    mDatabaseHelper.getProfilePictureUri(mUserInformation, new uriCallback() {
+                        @Override
+                        public void onCallback(Uri uri) {
+                            if (uri !=null) {
+                                Picasso.get()
+                                        .load(uri)
+                                        .error(R.drawable.ic_person_outline_grey_24dp)
+                                        .placeholder(R.drawable.ic_loading_with_text)
+                                        .into(mProfilePhoto);
+
+                            }
+                        }
+
+                    });
+                }
             }
         });
     }
