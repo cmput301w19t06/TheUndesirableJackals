@@ -31,9 +31,9 @@
             android:icon="@drawable/ic_person_outline_grey_24dp"
             android:title="Search for User" />
         <item
-            android:id="@+id/itemMenuPreferences"
-            android:icon="@drawable/ic_settings_grey_24dp"
-            android:title="Preferences" />
+            android:id="@+id/itemMenuDefaultPickupLocation"
+            android:icon="@drawable/ic_add_location_grey_24dp"
+            android:title="Default Pick Up Location" />
 
         <item
             android:id="@+id/itemMenuLogout"
