@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.uriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
@@ -104,7 +104,7 @@ PersonalProfileActivity extends AppCompatActivity {
                 mTextViewPhoneNumber.setText("Phone: " + mUserInformation.getPhoneNumber());
 
                 if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
-                    mDatabaseHelper.getProfilePictureUri(mUserInformation, new uriCallback() {
+                    mDatabaseHelper.getProfilePictureUri(mUserInformation, new UriCallback() {
                         @Override
                         public void onCallback(Uri uri) {
                             if (uri !=null) {
