@@ -63,6 +63,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     private BooksRecyclerViewAdapter ownedBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();
+    private MenuItem mSelectedFilter;
 
     private TextView mDrawerUsername;
     private TextView mDrawerEmail;
@@ -151,6 +152,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         /* adapter setup */
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
@@ -247,6 +249,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         BookInformationPairing toFilterThrough = ownedBooksAdapter.getDataCopy();
         String menuTitle;
         // open navigation drawer by tabbing the menu icon
+
+        //initialize list of all filter menu items
+
+
         switch (item.getItemId()) {
 
             case android.R.id.home:
@@ -255,12 +261,13 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
             // Handle available status selection
             case R.id.itemFilterMenuAvailable:
                 // get the status the user wants to filter the book list
+
                 menuTitle = item.getTitle().toString().toUpperCase();
                 Log.d(TAG, menuTitle);
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 ownedBooksAdapter.setDataSet(filteredItem);
 
-                ToastMessage.show(MainHomeViewActivity.this, "Filtering by AVAILABLE");
+                //ToastMessage.show(MainHomeViewActivity.this, "Filtering by AVAILABLE");
                 break;
             // Handle requested status selection
             case R.id.itemFilterMenuRequested:
@@ -270,7 +277,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 ownedBooksAdapter.setDataSet(filteredItem);
 
-                ToastMessage.show(MainHomeViewActivity.this, "Filtering by REQUESTED");
+                //ToastMessage.show(MainHomeViewActivity.this, "Filtering by REQUESTED");
                 break;
             // Handle accepted status selection
             case R.id.itemFilterMenuAccepted:
@@ -280,7 +287,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 ownedBooksAdapter.setDataSet(filteredItem);
 
-                ToastMessage.show(MainHomeViewActivity.this, "Filtering by ACCEPTED");
+                //ToastMessage.show(MainHomeViewActivity.this, "Filtering by ACCEPTED");
                 break;
 
             // Handle borrowed status selection
@@ -291,12 +298,40 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 ownedBooksAdapter.setDataSet(filteredItem);
 
-                ToastMessage.show(MainHomeViewActivity.this, "Filtering by BORROWED");
+                //ToastMessage.show(MainHomeViewActivity.this, "Filtering by BORROWED");
                 break;
+        }
+
+        if(item.equals(mSelectedFilter)) {
+            mSelectedFilter = null;
+            item.setChecked(false);
+            ownedBooksAdapter.setDataSet(ownedBooksAdapter.getDataCopy());
+        } else {
+            item.setChecked(true);
+            mSelectedFilter = item;
         }
         return super.onOptionsItemSelected(item);
 
     }
+
+
+    /**
+     * Resets the filter menu options every new choice
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        for(int i=0; i<menu.size(); i++){
+            if(menu.getItem(i).equals(mSelectedFilter)) {
+                continue;
+            } else {
+                menu.getItem(i).setChecked(false);
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Filters the list of books visible on My Books tab by status
