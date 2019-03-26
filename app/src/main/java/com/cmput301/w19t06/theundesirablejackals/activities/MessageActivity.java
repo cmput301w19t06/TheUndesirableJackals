@@ -2,31 +2,32 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
-import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
+import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+
+import java.util.Random;
 
 
 public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
     MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
+    DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        databaseHelper = new DatabaseHelper();
 
 //        ItemTouchHelper itemTouchHelper;
 //        SwipeController swipeController;
@@ -63,13 +64,37 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     }
 
 
+    //This on click listener is exclusively for recycler view elements
     @Override
     public void onClick(View view, int position) {
-        ToastMessage.show(this, "Clicked on " + position);
+        showToast("Clicked on " + position);
     }
 
+
+    //this on click listener is for Views such as buttons, edit text, etc...
     @Override
     public void onClick(View v) {
-        ToastMessage.show(this, "Clicked on Floating Action button");
+        showToast("Clicked on Floating Action button");
+        Messaging messaging = new Messaging();
+        messaging.setFrom("ultilink3");
+        messaging.setTo("omae_wa_mou_shindeiru");
+        Random random = new Random();
+        Integer integer = random.nextInt();
+        messaging.setMessage("This is a test message " + integer);
+        databaseHelper.sendMessage(messaging, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool){
+                    showToast("Test message sent");
+                }else{
+                    showToast("Test message not sent");
+                }
+
+            }
+        });
+    }
+
+    public void showToast(String message){
+        ToastMessage.show(this, message);
     }
 }

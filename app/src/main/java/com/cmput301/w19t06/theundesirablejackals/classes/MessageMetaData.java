@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MessageMetaData {
     private ArrayList<Messaging> messagings;
     private String username;
-    private Integer unseen;
+    private int unseen;
 
     public MessageMetaData(){
         messagings = new ArrayList<Messaging>();
@@ -43,6 +43,6 @@ public class MessageMetaData {
     public String toString() {
         return "Messages:{" + messagings.toString() + "} " +
                 "Message partner : " + username +
-                "Number unseen : " + unseen.toString();
+                "Number unseen : " + unseen;
     }
 }
