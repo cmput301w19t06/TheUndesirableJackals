@@ -41,12 +41,14 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.fragment.BorrowedFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.LibraryFragment;
 import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +198,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 TextView emailView = (TextView) findViewById(R.id.textViewMenuEmail);
                 emailView.setText(email);
 
-                ImageView profilePhoto = findViewById(R.id.imageViewMenuProfile);
+                setProfilePhotoInDrawer(user);
 
                 // TODO: Change image to profile photo from database
                 //profilePhoto.setImageResource(R.drawable.default_profile_photo);
@@ -592,5 +594,23 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
         }
 //    return listItem;
     }
+
+    private void setProfilePhotoInDrawer(User user) {
+        UserInformation userinfo = user.getUserInfo();
+        final ImageView drawerProfilePhoto = findViewById(R.id.imageViewMenuProfile);
+        if (userinfo.getUserPhoto() != null && !userinfo.getUserPhoto().isEmpty()) {
+            databaseHelper.getProfilePictureUri(userinfo, new UriCallback() {
+                @Override
+                public void onCallback(Uri uri) {
+                    if (uri !=null) {
+                        Picasso.get()
+                                .load(uri)
+                                .error(R.drawable.ic_person_outline_grey_24dp)
+                                .placeholder(R.drawable.ic_loading_with_text)
+                                .into(drawerProfilePhoto);
+                    }
+                }
+            });
+        }}
     
 }
