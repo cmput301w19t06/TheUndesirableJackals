@@ -74,8 +74,17 @@ public class BookInformation implements Serializable {
 
 
     public BookInformation(){
-
     }
+
+    public BookInformation(BookInformation bookInformation){
+        this.bookInformationKey = bookInformation.getBookInformationKey();
+        this.isbn = bookInformation.getIsbn();
+        this.status = bookInformation.getStatus();
+        this.bookPhoto = bookInformation.getBookPhoto();
+        this.owner = bookInformation.getOwner();
+        this.description = bookInformation.getDescription();
+    }
+
 
     public String getBookInformationKey(){return this.bookInformationKey;}
 

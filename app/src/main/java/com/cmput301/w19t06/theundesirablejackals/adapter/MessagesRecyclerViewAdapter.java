@@ -1,0 +1,186 @@
+package com.cmput301.w19t06.theundesirablejackals.adapter;
+
+
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
+import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.MessageListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRecyclerViewAdapter.MyViewHolder> implements SwipeRefreshLayout.OnRefreshListener {
+
+    private static final String TAG = "MessagesRVA";
+
+    private ArrayList<MessageMetaData> dataset = new ArrayList<>();
+    private User currentUser;
+    private RecyclerViewClickListener myListener;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private DatabaseHelper databaseHelper;
+
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        getMessages();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+
+
+    @NonNull
+    @Override
+    public MessagesRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        // create a new view
+        ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.personal_message_item, parent, false);
+        return new MyViewHolder(v, myListener);
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        TextView usernameView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUsername);
+        TextView unseenView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUnseen);
+        Integer unseen = dataset.get(position).getUnseen();
+        String username = dataset.get(position).getUsername();
+        switch (unseen){
+            case 0 :
+                unseenView.setTextColor(Color.parseColor("#ff000000"));
+                unseenView.setText(unseen + " New Messages");
+                break;
+            default :
+                unseenView.setTextColor(Color.parseColor("#ffcc0000"));
+                unseenView.setText(unseen + " New Messages");
+                break;
+        }
+        usernameView.setText(username);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataset.size();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        // each data item is a MyHealthStats member
+        private ConstraintLayout mainView;
+        private RecyclerViewClickListener myListener;
+
+
+        MyViewHolder(ConstraintLayout v, RecyclerViewClickListener listener) {
+            super(v);
+            myListener = listener;
+            mainView = v;
+            mainView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v){
+            myListener.onClick(v, getAdapterPosition());
+        }
+
+    }
+
+    public MessagesRecyclerViewAdapter(RecyclerViewClickListener listener, SwipeRefreshLayout swipeRefreshLayout){
+        this.myListener = listener;
+        this.swipeRefreshLayout = swipeRefreshLayout;
+        this.swipeRefreshLayout.setOnRefreshListener(this);
+        databaseHelper = new DatabaseHelper();
+        onRefresh();
+    }
+
+    public ArrayList<MessageMetaData> getDataset() {
+        return dataset;
+    }
+
+    public void setDataset(ArrayList<MessageMetaData> dataset) {
+        this.dataset = dataset;
+        notifyDataSetChanged();
+    }
+
+
+    private void getMessages() {
+        if(currentUser != null){
+            retrieveMessagesFromDatabase();
+        }else {
+            databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    if (user != null) {
+                        currentUser = user;
+                        retrieveMessagesFromDatabase();
+                    } else {
+                        Log.d(TAG, "Something went wrong getting the current user");
+                    }
+                }
+            });
+        }
+    }
+
+    private void retrieveMessagesFromDatabase(){
+        databaseHelper.getMessages(currentUser.getUserInfo().getUserName(), new MessageListCallback() {
+            @Override
+            public void onCallback(ArrayList<Messaging> messagingArrayList) {
+                if(messagingArrayList != null){
+//                    messages = messagingArrayList;
+                    HashMap<String, Integer> seen = new HashMap<>();
+                    dataset = new ArrayList<>();
+                    for(Messaging m : messagingArrayList){
+                        if(seen.containsKey(m.getFrom())){
+                            MessageMetaData temp = dataset.get(seen.get(m.getFrom()));
+                            temp.getMessagings().add(m);
+                            if(!m.getSeen()){
+                                temp.addUnseen();
+                            }
+                        }else if(seen.containsKey(m.getTo())) {
+                            MessageMetaData temp = dataset.get(seen.get(m.getTo()));
+                            temp.getMessagings().add(m);
+                            if (!m.getSeen()) {
+                                temp.addUnseen();
+                            }
+                        }else{
+                            MessageMetaData temp = new MessageMetaData();
+                            if(!currentUser.getUserInfo().getUserName().equals(m.getFrom())){
+                                seen.put(m.getFrom(), dataset.size());
+                                temp.getMessagings().add(m);
+                                if (!m.getSeen()) {
+                                    temp.addUnseen();
+                                }
+                                temp.setUsername(m.getFrom());
+                            }else{
+                                seen.put(m.getTo(), dataset.size());
+                                temp.getMessagings().add(m);
+                                if (!m.getSeen()) {
+                                    temp.addUnseen();
+                                }
+                                temp.setUsername(m.getTo());
+                            }
+                            dataset.add(temp);
+                        }
+                    }
+                    notifyDataSetChanged();
+                }else{
+                    Log.d(TAG, "Something went wrong getting messages");
+                }
+            }
+        });
+    }
+}

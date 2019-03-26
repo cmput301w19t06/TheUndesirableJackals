@@ -146,7 +146,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
                 }
             });
         }else{
-            databaseHelper.getLendRequests(currentUser.getUserName(), new BookRequestListCallback() {
+            databaseHelper.getBorrowRequests(currentUser.getUserName(), new BookRequestListCallback() {
                 @Override
                 public void onCallback(BookRequestList bookRequestList) {
                     requestsRecyclerViewAdapter.setDataSet(bookRequestList);

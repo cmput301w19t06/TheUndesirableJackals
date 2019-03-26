@@ -28,6 +28,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformationList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
@@ -85,6 +86,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             if (bookInformationList.size() > 1) {
                                 // List all owners of the book
                                 Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
+                                intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
+                                intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
                                 startActivity(intent);
 
                             } else if (bookInformationList.size() == 0) {
@@ -95,14 +98,23 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
                             } else {
 
-                                // If there is only one owner of the book display his/her book
+                                // If there is only one owner of the book and the book info status
+                                // is either available or requested display his/her book
+                                if (bookInformationList.get(0).getStatus().equals(BookStatus.AVAILABLE)
+                                    || bookInformationList.get(0).getStatus().equals(BookStatus.REQUESTED)) {
 
-                                Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
-                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
-                                                clickedBook);
-                                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
-                                                bookInformationList.get(0));
-                                startActivity(intent);
+                                    Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
+                                    intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
+                                            clickedBook);
+                                    intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
+                                            bookInformationList.get(0));
+                                    startActivity(intent);
+
+                                } else {
+                                    ToastMessage.show(getActivity(), "Book is currently unavailable.");
+                                }
+
+
                             }
 
 
@@ -165,6 +177,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter
         libraryRecyclerViewAdapter.setDataSet(new BookInformationPairing());
+        libraryRecyclerViewAdapter.setDataCopy(new BookInformationPairing());
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getBooksAfterIsbn("0", 100, new BookListCallback() {
             @Override
