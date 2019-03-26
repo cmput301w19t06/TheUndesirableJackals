@@ -1,11 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
@@ -22,6 +24,7 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 
     MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
     DatabaseHelper databaseHelper;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,11 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
         RecyclerView.LayoutManager layoutManager;
         RecyclerView messagesRecyclerView;
         FloatingActionButton floatingActionButton;
+
+        toolbar = findViewById(R.id.toolbarMessageActivity);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Messages");
+        setSupportActionBar(toolbar);
 
         messagesRecyclerView = findViewById(R.id.recyclerViewMessageActivityPersonalMessages);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMessageActivityPersonalMessages);
@@ -60,6 +68,14 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 //        swipeController = new SwipeController(messagesRecyclerViewAdapter);
 //        itemTouchHelper = new ItemTouchHelper(swipeController);
 //        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity.class));
+                finish();
+            }
+        });
 
     }
 
