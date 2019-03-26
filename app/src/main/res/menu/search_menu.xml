@@ -12,23 +12,27 @@
         android:id="@+id/itemFilterMenuAvailable"
         android:orderInCategory="100"
         android:title="Available"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
 
     <item
         android:id="@+id/itemFilterMenuRequested"
         android:orderInCategory="100"
         android:title="Requested"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
     <item
         android:id="@+id/itemFilterMenuAccepted"
         android:orderInCategory="100"
         android:title="Accepted"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
 
     <item
         android:id="@+id/itemFilterMenuBorrowed"
         android:orderInCategory="100"
         android:title="Borrowed"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
 
 </menu>
