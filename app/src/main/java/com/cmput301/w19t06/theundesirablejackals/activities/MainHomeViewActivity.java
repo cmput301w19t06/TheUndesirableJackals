@@ -107,6 +107,9 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     case R.id.itemMenuProfile:
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
+                    case R.id.itemMenuMessages:
+                        intent = new Intent(MainHomeViewActivity.this, MessageActivity.class);
+                        break;
                     case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
                         break;

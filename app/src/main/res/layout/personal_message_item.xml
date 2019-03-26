@@ -12,17 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:background="@drawable/ic_person_outline_grey_24dp"
+        android:adjustViewBounds="true"
+        android:background="@android:drawable/ic_dialog_email"
         android:contentDescription="@string/profile_picture_content_description"
+        android:maxWidth="100dp"
+        android:maxHeight="90dp"
+        android:minWidth="100dp"
+        android:minHeight="90dp"
+        android:scaleType="centerInside"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:maxHeight="90dp"
-        android:maxWidth="100dp"
-        android:minHeight="90dp"
-        android:minWidth="100dp"
-        android:scaleType="centerInside"
-        android:adjustViewBounds="true"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewPersonalMessageItemUsername"
@@ -38,7 +39,7 @@
         tools:text="@string/hint_username" />
 
     <TextView
-        android:id="@+id/textViewPersonalMessageItemEmail"
+        android:id="@+id/textViewPersonalMessageItemUnseen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

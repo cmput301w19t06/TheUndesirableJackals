@@ -6,10 +6,10 @@ import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
 
-public class SwipeController extends Callback {
-    private BooksRecyclerViewAdapter myAdapter;
+public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
+    private T myAdapter;
 
-    public SwipeController(BooksRecyclerViewAdapter adapter){
+    public SwipeController(T adapter){
         super();
         myAdapter = adapter;
     }
