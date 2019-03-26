@@ -5,28 +5,39 @@ admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.sendNotifications = functions.database.ref('/messages/{user_name}/{notification_id}/from/{from_user}').onWrite((change, context)=>{
+exports.sendNotifications = functions.database.ref('/messages/{user_name}/{notification_id}/from').onWrite((change, context)=>{
   const user_name = context.params.user_name;
-  const notification = context.params.notification_id;
-  const from_user = context.params.from_user;
-
+  const notification_id = context.params.notification_id;
   console.log(user_name, ' has a new message');
-  if(user_name !== from_user){
-    const payload = {
-      notification: {
-        title: "New Message!",
-        body: "Received message",
-        icon: "default"
-      }
-    };
-  }
-  return true;
+
+  const from = admin.database().ref(`/messages/${user_name}/${notification_id}/from`).once('value');
+  return from.then((result) =>{
+    const from_user = result.val();
+    if(user_name !== from_user){
+      const deviceToken = admin.database().ref(`/deviceToken/${user_name}`).once('value');
+      return deviceToken.then((result)=> {
+        const token_id = result.val();
+        const payload = {
+          notification: {
+            title: "New Message!",
+            body: `Message from ${from_user}`,
+            icon: "default"
+          }
+        };
+        return admin.messaging().sendToDevice(token_id, payload).then((response) =>{
+          return console.log(token_id);
+        });
+      });
+
+    }else{
+      return console.log(user_name, ' Sent the message');
+    }
+  });
 });
 
 exports.sendLendRequestNotification = functions.database.ref('/requests/lendRequest/{user_name}/{notification_id}').onWrite((change, context)=>{
   const user_name = context.params.user_name;
   const notification = context.params.notification_id;
-  const borrower = context.params.borrower;
 
   console.log(user_name, ' has a new lend Request');
 
@@ -44,13 +55,12 @@ exports.sendLendRequestNotification = functions.database.ref('/requests/lendRequ
         return console.log(token_id);
       });
 
-  })
+  });
 });
 
 exports.sendBorrowRequestNotification = functions.database.ref('/requests/borrowRequest/{user_name}/{notification_id}').onWrite((change, context)=>{
   const user_name = context.params.user_name;
   const notification = context.params.notification_id;
-  const owner = context.params.owner;
 
   console.log(user_name, ' has a new borrow Request');
 
@@ -68,5 +78,5 @@ exports.sendBorrowRequestNotification = functions.database.ref('/requests/borrow
       return console.log(token_id);
     });
 
-  })
+  });
 });
