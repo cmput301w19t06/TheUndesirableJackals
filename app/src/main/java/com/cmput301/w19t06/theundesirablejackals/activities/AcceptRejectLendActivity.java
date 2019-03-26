@@ -3,6 +3,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
  * Author: Kaya Thiessen
  * @see LentListActivity
  */
-public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity {
+public class AcceptRejectLendActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DatabaseHelper databaseHelper;
 
@@ -32,6 +33,9 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_reject_lend);
 
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+
         toolbar = findViewById(R.id.tool_barAcceptReject);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Lend Requests");
@@ -39,10 +43,10 @@ public class AcceptRejectLendActivity extends com.cmput301.w19t06.theundesirable
 
         databaseHelper = new DatabaseHelper();
 
-        Intent intent = getIntent();
-        //pull the intent
 
         TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
+        TextView phone = (TextView) findViewById(R.id.textViewAcceptRejectLendPhone);
+        TextView email = (TextView) findViewById(R.id.textViewAcceptRejectLendEmail);
         TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
         //Set the values
