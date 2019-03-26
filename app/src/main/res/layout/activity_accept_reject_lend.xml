@@ -10,12 +10,17 @@
         android:id="@+id/mapHandoff2"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="399dp"
-        android:layout_height="313dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="329dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail"
-        tools:context=".MapsActivity"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:context=".MapsActivity" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_barAcceptReject"
@@ -85,13 +90,13 @@
         android:id="@+id/buttonAcceptRejectActivityAcceptRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="accept"
         android:text="Accept"
-        app:layout_constraintEnd_toStartOf="@+id/space"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail" />
 
@@ -100,13 +105,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:onClick="reject"
         android:text="Reject"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendEmail" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAcceptRejectActivityAcceptRequest" />
 
     <TextView
         android:id="@+id/textViewAcceptRejectLendPhone"
@@ -139,28 +146,43 @@
         tools:layout_editor_absoluteX="199dp" />
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTexttRejectLendISBN"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="586dp" />
+        android:text="ISBN"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAcceptRejectLendScanISBN"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapHandoff2" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonAcceptRejectLendScanISBN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="281dp"
-        tools:layout_editor_absoluteY="582dp" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapHandoff2" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonAcceptRejectLentConfirmISBN"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="666dp" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTexttRejectLendISBN" />
 </android.support.constraint.ConstraintLayout>
