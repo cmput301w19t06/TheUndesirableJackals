@@ -89,52 +89,37 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     //This on click listener is exclusively for recycler view elements
     @Override
     public void onClick(View view, int position) {
-        showToast("Clicked on " + position);
+//        showToast("Clicked on " + position);
         MessageMetaData metaData = messagesRecyclerViewAdapter.getDataSet().get(position);
-        showMessagesAlertBox("Messages with " + metaData.getUsername());
+        if(currentUser != null) {
+            showMessagesAlertBox("Messages with " + metaData.getUsername(), metaData);
+        }else{
+            showToast("Something went wrong connecting to database");
+        }
     }
 
-    private void showMessagesAlertBox(String title) {
+    private void showMessagesAlertBox(String title, final MessageMetaData metaData) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.messages_popup_alert);
         dialog.setCanceledOnTouchOutside(true);
-        TextView titleView = (TextView) dialog.findViewById(R.id.textViewNewMessageAlertTitle);
+        TextView titleView = (TextView) dialog.findViewById(R.id.textViewMessageActivityTitle);
         titleView.setText(title);
 
-        final Button send = (Button) dialog.findViewById(R.id.buttonNewMessageAlertSend);
-        Button cancel = (Button) dialog.findViewById(R.id.buttonNewMessageAlertCancel);
+        final Button send = (Button) dialog.findViewById(R.id.buttonMessageActivityNewMessageSend);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //code the functionality when send button is clicked
-                EditText recipientView = (EditText) dialog.findViewById(R.id.editTextNewMessageAlertUser);
-                EditText messageView = (EditText) dialog.findViewById(R.id.editTextNewMessageAlertMessage);
+                EditText messageView = (EditText) dialog.findViewById(R.id.editTextMessageActivityNewMessage);
+
                 final String message = messageView.getText().toString();
-                String recipient = recipientView.getText().toString();
-                if(!message.isEmpty() && !recipient.isEmpty()) {
-                    databaseHelper.getUserInfoFromDatabase(recipient, new UserInformationCallback() {
-                        @Override
-                        public void onCallback(UserInformation userInformation) {
-                            if (userInformation != null) {
-                                sendMessage(message, userInformation.getUserName());
-                            } else {
-                                showToast("User not found");
-                            }
-                        }
-                    });
+                if(!message.isEmpty()) {
+                    sendMessage(message, metaData.getUsername());
                 }else{
                     showToast("Please fill missing fields");
                 }
-                dialog.dismiss();
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //code the functionality when NO button is clicked
                 dialog.dismiss();
             }
         });
