@@ -134,5 +134,8 @@
     <string name="requested_book_image_content_description">Requested Book Image</string>
     <string name="view_other_users_profile_picture">View Other Users Profile Picture</string>
     <string name="title_activity_select_location">Map</string>
+    <string name="title_activity_message">Personal Messages</string>
+    <string name="profile_picture_content_description">Profile Picture</string>
+    <string name="unseen_messages">Unseen</string>
 
 </resources>

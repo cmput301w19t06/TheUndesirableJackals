@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/imageViewPersonalMessageItem"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@drawable/ic_person_outline_grey_24dp"
+        android:contentDescription="@string/profile_picture_content_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxHeight="90dp"
+        android:maxWidth="100dp"
+        android:minHeight="90dp"
+        android:minWidth="100dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:id="@+id/textViewPersonalMessageItemUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/hint_username"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessageItem"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/hint_username" />
+
+    <TextView
+        android:id="@+id/textViewPersonalMessageItemEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/unseen_messages"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessageItem"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPersonalMessageItemUsername"
+        tools:text="@string/unseen_messages" />
+
+</android.support.constraint.ConstraintLayout>
