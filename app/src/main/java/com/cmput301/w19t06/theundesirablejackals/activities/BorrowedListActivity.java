@@ -82,7 +82,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_borrowed_requests, menu);
+        inflater.inflate(R.menu.menu_requests, menu);
         return true;
     }
 

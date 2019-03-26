@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item android:id="@+id/itemRequestsMenusSearch"
+        android:title="Search"
+        android:icon="@drawable/ic_action_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
+        android:id="@+id/itemRequestsMenuRequested"
+        android:orderInCategory="100"
+        android:title="Requested"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/itemRequestsMenuDeclined"
+        android:orderInCategory="100"
+        android:title="Declined"
+        app:showAsAction="never"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/itemRequestsMenuCanceled"
+        android:orderInCategory="100"
+        android:title="Cancelled"
+        app:showAsAction="never"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/itemRequestsMenuAccepted"
+        android:orderInCategory="100"
+        android:title="Accepted"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/itemRequestsMenuHandedOff"
+        android:orderInCategory="100"
+        android:title="Handed Off"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/itemRequestsMenuBorrowed"
+        android:orderInCategory="100"
+        android:title="Borrowed"
+        app:showAsAction="never"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/itemRequestsMenuReturning"
+        android:orderInCategory="100"
+        android:title="Returning"
+        app:showAsAction="never"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/itemRequestsMenuReturned"
+        android:orderInCategory="100"
+        android:title="Returned"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
+
+
+</menu>
