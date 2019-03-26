@@ -137,5 +137,9 @@
     <string name="title_activity_message">Personal Messages</string>
     <string name="profile_picture_content_description">Profile Picture</string>
     <string name="unseen_messages">Unseen</string>
+    <string name="message_text_description">Message Body</string>
+    <string name="hello_autofill_hint">Hello</string>
+    <string name="create_new_message">Send New Message</string>
+    <string name="send_button_text">Send</string>
 
 </resources>
