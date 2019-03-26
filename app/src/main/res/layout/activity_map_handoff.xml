@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MapHandoff">
+    tools:context=".activities.MapHandoff">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_barMapHandoff"
@@ -20,11 +20,60 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/textViewHandoffBookTitleStatic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Book Title:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_barMapHandoff" />
+
+    <TextView
+        android:id="@+id/textViewHandoffBookTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Book title"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewHandoffBookTitleStatic"
+        app:layout_constraintTop_toBottomOf="@+id/tool_barMapHandoff" />
+
+    <TextView
+        android:id="@+id/textViewHandoffOwnerStatic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:text="Owner:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHandoffBookTitleStatic" />
+
+    <TextView
+        android:id="@+id/textViewHandoffOwner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="username"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewHandoffOwnerStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHandoffBookTitle" />
+
     <fragment
         android:id="@+id/mapHandoff"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="437dp"
+        android:layout_height="356dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -32,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_barMapHandoff"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHandoffEmail"
         tools:context=".MapsActivity" />
 
     <EditText
@@ -68,13 +117,35 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Confirm Handoff"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextmapHandoffISBN"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextmapHandoffISBN" />
+
+    <TextView
+        android:id="@+id/textViewHandoffPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="Phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.351"
+        app:layout_constraintStart_toEndOf="@+id/textViewHandoffOwnerStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHandoffOwner" />
+
+    <TextView
+        android:id="@+id/textViewHandoffEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewHandoffOwnerStatic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHandoffPhone" />
 
 </android.support.constraint.ConstraintLayout>
