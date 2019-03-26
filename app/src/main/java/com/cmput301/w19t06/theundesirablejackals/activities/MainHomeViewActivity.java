@@ -123,6 +123,10 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                     case R.id.itemMenuSearchUser:
                         intent = new Intent(MainHomeViewActivity.this, OthersProfileActivity.class);
                         break;
+                    case R.id.itemMenuDefaultPickupLocation:
+                        intent = new Intent(MainHomeViewActivity.this, MapsActivity.class);
+                        break;
+
                     case R.id.itemMenuLogout:
                         intent = new Intent(MainHomeViewActivity.this, StartActivity.class);
                         databaseHelper.signOut();
