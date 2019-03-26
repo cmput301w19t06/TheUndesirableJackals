@@ -4,159 +4,83 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_with_light_green_border">
 
     <TextView
         android:id="@+id/textViewOthersProfileActivityUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center_horizontal"
         android:text="Username"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSearch" />
-
-    <ImageView
-        android:id="@+id/imageViewOthersProfileActivityBookThumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewOthersProfileActivityContactInfo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUserName"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/view_other_users_profile_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewOthersProfilePhoto" />
 
-    <TextView
-        android:id="@+id/textViewOthersProfileActivityRating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageViewOthersProfilePhoto"
+        android:layout_width="@android:dimen/thumbnail_width"
+        android:layout_height="@android:dimen/thumbnail_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
-        android:text="Rating"
-        android:textSize="24sp"
+        android:src="@drawable/ic_action_username"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewOthersProfileActivityBookThumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityUserName" />
-
-    <TextView
-        android:id="@+id/textViewOthersProfileActivityContactInfo"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="16dp"
-        android:text="Contact info"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityRating" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewOthersProfileActivityEmailStaticTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Email:"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityContactInfo" />
-
-    <TextView
-        android:id="@+id/textViewOthersProfileActivityPersonalEmail"
+        android:id="@+id/textViewOthersProfileActivityEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
         android:text="email@gmail.com"
         android:textSize="18sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewOthersProfileActivityEmailStaticTitle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityContactInfo" />
-
-    <TextView
-        android:id="@+id/textViewOthersProfileActivityPhoneStaticTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Phone:"
-        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityEmailStaticTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityUserName" />
 
     <TextView
         android:id="@+id/textViewOthersProfileActivityPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="111-111-1111"
+        android:gravity="center_horizontal"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewOthersProfileActivityPhoneStaticTitle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPersonalEmail" />
-
-    <Button
-        android:id="@+id/buttonOthersProfileActivityAddFriend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="editFriend"
-        android:text="Add Friend"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonOthersProfileActivityMessageFriend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Message"
-        app:layout_constraintBottom_toTopOf="@+id/buttonOthersProfileActivityAddFriend"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextUserName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="User Name"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityEmail" />
 
-    <Button
-        android:id="@+id/buttonSearch"
+    <TextView
+        android:id="@+id/textViewOthersProfileActivityEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Search"
+        android:text="Edit Profile"
+        android:textColor="@color/tabIndicatorColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPhoneNumber" />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
