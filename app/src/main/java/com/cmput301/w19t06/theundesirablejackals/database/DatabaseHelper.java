@@ -1251,7 +1251,40 @@ public class DatabaseHelper{
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e(TAG, databaseError.getMessage());
+                        messageListCallback.onCallback(null);
+                    }
+                });
+    }
 
+    public void seeMessage(final Messaging message, final BooleanCallback booleanCallback){
+        messagesReference
+                .child(message.getFrom())
+                .child(message.getSenderKey())
+                .child("seen")
+                .setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            messagesReference
+                                    .child(message.getTo())
+                                    .child(message.getReceiverKey())
+                                    .child("seen")
+                                    .setValue(true)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                booleanCallback.onCallback(true);
+                                            }else{
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
+                        }else{
+                            booleanCallback.onCallback(false);
+                        }
                     }
                 });
     }

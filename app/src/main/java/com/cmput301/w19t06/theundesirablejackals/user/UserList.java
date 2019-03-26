@@ -12,35 +12,35 @@ import java.util.ArrayList;
  * @see User
  */
 public class UserList {
-    private ArrayList<User> userlist;
+    private ArrayList<UserInformation> userlist;
 
     /**
      * Create an empty user list
      */
     public UserList() {
-        userlist = new ArrayList<User>();
+        userlist = new ArrayList<UserInformation>();
     }
 
     /**
      * Creates a user list with predifined users
      * @param users user to be part of the user list
      */
-    public UserList(ArrayList<User> users) {
-        userlist = new ArrayList<User>();
+    public UserList(ArrayList<UserInformation> users) {
+        userlist = new ArrayList<UserInformation>();
     }
 
     /**
      *
      * @return an ArrayList of all the users in the list
      */
-    public ArrayList<User> getUserlist(){return userlist;}
+    public ArrayList<UserInformation> getUserlist(){return userlist;}
 
     /**
      * Searches the list of users based on book genre of interest
      * @param bookGenre the genre of interest
      * @return an ArrayList of users that are interested in the genre of interest
      */
-    public ArrayList<User> searchByInterest(BookGenres bookGenre) {
+    public ArrayList<UserInformation> searchByInterest(BookGenres bookGenre) {
         return new ArrayList<>();
     }
 
@@ -49,7 +49,7 @@ public class UserList {
      * @param book favourite book
      * @return An ArrayList of users with the book parameter as one of their favourite books
      */
-    public ArrayList<User> searchByFavouriteBook(Book book) {
+    public ArrayList<UserInformation> searchByFavouriteBook(Book book) {
         return new ArrayList<>();
     }
 
@@ -58,7 +58,7 @@ public class UserList {
      * @param user that will be suggested friends based on user's interests and favourite books
      * @return An ArrayList of Users that could potentially be the user's interest
      */
-    public ArrayList<User> doSuggestFriends(User user) {
+    public ArrayList<UserInformation> doSuggestFriends(UserInformation user) {
         return new ArrayList<>();
     }
 
@@ -66,7 +66,7 @@ public class UserList {
      *
      * @param user to be added to the UserList
      */
-    public void add(User user) {
+    public void add(UserInformation user) {
         userlist.add(user);
     }
 
@@ -74,7 +74,7 @@ public class UserList {
      *
      * @param user to be deleted from the UserList
      */
-    public void delete(User user) {
+    public void delete(UserInformation user) {
         userlist.remove(user);
     }
 
@@ -83,7 +83,23 @@ public class UserList {
      * @param user to be checked if it exists in the list
      * @return false if the user is not in the list, true otherwise.
      */
-    public boolean contains(User user) {
+    public boolean contains(UserInformation user) {
         return userlist.contains(user);
     }
+
+    public void setUserlist(ArrayList<UserInformation> userlist) {
+        this.userlist = userlist;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+
 }

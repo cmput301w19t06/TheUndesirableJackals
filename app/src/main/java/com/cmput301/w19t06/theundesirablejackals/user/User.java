@@ -26,13 +26,6 @@ public class User {
     private BookToInformationMap favouriteBooks;
 
 
-    // user's requests to borrow books
-//    private BookRequestListCallback lendRequests;
-
-    // requests to borrow user's books
-//    private BookRequestListCallback borrowRequests;
-
-
     private UserNotificationList notifications;
 
     // topics of interest
@@ -40,13 +33,12 @@ public class User {
 
     private UserList friends;
 
+
     public User() {
         userInfo = new UserInformation();
         ownedBooks = new BookToInformationMap();
         borrowedBooks = new BookToInformationMap();
         favouriteBooks = new BookToInformationMap();
-//        lendRequests = new BookRequestListCallback();
-//        borrowRequests = new BookRequestListCallback();
         notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
         friends = new UserList();
