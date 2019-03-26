@@ -71,6 +71,12 @@ public class MapHandoff extends AppCompatActivity {
                 finish();
             }
         });
+
+        options = new FirebaseVisionBarcodeDetectorOptions.Builder()
+                .setBarcodeFormats(
+                        FirebaseVisionBarcode.FORMAT_EAN_13,
+                        FirebaseVisionBarcode.TYPE_ISBN)
+                .build();
     }
 
     /**
