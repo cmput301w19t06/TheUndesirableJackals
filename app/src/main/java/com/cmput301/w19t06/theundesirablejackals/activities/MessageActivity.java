@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
@@ -22,8 +23,13 @@ import java.util.Random;
 
 public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
-    MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
-    DatabaseHelper databaseHelper;
+    private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
+    private BroadcastReceiver currentActivityReceiver;
+    private DatabaseHelper databaseHelper;
+    private User currentUser;
+    private static final String TAG = "MessageActivity";
+    private static final int CHAT_CODE = 1200;
+    public static final String CHAT_DATA = "convo";
     private Toolbar toolbar;
 
     @Override
