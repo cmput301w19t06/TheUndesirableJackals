@@ -44,7 +44,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelper mDatabaseHelper;
 
     private BookInformation mBookInformation;
     private Book mLibraryBook;
@@ -79,7 +79,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mToolbar.setTitle("Library Book");
         setSupportActionBar(mToolbar);
 
-        databaseHelper = new DatabaseHelper();
+        mDatabaseHelper = new DatabaseHelper();
 
         mBookPhotoView = findViewById(R.id.imageViewViewLibraryBookPhoto);
         mTitle = findViewById(R.id.textViewViewLibraryBookBookTitle);
@@ -143,7 +143,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
             if(!image.exists()) {
                 mBookPhotoView.setImageResource(R.drawable.ic_loading_with_text);
                 try {
-                    databaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
+                    mDatabaseHelper.downloadBookPicture(image, mBookInformation, new BooleanCallback() {
                         @Override
                         public void onCallback(boolean bool) {
                             if(bool){
@@ -169,11 +169,11 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
     }
 
     private void doAllBorrowRequest(){
-        databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+        mDatabaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
             @Override
             public void onCallback(final UserInformation userInformation) {
                 if(userInformation != null){
-                    databaseHelper.getBorrowRequests(userInformation.getUserName(), new BookRequestListCallback() {
+                    mDatabaseHelper.getBorrowRequests(userInformation.getUserName(), new BookRequestListCallback() {
                         @Override
                         public void onCallback(BookRequestList bookRequestList) {
                             if(bookRequestList != null){
@@ -212,7 +212,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         // check if the book requested is a book owned by the current user
         if (!userInformation.getUserName().equals(mBookInformation.getOwner())) {
 
-            databaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
+            mDatabaseHelper.makeBorrowRequest(bookRequest, new BooleanCallback() {
                 @Override
                 public void onCallback(boolean bool) {
                     if(bool) {

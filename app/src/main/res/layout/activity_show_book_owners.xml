@@ -3,20 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShowBookOwnersActivity"
-    android:background="@drawable/background_show_all_owners">
+    android:background="@drawable/background_show_all_owners"
+    tools:context=".ShowBookOwnersActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/librarySwipeRefreshLayout"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewShowBookOwners"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="286dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewShowBookOwners"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="286dp" />
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
