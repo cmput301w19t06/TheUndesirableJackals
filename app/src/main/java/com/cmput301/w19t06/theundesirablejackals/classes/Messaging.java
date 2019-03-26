@@ -2,16 +2,19 @@ package com.cmput301.w19t06.theundesirablejackals.classes;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+
 /**
  * Message class used by our app to keep track of the messages between users
  */
 @SuppressWarnings("unused")
-public class Messaging{
+public class Messaging implements Serializable {
     private String from;
     private String to;
     private String receiverKey;
     private String senderKey;
     private String message;
+    private Boolean seen = false;
 
     /**
      * Default constructor, required for Firebase
@@ -77,5 +80,22 @@ public class Messaging{
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public Boolean getSeen() {
+        return seen;
+    }
+
+    public void setSeen(Boolean seen) {
+        this.seen = seen;
+    }
+
+    @Override
+    public String toString() {
+        return "from" + from + "to" + to +
+        "seen" + seen + "receiverKey" + receiverKey +
+        "senderKey" + senderKey + "message" + message +
+        "seen" + seen.toString();
+
     }
 }
