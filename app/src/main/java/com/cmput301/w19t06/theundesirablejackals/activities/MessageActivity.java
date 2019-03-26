@@ -76,8 +76,8 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     public void onClick(View v) {
         showToast("Clicked on Floating Action button");
         Messaging messaging = new Messaging();
-        messaging.setFrom("ultilink3");
-        messaging.setTo("omae_wa_mou_shindeiru");
+        messaging.setFrom("omae_wa_mou_shindeiru");
+        messaging.setTo("ultilink3");
         Random random = new Random();
         Integer integer = random.nextInt();
         messaging.setMessage("This is a test message " + integer);
