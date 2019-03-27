@@ -35,7 +35,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EditPersonalProfileActivity"></activity>
+        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".EditPersonalProfileActivity" />
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message"
@@ -84,15 +85,17 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainHomeViewActivity" />
         <activity android:name=".AddBookActivity" />
-        <activity android:name=".PersonalProfileActivity"
-            android:theme="@style/AppTheme.WindowedView"/>
+        <activity
+            android:name=".PersonalProfileActivity"
+            android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".EditContactInfoActivity" />
         <activity android:name=".FriendsListActivity" />
         <activity android:name=".BorrowedListActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".OthersProfileActivity"
-            android:theme="@style/AppTheme.WindowedView"/>
+        <activity
+            android:name=".OthersProfileActivity"
+            android:theme="@style/AppTheme.WindowedView" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

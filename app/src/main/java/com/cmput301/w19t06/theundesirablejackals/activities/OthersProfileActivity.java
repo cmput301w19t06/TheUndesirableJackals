@@ -42,33 +42,33 @@ public class OthersProfileActivity extends AppCompatActivity {
 //        textViewEditFriend = (TextView) findViewById(R.id.buttonOthersProfileActivityAddFriend);
 
         // to be implemented
-        sendFriendRequest = (Button) findViewById(R.id.buttonOthersProfileActivityAddFriend);
-        sendMessage = (Button) findViewById(R.id.buttonOthersProfileActivityMessageFriend);
-
-        // initializes search button and use info fields
-        searchUser = (Button) findViewById(R.id.buttonSearch);
-        retrievedUserName = (TextView) findViewById(R.id.textViewOthersProfileActivityUserName);
-        retrievedEmail = (TextView) findViewById(R.id.textViewOthersProfileActivityPersonalEmail);
-        retrievedPhone = (TextView) findViewById(R.id.textViewOthersProfileActivityPhoneNumber);
-
-
-        // cancel action
-        searchUser.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Search user's contact info given their user name
-             * @param view Context passed as parameter for the intent
-             */
-            public void onClick(View view) {
-                // retrieve input data
-                userName = (EditText) findViewById(R.id.editTextUserName);
-
-                String user = userName.getText().toString();
-
-                if (!user.isEmpty()) {
-                    searchContactInfo(user);
-                }
-            }
-        });
+//        sendFriendRequest = (Button) findViewById(R.id.buttonOthersProfileActivityAddFriend);
+//        sendMessage = (Button) findViewById(R.id.buttonOthersProfileActivityMessageFriend);
+//
+//        // initializes search button and use info fields
+//        searchUser = (Button) findViewById(R.id.buttonSearch);
+//        retrievedUserName = (TextView) findViewById(R.id.textViewOthersProfileActivityUserName);
+//        retrievedEmail = (TextView) findViewById(R.id.textViewOthersProfileActivityPersonalEmail);
+//        retrievedPhone = (TextView) findViewById(R.id.textViewOthersProfileActivityPhoneNumber);
+//
+//
+//        // cancel action
+//        searchUser.setOnClickListener(new View.OnClickListener() {
+//            /**
+//             * Search user's contact info given their user name
+//             * @param view Context passed as parameter for the intent
+//             */
+//            public void onClick(View view) {
+//                // retrieve input data
+//                userName = (EditText) findViewById(R.id.editTextUserName);
+//
+//                String user = userName.getText().toString();
+//
+//                if (!user.isEmpty()) {
+//                    searchContactInfo(user);
+//                }
+//            }
+//        });
 
 
         sendFriendRequest.setOnClickListener(new View.OnClickListener() {
