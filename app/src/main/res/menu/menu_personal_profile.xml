@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cmput301.w19t06.theundesirablejackals.activities.PersonalProfileActivity">
+    <item
+        android:id="@+id/itemMenuPersonalProfileChangeProfilePhoto"
+        android:orderInCategory="100"
+        android:title="Edit Profile Photo"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/itemMenuPersonalProfileChangePhoneNumber"
+        android:orderInCategory="100"
+        android:title="Edit Phone Number"
+        app:showAsAction="never" />
+</menu>

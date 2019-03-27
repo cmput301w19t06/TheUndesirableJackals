@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_with_light_green_border">
+    android:background="@drawable/background_with_accent_border">
 
     <TextView
         android:id="@+id/textViewOthersProfileActivityUserName"
@@ -46,7 +46,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
         android:text="email@gmail.com"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,28 +59,36 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="111-111-1111"
         android:gravity="center_horizontal"
-        android:textSize="18sp"
+        android:text="111-111-1111"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityEmail" />
 
-    <TextView
-        android:id="@+id/textViewOthersProfileActivityEditProfile"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButtonOthersProfileViewSendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Edit Profile"
-        android:textColor="@color/tabIndicatorColor"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPhoneNumber"
+        app:srcCompat="@drawable/ic_message_primary_24dp" />
+
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButtonOtherProfileViewAddFriend"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOthersProfileActivityPhoneNumber"
+        app:srcCompat="@drawable/ic_person_add_primary_24dp" />
 
 </android.support.constraint.ConstraintLayout>

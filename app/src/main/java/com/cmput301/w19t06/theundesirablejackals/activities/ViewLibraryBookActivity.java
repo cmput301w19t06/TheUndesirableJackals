@@ -112,7 +112,8 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: 
-                Intent intent = new Intent(ViewLibraryBookActivity.this, PersonalProfileActivity.class);
+                Intent intent = new Intent(ViewLibraryBookActivity.this, OthersProfileActivity.class);
+                intent.putExtra(OthersProfileActivity.USERNAME, mBookInformation.getOwner());
                 startActivity(intent);
             }
         });

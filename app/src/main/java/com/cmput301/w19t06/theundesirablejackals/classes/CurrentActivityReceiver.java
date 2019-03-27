@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.ChatActivity;
-import com.cmput301.w19t06.theundesirablejackals.activities.MessageActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.MessagesActivity;
 
 
 //https://stackoverflow.com/questions/43965306/how-to-find-out-the-current-top-activity-from-onmessagereceived-of-firebaseme
@@ -30,8 +30,8 @@ public class CurrentActivityReceiver extends BroadcastReceiver {
 
         if (receivingActivity.getClass().equals(ChatActivity.class)) {
             ((ChatActivity)receivingActivity).updateMessages();
-        }else if(receivingActivity.getClass().equals(MessageActivity.class)){
-            ((MessageActivity)receivingActivity).update();
+        }else if(receivingActivity.getClass().equals(MessagesActivity.class)){
+            ((MessagesActivity)receivingActivity).update();
         }
     }
 }

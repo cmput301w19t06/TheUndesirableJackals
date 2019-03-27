@@ -2,14 +2,15 @@ package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
+import android.util.Log;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
 
-public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
-    private T myAdapter;
+public class SwipeController extends Callback {
+    private MessagesRecyclerViewAdapter myAdapter;
 
-    public SwipeController(T adapter){
+    public SwipeController(MessagesRecyclerViewAdapter adapter){
         super();
         myAdapter = adapter;
     }
@@ -28,9 +29,9 @@ public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-//        Integer position = viewHolder.getAdapterPosition();
-//        Log.d("SwipeController", position.toString());
-//        myAdapter.deleteItem(position);
+        Integer position = viewHolder.getAdapterPosition();
+        Log.d("SwipeController", position.toString());
+        myAdapter.deleteItems(position);
 
     }
 }

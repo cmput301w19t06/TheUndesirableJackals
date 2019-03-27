@@ -10,6 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
+import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
@@ -32,20 +35,26 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 
 
-public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
+public class MessagesActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
     private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
     private BroadcastReceiver currentActivityReceiver;
     private DatabaseHelper databaseHelper;
     private User currentUser;
-    private static final String TAG = "MessageActivity";
-    private static final int CHAT_CODE = 1200;
+
+    private static final String TAG = "MessagesActivity";
     public static final String CHAT_DATA = "convo";
+
+    private Toolbar toolbarMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        toolbarMessages = findViewById(R.id.toolbarMessageActivity);
+        toolbarMessages.setTitle("Messages");
+        toolbarMessages.setNavigationIcon(R.drawable.ic_action_back);
+        setSupportActionBar(toolbarMessages);
 
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
@@ -63,8 +72,8 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
             }
         });
 
-//        ItemTouchHelper itemTouchHelper;
-//        SwipeController swipeController;
+        ItemTouchHelper itemTouchHelper;
+        SwipeController swipeController;
         SwipeRefreshLayout swipeRefreshLayout;
         RecyclerView.LayoutManager layoutManager;
         RecyclerView messagesRecyclerView;
@@ -91,9 +100,9 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
             }
         });
 
-//        swipeController = new SwipeController(messagesRecyclerViewAdapter);
-//        itemTouchHelper = new ItemTouchHelper(swipeController);
-//        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
+        swipeController = new SwipeController(messagesRecyclerViewAdapter);
+        itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
 
     }
 
@@ -208,10 +217,10 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     @Override
     protected void onResume() {
         super.onResume();
-
         currentActivityReceiver = new CurrentActivityReceiver(this);
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+        LocalBroadcastManager
+                .getInstance(this)
+                .registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
     }
 
     @Override

@@ -14,8 +14,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="@string/message_text_description"
-        android:inputType="text"
+        android:hint="Enter Message"
+        android:autoSizeTextType="uniform"
+        android:inputType="textCapSentences|textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonChatActivityNewMessageSend"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,17 +24,16 @@
         tools:ignore="Autofill" />
 
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonChatActivityNewMessageSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorAccent"
-        android:text="@string/send_button_text"
-        android:textColor="@android:color/black"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_send_grey_24dp"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/editTextChatActivityNewMessage"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextChatActivityNewMessage" />
 
 </android.support.constraint.ConstraintLayout>
