@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +35,8 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     private DatabaseHelper databaseHelper;
     private User currentUser;
     private static final String TAG = "MessageActivity";
+    private static final int CHAT_CODE = 1200;
+    public static final String CHAT_DATA = "convo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,39 +95,16 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 //        showToast("Clicked on " + position);
         MessageMetaData metaData = messagesRecyclerViewAdapter.getDataSet().get(position);
         if(currentUser != null) {
-            showMessagesAlertBox("Messages with " + metaData.getUsername(), metaData);
+            startChatActivity("Messages with " + metaData.getUsername(), metaData);
         }else{
             showToast("Something went wrong connecting to database");
         }
     }
 
-    private void showMessagesAlertBox(String title, final MessageMetaData metaData) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.messages_popup_alert);
-        dialog.setCanceledOnTouchOutside(true);
-        TextView titleView = (TextView) dialog.findViewById(R.id.textViewMessageActivityTitle);
-        titleView.setText(title);
-
-        final Button send = (Button) dialog.findViewById(R.id.buttonMessageActivityNewMessageSend);
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //code the functionality when send button is clicked
-                EditText messageView = (EditText) dialog.findViewById(R.id.editTextMessageActivityNewMessage);
-
-                final String message = messageView.getText().toString();
-                if(!message.isEmpty()) {
-                    sendMessage(message, metaData.getUsername());
-                }else{
-                    showToast("Please fill missing fields");
-                }
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+    private void startChatActivity(String title, MessageMetaData metaData) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(CHAT_DATA, metaData);
+        startActivityForResult(intent, CHAT_CODE);
     }
 
 
@@ -209,5 +189,12 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHAT_CODE){
+            messagesRecyclerViewAdapter.onRefresh();
+        }
     }
 }

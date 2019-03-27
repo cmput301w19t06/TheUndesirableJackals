@@ -45,7 +45,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
 
     @NonNull
     @Override
-    public MessagesRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
