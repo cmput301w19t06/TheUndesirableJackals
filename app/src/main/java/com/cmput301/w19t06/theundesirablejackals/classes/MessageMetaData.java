@@ -1,8 +1,9 @@
 package com.cmput301.w19t06.theundesirablejackals.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MessageMetaData {
+public class MessageMetaData implements Serializable {
     private ArrayList<Messaging> messagings;
     private String username;
     private int unseen;

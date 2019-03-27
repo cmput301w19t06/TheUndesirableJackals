@@ -954,6 +954,30 @@ public class DatabaseHelper{
 
 
     /**
+     * Get a download uri for profile picture
+     * @param userInformation the user's information who has uploaded a picture
+     * @param uriCallback the uri retrieved from firebase Cloud Storage
+     */
+    public void getProfilePictureUri(UserInformation userInformation, final UriCallback uriCallback){
+        userPicturesReference
+                .child(userInformation.getUserName())
+                .child(userInformation.getUserPhoto())
+                .getDownloadUrl()
+                .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if(task.isSuccessful()){
+                            Uri uri = task.getResult();
+                            uriCallback.onCallback(uri);
+                        }else{
+                            uriCallback.onCallback(null);
+                        }
+                    }
+                });
+    }
+
+
+    /**
      * Upload a user profile picture for use only by the current user
      * @param file  The file location of the file to be uploaded
      * @param userInformation  The user who is uploading their profile picture

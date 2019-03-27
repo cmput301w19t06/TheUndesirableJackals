@@ -107,6 +107,15 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mBookOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: 
+                Intent intent = new Intent(ViewLibraryBookActivity.this, PersonalProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

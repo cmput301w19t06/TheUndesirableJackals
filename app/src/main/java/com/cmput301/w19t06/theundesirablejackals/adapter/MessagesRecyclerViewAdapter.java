@@ -27,7 +27,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
 
     private static final String TAG = "MessagesRVA";
 
-    private ArrayList<MessageMetaData> dataset = new ArrayList<>();
+    private ArrayList<MessageMetaData> dataSet = new ArrayList<>();
     private User currentUser;
     private RecyclerViewClickListener myListener;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -45,7 +45,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
 
     @NonNull
     @Override
-    public MessagesRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
@@ -58,8 +58,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TextView usernameView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUsername);
         TextView unseenView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUnseen);
-        Integer unseen = dataset.get(position).getUnseen();
-        String username = dataset.get(position).getUsername();
+        Integer unseen = dataSet.get(position).getUnseen();
+        String username = dataSet.get(position).getUsername();
         switch (unseen){
             case 0 :
                 unseenView.setTextColor(Color.parseColor("#ff000000"));
@@ -75,7 +75,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return dataSet.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -106,12 +106,12 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
         onRefresh();
     }
 
-    public ArrayList<MessageMetaData> getDataset() {
-        return dataset;
+    public ArrayList<MessageMetaData> getDataSet() {
+        return dataSet;
     }
 
-    public void setDataset(ArrayList<MessageMetaData> dataset) {
-        this.dataset = dataset;
+    public void setDataSet(ArrayList<MessageMetaData> dataset) {
+        this.dataSet = dataset;
         notifyDataSetChanged();
     }
 
@@ -141,16 +141,16 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
                 if(messagingArrayList != null){
 //                    messages = messagingArrayList;
                     HashMap<String, Integer> seen = new HashMap<>();
-                    dataset = new ArrayList<>();
+                    dataSet = new ArrayList<>();
                     for(Messaging m : messagingArrayList){
                         if(seen.containsKey(m.getFrom())){
-                            MessageMetaData temp = dataset.get(seen.get(m.getFrom()));
+                            MessageMetaData temp = dataSet.get(seen.get(m.getFrom()));
                             temp.getMessagings().add(m);
                             if(!m.getSeen()){
                                 temp.addUnseen();
                             }
                         }else if(seen.containsKey(m.getTo())) {
-                            MessageMetaData temp = dataset.get(seen.get(m.getTo()));
+                            MessageMetaData temp = dataSet.get(seen.get(m.getTo()));
                             temp.getMessagings().add(m);
                             if (!m.getSeen()) {
                                 temp.addUnseen();
@@ -158,21 +158,21 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
                         }else{
                             MessageMetaData temp = new MessageMetaData();
                             if(!currentUser.getUserInfo().getUserName().equals(m.getFrom())){
-                                seen.put(m.getFrom(), dataset.size());
+                                seen.put(m.getFrom(), dataSet.size());
                                 temp.getMessagings().add(m);
                                 if (!m.getSeen()) {
                                     temp.addUnseen();
                                 }
                                 temp.setUsername(m.getFrom());
                             }else{
-                                seen.put(m.getTo(), dataset.size());
+                                seen.put(m.getTo(), dataSet.size());
                                 temp.getMessagings().add(m);
                                 if (!m.getSeen()) {
                                     temp.addUnseen();
                                 }
                                 temp.setUsername(m.getTo());
                             }
-                            dataset.add(temp);
+                            dataSet.add(temp);
                         }
                     }
                     notifyDataSetChanged();

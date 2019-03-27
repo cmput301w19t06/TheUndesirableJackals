@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp">
+    android:layout_margin="8dp"
+    android:backgroundTint="@color/browser_actions_bg_grey">
 
     <ImageView
         android:id="@+id/imageViewPersonalMessageItem"
@@ -15,10 +16,10 @@
         android:adjustViewBounds="true"
         android:background="@android:drawable/ic_dialog_email"
         android:contentDescription="@string/profile_picture_content_description"
-        android:maxWidth="100dp"
-        android:maxHeight="90dp"
-        android:minWidth="100dp"
-        android:minHeight="90dp"
+        android:maxWidth="70dp"
+        android:maxHeight="60dp"
+        android:minWidth="70dp"
+        android:minHeight="60dp"
         android:scaleType="centerInside"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
