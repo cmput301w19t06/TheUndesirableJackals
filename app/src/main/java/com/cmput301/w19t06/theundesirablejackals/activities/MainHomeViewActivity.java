@@ -118,7 +118,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         intent = new Intent(MainHomeViewActivity.this, FriendsListActivity.class);
                         break;
                     case R.id.itemMenuFriendRequests:
-                        intent = new Intent(MainHomeViewActivity.this, ScrollingActivity.class);
+                        intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
                     case R.id.itemMenuDefaultPickupLocation:
                         intent = new Intent(MainHomeViewActivity.this, MapsActivity.class);
