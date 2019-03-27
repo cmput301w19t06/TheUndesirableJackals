@@ -80,7 +80,7 @@ public class FriendRequest implements Serializable {
         return requestReceiverKey;
     }
 
-    public void setRequesReceiverKey(String requesReceiverKey) {
-        this.requestReceiverKey = requesReceiverKey;
+    public void setRequestReceiverKey(String requestReceiverKey) {
+        this.requestReceiverKey = requestReceiverKey;
     }
 }

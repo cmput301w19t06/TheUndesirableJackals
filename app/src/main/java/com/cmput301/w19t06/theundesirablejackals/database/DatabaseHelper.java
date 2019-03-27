@@ -11,6 +11,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
@@ -53,6 +54,7 @@ public class DatabaseHelper{
     private final static String PATH_BOOKS = "books";
     private final static String PATH_REGISTERED = "registered";
     private final static String PATH_REQUESTS = "requests";
+    private final static String PATH_FRIEND_REQUESTS = "friendRequests";
     private final static String PATH_DESCRIPTION = "descriptions";
     private final static String PATH_MESSAGES = "messages";
 
@@ -64,6 +66,7 @@ public class DatabaseHelper{
     private DatabaseReference booksReference;
     private DatabaseReference registeredReference;
     private DatabaseReference requestsReference;
+    private DatabaseReference friendRequestsReference;
     private DatabaseReference descriptionReference;
     private DatabaseReference messagesReference;
 
@@ -96,6 +99,7 @@ public class DatabaseHelper{
         this.booksReference = database.getReference(PATH_BOOKS);
         this.registeredReference = database.getReference(PATH_REGISTERED);
         this.requestsReference = database.getReference(PATH_REQUESTS);
+        this.friendRequestsReference = database.getReference(PATH_FRIEND_REQUESTS);
         this.descriptionReference = database.getReference(PATH_DESCRIPTION);
         this.messagesReference = database.getReference(PATH_MESSAGES);
 
@@ -371,6 +375,121 @@ public class DatabaseHelper{
 
     }
 
+
+    //~~~~~~~~~~~~~~~~~~~~~~~FRIEND REQUESTS~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    public void makeFriendRequest(FriendRequest friendRequest, final BooleanCallback booleanCallback){
+        if(friendRequest.getRequestReceiverKey().isEmpty()){
+            friendRequest.setRequestSenderKey(friendRequestsReference
+                    .child("sent")
+                    .child(friendRequest.getRequestSender().getUserName())
+                    .push().getKey());
+        }
+        if(friendRequest.getRequestReceiverKey().isEmpty()) {
+            friendRequest.setRequestReceiverKey(friendRequestsReference
+                    .child("received")
+                    .child(friendRequest.getRequestReceiver().getUserName())
+                    .push().getKey());
+        }
+        final FriendRequest temp = new FriendRequest(friendRequest.getRequestSender(),
+                                                friendRequest.getRequestReceiver(),
+                                                friendRequest.getRequestSenderKey(),
+                                                friendRequest.getRequestReceiverKey());
+        updateFriendRequest(temp, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                booleanCallback.onCallback(bool);
+            }
+        });
+
+    }
+
+    public void updateFriendRequest(final FriendRequest friendRequest, final BooleanCallback booleanCallback){
+        friendRequestsReference
+                .child("sent")
+                .child(friendRequest.getRequestSender().getUserName())
+                .child(friendRequest.getRequestSenderKey())
+                .setValue(friendRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            friendRequestsReference
+                                    .child("received")
+                                    .child(friendRequest.getRequestReceiver().getUserName())
+                                    .child(friendRequest.getRequestReceiverKey())
+                                    .setValue(friendRequest)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                booleanCallback.onCallback(true);
+                                            } else {
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
+                        }else{
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+    public void getSentFriendRequests(UserInformation userInformation, final FriendRequestListCallback friendRequestListCallback){
+        friendRequestsReference
+                .child("sent")
+                .child(userInformation.getUserName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    friendRequests.add(dataSnapshot1.getValue(FriendRequest.class));
+                                }
+                            }
+                        }
+                        friendRequestListCallback.onCallback(friendRequests);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e(TAG, databaseError.getMessage());
+                        Log.d(TAG, "Error occured getting friend requests");
+                        friendRequestListCallback.onCallback(null);
+                    }
+                });
+    }
+
+    public void getReceivedFriendRequests(UserInformation userInformation, final FriendRequestListCallback friendRequestListCallback){
+        friendRequestsReference
+                .child("received")
+                .child(userInformation.getUserName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+                        if(dataSnapshot.exists()){
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()){
+                                    friendRequests.add(dataSnapshot1.getValue(FriendRequest.class));
+                                }
+                            }
+                        }
+                        friendRequestListCallback.onCallback(friendRequests);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e(TAG, databaseError.getMessage());
+                        Log.d(TAG, "Error occured getting friend requests");
+                        friendRequestListCallback.onCallback(null);
+                    }
+                });
+    }
 
 
     //~~~~~~~~~~~~~~~~~~BOOK DESCRIPTION HANDLERS~~~~~~~~~~~~~~~~~~~~//
