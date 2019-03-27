@@ -78,5 +78,10 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     }
 
+    public void setDataSet(MessageMetaData messageMetaData){
+        dataSet = messageMetaData;
+        notifyDataSetChanged();
+    }
+
 
 }

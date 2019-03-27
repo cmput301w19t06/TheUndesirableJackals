@@ -1,9 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
@@ -32,6 +35,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
     private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
+    private BroadcastReceiver currentActivityReceiver;
     private DatabaseHelper databaseHelper;
     private User currentUser;
     private static final String TAG = "MessageActivity";
@@ -42,6 +46,11 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+
         databaseHelper = new DatabaseHelper();
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
@@ -104,7 +113,7 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     private void startChatActivity(String title, MessageMetaData metaData) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra(CHAT_DATA, metaData);
-        startActivityForResult(intent, CHAT_CODE);
+        startActivity(intent);
     }
 
 
@@ -191,10 +200,34 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHAT_CODE){
-            messagesRecyclerViewAdapter.onRefresh();
-        }
+
+    public void update(){
+        messagesRecyclerViewAdapter.onRefresh();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onStop();
+    }
+
 }

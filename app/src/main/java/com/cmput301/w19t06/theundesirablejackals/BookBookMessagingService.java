@@ -1,10 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
-import android.app.Service;
+import android.app.Application;
 import android.content.Intent;
-import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.ChatActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -19,7 +22,8 @@ public class BookBookMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
-
+        Intent localMessage = new Intent(CurrentActivityReceiver.CURRENT_ACTIVITY_ACTION);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(localMessage);
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
@@ -28,13 +32,13 @@ public class BookBookMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+//            if (/* Check if data needs to be processed by long running job */ true) {
+//                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
 //                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
+//            } else {
+//                // Handle message within 10 seconds
 //                handleNow();
-            }
+//            }
 
         }
 
