@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 /**
@@ -23,6 +27,7 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
 
     private Double latitude;
     private Double longitude;
+    private BookRequest request;
 
     /**
      * General creation
@@ -33,8 +38,8 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_reject_lend);
 
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
+        Intent intent = getIntent();
+        request = (BookRequest) intent.getSerializableExtra("info");
 
         toolbar = findViewById(R.id.tool_barAcceptReject);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
@@ -47,11 +52,22 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
         TextView username = (TextView) findViewById(R.id.textViewAcceptRejectActivityUserRequesting);
         TextView phone = (TextView) findViewById(R.id.textViewAcceptRejectLendPhone);
         TextView email = (TextView) findViewById(R.id.textViewAcceptRejectLendEmail);
-        TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
+        final TextView title = (TextView) findViewById(R.id.textViewAcceptRejectActivityBookTitle);
 
         //Set the values
-        //username.setText();
-        //title.setText();
+        username.setText(request.getBorrower().getUserName());
+        phone.setText(request.getBorrower().getPhoneNumber());
+        email.setText(request.getBorrower().getEmail());
+        BookInformation i = request.getBookRequested();
+        title.setText("");
+        databaseHelper.getBookFromDatabase(i.getIsbn(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                if(book != null){
+                    title.setText(book.getTitle());
+                }
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
