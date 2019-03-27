@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,11 +36,16 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private boolean doneDatabaseFetch = false;
     private RecyclerView chatRecyclerView;
     private static final String TAG = "Chat activity";
+    private Toolbar chatToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_layout);
+        chatToolbar = findViewById(R.id.toolBarChatActivity);
+        chatToolbar.setNavigationIcon(R.drawable.ic_action_back);
+        chatToolbar.setTitle("Send Message");
+        setSupportActionBar(chatToolbar);
 
         //WE'LL DO IT LIVE!!!!!!!!!  (https://www.youtube.com/watch?v=O_HyZ5aW76c)
         //Except this should intercept notifications from firebase an update the current chat
@@ -77,6 +83,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         chatRecyclerViewAdapter = new ChatRecyclerViewAdapter(messageMetaData);
         chatRecyclerView.setAdapter(chatRecyclerViewAdapter);
         chatRecyclerView.scrollToPosition(chatRecyclerViewAdapter.getItemCount() - 1);
+
+        chatToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
