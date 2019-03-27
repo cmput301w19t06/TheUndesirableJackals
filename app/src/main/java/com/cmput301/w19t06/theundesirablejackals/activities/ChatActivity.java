@@ -53,6 +53,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).
                 registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
+
+
         databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
             @Override
             public void onCallback(UserInformation userInformation) {
@@ -90,7 +92,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
             }
         });
-
+        chatToolbar.setTitle(chatRecyclerViewAdapter.getDataSet().getUsername());
     }
 
     private void showToast(String message) {
