@@ -32,14 +32,14 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 
 
-public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
+public class MessagesActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
     private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
     private BroadcastReceiver currentActivityReceiver;
     private DatabaseHelper databaseHelper;
     private User currentUser;
-    private static final String TAG = "MessageActivity";
-    private static final int CHAT_CODE = 1200;
+
+    private static final String TAG = "MessagesActivity";
     public static final String CHAT_DATA = "convo";
 
     @Override
@@ -208,10 +208,10 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
     @Override
     protected void onResume() {
         super.onResume();
-
         currentActivityReceiver = new CurrentActivityReceiver(this);
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+        LocalBroadcastManager
+                .getInstance(this)
+                .registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
     }
 
     @Override

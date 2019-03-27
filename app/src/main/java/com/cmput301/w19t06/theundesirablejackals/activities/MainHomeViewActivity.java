@@ -26,8 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +36,6 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.ViewPagerAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
-import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
@@ -49,9 +46,6 @@ import com.cmput301.w19t06.theundesirablejackals.fragment.MyBooksFragment;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainHomeViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     public static final String TAG = "MainHomeViewActivity";
@@ -112,7 +106,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         intent = new Intent(MainHomeViewActivity.this, PersonalProfileActivity.class);
                         break;
                     case R.id.itemMenuMessages:
-                        intent = new Intent(MainHomeViewActivity.this, MessageActivity.class);
+                        intent = new Intent(MainHomeViewActivity.this, MessagesActivity.class);
                         break;
                     case R.id.itemMenuBorrowRequests:
                         intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);

@@ -39,7 +39,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.messages_popup_alert);
+        setContentView(R.layout.activity_chat_layout);
 
         //WE'LL DO IT LIVE!!!!!!!!!  (https://www.youtube.com/watch?v=O_HyZ5aW76c)
         //Except this should intercept notifications from firebase an update the current chat
@@ -59,7 +59,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         Intent intent = getIntent();
-        MessageMetaData messageMetaData = (MessageMetaData) intent.getSerializableExtra(MessageActivity.CHAT_DATA);
+        MessageMetaData messageMetaData = (MessageMetaData) intent.getSerializableExtra(MessagesActivity.CHAT_DATA);
 
         Button send = findViewById(R.id.buttonChatActivityNewMessageSend);
         send.setOnClickListener(this);
