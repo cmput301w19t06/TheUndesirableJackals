@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
@@ -44,10 +45,16 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
     private static final String TAG = "MessagesActivity";
     public static final String CHAT_DATA = "convo";
 
+    private Toolbar toolbarMessages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        toolbarMessages = findViewById(R.id.toolbarMessageActivity);
+        toolbarMessages.setTitle("Messages");
+        toolbarMessages.setNavigationIcon(R.drawable.ic_action_back);
+        setSupportActionBar(toolbarMessages);
 
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
