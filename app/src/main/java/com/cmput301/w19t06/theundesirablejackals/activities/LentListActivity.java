@@ -126,9 +126,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         //TODO implement lent list click listener functionality
         Intent intent;
         intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("info", requestsRecyclerViewAdapter.get(position));
-        intent.putExtras(bundle);
+        intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
         startActivity(intent);
     }
 
