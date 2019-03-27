@@ -123,6 +123,8 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.PENDING){
+            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            startActivity(intent);
             ToastMessage.show(this, "Waiting On Response from Owner");
             //ToDO
             //Open up book View???
