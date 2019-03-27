@@ -1,8 +1,11 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
@@ -31,14 +35,22 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class MessageActivity extends AppCompatActivity implements RecyclerViewClickListener,  View.OnClickListener{
 
     private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
+    private BroadcastReceiver currentActivityReceiver;
     private DatabaseHelper databaseHelper;
     private User currentUser;
     private static final String TAG = "MessageActivity";
+    private static final int CHAT_CODE = 1200;
+    public static final String CHAT_DATA = "convo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+
         databaseHelper = new DatabaseHelper();
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
@@ -92,39 +104,16 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
 //        showToast("Clicked on " + position);
         MessageMetaData metaData = messagesRecyclerViewAdapter.getDataSet().get(position);
         if(currentUser != null) {
-            showMessagesAlertBox("Messages with " + metaData.getUsername(), metaData);
+            startChatActivity("Messages with " + metaData.getUsername(), metaData);
         }else{
             showToast("Something went wrong connecting to database");
         }
     }
 
-    private void showMessagesAlertBox(String title, final MessageMetaData metaData) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.messages_popup_alert);
-        dialog.setCanceledOnTouchOutside(true);
-        TextView titleView = (TextView) dialog.findViewById(R.id.textViewMessageActivityTitle);
-        titleView.setText(title);
-
-        final Button send = (Button) dialog.findViewById(R.id.buttonMessageActivityNewMessageSend);
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //code the functionality when send button is clicked
-                EditText messageView = (EditText) dialog.findViewById(R.id.editTextMessageActivityNewMessage);
-
-                final String message = messageView.getText().toString();
-                if(!message.isEmpty()) {
-                    sendMessage(message, metaData.getUsername());
-                }else{
-                    showToast("Please fill missing fields");
-                }
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+    private void startChatActivity(String title, MessageMetaData metaData) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(CHAT_DATA, metaData);
+        startActivity(intent);
     }
 
 
@@ -210,4 +199,35 @@ public class MessageActivity extends AppCompatActivity implements RecyclerViewCl
             }
         });
     }
+
+
+    public void update(){
+        messagesRecyclerViewAdapter.onRefresh();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onStop();
+    }
+
 }
