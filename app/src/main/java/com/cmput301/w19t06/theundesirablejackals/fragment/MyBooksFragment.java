@@ -56,8 +56,8 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.my_books_fragment,container,false);
 
-        ItemTouchHelper itemTouchhelper;
-        SwipeController swipeController;
+//        ItemTouchHelper itemTouchhelper;
+//        SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
         final RecyclerView booksRecyclerView;
 
@@ -108,8 +108,8 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
         });
 
         //interactivity helpers (touch for edit, swipe for delete)
-        swipeController = new SwipeController(booksRecyclerViewAdapter);
-        itemTouchhelper = new ItemTouchHelper(swipeController);
+//        swipeController = new SwipeController(booksRecyclerViewAdapter);
+//        itemTouchhelper = new ItemTouchHelper(swipeController);
 //        itemTouchhelper.attachToRecyclerView(booksRecyclerView);
 
 

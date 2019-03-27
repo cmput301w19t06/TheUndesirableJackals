@@ -1431,5 +1431,36 @@ public class DatabaseHelper{
                     }
                 });
     }
+
+    public void deleteMessage(final Messaging message, final BooleanCallback booleanCallback){
+        messagesReference
+                .child(message.getFrom())
+                .child(message.getSenderKey())
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            messagesReference
+                                    .child(message.getTo())
+                                    .child(message.getReceiverKey())
+                                    .removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                booleanCallback.onCallback(true);
+                                            }else{
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
+                        }else{
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+
+    }
     
 }
