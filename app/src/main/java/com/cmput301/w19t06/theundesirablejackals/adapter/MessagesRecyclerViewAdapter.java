@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.MessageListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -128,6 +129,25 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
                         retrieveMessagesFromDatabase();
                     } else {
                         Log.d(TAG, "Something went wrong getting the current user");
+                    }
+                }
+            });
+        }
+    }
+
+    void deleteItems(int position) {
+        MessageMetaData metaData = dataSet.get(position);
+        dataSet.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+        for(Messaging message : metaData.getMessagings()){
+            databaseHelper.deleteMessage(message, new BooleanCallback() {
+                @Override
+                public void onCallback(boolean bool) {
+                    if(bool){
+                        Log.d(TAG, "Delete succeeded");
+                    }else{
+                        Log.d(TAG, "Delete failed");
                     }
                 }
             });

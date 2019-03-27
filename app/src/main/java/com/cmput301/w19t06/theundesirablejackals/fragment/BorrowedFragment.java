@@ -48,8 +48,8 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.borrowed_fragment,container,false);
 
-        ItemTouchHelper itemTouchhelper;
-        SwipeController swipeController;
+//        ItemTouchHelper itemTouchhelper;
+//        SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
         RecyclerView borrowedRecyclerView;
 
@@ -99,8 +99,8 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
         });
 
         //interactivity helpers (touch for edit, swipe for delete)
-        swipeController = new SwipeController(borrowedRecyclerViewAdapter);
-        itemTouchhelper = new ItemTouchHelper(swipeController);
+//        swipeController = new SwipeController(borrowedRecyclerViewAdapter);
+//        itemTouchhelper = new ItemTouchHelper(swipeController);
 //        itemTouchhelper.attachToRecyclerView(borrowedRecyclerView);
 
 

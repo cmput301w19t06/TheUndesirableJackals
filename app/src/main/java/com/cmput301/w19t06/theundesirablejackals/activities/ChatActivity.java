@@ -2,11 +2,13 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,17 +37,24 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private boolean doneDatabaseFetch = false;
     private RecyclerView chatRecyclerView;
     private static final String TAG = "Chat activity";
+    private Toolbar chatToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.messages_popup_alert);
+        setContentView(R.layout.activity_chat_layout);
+        chatToolbar = findViewById(R.id.toolBarChatActivity);
+        chatToolbar.setNavigationIcon(R.drawable.ic_action_back);
+        chatToolbar.setTitle("Send Message");
+        setSupportActionBar(chatToolbar);
 
         //WE'LL DO IT LIVE!!!!!!!!!  (https://www.youtube.com/watch?v=O_HyZ5aW76c)
         //Except this should intercept notifications from firebase an update the current chat
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
                 registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+
+
 
         databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
             @Override
@@ -59,9 +68,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         Intent intent = getIntent();
-        MessageMetaData messageMetaData = (MessageMetaData) intent.getSerializableExtra(MessageActivity.CHAT_DATA);
+        MessageMetaData messageMetaData = (MessageMetaData) intent.getSerializableExtra(MessagesActivity.CHAT_DATA);
 
-        Button send = findViewById(R.id.buttonChatActivityNewMessageSend);
+        FloatingActionButton send = findViewById(R.id.buttonChatActivityNewMessageSend);
         send.setOnClickListener(this);
 
         RecyclerView.LayoutManager layoutManager;
@@ -78,6 +87,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         chatRecyclerView.setAdapter(chatRecyclerViewAdapter);
         chatRecyclerView.scrollToPosition(chatRecyclerViewAdapter.getItemCount() - 1);
 
+        chatToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        chatToolbar.setTitle(chatRecyclerViewAdapter.getDataSet().getUsername());
     }
 
     private void showToast(String message) {

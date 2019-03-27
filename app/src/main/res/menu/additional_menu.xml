@@ -27,9 +27,9 @@
             android:icon="@drawable/ic_people_grey_24dp"
             android:title="Friends" />
         <item
-            android:id="@+id/itemMenuSearchUser"
-            android:icon="@drawable/ic_person_outline_grey_24dp"
-            android:title="Search for User" />
+            android:id="@+id/itemMenuFriendRequests"
+            android:icon="@drawable/ic_person_add_grey_24dp"
+            android:title="Friend Requests" />
         <item
             android:id="@+id/itemMenuDefaultPickupLocation"
             android:icon="@drawable/ic_pin_drop_grey_24dp"

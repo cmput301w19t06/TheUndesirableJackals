@@ -8,21 +8,15 @@
     android:layout_margin="8dp"
     android:backgroundTint="@color/browser_actions_bg_grey">
 
-    <ImageView
-        android:id="@+id/imageViewPersonalMessageItem"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:adjustViewBounds="true"
-        android:background="@android:drawable/ic_dialog_email"
-        android:contentDescription="@string/profile_picture_content_description"
-        android:maxWidth="70dp"
-        android:maxHeight="60dp"
-        android:minWidth="70dp"
-        android:minHeight="60dp"
-        android:scaleType="centerInside"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageViewPersonalMessagePhoto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_action_username"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +29,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:typeface="normal"
-        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessageItem"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessagePhoto"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/hint_username" />
 
@@ -48,8 +42,18 @@
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp"
         android:typeface="normal"
-        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessageItem"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPersonalMessagePhoto"
         app:layout_constraintTop_toBottomOf="@+id/textViewPersonalMessageItemUsername"
         tools:text="@string/unseen_messages" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="379dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPersonalMessagePhoto" />
 
 </android.support.constraint.ConstraintLayout>
