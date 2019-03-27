@@ -2,6 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         MessageMetaData messageMetaData = (MessageMetaData) intent.getSerializableExtra(MessagesActivity.CHAT_DATA);
 
-        Button send = findViewById(R.id.buttonChatActivityNewMessageSend);
+        FloatingActionButton send = findViewById(R.id.buttonChatActivityNewMessageSend);
         send.setOnClickListener(this);
 
         RecyclerView.LayoutManager layoutManager;
