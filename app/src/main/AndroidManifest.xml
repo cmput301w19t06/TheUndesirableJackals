@@ -38,7 +38,7 @@
         <activity android:name=".ChatActivity" />
         <activity android:name=".EditPersonalProfileActivity" />
         <activity
-            android:name=".MessageActivity"
+            android:name=".MessagesActivity"
             android:label="@string/title_activity_message"
             android:parentActivityName=".MainHomeViewActivity"
             android:theme="@style/AppTheme.NoActionBar">

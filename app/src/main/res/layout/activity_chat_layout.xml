@@ -37,7 +37,7 @@
 
     <include
         android:id="@+id/includeSendMessageBody"
-        layout="@layout/content_sending_message"
+        layout="@layout/content_compose_and_send_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
