@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.MessagesRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
+import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.MessageMetaData;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
@@ -63,8 +65,8 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
             }
         });
 
-//        ItemTouchHelper itemTouchHelper;
-//        SwipeController swipeController;
+        ItemTouchHelper itemTouchHelper;
+        SwipeController swipeController;
         SwipeRefreshLayout swipeRefreshLayout;
         RecyclerView.LayoutManager layoutManager;
         RecyclerView messagesRecyclerView;
@@ -91,9 +93,9 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
             }
         });
 
-//        swipeController = new SwipeController(messagesRecyclerViewAdapter);
-//        itemTouchHelper = new ItemTouchHelper(swipeController);
-//        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
+        swipeController = new SwipeController(messagesRecyclerViewAdapter);
+        itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(messagesRecyclerView);
 
     }
 

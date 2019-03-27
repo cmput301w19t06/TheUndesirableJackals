@@ -37,7 +37,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 /*
  * Created by Mohamed on 21/02/2019
  */
-public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
     View view;
     private BooksRecyclerViewAdapter libraryRecyclerViewAdapter;
     private SwipeRefreshLayout librarySwipeRefreshLayout;
@@ -51,8 +51,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.library_fragment,container,false);
 
-        ItemTouchHelper itemTouchhelper;
-        SwipeController swipeController;
+//        ItemTouchHelper itemTouchhelper;
+//        SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
         RecyclerView libraryRecyclerView;
 
@@ -70,72 +70,16 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mainLayoutManager = new LinearLayoutManager(getContext());
         libraryRecyclerView.setLayoutManager(mainLayoutManager);
 
-        //create a click listener that calls back to here, allows us to
-        // create new activities from 'THIS' context without passing 'THIS'
-        //into the recyclerView directly.
-        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                final Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
-                final DatabaseHelper databaseHelper = new DatabaseHelper();
-                databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
-                    @Override
-                    public void onCallback(BookInformationList bookInformationList) {
-                        if (bookInformationList != null) {
-
-                            if (bookInformationList.size() > 1) {
-                                // List all owners of the book
-                                Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
-                                intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
-                                intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
-                                startActivity(intent);
-
-                            } else if (bookInformationList.size() == 0) {
-                                // book was added by someone in the past but is now deleted
-                                // and no other copies exist in our database
-                                ToastMessage.show(getActivity(),
-                                        "This book is not owned by any users.");
-
-                            } else {
-
-                                // If there is only one owner of the book and the book info status
-                                // is either available or requested display his/her book
-                                if (bookInformationList.get(0).getStatus().equals(BookStatus.AVAILABLE)
-                                    || bookInformationList.get(0).getStatus().equals(BookStatus.REQUESTED)) {
-
-                                    Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
-                                    intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
-                                            clickedBook);
-                                    intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
-                                            bookInformationList.get(0));
-                                    startActivity(intent);
-
-                                } else {
-                                    ToastMessage.show(getActivity(), "Book is currently unavailable.");
-                                }
-
-
-                            }
-
-
-                        } else {
-                            // book was added by someone in the past but is now deleted
-                            // and no other copies exist in our database
-                            ToastMessage.show(getActivity(),
-                                    "Database error");
-                        }
-                    }
-                });
-            }
-        };
-
 
 
         //create the adapter to manage the data and the recyclerView,
         //give it the above listener
         libraryRecyclerViewAdapter = new BooksRecyclerViewAdapter();
         ((MainHomeViewActivity)getActivity()).setLibraryBooksAdapter(libraryRecyclerViewAdapter);
-        libraryRecyclerViewAdapter.setMyListener(listener);
+        //create a click listener that calls back to here, allows us to
+        // create new activities from 'THIS' context without passing 'THIS'
+        //into the recyclerView directly.
+        libraryRecyclerViewAdapter.setMyListener(this);
         libraryRecyclerView.setAdapter(libraryRecyclerViewAdapter);
         librarySwipeRefreshLayout.setOnRefreshListener(this);
         librarySwipeRefreshLayout.post(new Runnable() {
@@ -153,8 +97,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
 
         //interactivity helpers (touch for edit, swipe for delete)
-        swipeController = new SwipeController(libraryRecyclerViewAdapter);
-        itemTouchhelper = new ItemTouchHelper(swipeController);
+//        swipeController = new SwipeController(libraryRecyclerViewAdapter);
+//        itemTouchhelper = new ItemTouchHelper(swipeController);
 //        itemTouchhelper.attachToRecyclerView(libraryRecyclerView);
 
 
@@ -200,5 +144,60 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         librarySwipeRefreshLayout.setRefreshing(true);
         getBooks();
         librarySwipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    @Override
+    public void onClick(View view, int position) {
+        final Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
+        final DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
+            @Override
+            public void onCallback(BookInformationList bookInformationList) {
+                if (bookInformationList != null) {
+
+                    if (bookInformationList.size() > 1) {
+                        // List all owners of the book
+                        Intent intent = new Intent(getActivity(), ShowBookOwnersActivity.class);
+                        intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
+                        intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
+                        startActivity(intent);
+
+                    } else if (bookInformationList.size() == 0) {
+                        // book was added by someone in the past but is now deleted
+                        // and no other copies exist in our database
+                        ToastMessage.show(getActivity(),
+                                "This book is not owned by any users.");
+
+                    } else {
+
+                        // If there is only one owner of the book and the book info status
+                        // is either available or requested display his/her book
+                        if (bookInformationList.get(0).getStatus().equals(BookStatus.AVAILABLE)
+                                || bookInformationList.get(0).getStatus().equals(BookStatus.REQUESTED)) {
+
+                            Intent intent = new Intent(getActivity(), ViewLibraryBookActivity.class);
+                            intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW,
+                                    clickedBook);
+                            intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
+                                    bookInformationList.get(0));
+                            startActivity(intent);
+
+                        } else {
+                            ToastMessage.show(getActivity(), "Book is currently unavailable.");
+                        }
+
+
+                    }
+
+
+                } else {
+                    // book was added by someone in the past but is now deleted
+                    // and no other copies exist in our database
+                    ToastMessage.show(getActivity(),
+                            "Database error");
+                }
+            }
+        });
     }
 }
