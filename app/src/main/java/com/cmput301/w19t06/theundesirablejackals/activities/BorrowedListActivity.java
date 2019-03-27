@@ -15,6 +15,7 @@ import android.view.View;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -82,7 +83,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_borrowed_requests, menu);
+        inflater.inflate(R.menu.menu_requests, menu);
         return true;
     }
 
@@ -118,7 +119,23 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
-        ToastMessage.show(this, "You clicked" + ((Integer)position).toString());
+        BookRequestStatus status = requestsRecyclerViewAdapter.get(position).getCurrentStatus();
+        Intent intent;
+
+        if (status == BookRequestStatus.PENDING){
+            ToastMessage.show(this, "Waiting On Response from Owner");
+            //ToDO
+            //Open up book View???
+        }
+        else if(status == BookRequestStatus.ACCEPTED){
+            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            startActivity(intent);
+        }
+
+        else if(status == BookRequestStatus.HANDED_OFF){
+            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            startActivity(intent);
+        }
     }
 
     @Override

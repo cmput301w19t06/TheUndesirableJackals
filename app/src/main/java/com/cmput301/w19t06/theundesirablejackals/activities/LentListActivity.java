@@ -85,7 +85,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_lend_request, menu);
+        inflater.inflate(R.menu.menu_requests, menu);
         return true;
     }
 
@@ -124,26 +124,12 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
-        BookRequestStatus status = requestsRecyclerViewAdapter.get(position).getCurrentStatus();
-        getIntent().putExtra("info", requestsRecyclerViewAdapter.get(position));
         Intent intent;
-
-        if (status == BookRequestStatus.PENDING){
-            intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
-            startActivityForResult(intent, DELETE_OR_ACCEPT);
-        }
-        else if(status == BookRequestStatus.ACCEPTED){
-            intent = new Intent(LentListActivity.this, MapHandoff.class);
-
-            startActivity(intent);
-        }
-
-        else if(status == BookRequestStatus.HANDED_OFF){
-            intent = new Intent(LentListActivity.this, MapHandoff.class);
-            startActivity(intent);
-        }
-
-
+        intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("info", requestsRecyclerViewAdapter.get(position));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
