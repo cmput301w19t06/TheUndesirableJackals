@@ -14,11 +14,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
@@ -30,21 +35,20 @@ import com.squareup.picasso.Picasso;
 public class
 PersonalProfileActivity extends AppCompatActivity {
 
-
-    // ratio in relation to the original display
-    private final Double WIDTH_RATIO = 0.9;
-    private final Double HEIGHT_RATIO = 0.6;
-
-
     private DatabaseHelper mDatabaseHelper;
 
     private UserInformation mUserInformation;
+
+    private Toolbar mToolBar;
 
     private ImageView mProfilePhoto;
     private TextView mTextViewUsername;
     private TextView mTextViewEmail;
     private TextView mTextViewPhoneNumber;
     private TextView mTextViewEditProfile;
+
+    private RecyclerView mRecyclerViewFavouriteBooks;
+    private BooksRecyclerViewAdapter mAdapterFavouriteBooks;
 
 
     /**
@@ -58,14 +62,10 @@ PersonalProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_profile);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
-
-        // set size of the popup window
-        getWindow().setLayout((int) (width * WIDTH_RATIO), (int) (height * HEIGHT_RATIO));
+        mToolBar = findViewById(R.id.toolbar);
+        mToolBar.setNavigationIcon(R.drawable.ic_action_back);
+        mToolBar.setTitle("");
+        setSupportActionBar(mToolBar);
 
         mDatabaseHelper = new DatabaseHelper();
 
@@ -73,17 +73,24 @@ PersonalProfileActivity extends AppCompatActivity {
         mTextViewUsername = findViewById(R.id.textViewPersonalProfileActivityUserName);
         mTextViewEmail = findViewById(R.id.textViewPersonalProfileActivityEmail);
         mTextViewPhoneNumber = findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
-        mTextViewEditProfile = findViewById(R.id.textViewPersonalProfileActivityEditProfile);
 
-        mTextViewEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PersonalProfileActivity.this, EditPersonalProfileActivity.class);
-                //intent.putExtra()
-            }
-        });
+        mRecyclerViewFavouriteBooks = findViewById(R.id.recylerViewPersonalProfileFavouriteBooks);
 
         getUserInfo();
+
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_personal_profile, menu);
+        return true;
     }
 
 
@@ -100,8 +107,8 @@ PersonalProfileActivity extends AppCompatActivity {
 
                 // display the info
                 mTextViewUsername.setText(mUserInformation.getUserName());
-                mTextViewEmail.setText("Email: " + mUserInformation.getEmail());
-                mTextViewPhoneNumber.setText("Phone: " + mUserInformation.getPhoneNumber());
+                mTextViewEmail.setText("email: " + mUserInformation.getEmail());
+                mTextViewPhoneNumber.setText("phone: " + mUserInformation.getPhoneNumber());
 
                 if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
                     mDatabaseHelper.getProfilePictureUri(mUserInformation, new UriCallback() {
@@ -113,7 +120,6 @@ PersonalProfileActivity extends AppCompatActivity {
                                         .error(R.drawable.ic_person_outline_grey_24dp)
                                         .placeholder(R.drawable.ic_loading_with_text)
                                         .into(mProfilePhoto);
-
                             }
                         }
 
