@@ -32,7 +32,7 @@ public class BookRequestList {
      * @param bookRequest BookRequest object to be deleted in the request list
      */
     public void deleteRequest(BookRequest bookRequest) {
-        bookRequests.remove(bookRequests);
+        bookRequests.remove(bookRequest);
     }
 
 
@@ -48,6 +48,7 @@ public class BookRequestList {
      * @param status status of the book that the contains
      * @return an ArrayList of BookRequests which matches the status
      */
+    @Deprecated
     public ArrayList<BookRequest> getBookRequests(BookRequestStatus status) {
         //TODO: get book requests of certain status
         return bookRequests;
@@ -59,6 +60,7 @@ public class BookRequestList {
      * @param user can either be the owner or the borrower of the book request
      * @return an ArrayList of BookRequest that is tied to the user
      */
+    @Deprecated
     public ArrayList<BookRequest> getBookRequests(User user) {
         //TODO: get book requests for a certain user
         return bookRequests;
@@ -84,6 +86,6 @@ public class BookRequestList {
 
     public int size(){return bookRequests.size();}
 
-    public BookRequest get(Integer integer){return bookRequests.get(integer);}
+    public BookRequest get(int integer){return bookRequests.get(integer);}
 
 }

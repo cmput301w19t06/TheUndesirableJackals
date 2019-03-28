@@ -1,12 +1,14 @@
 package com.cmput301.w19t06.theundesirablejackals.classes;
 
 
+import java.io.Serializable;
+
 /**
  * This is class is responsible for managing location using longitude and latitude. This class
  * is used in BookRequest for setting up meet up location for book hand off
  * @author Art Limbaga
  */
-public class Geolocation {
+public class Geolocation implements Serializable {
     private Double longitude;
     private Double latitude;
 

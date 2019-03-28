@@ -1,11 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
+import java.io.Serializable;
+
 /**
  * These are the only possible statuses that a book request can have
  * @author Art Limbaga
  * @see BookRequest
  */
-public enum BookRequestStatus {
+public enum BookRequestStatus implements Serializable {
     PENDING("REQUESTED"),             // book has been requested and waiting for owner to take action
     DENIED("DENIED"),             // book requested by the borrower is denied by the owner
     CANCELLED("CANCELLED"),          // book request cancelled by borrower

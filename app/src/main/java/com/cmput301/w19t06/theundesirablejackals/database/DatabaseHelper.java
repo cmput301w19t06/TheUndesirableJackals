@@ -1323,6 +1323,47 @@ public class DatabaseHelper{
         });
     }
 
+    public void deleteRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
+        requestsReference
+                .child("lendRequest")
+                .child(bookRequest.getBookRequested().getOwner())
+                .child(bookRequest.getBookRequestLendKey())
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            requestsReference
+                                    .child("borrowRequest")
+                                    .child(bookRequest.getBorrower().getUserName())
+                                    .child(bookRequest.getBookRequestBorrowKey())
+                                    .removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                updateBookInformation(bookRequest.getBookRequested(), new BooleanCallback() {
+                                                    @Override
+                                                    public void onCallback(boolean bool) {
+                                                        if(bool){
+                                                            booleanCallback.onCallback(true);
+                                                        }else{
+                                                            booleanCallback.onCallback(false);
+                                                        }
+                                                    }
+                                                });
+                                            }else{
+                                                booleanCallback.onCallback(false);
+                                            }
+                                        }
+                                    });
+                        }else{
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
 
 
     //~~~~~~~~~~~~~~~~~MESSAGING NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//
