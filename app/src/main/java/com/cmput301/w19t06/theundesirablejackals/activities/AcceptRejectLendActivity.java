@@ -195,6 +195,18 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                         }
                     }
                 });
+        BookInformation bookInformation = request.getBookRequested();
+        bookInformation.setStatus(BookStatus.ACCEPTED);
+        databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool){
+                    showToast("Book status updated successfully");
+                }else{
+                    showToast("Book status wasn't updated");
+                }
+            }
+        });
     }
 
     private void doDeniedStuff(){
