@@ -44,7 +44,7 @@ import java.util.Map;
  * Instead the app will use callbacks provided in the database package in order to
  * collect data once it is available, or to check the status of a database call
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class DatabaseHelper{
     //The tag used for this function when working with 'Log'
     private final static String TAG = "DatabaseHelper";
@@ -1281,7 +1281,6 @@ public class DatabaseHelper{
      * @param bookRequest The book request that is being updated by Owner for Borrower
      * @param booleanCallback  A callback so the request status is known, and completion can be tracked
      */
-    @SuppressWarnings("WeakerAccess")
     public void updateLendRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
         requestsReference
                 .child("lendRequest")
@@ -1360,6 +1359,37 @@ public class DatabaseHelper{
                         }else{
                             booleanCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    public void getSpecificBookLendRequests(String userName, String bookInformationKey, final BookRequestListCallback bookRequestListCallback){
+        requestsReference
+                .child("lendRequest")
+                .child(userName)
+                .orderByChild("bookRequested/bookInformationKey")
+                .startAt(bookInformationKey)
+                .endAt(bookInformationKey)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        BookRequestList bookRequestList = new BookRequestList();
+                        if (dataSnapshot.exists()) {
+                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                if(dataSnapshot1.exists()) {
+                                    bookRequestList.addRequest(dataSnapshot1.getValue(BookRequest.class));
+                                }
+                            }
+                            bookRequestListCallback.onCallback(bookRequestList);
+                        }else {
+                            bookRequestListCallback.onCallback(bookRequestList);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        bookRequestListCallback.onCallback(null);
+                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.e(TAG, databaseError.getMessage());
                     }
                 });
     }
