@@ -29,13 +29,12 @@ public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        Integer position = viewHolder.getAdapterPosition();
-        Log.d("SwipeController", position.toString());
+        int position = viewHolder.getAdapterPosition();
+        Log.d("SwipeController", ((Integer)position).toString());
         if(myAdapter.getClass().equals(MessagesRecyclerViewAdapter.class)) {
             ((MessagesRecyclerViewAdapter)myAdapter).deleteItems(position);
         }else if(myAdapter.getClass().equals(RequestsRecyclerViewAdapter.class)){
-            ((RequestsRecyclerViewAdapter)myAdapter).deleteItem(position);
+            ((RequestsRecyclerViewAdapter)myAdapter).doDeleteCleanup(position);
         }
-
     }
 }
