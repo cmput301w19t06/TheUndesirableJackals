@@ -27,9 +27,8 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * List view of all current lent requests. Allow the user to view more about them
  * Author: Kaya Thiessen
  */
-public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
     public static final int DELETE_OR_ACCEPT = 420;
-    private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
@@ -44,7 +43,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLendRequests);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activityLendRequestSwipeRefreshLayout);
 
-        toolbar = findViewById(R.id.tool_barLend);
+        Toolbar toolbar = findViewById(R.id.tool_barLend);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Lend Requests");
         setSupportActionBar(toolbar);
@@ -54,22 +53,14 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                recyclerOnClick(view, position);
-            }
-        };
 
-        requestsRecyclerViewAdapter.setMyListener(listener);
+        requestsRecyclerViewAdapter.setMyListener(this);
         recyclerView.setAdapter(requestsRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                getLendRequests();
-                swipeRefreshLayout.setRefreshing(false);
+                onRefresh();
             }
         });
 
@@ -82,6 +73,14 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
             }
         });
     }
+
+
+    @Override
+    public void onClick(View view, int position) {
+        recyclerOnClick(view, position);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

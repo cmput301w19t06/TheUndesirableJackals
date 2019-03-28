@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
@@ -26,7 +28,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * Pulls all Borrowed book requests and displays them here
  * Author: Kaya Thiessen
  */
-public class BorrowedListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class BorrowedListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -42,6 +44,9 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewBorrowRequests);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activityBorrowRequestSwipeRefreshLayout);
 
+        ItemTouchHelper itemTouchHelper;
+        SwipeController swipeController;
+
         toolbar = findViewById(R.id.tool_barBorrow);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Borrow Requests");
@@ -52,24 +57,21 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                recyclerOnClick(view, position);
-            }
-        };
 
-        requestsRecyclerViewAdapter.setMyListener(listener);
+
+        requestsRecyclerViewAdapter.setMyListener(this);
         recyclerView.setAdapter(requestsRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                getBorrowRequests();
-                swipeRefreshLayout.setRefreshing(false);
+                onRefresh();
             }
         });
+
+        swipeController = new SwipeController(requestsRecyclerViewAdapter);
+        itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,12 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             }
         });
     }
+
+    @Override
+    public void onClick(View view, int position) {
+        recyclerOnClick(view, position);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -113,9 +121,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
 
         return super.onOptionsItemSelected(item);
     }
-    public void setBorrowedRequestsAdapter(RequestsRecyclerViewAdapter adapter){
-        this.requestsRecyclerViewAdapter= adapter;
-    }
+
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
@@ -123,8 +129,8 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.PENDING){
-            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
-            startActivity(intent);
+//            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+//            startActivity(intent);
             ToastMessage.show(this, "Waiting On Response from Owner");
             //ToDO
             //Open up book View???
@@ -137,6 +143,10 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         else if(status == BookRequestStatus.HANDED_OFF){
             intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
             startActivity(intent);
+        }
+        else if(status == BookRequestStatus.DENIED){
+            requestsRecyclerViewAdapter.deleteItem(position);
+            showToast("Request denied, attempting to remove request from list");
         }
     }
 
@@ -177,6 +187,10 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    private void showToast(String message){
+        ToastMessage.show(this, message);
     }
 }
 

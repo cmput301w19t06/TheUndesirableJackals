@@ -7,10 +7,10 @@ import android.util.Log;
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
 
-public class SwipeController extends Callback {
-    private MessagesRecyclerViewAdapter myAdapter;
+public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
+    private T myAdapter;
 
-    public SwipeController(MessagesRecyclerViewAdapter adapter){
+    public SwipeController(T adapter){
         super();
         myAdapter = adapter;
     }
@@ -31,7 +31,11 @@ public class SwipeController extends Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         Integer position = viewHolder.getAdapterPosition();
         Log.d("SwipeController", position.toString());
-        myAdapter.deleteItems(position);
+        if(myAdapter.getClass().equals(MessagesRecyclerViewAdapter.class)) {
+            ((MessagesRecyclerViewAdapter)myAdapter).deleteItems(position);
+        }else if(myAdapter.getClass().equals(RequestsRecyclerViewAdapter.class)){
+            ((RequestsRecyclerViewAdapter)myAdapter).deleteItem(position);
+        }
 
     }
 }

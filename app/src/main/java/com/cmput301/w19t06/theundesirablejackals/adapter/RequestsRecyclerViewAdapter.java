@@ -15,6 +15,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
 
@@ -148,6 +149,23 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
 
     public BookRequest get(int i){
         return dataSet.get(i);
+    }
+
+    public void deleteItem(final int position){
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.deleteRequest(dataSet.get(position), new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+                        if(bool){
+                            dataSet.getBookRequests().remove(position);
+                            notifyItemRemoved(position);
+                            notifyDataSetChanged();
+                        }else{
+                            notifyItemChanged(position);
+                        }
+                    }
+                });
+
     }
 
 }
