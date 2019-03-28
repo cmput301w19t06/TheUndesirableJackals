@@ -154,37 +154,83 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
             public void onCallback(boolean bool) {
                 if (bool) {
                     if(status == BookRequestStatus.DENIED){
-                        databaseHelper.getSpecificBookLendRequests(request.getBookRequested().getOwner(),
-                                request.getBookRequested().getBookInformationKey(),
-                                new BookRequestListCallback() {
-                            @Override
-                            public void onCallback(BookRequestList bookRequestList) {
-                                if(bookRequestList != null && bookRequestList.size() == 1){
-                                    BookInformation bookInformation = request.getBookRequested();
-                                    bookInformation.setStatus(BookStatus.AVAILABLE);
-                                    databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
-                                        @Override
-                                        public void onCallback(boolean bool) {
-                                            if(bool){
-                                                showToast("Request updated successfully");
-                                            }else{
-                                                showToast("Couldn't update book status to AVAILABLE");
-                                            }
-                                        }
-                                    });
-                                }else if(bookRequestList == null){
-                                    showToast("Something went wrong updating the book status");
-                                }
-                            }
-                        });
+                        doDeniedStuff();
                     }else {
-                        showToast("Request updated successfully");
+                        doAcceptedStuff();
                     }
                 } else {
                     showToast("Something went wrong updating the request");
                 }
             }
         });
+    }
+
+    private void doAcceptedStuff() {
+        databaseHelper.getSpecificBookLendRequests(request.getBookRequested().getOwner(),
+                request.getBookRequested().getBookInformationKey(),
+                new BookRequestListCallback() {
+                    @Override
+                    public void onCallback(BookRequestList bookRequestList) {
+                        if(bookRequestList != null && bookRequestList.size() > 0){
+                            for(BookRequest bookRequest : bookRequestList.getBookRequests()){
+                                if(bookRequest.getBookRequestLendKey().equals(request.getBookRequestLendKey())){
+                                    continue;
+                                }
+                                bookRequest.setCurrentStatus(BookRequestStatus.DENIED);
+                                databaseHelper.updateLendRequest(bookRequest, new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if(bool){
+                                            showToast("Request updated successfully");
+                                        }else{
+                                            showToast("Something went wrong updating all other requests");
+                                        }
+                                    }
+                                });
+                            }
+                        }else if(bookRequestList == null){
+                            showToast("Something went wrong updating the book status");
+                        }else{
+                            showToast("You shouldn't ever see this message...");
+                        }
+                    }
+                });
+    }
+
+    private void doDeniedStuff(){
+        databaseHelper.getSpecificBookLendRequests(request.getBookRequested().getOwner(),
+                request.getBookRequested().getBookInformationKey(),
+                new BookRequestListCallback() {
+                    @Override
+                    public void onCallback(BookRequestList bookRequestList) {
+                        if(bookRequestList != null && bookRequestList.size() > 0){
+                            boolean noOpenRequests = true;
+                            for(BookRequest bookRequest : bookRequestList.getBookRequests()){
+                                if(bookRequest.getCurrentStatus() != BookRequestStatus.DENIED){
+                                    noOpenRequests = false;
+                                }
+                            }
+                            if(noOpenRequests) {
+                                BookInformation bookInformation = request.getBookRequested();
+                                bookInformation.setStatus(BookStatus.AVAILABLE);
+                                databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if (bool) {
+                                            showToast("Request updated successfully");
+                                        } else {
+                                            showToast("Couldn't update book status to AVAILABLE");
+                                        }
+                                    }
+                                });
+                            }
+                        }else if(bookRequestList == null){
+                            showToast("Something went wrong updating the book status");
+                        }else{
+                            showToast("You shouldn't ever see this message...");
+                        }
+                    }
+                });
     }
 
     /**
