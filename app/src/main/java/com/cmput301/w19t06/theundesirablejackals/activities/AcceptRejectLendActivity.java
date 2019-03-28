@@ -18,10 +18,13 @@ import android.widget.Toast;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -143,14 +146,40 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
 
     }
 
-    private void sendRequestUpdate(BookRequestStatus status){
+    private void sendRequestUpdate(final BookRequestStatus status){
         request.setCurrentStatus(status);
         request.setPickuplocation(geolocation);
         databaseHelper.updateLendRequest(request, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
                 if (bool) {
-                    showToast("Request updated successfully");
+                    if(status == BookRequestStatus.DENIED){
+                        databaseHelper.getSpecificBookLendRequests(request.getBookRequested().getOwner(),
+                                request.getBookRequested().getBookInformationKey(),
+                                new BookRequestListCallback() {
+                            @Override
+                            public void onCallback(BookRequestList bookRequestList) {
+                                if(bookRequestList != null && bookRequestList.size() == 1){
+                                    BookInformation bookInformation = request.getBookRequested();
+                                    bookInformation.setStatus(BookStatus.AVAILABLE);
+                                    databaseHelper.updateBookInformation(bookInformation, new BooleanCallback() {
+                                        @Override
+                                        public void onCallback(boolean bool) {
+                                            if(bool){
+                                                showToast("Request updated successfully");
+                                            }else{
+                                                showToast("Couldn't update book status to AVAILABLE");
+                                            }
+                                        }
+                                    });
+                                }else if(bookRequestList == null){
+                                    showToast("Something went wrong updating the book status");
+                                }
+                            }
+                        });
+                    }else {
+                        showToast("Request updated successfully");
+                    }
                 } else {
                     showToast("Something went wrong updating the request");
                 }
