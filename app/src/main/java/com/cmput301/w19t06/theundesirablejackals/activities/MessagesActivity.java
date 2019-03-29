@@ -208,7 +208,6 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
         });
     }
 
-
     public void update(){
         messagesRecyclerViewAdapter.onRefresh();
     }

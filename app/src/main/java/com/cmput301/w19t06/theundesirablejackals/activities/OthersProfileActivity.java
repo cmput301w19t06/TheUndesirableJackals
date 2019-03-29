@@ -110,42 +110,44 @@ public class OthersProfileActivity extends AppCompatActivity {
 
     }
 
-    public String doSendOwnerMessageProcess() {
-        return "";
-//        String message;
-//        LayoutInflater li = LayoutInflater.from(OthersProfileActivity.this);
-//        View promptsView = li.inflate(R.layout.prompt_new_phone_number, null);
-//
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                OthersProfileActivity.this);
-//
-//        // set prompts.xml to alertdialog builder
-//        alertDialogBuilder.setView(promptsView);
-//
-//        final EditText userInput = (EditText) promptsView
-//                .findViewById(R.id.editTextPrompNewPhoneNumberInput);
-//
-//        // set dialog message
-//        alertDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton("Send",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                               if
-//                            }
-//                        })
-//                .setNegativeButton("Cancel",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        // create alert dialog
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // show it
-//        alertDialog.show();
+    public void doSendOwnerMessageProcess() {
+        LayoutInflater li = LayoutInflater.from(OthersProfileActivity.this);
+        View promptsView = li.inflate(R.layout.prompt_send_book_owner_message, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                OthersProfileActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextPromptMessageBookOwnerInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Send",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                               if (userInput.getText().toString().isEmpty()) {
+                                   ToastMessage.show(getApplicationContext(), "Please enter something");
+                               } else {
+                                   sendMessage(userInput.getText().toString());
+                               }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
 
     }
 

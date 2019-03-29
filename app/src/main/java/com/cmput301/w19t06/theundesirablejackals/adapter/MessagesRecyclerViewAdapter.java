@@ -2,6 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
@@ -18,8 +20,12 @@ import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.MessageListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +65,33 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TextView usernameView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUsername);
         TextView unseenView = holder.mainView.findViewById(R.id.textViewPersonalMessageItemUnseen);
+        final ImageView profilePhoto = holder.mainView.findViewById(R.id.imageViewPersonalMessagePhoto);
+
+
         Integer unseen = dataSet.get(position).getUnseen();
         String username = dataSet.get(position).getUsername();
+
+        databaseHelper.getUserInfoFromDatabase(username, new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                if (userInformation.getUserPhoto()!=null && !userInformation.getUserPhoto().isEmpty()) {
+                    databaseHelper.getProfilePictureUri(userInformation, new UriCallback() {
+                        @Override
+                        public void onCallback(Uri uri) {
+                            if (uri != null) {
+                                Picasso.get()
+                                        .load(uri)
+                                        .error(R.drawable.ic_person_outline_grey_24dp)
+                                        .placeholder(R.drawable.ic_loading_with_text)
+                                        .into(profilePhoto);
+                            }
+                        }
+
+                    });
+                }
+
+            }
+        });
         switch (unseen){
             case 0 :
                 unseenView.setTextColor(Color.parseColor("#ff000000"));
@@ -83,7 +114,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
         // each data item is a MyHealthStats member
         private ConstraintLayout mainView;
         private RecyclerViewClickListener myListener;
-
 
         MyViewHolder(ConstraintLayout v, RecyclerViewClickListener listener) {
             super(v);
