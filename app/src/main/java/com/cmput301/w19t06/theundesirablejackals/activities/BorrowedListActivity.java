@@ -77,7 +77,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
                 finish();
             }
         });

@@ -13,9 +13,9 @@ public enum BookRequestStatus implements Serializable {
     CANCELLED("CANCELLED"),          // book request cancelled by borrower
     ACCEPTED("ACCEPTED"),           // book request is accepted by book owner
     HANDED_OFF("HANDED OFF"),         // book has been scanned for hand off by the owner
-    RECEIVED_BORROWER("BORROWED"),  // book has been scanned and received by the borrower
+    BORROWED("BORROWED"),  // book has been scanned and received by the borrower
     RETURNING("RETURNING"),          // book has been scanned for return by the borrower
-    RECEIVED_OWNER("RETURNED") ;     // returned book has been received by the owner
+    RETURNED("RETURNED") ;     // returned book has been received by the owner
 
     private final String mStatusDescription;
 
