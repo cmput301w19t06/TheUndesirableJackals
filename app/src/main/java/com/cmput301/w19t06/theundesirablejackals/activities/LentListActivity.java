@@ -142,7 +142,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 startActivity(intent);
 
                 break;
-            case RECEIVED_BORROWER:
+            case BORROWED:
                 ToastMessage.show(LentListActivity.this, "Waiting for borrower to return the book...");
             default:
                 break;
