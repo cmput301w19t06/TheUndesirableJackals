@@ -301,7 +301,7 @@ public class AddBookActivity extends AppCompatActivity {
                 showMyToast("Photo Scan Canceled");
             }
         }
-    }
+}
 
 
     /**

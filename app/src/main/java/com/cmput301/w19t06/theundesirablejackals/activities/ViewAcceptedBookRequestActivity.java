@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +24,9 @@ import com.squareup.picasso.Picasso;
 
 public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
     public final static String ACCEPTED_REQUEST = "AcceptedRequest";
+    public final static int BARCODE_SCANNER = 1000;
 
+    private final static String ACTIVITY_TAG = "ViewAcceptedBookRequest";
     private BookRequest mBookRequest;
 
     // ratio in relation to the original display
@@ -86,7 +89,8 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         mButtonScanISBN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(ViewAcceptedBookRequestActivity.this, "SCANNING...");
+                Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ScanBarcodeActivity.class);
+                startActivityForResult(intent, BARCODE_SCANNER);
             }
         });
 
@@ -158,6 +162,20 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BARCODE_SCANNER) {
+            if (resultCode == RESULT_OK) {
+                mTextViewScannedISBN.setText(data.getStringExtra("ISBN"));
+                ToastMessage.show(getApplicationContext(), "ISBN scanned");
+            } else {
+              ToastMessage.show(getApplicationContext(), "No results found");
+            }
+        } else {
+            Log.d(ACTIVITY_TAG, "Unrecognized request code");
         }
     }
 }
