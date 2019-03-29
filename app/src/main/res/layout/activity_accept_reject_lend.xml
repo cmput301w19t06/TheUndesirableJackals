@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp"
     android:background="@drawable/background_with_dark_green_border">
 
@@ -15,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:text=" Book:"
         android:textAllCaps="true"
+        android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
             android:autoSizeTextType="uniform"
             android:maxLines="1"
             android:text="Title"
+            android:textColor="@color/browser_actions_text_color"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
@@ -67,6 +69,7 @@
             android:autoSizeTextType="uniform"
             android:maxLines="1"
             android:text="Author"
+            android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,9 +86,10 @@
             android:layout_marginBottom="8dp"
             android:maxLines="1"
             android:text="ISBN"
+            android:textColor="@color/browser_actions_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
             app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBookAuthor" />
 
     </android.support.constraint.ConstraintLayout>
@@ -98,6 +102,7 @@
         android:layout_marginTop="8dp"
         android:text="Requester: "
         android:textAllCaps="true"
+        android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendBook" />
@@ -119,10 +124,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:text="Username"
-            android:textSize="18sp"
+            android:textColor="@color/browser_actions_text_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,7 +155,8 @@
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:text="email@gmail.com"
-            android:textSize="18sp"
+            android:textColor="@color/browser_actions_text_color"
+            android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
             app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendUserName" />
@@ -157,19 +165,21 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutAcceptRejectLendButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendRequester">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonAcceptRejectLendDecline"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -180,7 +190,7 @@
             tools:layout_editor_absoluteY="146dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonAcceptRejectLendAccept"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -37,7 +37,6 @@ public class OthersProfileActivity extends AppCompatActivity {
 
     public static final String USERNAME = "OtherUserInformation";
 
-
     private DatabaseHelper mDatabaseHelper;
     private UserInformation mUserInformation;
 
