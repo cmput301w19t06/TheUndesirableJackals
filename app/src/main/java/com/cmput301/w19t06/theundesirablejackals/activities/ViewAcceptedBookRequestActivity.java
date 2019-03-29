@@ -97,16 +97,14 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         mButtonConfirmHandoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(ViewAcceptedBookRequestActivity.this,"HANDING OFF...");
+                doConfirmHandOff();
             }
         });
 
         mLinearLayoutViewPickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ViewPickupLocationActivity.class);
-                intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
-                startActivity(intent);
+               doViewPickupLocation();
             }
         });
 
@@ -120,6 +118,16 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void doViewPickupLocation() {
+        if(mBookRequest.getPickuplocation() == null) {
+            ToastMessage.show(getApplicationContext(), "Book owner done messed up and accepted your request without setting a location... ");
+            return;
+        }
+        Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ViewPickupLocationActivity.class);
+        intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
+        startActivity(intent);
     }
 
 
@@ -177,5 +185,21 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         } else {
             Log.d(ACTIVITY_TAG, "Unrecognized request code");
         }
+    }
+
+    private void  doConfirmHandOff() {
+
+        if(mTextViewScannedISBN.getText().toString().isEmpty()) {
+            ToastMessage.show(getApplicationContext(), "Please scan barcode for ISBN");
+            return;
+        }
+
+        if(mTextViewScannedISBN.getText().toString().equals(mBookRequest.getBookRequested().getIsbn())) {
+            ToastMessage.show(getApplicationContext(), "DEVON DO YOUR SHIT HERE");
+        } else {
+            ToastMessage.show(getApplicationContext(),"Scanned barcode does not match requested book ISBN");
+        }
+
+
     }
 }
