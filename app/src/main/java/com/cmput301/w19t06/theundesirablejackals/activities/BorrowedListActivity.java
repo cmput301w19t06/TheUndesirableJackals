@@ -128,7 +128,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         BookRequestStatus status = requestsRecyclerViewAdapter.get(position).getCurrentStatus();
         Intent intent;
 
-        if (status == BookRequestStatus.PENDING){
+        if (status == BookRequestStatus.REQUESTED){
 //            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
 //            startActivity(intent);
             ToastMessage.show(this, "Waiting On Response from Owner");

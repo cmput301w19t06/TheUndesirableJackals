@@ -91,9 +91,12 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
         // - replace the contents of the view with that element
         final TextView titleTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemTitle);
         final TextView authorTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemAuthor);
-        TextView requesterTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemUsername);
+        TextView requesterTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemBorrower);
+        TextView ownerTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemOwner);
         TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemStatusChange);
+        TextView isbnTextView = holder.mainTextView.findViewById(R.id.textViewRequestItemISBN);
         ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequestItemBook);
+
 
         BookRequest bookRequest = dataSet.get(position);
         BookInformation i = bookRequest.getBookRequested();
@@ -111,17 +114,30 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
 
         String requester = bookRequest.getBorrower().getUserName();
 
+        String owner = bookRequest.getBookRequested().getOwner();
+
         if(status != null) {
             statusTextView.setText(status.getStatusDescription());
         }
 
+        if(bookRequest.getBookRequested().getIsbn()!=null) {
+            isbnTextView.setText("ISBN: " + bookRequest.getBookRequested().getIsbn());
+        }
 
         if(requester != null) {
-            requesterTextView.setText(requester);
+            requesterTextView.setText("Requester: "+ requester);
+        } else {
+            requesterTextView.setText("ERROR LOADING BORROWER");
+        }
+
+        if (owner != null) {
+            ownerTextView.setText("Owner: "+owner);
+        }  else {
+            ownerTextView.setText("ERROR LOADING OWNER");
         }
 
         switch (status) {
-            case PENDING:
+            case REQUESTED:
                 bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
                 break;
             case ACCEPTED:
@@ -133,7 +149,6 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
             default:
                 bookThumbnail.setImageResource(R.drawable.book_icon);
         }
-
 
     }
 

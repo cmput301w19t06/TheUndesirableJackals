@@ -31,7 +31,7 @@ public class BookRequest implements Serializable {
      */
     public BookRequest(UserInformation borrower, BookInformation bookRequested) {
         this.bookRequested = bookRequested;
-        this.currentStatus = BookRequestStatus.PENDING;
+        this.currentStatus = BookRequestStatus.REQUESTED;
         this.borrower = borrower;
 
         // set the status of the book requested to "requested"
