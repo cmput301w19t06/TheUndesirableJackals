@@ -208,7 +208,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutAcceptedRequestLocation">
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestISBN"
+            android:id="@+id/textViewAcceptedRequestScannedISBN"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="231dp"
             android:layout_height="wrap_content"

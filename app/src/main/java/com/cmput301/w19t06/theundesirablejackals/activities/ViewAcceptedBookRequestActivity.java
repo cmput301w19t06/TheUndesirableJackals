@@ -35,8 +35,8 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
     private TextView mTextViewBorowerEmail;
     private TextView mTextViewBookTitle;
     private TextView mTextViewBookAuthor;
-
     private TextView mTextViewBookISBN;
+    private TextView mTextViewScannedISBN;
 
     private ImageView mImageViewBookPhoto;
     private ImageView mImageProfilePhoto;
@@ -59,7 +59,7 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         int height = displayMetrics.heightPixels;
 
         // set size of the popup window
-        getWindow().setLayout((int) width, (int) (height * HEIGHT_RATIO));
+        getWindow().setLayout(width, (int) (height * HEIGHT_RATIO));
 
         mDatabaseHelper = new DatabaseHelper();
 
@@ -71,6 +71,7 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         mTextViewBookTitle = findViewById(R.id.textViewAcceptedRequestBookTitle);
         mTextViewBookAuthor = findViewById(R.id.textViewAcceptedRequestBookAuthor);
         mTextViewBookISBN = findViewById(R.id.textViewAcceptedRequestBookIsbn);
+        mTextViewScannedISBN = findViewById(R.id.textViewAcceptedRequestScannedISBN);
 
         mImageProfilePhoto = findViewById(R.id.imageViewAcceptedRequestUserPhoto);
         mImageViewBookPhoto = findViewById(R.id.imageViewAcceptedRequestBookPhoto);
