@@ -2,6 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -100,6 +101,16 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ViewPickupLocationActivity.class);
                 intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
+                startActivity(intent);
+            }
+        });
+
+        ConstraintLayout borrowerConstraintLayout = findViewById(R.id.constraintLayoutAcceptedRequestRequester);
+        borrowerConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, OthersProfileActivity.class);
+                intent.putExtra(OthersProfileActivity.USERNAME, mBookRequest.getBorrower().getUserName());
                 startActivity(intent);
             }
         });
