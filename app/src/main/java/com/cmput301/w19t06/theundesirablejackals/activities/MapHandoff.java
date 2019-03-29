@@ -23,9 +23,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
+import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -45,12 +54,17 @@ import java.util.Locale;
 public class MapHandoff extends AppCompatActivity {
     private static final int BARCODE_PERMISSION_REQUEST = 1100;
     private static final int IMAGE_CAPTURE_REQUEST = 1101;
+    private static final String USERNAME = "TheFuckisThis" ;
     private FirebaseVisionBarcodeDetectorOptions options;
     private Toolbar toolbar;
     private static final String TAG = "MapHandoffActivity";
     private String currentPhotoPath;
     private ArrayList<String> barcodesFound = new ArrayList<>();
     private BookRequest request;
+    private DatabaseHelper databaseHelper;
+    private boolean doneDatabaseFetch = false;
+    private User currentUser;
+    private Geolocation geolocation;
 
 
 
@@ -72,7 +86,7 @@ public class MapHandoff extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BorrowedListActivity.class));
+                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity.class));
                 finish();
             }
         });
@@ -83,10 +97,36 @@ public class MapHandoff extends AppCompatActivity {
                         FirebaseVisionBarcode.TYPE_ISBN)
                 .build();
 
-        TextView title = (TextView) findViewById(R.id.textViewHandoffBookTitle);
+        databaseHelper = new DatabaseHelper();
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                doneDatabaseFetch = true;
+                if(user != null) {
+                    currentUser = user;
+                    geolocation = user.getPickUpLocation();
+                }
+            }
+        });
+
+        final TextView title = (TextView) findViewById(R.id.textViewHandoffBookTitle);
         TextView username = (TextView) findViewById(R.id.textViewHandoffOwner);
-        TextView phone = (TextView) findViewById(R.id.textViewHandoffPhone);
-        TextView email = (TextView) findViewById(R.id.textViewHandoffEmail);
+        final TextView phone = (TextView) findViewById(R.id.textViewHandoffPhone);
+        final TextView email = (TextView) findViewById(R.id.textViewHandoffEmail);
+
+
+        username.setText(request.getBookRequested().getOwner());
+
+        BookInformation i = request.getBookRequested();
+        title.setText("");
+        databaseHelper.getBookFromDatabase(i.getIsbn(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                if(book != null){
+                    title.setText(book.getTitle());
+                }
+            }
+        });
     }
 
     /**

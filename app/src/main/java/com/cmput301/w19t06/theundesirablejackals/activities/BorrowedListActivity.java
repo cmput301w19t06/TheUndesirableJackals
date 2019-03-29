@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
@@ -132,16 +133,22 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
 //            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
 //            startActivity(intent);
             ToastMessage.show(this, "Waiting On Response from Owner");
-            //ToDO
-            //Open up book View???
+            /*
+            intent = new Intent(BorrowedListActivity.this, ViewLibraryBookActivity.class);
+            intent.putExtra("LibraryBookInfoFromRecyclerView", requestsRecyclerViewAdapter.get(position).getBookRequested());
+            NEED TO FEED IN THE ACTUAL BOOK
+            startActivity(intent);
+            */
         }
         else if(status == BookRequestStatus.ACCEPTED){
             intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
 
         else if(status == BookRequestStatus.HANDED_OFF){
             intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
         else if(status == BookRequestStatus.DENIED){
