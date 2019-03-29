@@ -126,9 +126,9 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         //TODO implement lent list click listener functionality
         BookRequest clickedRequest = requestsRecyclerViewAdapter.get(position);
         BookRequestStatus bookRequestStatus = clickedRequest.getCurrentStatus();
+        Intent intent;
         switch (bookRequestStatus) {
             case REQUESTED:
-                Intent intent;
                 intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
                 intent.putExtra(AcceptRejectLendActivity.REQUEST_INFORMATION, requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
@@ -137,7 +137,13 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 ToastMessage.show(LentListActivity.this, "This request will be remove once requester has seen denied request");
                 break;
             case ACCEPTED:
+                intent = new Intent(LentListActivity.this, ViewAcceptedBookRequestActivity.class);
+                intent.putExtra(ViewAcceptedBookRequestActivity.ACCEPTED_REQUEST, requestsRecyclerViewAdapter.get(position));
+                startActivity(intent);
+
                 break;
+            case RECEIVED_BORROWER:
+                ToastMessage.show(LentListActivity.this, "Waiting for borrower to return the book...");
             default:
                 break;
         }
