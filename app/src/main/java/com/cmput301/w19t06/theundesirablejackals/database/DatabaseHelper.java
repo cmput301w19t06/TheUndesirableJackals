@@ -1341,16 +1341,7 @@ public class DatabaseHelper{
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
-                                                updateBookInformation(bookRequest.getBookRequested(), new BooleanCallback() {
-                                                    @Override
-                                                    public void onCallback(boolean bool) {
-                                                        if(bool){
-                                                            booleanCallback.onCallback(true);
-                                                        }else{
-                                                            booleanCallback.onCallback(false);
-                                                        }
-                                                    }
-                                                });
+                                                booleanCallback.onCallback(true);
                                             }else{
                                                 booleanCallback.onCallback(false);
                                             }

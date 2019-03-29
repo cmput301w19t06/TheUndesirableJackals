@@ -7,7 +7,7 @@
     tools:context="AcceptRejectLendActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutAcceptRejectLend"
         android:layout_width="match_parent"
         android:layout_height="370dp"
         android:layout_marginStart="8dp"
@@ -160,7 +160,7 @@
         tools:layout_editor_absoluteY="177dp" />
 
     <EditText
-        android:id="@+id/editTexttRejectLendISBN"
+        android:id="@+id/editTextAcceptRejectLendISBN"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -173,7 +173,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonAcceptRejectLendScanISBN"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAcceptRejectLend" />
 
     <Button
         android:id="@+id/buttonAcceptRejectLendScanISBN"
@@ -183,7 +183,7 @@
         android:text="Button"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAcceptRejectLend" />
 
     <Button
         android:id="@+id/buttonAcceptRejectLentConfirmISBN"
@@ -197,6 +197,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTexttRejectLendISBN" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAcceptRejectLendISBN" />
 </android.support.constraint.ConstraintLayout>
 
