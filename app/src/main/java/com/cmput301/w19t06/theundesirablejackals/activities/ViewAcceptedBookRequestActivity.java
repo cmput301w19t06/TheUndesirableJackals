@@ -14,9 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
@@ -142,11 +146,15 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
                 mTextViewBookTitle.setText(book.getTitle());
                 mTextViewBookISBN.setText("ISBN: " + book.getIsbn());
 
-                if (book.getThumbnail() != null) {
+                if (book.getThumbnail() != null  && !book.getThumbnail().isEmpty()) {
                     Picasso.get()
                             .load(book.getThumbnail())
                             .error(R.drawable.book_icon)
                             .placeholder(R.drawable.book_icon)
+                            .into(mImageViewBookPhoto);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.book_icon)
                             .into(mImageViewBookPhoto);
                 }
             }
@@ -195,11 +203,23 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         }
 
         if(mTextViewScannedISBN.getText().toString().equals(mBookRequest.getBookRequested().getIsbn())) {
-            ToastMessage.show(getApplicationContext(), "DEVON DO YOUR SHIT HERE");
+            doHandOffUpdates();
         } else {
             ToastMessage.show(getApplicationContext(),"Scanned barcode does not match requested book ISBN");
         }
+    }
 
-
+    private void doHandOffUpdates(){
+        mBookRequest.setCurrentStatus(BookRequestStatus.HANDED_OFF);
+        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool){
+                    ToastMessage.show(getApplicationContext(), "Book has been handed off, please give the book to the requester");
+                }else{
+                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+                }
+            }
+        });
     }
 }

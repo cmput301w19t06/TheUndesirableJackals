@@ -2,6 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,18 +15,26 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -45,6 +54,9 @@ import java.util.Locale;
 public class MapHandoff extends AppCompatActivity {
     private static final int BARCODE_PERMISSION_REQUEST = 1100;
     private static final int IMAGE_CAPTURE_REQUEST = 1101;
+    public static final String INTENT_REQUEST_DATA = "RequestByIntent";
+    private BroadcastReceiver currentActivityReceiver;
+
     private FirebaseVisionBarcodeDetectorOptions options;
     private Toolbar toolbar;
     private static final String TAG = "MapHandoffActivity";
@@ -59,15 +71,20 @@ public class MapHandoff extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_handoff);
 
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+
         toolbar = findViewById(R.id.tool_barMapHandoff);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Book Hand-off");
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        request = (BookRequest) intent.getSerializableExtra("info");
+        request = (BookRequest) intent.getSerializableExtra(INTENT_REQUEST_DATA);
 
-        EditText ISBNEditText = findViewById(R.id.editTextmapHandoffISBN);
+        makeViewBasedOnRequest();
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +248,53 @@ public class MapHandoff extends AppCompatActivity {
         }
     }
 
+
+    public void refreshRequest() {
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+        databaseHelper.getRequest(request.getBorrower().getUserName(), request.getBookRequestBorrowKey(), new BookRequestCallback() {
+            @Override
+            public void onCallback(BookRequest bookRequest) {
+                if(bookRequest != null){
+                    request = bookRequest;
+                    Log.d(TAG, "Request updated");
+                    makeViewBasedOnRequest();
+                }else{
+                    ToastMessage.show(getParent(),"Something went wrong updating the request...");
+                }
+            }
+        });
+    }
+
+    private void makeViewBasedOnRequest(){
+        if(request == null){
+            finish();
+        }
+
+        EditText isbnEditText = findViewById(R.id.editTextmapHandoffISBN);
+        Button scanISBNButton = findViewById(R.id.buttonMapHandoffScan);
+        Button handOffButton = findViewById(R.id.buttonMapHandoffConfirm);
+
+        if(request.getCurrentStatus() == BookRequestStatus.ACCEPTED){
+            //TODO SHOW THE PICKUP LOCATION ON THE MAP
+            isbnEditText.setVisibility(View.INVISIBLE);
+            isbnEditText.setClickable(false);
+            scanISBNButton.setVisibility(View.INVISIBLE);
+            scanISBNButton.setClickable(false);
+            handOffButton.setVisibility(View.INVISIBLE);
+            handOffButton.setClickable(false);
+        }
+
+        else if(request.getCurrentStatus() == BookRequestStatus.HANDED_OFF){
+            isbnEditText.setVisibility(View.VISIBLE);
+            isbnEditText.setClickable(true);
+            scanISBNButton.setVisibility(View.VISIBLE);
+            scanISBNButton.setClickable(true);
+            handOffButton.setVisibility(View.VISIBLE);
+            handOffButton.setClickable(true);
+        }
+    }
+
+
     /**
      * Fetches image using gallery address provided in addPhotobtn
      * Also gets the photo taken by the ISBN scanner camera Intent
@@ -252,24 +316,8 @@ public class MapHandoff extends AppCompatActivity {
         }
     }
 
-    /**
-     * The activity onStop method, has been overridden to delete ISBN scanner pictures to
-     * prevent taking up space on user's phone
-     */
-    @Override
-    public void onStop(){
-        super.onStop();
-        if(currentPhotoPath != null) {
-            File file = new File(currentPhotoPath);
-            if (file.exists()) {
-                if (file.delete()) {
-                    Log.d(TAG, "file Deleted : " + currentPhotoPath);
-                } else {
-                    Log.d(TAG, "file not Deleted : " + currentPhotoPath);
-                }
-            }
-        }
-    }
+
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -288,4 +336,47 @@ public class MapHandoff extends AppCompatActivity {
             }
         }
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+
+    /**
+     * The activity onStop method, has been overridden to delete ISBN scanner pictures to
+     * prevent taking up space on user's phone
+     */
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        if(currentPhotoPath != null) {
+            File file = new File(currentPhotoPath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    Log.d(TAG, "file Deleted : " + currentPhotoPath);
+                } else {
+                    Log.d(TAG, "file not Deleted : " + currentPhotoPath);
+                }
+            }
+        }
+        super.onStop();
+    }
+
+
 }
