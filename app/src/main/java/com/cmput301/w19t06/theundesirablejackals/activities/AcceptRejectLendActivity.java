@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
@@ -28,9 +26,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallbac
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
-import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 /**
  * Allows use to accept of reject lend requests
@@ -93,6 +89,41 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Setting values to Visible depending on the status
+        Button accept = (Button) findViewById(R.id.buttonAcceptRejectActivityAcceptRequest);
+        Button reject = (Button) findViewById(R.id.buttonAcceptRejectActivityRejectRequest);
+        LinearLayout map = (LinearLayout) findViewById(R.id.linearLayoutAcceptRejectLend);
+        EditText isbn = (EditText) findViewById(R.id.editTextAcceptRejectLendISBN);
+        Button isbnScan = (Button) findViewById(R.id.buttonAcceptRejectLendScanISBN);
+        Button isbnConfirm = (Button) findViewById(R.id.buttonAcceptRejectLentConfirmISBN);
+
+        BookRequestStatus status = request.getCurrentStatus();
+        if (status == BookRequestStatus.PENDING){
+            accept.setVisibility(View.VISIBLE);
+            reject.setVisibility(View.VISIBLE);
+            map.setVisibility(View.INVISIBLE);
+            isbn.setVisibility(View.INVISIBLE);
+            isbnScan.setVisibility(View.INVISIBLE);
+            isbnConfirm.setVisibility(View.INVISIBLE);
+        }
+        else if(status == BookRequestStatus.ACCEPTED){
+            accept.setVisibility(View.INVISIBLE);
+            reject.setVisibility(View.INVISIBLE);
+            map.setVisibility(View.VISIBLE);
+            isbn.setVisibility(View.VISIBLE);
+            isbnScan.setVisibility(View.VISIBLE);
+            isbnConfirm.setVisibility(View.VISIBLE);
+        }
+
+        else if(status == BookRequestStatus.HANDED_OFF){
+            accept.setVisibility(View.INVISIBLE);
+            reject.setVisibility(View.INVISIBLE);
+            map.setVisibility(View.VISIBLE);
+            isbn.setVisibility(View.VISIBLE);
+            isbnScan.setVisibility(View.VISIBLE);
+            isbnConfirm.setVisibility(View.VISIBLE);
+        }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
