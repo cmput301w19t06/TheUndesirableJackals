@@ -27,41 +27,46 @@
         android:layout_marginEnd="8dp"
         android:maxLines="1"
         android:text="Book Title"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemUsername" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewRequestItemAuthor"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="23dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="8dp"
         android:maxLines="1"
         android:text="Author"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
         app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemTitle" />
 
     <TextView
-        android:id="@+id/textViewRequestItemUsername"
+        android:id="@+id/textViewRequestItemBorrower"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
         android:maxLines="1"
-        android:text="Username"
-        android:textAllCaps="true"
+        android:text="Borrower"
+        android:textAllCaps="false"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewRequestItemOwner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemISBN" />
 
     <TextView
         android:id="@+id/textViewRequestItemStatusChange"
@@ -94,14 +99,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="ISBN"
         android:textAlignment="textStart"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
         app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemAuthor" />
+
+    <TextView
+        android:id="@+id/textViewRequestItemOwner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Owner"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewRequestItemBook"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRequestItemBorrower" />
 
 </android.support.constraint.ConstraintLayout>

@@ -141,5 +141,7 @@
     <string name="hello_autofill_hint">Hello</string>
     <string name="create_new_message">Send New Message</string>
     <string name="send_button_text">Send</string>
+    <string name="title_activity_google_maps">Map</string>
+    <string name="title_activity_view_pickup_location">Map</string>
 
 </resources>

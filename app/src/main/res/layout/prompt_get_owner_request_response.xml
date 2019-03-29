@@ -3,25 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="25dp"
-    android:background="@drawable/background_with_dark_green_border">
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteY="25dp">
 
     <TextView
-        android:id="@+id/textViewAcceptRejectLendBook"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text=" Book:"
+        android:text="Requested Book:"
         android:textAllCaps="true"
-        android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptRejectLendBook"
+        android:id="@+id/constraintLayout2"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,13 +27,13 @@
         android:background="@drawable/background_with_light_green_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBook">
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <ImageView
-            android:id="@+id/imageViewAcceptRejectLendBookPhoto"
+            android:id="@+id/imageViewMyBooksItemPhoto"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +42,7 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookTitle"
+            android:id="@+id/textViewMyBooksItemTitle"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -53,14 +51,13 @@
             android:autoSizeTextType="uniform"
             android:maxLines="1"
             android:text="Title"
-            android:textColor="@color/browser_actions_text_color"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookAuthor"
+            android:id="@+id/textViewMyBooksItemAuthor"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -69,15 +66,14 @@
             android:autoSizeTextType="uniform"
             android:maxLines="1"
             android:text="Author"
-            android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBookTitle" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemTitle" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookIsbn"
+            android:id="@+id/textViewMyBooksItemIsbn"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -86,55 +82,52 @@
             android:layout_marginBottom="8dp"
             android:maxLines="1"
             android:text="ISBN"
-            android:textColor="@color/browser_actions_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBookAuthor" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemAuthor" />
 
     </android.support.constraint.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textViewAcceptRejectLendRequester"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Requester: "
         android:textAllCaps="true"
-        android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendBook" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptRejectLendRequester"
+        android:id="@+id/constraintLayout"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/background_with_accent_border"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendRequester">
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendUserName"
+            android:id="@+id/textViewOwnerRequestDecisionUserName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="Username"
-            android:textColor="@color/browser_actions_text_color"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/imageViewOwnerRequestDecisionPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageViewAcceptRejectLendUserPhoto"
+            android:id="@+id/imageViewOwnerRequestDecisionPhoto"
             android:layout_width="63dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -148,38 +141,35 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendEmail"
+            android:id="@+id/textViewOwnerRequestDecisionEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:text="email@gmail.com"
-            android:textColor="@color/browser_actions_text_color"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendUserName" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewOwnerRequestDecisionPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOwnerRequestDecisionUserName" />
 
     </android.support.constraint.ConstraintLayout>
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutAcceptRejectLendButtons"
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendRequester">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <Button
-            android:id="@+id/buttonAcceptRejectLendDecline"
+            android:id="@+id/button"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -190,7 +180,7 @@
             tools:layout_editor_absoluteY="146dp" />
 
         <Button
-            android:id="@+id/buttonAcceptRejectLendAccept"
+            android:id="@+id/button2"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

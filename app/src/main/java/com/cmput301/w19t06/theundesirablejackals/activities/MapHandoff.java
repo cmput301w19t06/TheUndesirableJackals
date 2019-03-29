@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,6 +50,7 @@ public class MapHandoff extends AppCompatActivity {
     private static final String TAG = "MapHandoffActivity";
     private String currentPhotoPath;
     private ArrayList<String> barcodesFound = new ArrayList<>();
+    private BookRequest request;
 
 
 
@@ -61,6 +63,9 @@ public class MapHandoff extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Book Hand-off");
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        request = (BookRequest) intent.getSerializableExtra("info");
 
         EditText ISBNEditText = findViewById(R.id.editTextmapHandoffISBN);
 
@@ -77,6 +82,11 @@ public class MapHandoff extends AppCompatActivity {
                         FirebaseVisionBarcode.FORMAT_EAN_13,
                         FirebaseVisionBarcode.TYPE_ISBN)
                 .build();
+
+        TextView title = (TextView) findViewById(R.id.textViewHandoffBookTitle);
+        TextView username = (TextView) findViewById(R.id.textViewHandoffOwner);
+        TextView phone = (TextView) findViewById(R.id.textViewHandoffPhone);
+        TextView email = (TextView) findViewById(R.id.textViewHandoffEmail);
     }
 
     /**

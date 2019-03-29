@@ -8,7 +8,7 @@
     android:background="@drawable/background_with_dark_green_border">
 
     <TextView
-        android:id="@+id/textViewAcceptRejectLendBook"
+        android:id="@+id/textViewAcceptedRequestBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptRejectLendBook"
+        android:id="@+id/constraintLayoutAcceptedRequestBook"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,10 +29,10 @@
         android:background="@drawable/background_with_light_green_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBook">
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBook">
 
         <ImageView
-            android:id="@+id/imageViewAcceptRejectLendBookPhoto"
+            android:id="@+id/imageViewAcceptedRequestBookPhoto"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
@@ -44,7 +44,7 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookTitle"
+            android:id="@+id/textViewAcceptedRequestBookTitle"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -56,11 +56,11 @@
             android:textColor="@color/browser_actions_text_color"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookAuthor"
+            android:id="@+id/textViewAcceptedRequestBookAuthor"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -73,11 +73,11 @@
             android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBookTitle" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBookTitle" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendBookIsbn"
+            android:id="@+id/textViewAcceptedRequestBookIsbn"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -89,27 +89,27 @@
             android:textColor="@color/browser_actions_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendBookAuthor" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBookAuthor" />
 
     </android.support.constraint.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textViewAcceptRejectLendRequester"
+        android:id="@+id/textViewAcceptedRequestRequester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Requester: "
+        android:text="Borrower:"
         android:textAllCaps="true"
         android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendBook" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptedRequestBook" />
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptRejectLendRequester"
+        android:id="@+id/constraintLayoutAcceptedRequestRequester"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -117,10 +117,10 @@
         android:background="@drawable/background_with_accent_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendRequester">
+        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestRequester">
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendUserName"
+            android:id="@+id/textViewAcceptedRequestUserName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -130,11 +130,11 @@
             android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestUserPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageViewAcceptRejectLendUserPhoto"
+            android:id="@+id/imageViewAcceptedRequestUserPhoto"
             android:layout_width="63dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -148,7 +148,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptRejectLendEmail"
+            android:id="@+id/textViewAcceptedRequestEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -158,48 +158,90 @@
             android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="italic"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptRejectLendUserPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptRejectLendUserName" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestUserPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestUserName" />
 
     </android.support.constraint.ConstraintLayout>
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutAcceptRejectLendButtons"
+        android:id="@+id/linearLayoutAcceptedRequestLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptedRequestRequester">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person_pin_circle_blue_24dp"
+            tools:layout_editor_absoluteX="82dp"
+            tools:layout_editor_absoluteY="302dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="View Pickup Location"
+            android:textColor="@color/fui_linkColor"
+            tools:layout_editor_absoluteX="124dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAcceptedRequestButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAcceptedRequestConfirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptRejectLendRequester">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAcceptedRequestLocation">
 
-        <Button
-            android:id="@+id/buttonAcceptRejectLendDecline"
+        <TextView
+            android:id="@+id/textViewAcceptedRequestISBN"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Decline"
-            android:textColor="@color/colorAccent"
+            android:hint="Please scan barcode for ISBN"
+            android:textColor="@color/browser_actions_title_color"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="146dp" />
 
         <Button
-            android:id="@+id/buttonAcceptRejectLendAccept"
+            android:id="@+id/buttonAcceptedRequestScanISBN"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Accept"
+            android:layout_marginLeft="10dp"
+            android:text="Scan ISBN"
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="146dp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAcceptedRequestConfirm"
+        style="@android:style/Widget.DeviceDefault.Light.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Confirm Hand Off"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

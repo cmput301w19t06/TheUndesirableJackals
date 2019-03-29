@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @see BookRequest
  */
 public enum BookRequestStatus implements Serializable {
-    PENDING("REQUESTED"),             // book has been requested and waiting for owner to take action
+    REQUESTED("REQUESTED"),             // book has been requested and waiting for owner to take action
     DENIED("DENIED"),             // book requested by the borrower is denied by the owner
     CANCELLED("CANCELLED"),          // book request cancelled by borrower
     ACCEPTED("ACCEPTED"),           // book request is accepted by book owner
