@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
@@ -123,10 +124,18 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
+        BookRequest clickedRequest = requestsRecyclerViewAdapter.get(position);
+        if (clickedRequest.getCurrentStatus().equals(BookRequestStatus.REQUESTED)) {
+            getOwnerResponse();
+        }
         Intent intent;
         intent = new Intent(LentListActivity.this, AcceptRejectLendActivity.class);
         intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
         startActivity(intent);
+    }
+
+    public void getOwnerResponse() {
+
     }
 
     @Override
