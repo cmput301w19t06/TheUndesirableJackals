@@ -1274,7 +1274,6 @@ public class DatabaseHelper{
 
     }
 
-
     /**
      * Updates the borrower request list with new status in the book request
      * To be used by OWNER ONLY

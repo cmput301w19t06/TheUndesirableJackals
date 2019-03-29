@@ -35,6 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ViewOngoingBookRequest"></activity>
         <activity android:name=".ChatActivity" />
         <activity android:name=".EditPersonalProfileActivity" />
         <activity
@@ -74,7 +75,9 @@
             android:label="@string/title_activity_view_owned_book"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ViewLibraryBookActivity" />
-        <activity android:name=".AcceptRejectLendActivity" />
+        <activity
+            android:name=".AcceptRejectLendActivity"
+            android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
