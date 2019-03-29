@@ -1,12 +1,15 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +31,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Activity used to display friends profile + give option to message them
  * Author: Kaya Thiessen
- *
+ * <p>
  * TODO: implement send message and send friend request option
  * displays the user contact info given a user name
  */
@@ -98,18 +104,81 @@ public class OthersProfileActivity extends AppCompatActivity {
         mMessageUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(OthersProfileActivity.this, "Messaging...");
+                doSendOwnerMessageProcess();
             }
         });
 
     }
+
+    public String doSendOwnerMessageProcess() {
+        return "";
+//        String message;
+//        LayoutInflater li = LayoutInflater.from(OthersProfileActivity.this);
+//        View promptsView = li.inflate(R.layout.prompt_new_phone_number, null);
+//
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                OthersProfileActivity.this);
+//
+//        // set prompts.xml to alertdialog builder
+//        alertDialogBuilder.setView(promptsView);
+//
+//        final EditText userInput = (EditText) promptsView
+//                .findViewById(R.id.editTextPrompNewPhoneNumberInput);
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("Send",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                               if
+//                            }
+//                        })
+//                .setNegativeButton("Cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // create alert dialog
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
+
+    }
+
+    private void sendMessage(final String message) {
+        mDatabaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                Messaging messaging = new Messaging();
+                messaging.setFrom(userInformation.getUserName());
+                messaging.setTo(mUserInformation.getUserName());
+                messaging.setMessage(message);
+                mDatabaseHelper.sendMessage(messaging, new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+
+                        if (bool) {
+                            ToastMessage.show(getApplicationContext(), "Message sent");
+                        } else {
+                            ToastMessage.show(getApplicationContext(), "Message not sent");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
     private void setProfilePhoto() {
         if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
             mDatabaseHelper.getProfilePictureUri(mUserInformation, new UriCallback() {
                 @Override
                 public void onCallback(Uri uri) {
-                    if (uri !=null) {
+                    if (uri != null) {
                         Picasso.get()
                                 .load(uri)
                                 .error(R.drawable.ic_person_outline_grey_24dp)
