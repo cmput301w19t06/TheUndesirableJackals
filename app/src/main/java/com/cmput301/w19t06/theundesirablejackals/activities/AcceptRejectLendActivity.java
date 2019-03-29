@@ -47,22 +47,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Allows use to accept of reject lend requests
@@ -73,6 +58,7 @@ import java.util.Locale;
  * @see LentListActivity
  */
 public class AcceptRejectLendActivity extends AppCompatActivity {
+    public final static int PIN_PICKUP_LOCATION = 600;
     public final static String REQUEST_INFORMATION = "RequestInformation";
     // ratio in relation to the original display
     private final Double HEIGHT_RATIO = 0.5;
@@ -205,6 +191,7 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
 
     private void sendRequestUpdate(final BookRequestStatus status) {
         mBookRequest.setCurrentStatus(status);
+        mBookRequest.setPickuplocation(mPickupLocation);
         mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
@@ -308,10 +295,10 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(mDatabaseFetchDone && mPickupLocation != null) {
+                        if (mDatabaseFetchDone && mPickupLocation != null) {
                             sendRequestUpdate(BookRequestStatus.ACCEPTED);
-                        }else if(mDatabaseFetchDone){
-                            ToastMessage.show(AcceptRejectLendActivity.this,"Something went wrong communicating with database");
+                        } else if (mDatabaseFetchDone) {
+                            ToastMessage.show(AcceptRejectLendActivity.this, "Something went wrong communicating with database");
                         }
                         finish();
                     }
@@ -319,7 +306,8 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+                        Intent intent = new Intent(AcceptRejectLendActivity.this, SelectLocationActivity.class);
+                        startActivityForResult(intent, PIN_PICKUP_LOCATION);
                     }
                 });
         AlertDialog alert = builder.create();
@@ -327,12 +315,28 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void  getDefaultPickupLocation() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PIN_PICKUP_LOCATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                // the coordinates to do whatever you need to do with them
+                mPickupLocation.setLatitude(Double.parseDouble(data.getStringExtra("lat")));
+                mPickupLocation.setLongitude(Double.parseDouble(data.getStringExtra("lng")));
+                sendRequestUpdate(BookRequestStatus.ACCEPTED);
+                finish();
+            }
+        }
+
+    }
+
+
+    private void getDefaultPickupLocation() {
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
                 mDatabaseFetchDone = true;
-                if(user != null) {
+                if (user != null) {
                     mPickupLocation = user.getPickUpLocation();
                 }
             }
