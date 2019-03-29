@@ -1384,6 +1384,31 @@ public class DatabaseHelper{
                 });
     }
 
+    public void getRequest(String userName, String borrowRequestKey, final BookRequestCallback bookRequestCallback){
+        requestsReference
+                .child("borrowRequest")
+                .child(userName)
+                .child(borrowRequestKey)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            bookRequestCallback.onCallback(dataSnapshot.getValue(BookRequest.class));
+                            Log.d(TAG, "Good Data from getRequest");
+                        }else {
+                            bookRequestCallback.onCallback(null);
+                            Log.d(TAG, "BAD Data from getRequest");
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        bookRequestCallback.onCallback(null);
+                        Log.d(TAG, "isRegistered ERROR HAPPENED");
+                        Log.e(TAG, databaseError.getMessage());
+                    }
+                });
+    }
+
 
 
     //~~~~~~~~~~~~~~~~~MESSAGING NOTIFICATIONS~~~~~~~~~~~~~~~~~~~~~//

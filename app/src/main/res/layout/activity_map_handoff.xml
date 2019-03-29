@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MapHandoff">
+    tools:context=".MapHandoff">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_barMapHandoff"
@@ -16,8 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-
     </android.support.v7.widget.Toolbar>
 
     <TextView
