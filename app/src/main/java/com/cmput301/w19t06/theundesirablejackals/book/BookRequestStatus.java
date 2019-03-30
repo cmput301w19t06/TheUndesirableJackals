@@ -10,7 +10,6 @@ import java.io.Serializable;
 public enum BookRequestStatus implements Serializable {
     REQUESTED("REQUESTED"),             // book has been requested and waiting for owner to take action
     DENIED("DENIED"),             // book requested by the borrower is denied by the owner
-    CANCELLED("CANCELLED"),          // book request cancelled by borrower
     ACCEPTED("ACCEPTED"),           // book request is accepted by book owner
     HANDED_OFF("HANDED OFF"),         // book has been scanned for hand off by the owner
     BORROWED("BORROWED"),  // book has been scanned and received by the borrower

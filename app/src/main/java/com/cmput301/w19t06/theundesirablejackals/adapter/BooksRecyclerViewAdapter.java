@@ -114,6 +114,21 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                     .placeholder(R.drawable.book_icon)
                     .into(bookThumbnail);
         }
+
+        switch (status) {
+            case REQUESTED:
+                statusTextView.setTextColor(Color.parseColor("#EA4335"));
+                break;
+            case ACCEPTED:
+                statusTextView.setTextColor(Color.parseColor("#4285F4"));
+                break;
+            case BORROWED:
+                statusTextView.setTextColor(Color.parseColor("##A52A2A"));
+                break;
+            case AVAILABLE:
+                statusTextView.setTextColor(Color.parseColor("#34A853"));
+
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

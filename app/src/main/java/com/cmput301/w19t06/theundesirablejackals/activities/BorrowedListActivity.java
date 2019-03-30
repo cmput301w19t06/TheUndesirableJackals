@@ -140,7 +140,9 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
 
         }
-        else if(status == BookRequestStatus.ACCEPTED){
+        else if(status == BookRequestStatus.ACCEPTED
+                || status == BookRequestStatus.BORROWED
+                || status == BookRequestStatus.RETURNING){
             intent = new Intent(BorrowedListActivity.this,
                                 ViewBookRequestInfoAsBorrowerActivity.class);
             intent.putExtra(ViewBookRequestInfoAsBorrowerActivity.AS_BORROWER_VIEW_BOOK_REQUEST_INFO,
@@ -149,7 +151,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
 
 
         }
-
         else if(status == BookRequestStatus.HANDED_OFF){
             intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
             intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
@@ -159,6 +160,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             showToast("Request denied, attempting to remove request from list");
             requestsRecyclerViewAdapter.deleteItem(position);
         }
+
     }
 
     @Override

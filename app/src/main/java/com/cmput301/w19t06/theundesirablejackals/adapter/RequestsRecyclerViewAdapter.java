@@ -1,5 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -150,16 +152,19 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
 
         switch (status) {
             case REQUESTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
+                statusTextView.setTextColor(Color.parseColor("#EA4335"));
                 break;
             case ACCEPTED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_available);
+                statusTextView.setTextColor(Color.parseColor("#4285F4"));
                 break;
-            case CANCELLED:
-                bookThumbnail.setImageResource(R.drawable.ic_status_requested);
+            case BORROWED:
+                statusTextView.setTextColor(Color.parseColor("#A52A2A"));
+                break;
+            case DENIED:
+                statusTextView.setTextColor(Color.parseColor("#BA55D3"));
                 break;
             default:
-                bookThumbnail.setImageResource(R.drawable.book_icon);
+                statusTextView.setTextColor(Color.parseColor("#FBBC05"));
         }
 
     }
