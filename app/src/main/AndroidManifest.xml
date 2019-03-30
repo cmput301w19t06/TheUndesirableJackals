@@ -51,7 +51,7 @@
             android:name=".ViewPickupLocationActivity"
             android:label="@string/title_activity_view_pickup_location" />
         <activity
-            android:name=".ViewAcceptedBookRequestActivity"
+            android:name=".ViewAcceptedLendRequestActivity"
             android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".EditPersonalProfileActivity" />
@@ -64,7 +64,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity" />
         </activity>
-        <activity android:name=".MapHandoff" />
+        <activity android:name=".ViewAcceptedBorrowRequestActivity" />
         <activity
             android:name=".EditOwnedBookActivity"
             android:label="@string/title_activity_edit_owned_book"

@@ -1,11 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +11,8 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.squareup.picasso.Picasso;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAdapter.MyViewHolder> {
@@ -72,7 +63,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                                                                      int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.books_item, parent, false);
+                .inflate(R.layout.item_book, parent, false);
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
     }

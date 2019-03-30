@@ -14,10 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
-import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
@@ -26,7 +24,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
-public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
+public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     public final static String ACCEPTED_REQUEST = "AcceptedRequest";
     public final static int BARCODE_SCANNER = 1000;
 
@@ -93,7 +91,7 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         mButtonScanISBN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ScanBarcodeActivity.class);
+                Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, ScanBarcodeActivity.class);
                 startActivityForResult(intent, BARCODE_SCANNER);
             }
         });
@@ -116,12 +114,11 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
         borrowerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, OthersProfileActivity.class);
+                Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, OthersProfileActivity.class);
                 intent.putExtra(OthersProfileActivity.USERNAME, mBookRequest.getBorrower().getUserName());
                 startActivity(intent);
             }
         });
-
     }
 
     private void doViewPickupLocation() {
@@ -129,7 +126,7 @@ public class ViewAcceptedBookRequestActivity extends AppCompatActivity {
             ToastMessage.show(getApplicationContext(), "Book owner done messed up and accepted your request without setting a location... ");
             return;
         }
-        Intent intent = new Intent(ViewAcceptedBookRequestActivity.this, ViewPickupLocationActivity.class);
+        Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, ViewPickupLocationActivity.class);
         intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
         startActivity(intent);
     }
