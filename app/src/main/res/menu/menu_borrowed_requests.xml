@@ -3,10 +3,16 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity">
 
+
+<item android:id="@+id/itemBorrowRequestsMenusSearch"
+    android:title="Search"
+    android:icon="@drawable/ic_action_search"
+    app:showAsAction="always|collapseActionView"
+    app:actionViewClass="android.support.v7.widget.SearchView" />
 <item
-    android:id="@+id/itemMenuBorrowedRequestBorrowed"
+    android:id="@+id/itemMenuBorrowedRequestDenied"
     android:orderInCategory="100"
-    android:title="Borrowed"
+    android:title="Denied"
     app:showAsAction="never" />
 
 <item
@@ -15,16 +21,12 @@ tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedList
     android:title="Accepted"
     app:showAsAction="never" />
 <item
-    android:id="@+id/itemMenuBorrowedRequestPending"
+    android:id="@+id/itemMenuBorrowedRequestRequested"
     android:orderInCategory="100"
     android:title="Requested"
     app:showAsAction="never" />
 
-<item
-    android:id="@+id/itemMenuBorrowedRequestTitle"
-    android:orderInCategory="100"
-    android:title="Title Search"
-    app:showAsAction="never" />
+
 
 
 </menu>
