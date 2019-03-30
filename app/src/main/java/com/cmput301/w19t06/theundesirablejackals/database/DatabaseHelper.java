@@ -155,7 +155,7 @@ public class DatabaseHelper{
 
     /**
      * Goes to the firebase database to register and save (asynchronously) the currentUser's custom User object
-     * @param  user The currentuser's custom User object that is to be written in the database
+     * @param  user The currentUser's custom User object that is to be written in the database
      * @param  booleanCallback  The callback which is passed in, to be called upon successful data write
      *                     used to pass completion status back to calling activity/fragment/class
      */
@@ -227,7 +227,7 @@ public class DatabaseHelper{
     }
 
     /**
-     * @param username to be checked against registered usernames for uniqueness
+     * @param username to be checked against registered userNames for uniqueness
      * @param booleanCallback the function which will be called once the result is available
      * Since database access is asynchronous, the result will not be available right away.
      * Instead, once the result comes back it can be dealt with using various Callback interfaces
@@ -250,7 +250,7 @@ public class DatabaseHelper{
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, "Error occured in isUsernameAvaialable");
+                        Log.d(TAG, "Error occurred in isUsernameAvailable");
                         Log.e(TAG, databaseError.getMessage());
                     }
                 });
@@ -380,6 +380,11 @@ public class DatabaseHelper{
     //~~~~~~~~~~~~~~~~~~~~~~~FRIENDS & FRIEND REQUESTS~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
+    /**
+     * Create a new friend request that will be sent to the database for access by both users
+     * @param friendRequest The request that is to be created on the database
+     * @param booleanCallback The callback status of the request on the database
+     */
     public void makeFriendRequest(FriendRequest friendRequest, final BooleanCallback booleanCallback){
         if(friendRequest.getRequestReceiverKey().isEmpty()){
             friendRequest.setRequestSenderKey(friendsReference
@@ -406,6 +411,13 @@ public class DatabaseHelper{
 
     }
 
+
+    /**
+     * Update a friend request (MUST HAVE GONE THROUGH makeFriendRequest) that will be sent
+     * to the database for access by both users
+     * @param friendRequest The request that is to be updated on the database
+     * @param booleanCallback The callback status of the request on the database
+     */
     public void updateFriendRequest(final FriendRequest friendRequest, final BooleanCallback booleanCallback){
         friendsReference
                 .child(friendRequest.getRequestSender().getUserName())
@@ -438,6 +450,11 @@ public class DatabaseHelper{
                 });
     }
 
+    /**
+     * Get all friend requests that the user in userInformation has sent out
+     * @param userInformation The user who's 'sent' friend requests are to be retrieved
+     * @param friendRequestListCallback the callback which will deliver the friend request list
+     */
     public void getSentFriendRequests(UserInformation userInformation, final FriendRequestListCallback friendRequestListCallback){
         friendsReference
                 .child(userInformation.getUserName())
@@ -465,6 +482,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Get all friend requests that the user in userInformation has received from other users
+     * @param userInformation The user who's 'received' friend requests are to be retrieved
+     * @param friendRequestListCallback the callback which will deliver the friend request list
+     */
     public void getReceivedFriendRequests(UserInformation userInformation, final FriendRequestListCallback friendRequestListCallback){
         friendsReference
                 .child(userInformation.getUserName())
@@ -492,6 +515,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Get a userInformation list in UserListCallback of all the user's (userName) friends
+     * @param userName the user who's friend list is to be retrieved
+     * @param userListCallback the callback which will deliver the friend list
+     */
     public void getFriendsList(String userName, final UserListCallback userListCallback){
         friendsReference
                 .child(userName)
@@ -514,6 +543,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Set a userInformation list in UserListCallback of all the user's (userName) friends
+     * @param userName the user who's friend list is to be retrieved
+     * @param booleanCallback the callback which will deliver the friend list update status
+     */
     public void updateFriendsList(String userName, UserList friendList, final BooleanCallback booleanCallback){
         friendsReference
                 .child(userName)
@@ -1361,6 +1396,12 @@ public class DatabaseHelper{
         });
     }
 
+
+    /**
+     * Delete the BookRequest bookRequest from the database, and from
+     * @param bookRequest The request that needs to be deleted
+     * @param booleanCallback The deletion status on the database
+     */
     public void deleteRequest(final BookRequest bookRequest, final BooleanCallback booleanCallback){
         requestsReference
                 .child("lendRequest")
@@ -1393,6 +1434,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * get all the book requests belonging to userName, for the book identified by the unique key bookInformationKey
+     * @param userName the user who's requests we need to get
+     * @param bookInformationKey the key which identifies the book being requested
+     * @param bookRequestListCallback  The callback that delivers the book request
+     */
     public void getSpecificBookLendRequests(String userName, String bookInformationKey, final BookRequestListCallback bookRequestListCallback){
         requestsReference
                 .child("lendRequest")
@@ -1424,6 +1472,13 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Get one specific request from the database
+     * @param userName The user who sent the borrow request
+     * @param borrowRequestKey The key which identifies the request
+     * @param bookRequestCallback The callback that delivers the bookRequest from the database
+     */
     public void getRequest(String userName, String borrowRequestKey, final BookRequestCallback bookRequestCallback){
         requestsReference
                 .child("borrowRequest")
@@ -1526,6 +1581,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Sets a message's "seen" status to seen instead of unseen
+     * @param message
+     * @param booleanCallback
+     */
     public void seeMessage(final Messaging message, final BooleanCallback booleanCallback){
         messagesReference
                 .child(message.getFrom())
@@ -1558,6 +1619,12 @@ public class DatabaseHelper{
                 });
     }
 
+
+    /**
+     * Delete a message from the database
+     * @param message the message to be deleted
+     * @param booleanCallback the deletion status callback
+     */
     public void deleteMessage(final Messaging message, final BooleanCallback booleanCallback){
         messagesReference
                 .child(message.getFrom())

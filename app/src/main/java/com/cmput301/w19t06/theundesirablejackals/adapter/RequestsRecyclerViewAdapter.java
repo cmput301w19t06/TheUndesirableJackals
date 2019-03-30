@@ -1,6 +1,5 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
