@@ -18,10 +18,13 @@ import android.view.View;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
@@ -65,8 +68,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
         requestsRecyclerViewAdapter.setMyListener(this);
         recyclerView.setAdapter(requestsRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -103,7 +104,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -124,7 +124,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             case R.id.itemMenuBorrowedRequestTitle:
                 ToastMessage.show(this, "Title Search...");
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -137,21 +136,23 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.REQUESTED){
-//            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
-//            startActivity(intent);
-            ToastMessage.show(this, "Waiting On Response from Owner");
-            //ToDO
-            //Open up book View???
+
+            doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
+
         }
         else if(status == BookRequestStatus.ACCEPTED){
-            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
-            intent.putExtra(MapHandoff.INTENT_REQUEST_DATA, requestsRecyclerViewAdapter.get(position));
+            intent = new Intent(BorrowedListActivity.this,
+                                ViewBookRequestInfoAsBorrowerActivity.class);
+            intent.putExtra(ViewBookRequestInfoAsBorrowerActivity.AS_BORROWER_VIEW_BOOK_REQUEST_INFO,
+                    requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
+
+
         }
 
         else if(status == BookRequestStatus.HANDED_OFF){
-            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
-            intent.putExtra(MapHandoff.INTENT_REQUEST_DATA, requestsRecyclerViewAdapter.get(position));
+            intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
+            intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
         else if(status == BookRequestStatus.DENIED){
@@ -227,6 +228,18 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
                 unregisterReceiver(currentActivityReceiver);
         currentActivityReceiver = null;
         super.onStop();
+    }
+
+    public void doViewLibraryBook(final BookInformation bookInformation) {
+        databaseHelper.getBookFromDatabase(bookInformation.getIsbn(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                Intent intent = new Intent(BorrowedListActivity.this, ViewLibraryBookActivity.class);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW, book);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, bookInformation);
+                startActivity(intent);
+            }
+        });
     }
 
 }

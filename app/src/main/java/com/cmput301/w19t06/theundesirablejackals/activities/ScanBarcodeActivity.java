@@ -234,8 +234,15 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         Log.d(TAG, "Returning to caller");
         Intent intent;
 
-        if (this.getCallingActivity().getClassName().equals(ViewAcceptedBookRequestActivity.class.getName())) {
-            intent = new Intent(ScanBarcodeActivity.this, ViewAcceptedBookRequestActivity.class);
+        if (this.getCallingActivity().getClassName().equals(ViewAcceptedLendRequestActivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewAcceptedLendRequestActivity.class);
+            if (mBarcodesFound.size() > 0) {
+                intent.putExtra("ISBN", mBarcodesFound.get(0));
+                setResult(RESULT_OK, intent);
+            }
+        }
+        if (this.getCallingActivity().getClassName().equals(ViewHandedoffBookRequestActivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewHandedoffBookRequestActivity.class);
             if (mBarcodesFound.size() > 0) {
                 intent.putExtra("ISBN", mBarcodesFound.get(0));
                 setResult(RESULT_OK, intent);

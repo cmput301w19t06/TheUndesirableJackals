@@ -25,6 +25,8 @@ public class FriendRequest implements Serializable {
     public FriendRequest(UserInformation requestSender, UserInformation requestReceiver) {
         this.requestReceiver = requestReceiver;
         this.requestSender = requestSender;
+        this.requestReceiverKey = new String();
+        this.requestSenderKey = new String();
         this.requestAccepted = false;
     }
 

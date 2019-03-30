@@ -1,7 +1,6 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +23,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.chat_layout_item, parent, false);
+                .inflate(R.layout.item_chat_layout, parent, false);
         return new MyViewHolder(v);
     }
 

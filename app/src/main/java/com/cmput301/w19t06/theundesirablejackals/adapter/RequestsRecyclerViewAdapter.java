@@ -20,6 +20,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.squareup.picasso.Picasso;
 
 
 public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRecyclerViewAdapter.MyViewHolder> {
@@ -78,7 +79,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                                                                        int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.request_item, parent, false);
+                .inflate(R.layout.item_request, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
@@ -95,7 +96,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
         TextView ownerTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemOwner);
         TextView statusTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewRequestItemStatusChange);
         TextView isbnTextView = holder.mainTextView.findViewById(R.id.textViewRequestItemISBN);
-        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequestItemBook);
+        final ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewRequestItemBook);
 
 
         BookRequest bookRequest = dataSet.get(position);
@@ -107,6 +108,17 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                 if(book != null){
                     titleTextView.setText(book.getTitle());
                     authorTextView.setText(book.getAuthor());
+
+                    String thumbnail = book.getThumbnail();
+
+                    if(thumbnail != null && !thumbnail.isEmpty()) {
+                        Picasso.get()
+                                .load(thumbnail)
+                                .error(R.drawable.book_icon)
+                                .placeholder(R.drawable.book_icon)
+                                .into(bookThumbnail);
+                    }
+
                 }
             }
         });
