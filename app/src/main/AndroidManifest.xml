@@ -72,7 +72,8 @@
         </activity>
         <activity
             android:name=".ViewHandedoffBookRequestActivity"
-            android:theme="@style/AppTheme.WindowedView" />
+            android:theme="@style/AppTheme.WindowedView"
+            android:launchMode='singleTask'/>
         <activity
             android:name=".ViewBookRequestInfo"
             android:theme="@style/AppTheme.WindowedView" />
