@@ -117,7 +117,7 @@ public class BookRequest implements Serializable {
     public void receiveBookAsOwner() {
         // set status of the book back to "available"
         bookRequested.setStatus(BookStatus.AVAILABLE);
-        currentStatus = BookRequestStatus.RECEIVED_OWNER;
+        currentStatus = BookRequestStatus.RETURNED;
 
         // then posibly delete this instance from the main
     }
@@ -139,7 +139,7 @@ public class BookRequest implements Serializable {
     public void recieveBookAsBorrower() {
         // set status of the book back to "available"
         bookRequested.setStatus(BookStatus.BORROWED);
-        currentStatus = BookRequestStatus.RECEIVED_BORROWER;
+        currentStatus = BookRequestStatus.BORROWED;
     }
 
     /**

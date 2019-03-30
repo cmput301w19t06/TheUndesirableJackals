@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ChatActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.MapHandoff;
 import com.cmput301.w19t06.theundesirablejackals.activities.MessagesActivity;
 
 
@@ -32,6 +35,12 @@ public class CurrentActivityReceiver extends BroadcastReceiver {
             ((ChatActivity)receivingActivity).updateMessages();
         }else if(receivingActivity.getClass().equals(MessagesActivity.class)){
             ((MessagesActivity)receivingActivity).update();
+        }else if(receivingActivity.getClass().equals(MapHandoff.class)){
+            ((MapHandoff)receivingActivity).refreshRequest();
+        }else if(receivingActivity.getClass().equals(BorrowedListActivity.class)){
+            ((BorrowedListActivity)receivingActivity).onRefresh();
+        }else if(receivingActivity.getClass().equals(LentListActivity.class)){
+            ((LentListActivity)receivingActivity).onRefresh();
         }
     }
 }

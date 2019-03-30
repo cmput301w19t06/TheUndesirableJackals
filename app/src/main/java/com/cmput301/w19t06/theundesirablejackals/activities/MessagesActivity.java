@@ -204,11 +204,9 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
                 } else {
                     showToast("Message not sent");
                 }
-
             }
         });
     }
-
 
     public void update(){
         messagesRecyclerViewAdapter.onRefresh();

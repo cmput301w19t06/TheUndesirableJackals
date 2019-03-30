@@ -1,8 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAda
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -31,6 +34,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
     public static final int DELETE_OR_ACCEPT = 420;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
+    private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
@@ -40,6 +44,10 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lend_requets);
         databaseHelper = new DatabaseHelper();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewLendRequests);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activityLendRequestSwipeRefreshLayout);
@@ -140,9 +148,8 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 intent = new Intent(LentListActivity.this, ViewAcceptedBookRequestActivity.class);
                 intent.putExtra(ViewAcceptedBookRequestActivity.ACCEPTED_REQUEST, requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
-
                 break;
-            case RECEIVED_BORROWER:
+            case BORROWED:
                 ToastMessage.show(LentListActivity.this, "Waiting for borrower to return the book...");
             default:
                 break;
@@ -205,4 +212,28 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onStop();
+    }
 }

@@ -157,11 +157,15 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                 mTextViewBookTitle.setText(book.getTitle());
                 mTextViewBookISBN.setText("ISBN: " + book.getIsbn());
 
-                if (book.getThumbnail() != null) {
+                if (book.getThumbnail() != null && !book.getThumbnail().isEmpty()) {
                     Picasso.get()
                             .load(book.getThumbnail())
                             .error(R.drawable.book_icon)
                             .placeholder(R.drawable.book_icon)
+                            .into(mImageViewBookPhoto);
+                }else{
+                    Picasso.get()
+                            .load(R.drawable.book_icon)
                             .into(mImageViewBookPhoto);
                 }
             }

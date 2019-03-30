@@ -1,7 +1,9 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAda
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -32,6 +35,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class BorrowedListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
+    private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
@@ -41,6 +45,10 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrow_requests);
         databaseHelper = new DatabaseHelper();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewBorrowRequests);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activityBorrowRequestSwipeRefreshLayout);
@@ -78,7 +86,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
                 finish();
             }
         });
@@ -152,8 +160,8 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             startActivity(intent);
         }
         else if(status == BookRequestStatus.DENIED){
-            requestsRecyclerViewAdapter.deleteItem(position);
             showToast("Request denied, attempting to remove request from list");
+            requestsRecyclerViewAdapter.deleteItem(position);
         }
     }
 
@@ -199,5 +207,32 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
     private void showToast(String message){
         ToastMessage.show(this, message);
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onStop();
+    }
+
 }
 
