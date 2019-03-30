@@ -6,25 +6,24 @@
     <item
         android:id="@+id/itemMenuLentLent"
         android:orderInCategory="100"
-        android:title="Currently Lent"
-        app:showAsAction="never" />
+        android:title="Declined"
+        app:showAsAction="never"
+        android:checkable="true"/>
 
     <item
         android:id="@+id/itemMenuLentAccepted"
         android:orderInCategory="100"
         android:title="Accepted"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
     <item
         android:id="@+id/itemMenuLentRequested"
         android:orderInCategory="100"
         android:title="Requested"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:checkable="true"/>
 
-    <item
-        android:id="@+id/itemMenuLentTitle"
-        android:orderInCategory="100"
-        android:title="Title Search"
-        app:showAsAction="never" />
+
 
 
 </menu>
