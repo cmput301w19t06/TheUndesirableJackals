@@ -13,18 +13,21 @@ tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedList
     android:id="@+id/itemMenuBorrowedRequestDenied"
     android:orderInCategory="100"
     android:title="Denied"
-    app:showAsAction="never" />
+    app:showAsAction="never"
+    android:checkable="true"/>
 
 <item
     android:id="@+id/itemMenuBorrowedRequestAccepted"
     android:orderInCategory="100"
     android:title="Accepted"
-    app:showAsAction="never" />
+    app:showAsAction="never"
+    android:checkable="true"/>
 <item
     android:id="@+id/itemMenuBorrowedRequestRequested"
     android:orderInCategory="100"
     android:title="Requested"
-    app:showAsAction="never" />
+    app:showAsAction="never"
+    android:checkable="true"/>
 
 
 

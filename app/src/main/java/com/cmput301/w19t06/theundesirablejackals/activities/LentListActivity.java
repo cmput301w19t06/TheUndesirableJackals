@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +35,9 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
+
+    public static final String TAG = "LentRequest";
+    private MenuItem mSelectedFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +89,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_requests, menu);
+        inflater.inflate(R.menu.menu_lend_request, menu);
         return true;
     }
 
@@ -96,21 +100,38 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        String menuTitle;
+        BookRequestList filteredItem = new BookRequestList();
+        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataSet();
 
         switch (id){
             case R.id.itemMenuLentLent:
-                ToastMessage.show(this, "Viewing Currently Lent...");
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Denied...");
                 break;
             case R.id.itemMenuLentAccepted:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Accepted...");
                 break;
             case R.id.itemMenuLentRequested:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Requested...");
                 break;
-            case R.id.itemMenuLentTitle:
-                ToastMessage.show(this, "Title Search...");
-                break;
+        }
 
+        if(item.equals(mSelectedFilter)) {
+            mSelectedFilter = null;
+            item.setChecked(false);
+            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataSet());
+        } else {
+            item.setChecked(true);
+            mSelectedFilter = item;
         }
 
         return super.onOptionsItemSelected(item);
@@ -121,6 +142,30 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         this.requestsRecyclerViewAdapter = adapter;
     }
     */
+
+    /**
+     * Filters the list of books visible on My Books tab by status
+     * @param filteredItem a collection of book list with a specific status specified by a user
+     * @param toFilterThrough the BookRequestList class
+     * @param menuTitle status to be used when filtering the books
+     */
+    // filters through books by status
+    private void filterThrough(BookRequestList filteredItem, BookRequestList toFilterThrough, String menuTitle) {
+        for(int i = 0; i < toFilterThrough.size(); i++){
+            //get the status of the book
+            String status = toFilterThrough.get(i).getCurrentStatus().toString();
+            Log.d(TAG, "I'm inside the filterthrough method");
+            Log.d(TAG, status);
+            Log.d(TAG, menuTitle);
+
+            if(status.equals(menuTitle)){
+                Log.d(TAG,"I'm inside the if statement");
+                filteredItem.addRequest(toFilterThrough.get(i));
+
+            }
+        }
+    }
+
 
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
