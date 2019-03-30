@@ -148,7 +148,6 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 intent = new Intent(LentListActivity.this, ViewAcceptedBookRequestActivity.class);
                 intent.putExtra(ViewAcceptedBookRequestActivity.ACCEPTED_REQUEST, requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
-
                 break;
             case BORROWED:
                 ToastMessage.show(LentListActivity.this, "Waiting for borrower to return the book...");

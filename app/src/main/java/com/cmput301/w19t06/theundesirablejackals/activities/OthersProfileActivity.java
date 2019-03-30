@@ -17,14 +17,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.Messaging;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+import com.cmput301.w19t06.theundesirablejackals.user.UserList;
 import com.squareup.picasso.Picasso;
 
 
@@ -96,7 +99,7 @@ public class OthersProfileActivity extends AppCompatActivity {
         mAddUserAsFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(OthersProfileActivity.this, "Adding user as friend..");
+                makeNewFriendRequest();
             }
         });
 
@@ -129,11 +132,11 @@ public class OthersProfileActivity extends AppCompatActivity {
                 .setPositiveButton("Send",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                               if (userInput.getText().toString().isEmpty()) {
-                                   ToastMessage.show(getApplicationContext(), "Please enter something");
-                               } else {
-                                   sendMessage(userInput.getText().toString());
-                               }
+                                if (userInput.getText().toString().isEmpty()) {
+                                    ToastMessage.show(getApplicationContext(), "Please enter something");
+                                } else {
+                                    sendMessage(userInput.getText().toString());
+                                }
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -170,6 +173,37 @@ public class OthersProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void makeNewFriendRequest() {
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                if (mUserInformation.getUserName().equals(user.getUserInfo().getUserName())) {
+                    ToastMessage.show(getApplicationContext(),
+                            "How lonely do you have to be to add yourself as friend?");
+                } else {
+                    UserList friendslist = user.getFriends();
+                    if (friendslist != null && friendslist.contains(mUserInformation)) {
+                        ToastMessage.show(getApplicationContext(),
+                                "Ya'll are already friends");
+                    } else {
+                        sendNewFriendRequest(user.getUserInfo());
+                    }
+                }
+            }
+        });
+    }
+
+    private void sendNewFriendRequest(UserInformation sender) {
+        FriendRequest newFriendRequest = new FriendRequest(sender,mUserInformation);
+        mDatabaseHelper.makeFriendRequest(newFriendRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                ToastMessage.show(getApplicationContext(),
+                        "Friend request sent");
             }
         });
     }
