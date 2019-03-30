@@ -2,11 +2,8 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,22 +14,24 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
-import com.cmput301.w19t06.theundesirablejackals.classes.FetchBook;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +41,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,45 +51,65 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MapHandoff extends AppCompatActivity {
-    private static final int BARCODE_PERMISSION_REQUEST = 1100;
-    private static final int IMAGE_CAPTURE_REQUEST = 1101;
-    private static final String USERNAME = "TheFuckisThis" ;
+public class ViewAcceptedBorrowRequestActivity extends AppCompatActivity {
+    private static final int BARCODE_PERMISSION_REQUEST = 110;
+    private static final String TAG = "AcceptedBorrowedRequest";
+    private static final int IMAGE_CAPTURE_REQUEST = 120;
     private FirebaseVisionBarcodeDetectorOptions options;
-    private Toolbar toolbar;
-    private static final String TAG = "MapHandoffActivity";
-    private String currentPhotoPath;
-    private ArrayList<String> barcodesFound = new ArrayList<>();
     private BookRequest request;
-    private DatabaseHelper databaseHelper;
-    private boolean doneDatabaseFetch = false;
-    private User currentUser;
-    private Geolocation geolocation;
+    private final Double HEIGHT_RATIO = 0.6;
+    private DatabaseHelper mDatabaseHelper;
 
+    private TextView ownerUsername;
+    private TextView ownerEmail;
+    private TextView bookTitle;
+    private TextView bookAuthor;
+    private TextView bookISBN;
+    private TextView scannedISBN;
+    private ImageView profilePhoto;
+    private ImageView bookPhoto;
+    private Button buttonScanISBN;
+    private Button buttonConfirmHandoff;
+    private String currentPhotoPath;
+    private LinearLayout linearLayoutViewPickup;
 
+    private ArrayList<String> barcodesFound = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_handoff);
+        setContentView(R.layout.activity_accepted_borrow_requests);
 
-        toolbar = findViewById(R.id.tool_barMapHandoff);
-        toolbar.setNavigationIcon(R.drawable.ic_action_back);
-        toolbar.setTitle("Book Hand-off");
-        setSupportActionBar(toolbar);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        // set size of the popup window
+        getWindow().setLayout(width, (int) (height * HEIGHT_RATIO));
+
+        mDatabaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
         request = (BookRequest) intent.getSerializableExtra("info");
 
-        EditText ISBNEditText = findViewById(R.id.editTextmapHandoffISBN);
+        ownerUsername = findViewById(R.id.textViewAcceptedBorrowUserName);
+        ownerEmail = findViewById(R.id.textViewAcceptedBorrowEmail);
+        bookTitle = findViewById(R.id.textViewAcceptedBorrowBookTitle);
+        bookAuthor = findViewById(R.id.textViewAcceptedBorrowBookAuthor);
+        bookISBN = findViewById(R.id.textViewAcceptedBorrowBookIsbn);
+        scannedISBN = findViewById(R.id.textViewAcceptedBorrowScannedISBN);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity.class));
-                finish();
-            }
-        });
+        profilePhoto = findViewById(R.id.imageViewAcceptedBorrowUserPhoto);
+        bookPhoto = findViewById(R.id.imageViewAcceptedBorrowBookPhoto);
+
+        setAllViews();
+
+        buttonScanISBN = findViewById(R.id.buttonAcceptedBorrowScanISBN);
+        buttonConfirmHandoff = findViewById(R.id.buttonAcceptedBorrowConfirm);
+
+        linearLayoutViewPickup = findViewById(R.id.linearLayoutAcceptedBorrowLocation);
 
         options = new FirebaseVisionBarcodeDetectorOptions.Builder()
                 .setBarcodeFormats(
@@ -97,36 +117,51 @@ public class MapHandoff extends AppCompatActivity {
                         FirebaseVisionBarcode.TYPE_ISBN)
                 .build();
 
-        databaseHelper = new DatabaseHelper();
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+        buttonConfirmHandoff.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCallback(User user) {
-                doneDatabaseFetch = true;
-                if(user != null) {
-                    currentUser = user;
-                    geolocation = user.getPickUpLocation();
-                }
+            public void onClick(View view) {
+                doConfirmHandOff();
             }
         });
 
-        final TextView title = (TextView) findViewById(R.id.textViewHandoffBookTitle);
-        TextView username = (TextView) findViewById(R.id.textViewHandoffOwner);
-        final TextView phone = (TextView) findViewById(R.id.textViewHandoffPhone);
-        final TextView email = (TextView) findViewById(R.id.textViewHandoffEmail);
-
-
-        username.setText(request.getBookRequested().getOwner());
-
-        BookInformation i = request.getBookRequested();
-        title.setText("");
-        databaseHelper.getBookFromDatabase(i.getIsbn(), new BookCallback() {
+    }
+    private void setAllViews() {
+        ownerUsername.setText(request.getBookRequested().getOwner());
+        //ownerEmail.setText(borrower.getEmail());
+        mDatabaseHelper.getBookFromDatabase(request.getBookRequested().getIsbn(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
-                if(book != null){
-                    title.setText(book.getTitle());
+                bookAuthor.setText(book.getAuthor());
+                bookTitle.setText(book.getTitle());
+                bookISBN.setText("ISBN: " + book.getIsbn());
+
+                if (book.getThumbnail() != null) {
+                    Picasso.get()
+                            .load(book.getThumbnail())
+                            .error(R.drawable.book_icon)
+                            .placeholder(R.drawable.book_icon)
+                            .into(bookPhoto);
                 }
             }
         });
+
+        //loadUserPhoto();
+    }
+
+    private void  doConfirmHandOff() {
+
+        if(scannedISBN.getText().toString().isEmpty()) {
+            ToastMessage.show(getApplicationContext(), "Please scan barcode for ISBN");
+            return;
+        }
+
+        if(scannedISBN.getText().toString().equals(request.getBookRequested().getIsbn())) {
+            ToastMessage.show(getApplicationContext(), "DEVON DO YOUR SHIT HERE");
+        } else {
+            ToastMessage.show(getApplicationContext(),"Scanned barcode does not match requested book ISBN");
+        }
+
+
     }
 
     /**
@@ -260,7 +295,7 @@ public class MapHandoff extends AppCompatActivity {
                     //Add data to list
                     barcodesFound.add(rawValue);
 
-                    ((TextView) findViewById(R.id.editTextmapHandoffISBN)).setText(barcodesFound.get(0));
+                    ((TextView) findViewById(R.id.textViewAcceptedBorrowScannedISBN)).setText(barcodesFound.get(0));
 
                     Log.d(TAG, ((Integer)barcodesFound.size()).toString());
                     break;

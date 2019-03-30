@@ -130,7 +130,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.REQUESTED){
-//            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+//            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
 //            startActivity(intent);
             ToastMessage.show(this, "Waiting On Response from Owner");
             /*
@@ -141,13 +141,13 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             */
         }
         else if(status == BookRequestStatus.ACCEPTED){
-            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
             intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
 
         else if(status == BookRequestStatus.HANDED_OFF){
-            intent = new Intent(BorrowedListActivity.this, MapHandoff.class);
+            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
             intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
