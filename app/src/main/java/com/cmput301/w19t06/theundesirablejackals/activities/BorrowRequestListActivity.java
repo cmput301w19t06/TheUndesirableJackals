@@ -8,8 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,17 +32,22 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
+import java.util.ArrayList;
+
 /**
  * Pulls all Borrowed book requests and displays them here
  * Author: Kaya Thiessen
  */
-public class BorrowRequestListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+public class BorrowRequestListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
+
+    public static final String TAG = "BorrowRequest";
+    private MenuItem mSelectedFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +107,10 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Swip
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_requests, menu);
+        inflater.inflate(R.menu.menu_borrowed_requests, menu);
+        MenuItem menuItem = menu.findItem(R.id.itemBorrowRequestsMenusSearch);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -110,21 +120,40 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Swip
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        String menuTitle;
+        BookRequestList filteredItem = new BookRequestList();
+        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataSet();
 
         switch (id){
-            case R.id.itemMenuBorrowedRequestBorrowed:
+            case R.id.itemMenuBorrowedRequestDenied:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Borrowed...");
                 break;
             case R.id.itemMenuBorrowedRequestAccepted:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Accepted...");
                 break;
-            case R.id.itemMenuBorrowedRequestPending:
+            case R.id.itemMenuBorrowedRequestRequested:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Pending...");
                 break;
-            case R.id.itemMenuBorrowedRequestTitle:
-                ToastMessage.show(this, "Title Search...");
-                break;
         }
+
+        if(item.equals(mSelectedFilter)) {
+            mSelectedFilter = null;
+            item.setChecked(false);
+            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataSet());
+        } else {
+            item.setChecked(true);
+            mSelectedFilter = item;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -162,6 +191,47 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Swip
         }
 
     }
+
+    /**
+     * Resets the filter menu options every new choice
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        for(int i=0; i<menu.size(); i++){
+            if(menu.getItem(i).equals(mSelectedFilter)) {
+                continue;
+            } else {
+                menu.getItem(i).setChecked(false);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Filters the list of books visible on My Books tab by status
+     * @param filteredItem a collection of book list with a specific status specified by a user
+     * @param toFilterThrough the BookRequestList class
+     * @param menuTitle status to be used when filtering the books
+     */
+    // filters through books by status
+    private void filterThrough(BookRequestList filteredItem, BookRequestList toFilterThrough, String menuTitle) {
+        for(int i = 0; i < toFilterThrough.size(); i++){
+            //get the status of the book
+            String status = toFilterThrough.get(i).getCurrentStatus().toString();
+            Log.d(TAG, "I'm inside the filterthrough method");
+            Log.d(TAG, status);
+            Log.d(TAG, menuTitle);
+
+            if(status.equals(menuTitle)){
+                Log.d(TAG,"I'm inside the if statement");
+                filteredItem.addRequest(toFilterThrough.get(i));
+
+            }
+        }
+    }
+
 
     @Override
     public void onRefresh() {
@@ -243,5 +313,95 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Swip
         });
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //String userInput = newText.toLowerCase();
+        BookRequestList listItem = new BookRequestList();
+        DatabaseHelper data = new DatabaseHelper();
+
+        BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataSet();
+        //Log.d(TAG, String.valueOf(toSearchThrough.size()));
+
+        Log.d(TAG, toSearchThrough.get(1).getBookRequested().getIsbn());
+        final ArrayList<Book> mybooks = new ArrayList<Book>();
+        for ( int i = 0; i< toSearchThrough.size(); i++){
+            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
+            //String mtitle;
+            final int  tempInt = i;
+            String author;
+            data.getBookFromDatabase(isbn, new BookCallback() {
+                @Override
+                public void onCallback(Book book) {
+                    String userInput = newText.toLowerCase();
+                    if(book != null){
+                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
+                            String title = book.getTitle();
+                            mybooks.add(book);
+                            Log.d(TAG, title);
+                            if(title.toLowerCase().contains(userInput)){
+                                Log.d(TAG, "Found a title");
+                                //listItem.addRequest(toSearchThrough.get(tempInt));
+
+                            }
+                        }
+                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
+                            String author = book.getAuthor();
+                            Log.d(TAG, author);
+                        }
+
+                    }
+                }
+            });
+
+        }
+
+
+
+//        for (int i = 0; i < toSearchThrough.size();i++){
+//
+//            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
+//            String title;
+//            String author;
+//
+//            data.getBookFromDatabase(isbn, new BookCallback() {
+//                @Override
+//                public void onCallback(Book book) {
+//
+//                    if(book != null){
+//                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
+//                            title = book.getTitle();
+//                            Log.d(TAG, title);
+//                        }
+//                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
+//                            author = book.getAuthor();
+//                            Log.d(TAG, author);
+//                        }
+//                    }
+//                    Log.d()
+//                }
+//
+//            });
+//
+//
+////            String author = toSearchThrough.get(i).getBookRequested().getAuthor();
+////            String title = toSearchThrough.get(i).getTitle();
+//            if (isbn.toLowerCase().contains(userInput)) {
+//
+//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+//
+//            } else if (author.toLowerCase().contains(userInput)) {
+//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+//            } else if (title.toLowerCase().contains(userInput)) {
+//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
+//            }
+//
+//        }
+        return true;
+    }
 }
 
