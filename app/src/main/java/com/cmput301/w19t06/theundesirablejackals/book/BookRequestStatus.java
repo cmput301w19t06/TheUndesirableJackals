@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * These are the only possible statuses that a book request can have
  * @author Art Limbaga
- * @see BookRequest
+ * @see BookRequestStatus
  */
 public enum BookRequestStatus implements Serializable {
     REQUESTED("REQUESTED"),             // book has been requested and waiting for owner to take action

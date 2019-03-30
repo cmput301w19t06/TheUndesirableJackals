@@ -41,7 +41,6 @@ public class CurrentActivityReceiver extends BroadcastReceiver {
             ((LentListActivity)receivingActivity).onRefresh();
         }else if(receivingActivity.getClass().equals(FriendsListActivity.class)) {
             ((FriendsListActivity) receivingActivity).onRefresh();
-
         }
     }
 }
