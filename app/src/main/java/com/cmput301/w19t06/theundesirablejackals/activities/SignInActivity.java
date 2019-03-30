@@ -28,7 +28,6 @@ import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
 
-//    private FirebaseUser currentUser;
     private static final String TAG = "SignInActivity";
     public static final int REQUEST_SIGN_IN = 100;
     private static final int SIGN_IN_AND_AUTH = 101;

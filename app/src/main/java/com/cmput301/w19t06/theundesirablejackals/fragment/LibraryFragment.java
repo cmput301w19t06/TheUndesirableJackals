@@ -38,7 +38,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
  * Created by Mohamed on 21/02/2019
  */
 public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
-    View view;
+    public View view;
     private BooksRecyclerViewAdapter libraryRecyclerViewAdapter;
     private SwipeRefreshLayout librarySwipeRefreshLayout;
 
@@ -51,8 +51,6 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.library_fragment,container,false);
 
-//        ItemTouchHelper itemTouchhelper;
-//        SwipeController swipeController;
         RecyclerView.LayoutManager mainLayoutManager;
         RecyclerView libraryRecyclerView;
 
@@ -85,24 +83,12 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         librarySwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-
                 librarySwipeRefreshLayout.setRefreshing(true);
-
-                // TODO Fetching data from server
                 getBooks();
                 librarySwipeRefreshLayout.setRefreshing(false);
 
             }
         });
-
-
-        //interactivity helpers (touch for edit, swipe for delete)
-//        swipeController = new SwipeController(libraryRecyclerViewAdapter);
-//        itemTouchhelper = new ItemTouchHelper(swipeController);
-//        itemTouchhelper.attachToRecyclerView(libraryRecyclerView);
-
-
-//        getBooks();
 
 
         return view;

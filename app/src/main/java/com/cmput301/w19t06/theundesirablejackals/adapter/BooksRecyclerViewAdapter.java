@@ -47,11 +47,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
 
     }
 
-//    // Provide a suitable constructor (depends on the kind of dataset)
-//    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
-//        myListener = listener;
-//        dataSet = new BookToInformationMap();
-//    }
 
     public BooksRecyclerViewAdapter(){
         dataSet = new BookInformationPairing();
@@ -89,7 +84,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         String isbn = b.getIsbn();
 
         // get URL of the thumbnail
-        String thumbnail = b.getThumbnail();
+//        String thumbnail = b.getThumbnail();
 
         if(status != null) {
             if(status == BookStatus.UNKNOWN) {
@@ -107,13 +102,10 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         if(isbn != null) {
             isbnTextView.setText("ISBN: "+ isbn);
         }
-        if(thumbnail != null && !thumbnail.isEmpty()) {
-            Picasso.get()
-                    .load(b.getThumbnail())
-                    .error(R.drawable.book_icon)
-                    .placeholder(R.drawable.book_icon)
-                    .into(bookThumbnail);
-        }
+        Picasso.get()
+                .load(R.drawable.book_icon)
+                .into(bookThumbnail);
+
 
         switch (status) {
             case REQUESTED:
@@ -144,16 +136,14 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         int position = holder.getAdapterPosition();
         Book book = dataSet.getBook(position);
         BookInformation bookInformation = dataSet.getInformation(position);
-        BookStatus bookStatus = bookInformation.getStatus();
-        if(bookStatus == BookStatus.UNKNOWN){
-            if(book.getThumbnail() != null && !book.getThumbnail().isEmpty()){
-                Picasso.get()
-                        .load(book.getThumbnail())
-                        .error(R.drawable.book_icon)
-                        .placeholder(R.drawable.book_icon)
-                        .into(bookThumbnail);
-            }
+        if(book.getThumbnail() != null && !book.getThumbnail().isEmpty()){
+            Picasso.get()
+                    .load(book.getThumbnail())
+                    .error(R.drawable.book_icon)
+                    .placeholder(R.drawable.book_icon)
+                    .into(bookThumbnail);
         }
+
     }
 
     public void deleteItem(int position){
@@ -212,32 +202,5 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
         dataSet = new BookInformationPairing(data.getBookList(), data.getBookInformationList());
         updateItems();
     }
-
-    // copied by Felipe on 24-03-2019 from:
-    // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
-//    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-//        ImageView bmImage;
-//
-//        public DownloadImageTask(ImageView bmImage) {
-//            this.bmImage = bmImage;
-//        }
-//
-//        protected Bitmap doInBackground(String... urls) {
-//            String urldisplay = urls[0];
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(urldisplay).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//            return mIcon11;
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//            bmImage.setImageBitmap(result);
-//        }
-//    }
 
 }
