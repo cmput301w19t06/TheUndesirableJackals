@@ -135,9 +135,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.REQUESTED){
-
             doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
-
         }
         else if(status == BookRequestStatus.ACCEPTED || status == BookRequestStatus.RETURNING){
             intent = new Intent(BorrowedListActivity.this,
@@ -154,8 +152,8 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             startActivity(intent);
         }
         else if(status == BookRequestStatus.BORROWED) {
-            intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
-            intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
+            intent = new Intent(BorrowedListActivity.this, ViewBorrowedBookRequestActivity.class);
+            intent.putExtra(ViewBorrowedBookRequestActivity.BORROWED_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
         else if(status == BookRequestStatus.DENIED){

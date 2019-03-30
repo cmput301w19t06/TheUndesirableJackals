@@ -144,11 +144,13 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
             case DENIED:
                 ToastMessage.show(LentListActivity.this, "This request will be remove once requester has seen denied request");
                 break;
+
             case ACCEPTED:
                 intent = new Intent(LentListActivity.this, ViewAcceptedLendRequestActivity.class);
                 intent.putExtra(ViewAcceptedLendRequestActivity.ACCEPTED_REQUEST, requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
                 break;
+
             case HANDED_OFF:
                 intent = new Intent(LentListActivity.this, ViewBookRequestInfo.class);
                 intent.putExtra(ViewBookRequestInfo.BOOK_REQUEST_INFO,
@@ -165,7 +167,12 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 startActivity(intent);
                 break;
 
+
             case RETURNING:
+                intent = new Intent(LentListActivity.this, ViewReturningLendRequestAcitivity.class);
+                intent.putExtra(ViewReturningLendRequestAcitivity.RETURNING_REQUEST,
+                        requestsRecyclerViewAdapter.get(position));
+                startActivity(intent);
                 break;
 
             default:

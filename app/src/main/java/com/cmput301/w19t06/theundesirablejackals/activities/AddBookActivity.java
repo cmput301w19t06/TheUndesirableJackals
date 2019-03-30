@@ -296,7 +296,6 @@ public class AddBookActivity extends AppCompatActivity {
 
                 scanBarcode();  //Tries to find barcodes and add them to barcodesFound arraylist object
 
-
             } else {
                 showMyToast("Photo Scan Canceled");
             }
