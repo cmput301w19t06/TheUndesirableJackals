@@ -253,9 +253,9 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
                 }else {
                     ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
                 }
-
             }
 
         });
+        finish();
     }
 }
