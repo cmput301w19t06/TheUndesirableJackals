@@ -241,6 +241,13 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
             }
         }
+        if (this.getCallingActivity().getClassName().equals(ViewHandedoffBookRequestActivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewHandedoffBookRequestActivity.class);
+            if (mBarcodesFound.size() > 0) {
+                intent.putExtra("ISBN", mBarcodesFound.get(0));
+                setResult(RESULT_OK, intent);
+            }
+        }
         // add more if statements when a new caller wants ISBN scanned
         finish();
     }

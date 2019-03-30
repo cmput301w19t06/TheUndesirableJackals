@@ -143,7 +143,7 @@ public class ViewBookRequestInfoAsBorrowerActivity extends AppCompatActivity {
                 mTextViewOwnerEmail.setText(userInformation.getEmail());
                 if (userInformation.getUserPhoto() != null
                         && !userInformation.getUserPhoto().isEmpty()) {
-                    mDatabaseHelper.getProfilePictureUri(mBookRequest.getBorrower(), new UriCallback() {
+                    mDatabaseHelper.getProfilePictureUri(userInformation, new UriCallback() {
                         @Override
                         public void onCallback(Uri uri) {
                             if (uri != null) {

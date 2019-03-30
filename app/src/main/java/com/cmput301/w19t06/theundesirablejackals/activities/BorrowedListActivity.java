@@ -68,8 +68,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
         requestsRecyclerViewAdapter.setMyListener(this);
         recyclerView.setAdapter(requestsRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -106,7 +104,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -127,7 +124,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             case R.id.itemMenuBorrowedRequestTitle:
                 ToastMessage.show(this, "Title Search...");
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -150,11 +146,13 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             intent.putExtra(ViewBookRequestInfoAsBorrowerActivity.AS_BORROWER_VIEW_BOOK_REQUEST_INFO,
                     requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
+
+
         }
 
         else if(status == BookRequestStatus.HANDED_OFF){
             intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
-            intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
+            intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
         else if(status == BookRequestStatus.DENIED){
