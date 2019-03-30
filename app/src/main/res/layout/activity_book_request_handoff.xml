@@ -8,7 +8,7 @@
     android:background="@drawable/background_with_dark_green_border">
 
     <TextView
-        android:id="@+id/textViewAcceptedRequestBook"
+        android:id="@+id/textViewBookRequestHandoffBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptedRequestBook"
+        android:id="@+id/constraintLayoutBookRequestHandoffBook"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,10 +29,10 @@
         android:background="@drawable/background_with_light_green_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBook">
+        app:layout_constraintTop_toBottomOf="@+id/textViewBookRequestHandoffBook">
 
         <ImageView
-            android:id="@+id/imageViewAcceptedRequestBookPhoto"
+            android:id="@+id/imageViewBookRequestHandoffBookPhoto"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
@@ -44,7 +44,7 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestBookTitle"
+            android:id="@+id/textViewBookRequestHandoffBookTitle"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -56,11 +56,11 @@
             android:textColor="@color/browser_actions_text_color"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewBookRequestHandoffBookPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestBookAuthor"
+            android:id="@+id/textViewBookRequestHandoffBookAuthor"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -73,11 +73,11 @@
             android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBookTitle" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewBookRequestHandoffBookPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBookRequestHandoffBookTitle" />
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestBookIsbn"
+            android:id="@+id/textViewBookRequestHandoffBookIsbn"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -89,13 +89,13 @@
             android:textColor="@color/browser_actions_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestBookAuthor" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewBookRequestHandoffBookPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBookRequestHandoffBookAuthor" />
 
     </android.support.constraint.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textViewAcceptedRequestRequester"
+        android:id="@+id/textViewBookRequestHandoffRequester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -105,11 +105,11 @@
         android:textColor="@color/browser_actions_text_color"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptedRequestBook" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBookRequestHandoffBook" />
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutAcceptedRequestRequester"
+        android:id="@+id/constraintLayoutBookRequestHandoffRequester"
         android:layout_width="391dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -117,10 +117,10 @@
         android:background="@drawable/background_with_accent_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestRequester">
+        app:layout_constraintTop_toBottomOf="@+id/textViewBookRequestHandoffRequester">
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestUserName"
+            android:id="@+id/textViewBookRequestHandoffUserName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -130,11 +130,11 @@
             android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestUserPhoto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewBookRequestHandoffUserPhoto"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageViewAcceptedRequestUserPhoto"
+            android:id="@+id/imageViewBookRequestHandoffUserPhoto"
             android:layout_width="63dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -148,7 +148,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestEmail"
+            android:id="@+id/textViewBookRequestHandoffEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -158,21 +158,21 @@
             android:textColor="@color/browser_actions_text_color"
             android:textSize="14sp"
             android:textStyle="italic"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAcceptedRequestUserPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAcceptedRequestUserName" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewBookRequestHandoffUserPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBookRequestHandoffUserName" />
 
     </android.support.constraint.ConstraintLayout>
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutAcceptedRequestLocation"
+        android:id="@+id/linearLayoutBookRequestHandoffLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAcceptedRequestRequester">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBookRequestHandoffRequester">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -194,21 +194,21 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutAcceptedRequestButtons"
+        android:id="@+id/linearLayoutBookRequestHandoffButtons"
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAcceptedRequestConfirm"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBookRequestHandoffConfirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAcceptedRequestLocation">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutBookRequestHandoffLocation">
 
         <TextView
-            android:id="@+id/textViewAcceptedRequestScannedISBN"
+            android:id="@+id/textViewBookRequestHandoffScannedISBN"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="231dp"
             android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
             tools:layout_editor_absoluteY="146dp" />
 
         <Button
-            android:id="@+id/buttonAcceptedRequestScanISBN"
+            android:id="@+id/buttonBookRequestHandoffScanISBN"
             style="@android:style/Widget.DeviceDefault.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonAcceptedRequestConfirm"
+        android:id="@+id/buttonBookRequestHandoffConfirm"
         style="@android:style/Widget.DeviceDefault.Light.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
