@@ -29,6 +29,8 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
+import java.util.ArrayList;
+
 /**
  * Pulls all Borrowed book requests and displays them here
  * Author: Kaya Thiessen
@@ -270,42 +272,44 @@ public class BorrowedListActivity extends AppCompatActivity implements SearchVie
     @Override
     public boolean onQueryTextChange(final String newText) {
         //String userInput = newText.toLowerCase();
-        final BookRequestList listItem = new BookRequestList();
+        BookRequestList listItem = new BookRequestList();
         DatabaseHelper data = new DatabaseHelper();
 
         BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataSet();
         //Log.d(TAG, String.valueOf(toSearchThrough.size()));
 
         Log.d(TAG, toSearchThrough.get(1).getBookRequested().getIsbn());
+        final ArrayList<Book> mybooks = new ArrayList<Book>();
+        for ( int i = 0; i< toSearchThrough.size(); i++){
+            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
+            //String mtitle;
+            final int  tempInt = i;
+            String author;
+            data.getBookFromDatabase(isbn, new BookCallback() {
+                @Override
+                public void onCallback(Book book) {
+                    String userInput = newText.toLowerCase();
+                    if(book != null){
+                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
+                            String title = book.getTitle();
+                            mybooks.add(book);
+                            Log.d(TAG, title);
+                            if(title.toLowerCase().contains(userInput)){
+                                Log.d(TAG, "Found a title");
+                                listItem.addRequest(toSearchThrough.get(tempInt));
 
-//        for ( final int i = 0; i< toSearchThrough.size(); i++){
-//            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
-//            //String mtitle;
-//            String author;
-//            data.getBookFromDatabase(isbn, new BookCallback() {
-//                @Override
-//                public void onCallback(Book book) {
-//                    String userInput = newText.toLowerCase();
-//                    if(book != null){
-//                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
-//                            String title = book.getTitle();
-//                            Log.d(TAG, title);
-//                            if(title.toLowerCase().contains(userInput)){
-//                                Log.d(TAG, "Found a title");
-//                                listItem.addRequest(toSearchThrough.get(i));
-//
-//                            }
-//                        }
-//                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
-//                            String author = book.getAuthor();
-//                            Log.d(TAG, author);
-//                        }
-//
-//                    }
-//                }
-//            });
-//
-//        }
+                            }
+                        }
+                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
+                            String author = book.getAuthor();
+                            Log.d(TAG, author);
+                        }
+
+                    }
+                }
+            });
+
+        }
 
 
 
