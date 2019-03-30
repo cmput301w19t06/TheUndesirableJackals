@@ -42,6 +42,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     private TextView mTextViewBookAuthor;
     private TextView mTextViewBookISBN;
     private TextView mTextViewScannedISBN;
+    private TextView mTextViewUserRole;
 
     private ImageView mImageViewBookPhoto;
     private ImageView mImageProfilePhoto;
@@ -77,6 +78,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         mTextViewBookAuthor = findViewById(R.id.textViewBookRequestHandoffBookAuthor);
         mTextViewBookISBN = findViewById(R.id.textViewBookRequestHandoffBookIsbn);
         mTextViewScannedISBN = findViewById(R.id.textViewBookRequestHandoffScannedISBN);
+        mTextViewUserRole = findViewById(R.id.textViewBookRequestHandoffUserRole);
 
         mImageProfilePhoto = findViewById(R.id.imageViewBookRequestHandoffUserPhoto);
         mImageViewBookPhoto = findViewById(R.id.imageViewBookRequestHandoffBookPhoto);
@@ -133,6 +135,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
 
 
     private void setAllViews() {
+        mTextViewUserRole.setText("Borrower: ");
         UserInformation borrower = mBookRequest.getBorrower();
         mTextViewBorrowerUsername.setText(borrower.getUserName());
         mTextViewBorowerEmail.setText(borrower.getEmail());
@@ -148,10 +151,6 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
                             .load(book.getThumbnail())
                             .error(R.drawable.book_icon)
                             .placeholder(R.drawable.book_icon)
-                            .into(mImageViewBookPhoto);
-                }else{
-                    Picasso.get()
-                            .load(R.drawable.book_icon)
                             .into(mImageViewBookPhoto);
                 }
             }

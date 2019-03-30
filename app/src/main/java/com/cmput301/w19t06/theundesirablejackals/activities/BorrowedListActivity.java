@@ -129,7 +129,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         return super.onOptionsItemSelected(item);
     }
 
-
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
         BookRequestStatus status = requestsRecyclerViewAdapter.get(position).getCurrentStatus();
@@ -140,18 +139,21 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
 
         }
-        else if(status == BookRequestStatus.ACCEPTED
-                || status == BookRequestStatus.BORROWED
-                || status == BookRequestStatus.RETURNING){
+        else if(status == BookRequestStatus.ACCEPTED || status == BookRequestStatus.RETURNING){
             intent = new Intent(BorrowedListActivity.this,
-                                ViewBookRequestInfoAsBorrowerActivity.class);
-            intent.putExtra(ViewBookRequestInfoAsBorrowerActivity.AS_BORROWER_VIEW_BOOK_REQUEST_INFO,
+                                ViewBookRequestInfo.class);
+            intent.putExtra(ViewBookRequestInfo.BOOK_REQUEST_INFO,
                     requestsRecyclerViewAdapter.get(position));
+            intent.putExtra(ViewBookRequestInfo.VIEW_REQUEST_AS, ViewBookRequestInfo.ViewRequestInfoAs.BORROWER);
             startActivity(intent);
-
 
         }
         else if(status == BookRequestStatus.HANDED_OFF){
+            intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
+            intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
+            startActivity(intent);
+        }
+        else if(status == BookRequestStatus.BORROWED) {
             intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
             intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
@@ -169,7 +171,6 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         getBorrowRequests();
         swipeRefreshLayout.setRefreshing(false);
     }
-
 
     private void getBorrowRequests() {
         if (currentUser == null) {
