@@ -18,7 +18,6 @@ public class UserInformation implements Serializable {
     /**
      * No Parameter constructor REQUIRED for firebase
      * DO NOT USE
-     * @param u
      */
     public UserInformation() { }
 
@@ -97,4 +96,19 @@ public class UserInformation implements Serializable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+        if(obj.getClass().equals(this.getClass())){
+            return this.userName.equals(((UserInformation)obj).getUserName());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userName.hashCode();
+    }
 }
