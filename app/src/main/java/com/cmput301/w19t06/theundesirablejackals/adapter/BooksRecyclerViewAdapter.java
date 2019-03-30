@@ -1,6 +1,8 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,23 +113,6 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                     .error(R.drawable.book_icon)
                     .placeholder(R.drawable.book_icon)
                     .into(bookThumbnail);
-        }else {
-            switch (status) {
-                case ACCEPTED:
-                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                    break;
-                case BORROWED:
-                    bookThumbnail.setImageResource(R.drawable.ic_status_borrowed);
-                    break;
-                case AVAILABLE:
-                    bookThumbnail.setImageResource(R.drawable.ic_status_available);
-                    break;
-                case REQUESTED:
-                    bookThumbnail.setImageResource(R.drawable.ic_status_requested);
-                    break;
-                default:
-                    bookThumbnail.setImageResource(R.drawable.book_icon);
-            }
         }
     }
 
