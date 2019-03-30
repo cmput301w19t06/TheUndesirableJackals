@@ -22,9 +22,6 @@ import java.util.ArrayList;
  */
 public class FriendsListActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private FriendsRecyclerViewAdapter adapter;
-    private ArrayList<UserInformation> friendsList;
     private Toolbar toolbar;
 
     @Override
@@ -32,25 +29,10 @@ public class FriendsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
 
-        friendsList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriendList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        toolbar = findViewById(R.id.toolbarMessageActivity);
+        toolbar = findViewById(R.id.tool_barFriendsList);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Friends");
         setSupportActionBar(toolbar);
-
-        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Log.d("FriendsListActivity",((Integer)position).toString());
-            }
-        };
-
-        adapter = new FriendsRecyclerViewAdapter(listener);
-        recyclerView.setAdapter(adapter);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,6 +18,7 @@ public class UserInformation implements Serializable {
     /**
      * No Parameter constructor REQUIRED for firebase
      * DO NOT USE
+     * @param u
      */
     public UserInformation() { }
 
