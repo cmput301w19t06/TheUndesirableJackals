@@ -78,7 +78,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                                                                        int viewType) {
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.request_item, parent, false);
+                .inflate(R.layout.item_request, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v, myListener);
         return vh;
