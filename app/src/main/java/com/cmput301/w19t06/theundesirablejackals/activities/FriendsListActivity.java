@@ -100,6 +100,9 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
 
     private void recyclerOnClick(View view, int position) {
         //TODO implement lent list click listener functionality
+        //TODO Bring up the ViewOther'sProfile Activity
+        showToast("ART DO YOUR MAGIC SHIT HERE");
+
     }
 
     @Override
@@ -152,6 +155,10 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
                 }
             }
         });
+    }
+
+    private void showToast(String message){
+        ToastMessage.show(this, message);
     }
 }
 

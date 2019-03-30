@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ChatActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.FriendsListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.MessagesActivity;
 
@@ -38,6 +39,9 @@ public class CurrentActivityReceiver extends BroadcastReceiver {
             ((BorrowedListActivity)receivingActivity).onRefresh();
         }else if(receivingActivity.getClass().equals(LentListActivity.class)){
             ((LentListActivity)receivingActivity).onRefresh();
+        }else if(receivingActivity.getClass().equals(FriendsListActivity.class)) {
+            ((FriendsListActivity) receivingActivity).onRefresh();
+
         }
     }
 }
