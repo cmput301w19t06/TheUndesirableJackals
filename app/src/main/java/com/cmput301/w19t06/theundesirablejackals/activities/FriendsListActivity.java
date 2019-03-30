@@ -17,10 +17,17 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListen
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
+import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.FriendRequestListCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserListCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+import com.cmput301.w19t06.theundesirablejackals.user.UserList;
 
 import java.util.ArrayList;
 
@@ -30,7 +37,7 @@ import java.util.ArrayList;
  * Author: Kaya Thiessen
  */
 public class FriendsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
-    private FriendsRecyclerViewAdapter FriendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter();
+    private FriendsRecyclerViewAdapter friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
@@ -47,7 +54,7 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
         LocalBroadcastManager.getInstance(this).
                 registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriendList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriends);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activitySwipeFriendsListRefreshLayout);
 
         ItemTouchHelper itemTouchHelper;
@@ -63,8 +70,8 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        FriendsRecyclerViewAdapter.setMyListener((RecyclerViewClickListener) this);
-        recyclerView.setAdapter(FriendsRecyclerViewAdapter);
+        friendsRecyclerViewAdapter.setMyListener((RecyclerViewClickListener) this);
+        recyclerView.setAdapter(friendsRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -73,7 +80,7 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
             }
         });
 
-        swipeController = new SwipeController(FriendsRecyclerViewAdapter);
+        swipeController = new SwipeController(friendsRecyclerViewAdapter);
         itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -126,30 +133,25 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
         currentActivityReceiver = null;
         super.onStop();
     }
+
+
     private void getFriendsList() {
-        if (currentUser == null) {
-            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
-                @Override
-                public void onCallback(UserInformation userInformation) {
-                    if (userInformation != null) {
-                        currentUser = userInformation;
-//                        databaseHelper.getReceivedFriendRequests(userInformation.getUserName(), new BookRequestListCallback() {
-//                            @Override
-//                            public void onCallback(BookRequestList bookRequestList) {
-//                                FriendsRecyclerViewAdapter.setDataSet(bookRequestList);
-//                            }
-//                        });
-                    }
+        friendsRecyclerViewAdapter.setDataSet(new UserList());
+        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                if(user != null){
+                    databaseHelper.getFriendsList(user.getUserInfo().getUserName(), new UserListCallback() {
+                        @Override
+                        public void onCallback(UserList userList) {
+                            if(userList != null){
+                                friendsRecyclerViewAdapter.setDataSet(userList);
+                            }
+                        }
+                    });
                 }
-            });
-        }else{
-            databaseHelper.getBorrowRequests(currentUser.getUserName(), new BookRequestListCallback() {
-                @Override
-                public void onCallback(BookRequestList bookRequestList) {
-                    //FriendsRecyclerViewAdapter.setDataSet(bookRequestList);
-                }
-            });
-        }
+            }
+        });
     }
 }
 

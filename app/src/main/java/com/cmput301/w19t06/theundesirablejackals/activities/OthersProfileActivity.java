@@ -25,6 +25,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserListCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.cmput301.w19t06.theundesirablejackals.user.UserList;
@@ -180,19 +181,27 @@ public class OthersProfileActivity extends AppCompatActivity {
     private void makeNewFriendRequest() {
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
-            public void onCallback(User user) {
-                if (mUserInformation.getUserName().equals(user.getUserInfo().getUserName())) {
-                    ToastMessage.show(getApplicationContext(),
-                            "How lonely do you have to be to add yourself as friend?");
-                } else {
-                    UserList friendslist = user.getFriends();
-                    if (friendslist != null && friendslist.contains(mUserInformation)) {
+            public void onCallback(final User user) {
+                if(user != null){
+                    if (mUserInformation.getUserName().equals(user.getUserInfo().getUserName())) {
                         ToastMessage.show(getApplicationContext(),
-                                "Ya'll are already friends");
-                    } else {
-                        sendNewFriendRequest(user.getUserInfo());
+                                "How lonely do you have to be to add yourself as friend?");
+                    }else {
+                        mDatabaseHelper.getFriendsList(user.getUserInfo().getUserName(), new UserListCallback() {
+                            @Override
+                            public void onCallback(UserList userList) {
+                                if (userList != null && userList.contains(mUserInformation)) {
+                                    ToastMessage.show(getApplicationContext(),
+                                            "Ya'll are already friends");
+                                } else {
+                                    sendNewFriendRequest(user.getUserInfo());
+                                }
+
+                            }
+                        });
                     }
                 }
+
             }
         });
     }

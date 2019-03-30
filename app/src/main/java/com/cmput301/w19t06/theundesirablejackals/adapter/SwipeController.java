@@ -35,6 +35,8 @@ public class SwipeController<T extends RecyclerView.Adapter> extends Callback {
             ((MessagesRecyclerViewAdapter)myAdapter).deleteItems(position);
         }else if(myAdapter.getClass().equals(RequestsRecyclerViewAdapter.class)){
             ((RequestsRecyclerViewAdapter)myAdapter).doDeleteCleanup(position);
+        }else if(myAdapter.getClass().equals(FriendsRecyclerViewAdapter.class)){
+            ((FriendsRecyclerViewAdapter)myAdapter).doDeleteFriend(position);
         }
     }
 }
