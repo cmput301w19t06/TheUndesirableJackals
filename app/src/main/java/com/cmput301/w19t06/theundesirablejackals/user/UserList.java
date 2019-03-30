@@ -101,5 +101,13 @@ public class UserList {
         return super.equals(obj);
     }
 
+    public UserInformation getUser( int position){
+        this.userlist = userlist;
+        UserInformation ui = userlist.get(position);
+        return ui;
+    }
 
+
+    public int size() {return userlist.size();
+    }
 }

@@ -31,7 +31,7 @@ public class User {
     // topics of interest
     private ArrayList<BookGenres> genreOfInterests;
 
-    private UserList friends;
+//    private ArrayList<String> friends;
 
 
     public User() {
@@ -41,7 +41,7 @@ public class User {
         favouriteBooks = new BookToInformationMap();
         notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
-        friends = new UserList();
+//        friends = new ArrayList<>();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, -113.5263);
@@ -64,7 +64,7 @@ public class User {
 //        borrowRequests = new BookRequestListCallback();
         notifications = new UserNotificationList();
         genreOfInterests = new ArrayList<BookGenres>();
-        friends = new UserList();
+//        friends = new ArrayList<>();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, -113.5263);
@@ -173,21 +173,21 @@ public class User {
         this.favouriteBooks = favouriteBooks;
     }
 
-    /**
-     *
-     * @return UserList of all the user's friends
-     */
-    public UserList getFriends() {
-        return friends;
-    }
-
-    /**
-     *
-     * @param friends new list of friends
-     */
-    public void setFriends(UserList friends) {
-        this.friends = friends;
-    }
+//    /**
+//     *
+//     * @return UserList of all the user's friends
+//     */
+//    public ArrayList<String> getFriends() {
+//        return friends;
+//    }
+//
+//    /**
+//     *
+//     * @param friends new list of friends
+//     */
+//    public void setFriends(ArrayList<String> friends) {
+//        this.friends = friends;
+//    }
 
 
 
@@ -284,7 +284,6 @@ public class User {
                 ",\nborrowedBooks=" + borrowedBooks +
                 ",\nfavouriteBooks=" + favouriteBooks +
                 ",\ngenreOfInterests=" + genreOfInterests +
-                ",\nfriends=" + friends +
                 ",\npickUpLocation="+ pickUpLocation +
                 '}';
     }

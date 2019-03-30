@@ -96,4 +96,19 @@ public class UserInformation implements Serializable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+        if(obj.getClass().equals(this.getClass())){
+            return this.userName.equals(((UserInformation)obj).getUserName());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userName.hashCode();
+    }
 }
