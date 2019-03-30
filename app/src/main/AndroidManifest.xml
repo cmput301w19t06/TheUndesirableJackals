@@ -34,7 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ScanBarcodeActivity"></activity>
+
+        <activity android:name=".ScanBarcodeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -64,7 +65,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cmput301.w19t06.theundesirablejackals.activities.MainHomeViewActivity" />
         </activity>
-        <activity android:name=".ViewAcceptedBorrowRequestActivity" />
+        <activity
+            android:name=".ViewHandedoffBookRequestActivity"
+            android:theme="@style/AppTheme.WindowedView" />
+        <activity
+            android:name=".ViewBookRequestInfoAsBorrowerActivity"
+            android:theme="@style/AppTheme.WindowedView" />
         <activity
             android:name=".EditOwnedBookActivity"
             android:label="@string/title_activity_edit_owned_book"

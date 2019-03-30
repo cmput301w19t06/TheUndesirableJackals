@@ -15,14 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
@@ -138,24 +140,20 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         Intent intent;
 
         if (status == BookRequestStatus.REQUESTED){
-//            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
-//            startActivity(intent);
-            ToastMessage.show(this, "Waiting On Response from Owner");
-            /*
-            intent = new Intent(BorrowedListActivity.this, ViewLibraryBookActivity.class);
-            intent.putExtra("LibraryBookInfoFromRecyclerView", requestsRecyclerViewAdapter.get(position).getBookRequested());
-            NEED TO FEED IN THE ACTUAL BOOK
-            startActivity(intent);
-            */
+
+            doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
+
         }
         else if(status == BookRequestStatus.ACCEPTED){
-            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
-            intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
+            intent = new Intent(BorrowedListActivity.this,
+                                ViewBookRequestInfoAsBorrowerActivity.class);
+            intent.putExtra(ViewBookRequestInfoAsBorrowerActivity.AS_BORROWER_VIEW_BOOK_REQUEST_INFO,
+                    requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
 
         else if(status == BookRequestStatus.HANDED_OFF){
-            intent = new Intent(BorrowedListActivity.this, ViewAcceptedBorrowRequestActivity.class);
+            intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
             intent.putExtra("info", requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
@@ -232,6 +230,18 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
                 unregisterReceiver(currentActivityReceiver);
         currentActivityReceiver = null;
         super.onStop();
+    }
+
+    public void doViewLibraryBook(final BookInformation bookInformation) {
+        databaseHelper.getBookFromDatabase(bookInformation.getIsbn(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                Intent intent = new Intent(BorrowedListActivity.this, ViewLibraryBookActivity.class);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW, book);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, bookInformation);
+                startActivity(intent);
+            }
+        });
     }
 
 }

@@ -55,7 +55,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_accepted_book_request);
+        setContentView(R.layout.activity_book_request_handoff);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -71,22 +71,22 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mBookRequest = (BookRequest) intent.getSerializableExtra(ACCEPTED_REQUEST);
 
-        mTextViewBorrowerUsername = findViewById(R.id.textViewAcceptedRequestUserName);
-        mTextViewBorowerEmail = findViewById(R.id.textViewAcceptedRequestEmail);
-        mTextViewBookTitle = findViewById(R.id.textViewAcceptedRequestBookTitle);
-        mTextViewBookAuthor = findViewById(R.id.textViewAcceptedRequestBookAuthor);
-        mTextViewBookISBN = findViewById(R.id.textViewAcceptedRequestBookIsbn);
-        mTextViewScannedISBN = findViewById(R.id.textViewAcceptedRequestScannedISBN);
+        mTextViewBorrowerUsername = findViewById(R.id.textViewBookRequestHandoffUserName);
+        mTextViewBorowerEmail = findViewById(R.id.textViewBookRequestHandoffEmail);
+        mTextViewBookTitle = findViewById(R.id.textViewBookRequestHandoffBookTitle);
+        mTextViewBookAuthor = findViewById(R.id.textViewBookRequestHandoffBookAuthor);
+        mTextViewBookISBN = findViewById(R.id.textViewBookRequestHandoffBookIsbn);
+        mTextViewScannedISBN = findViewById(R.id.textViewBookRequestHandoffScannedISBN);
 
-        mImageProfilePhoto = findViewById(R.id.imageViewAcceptedRequestUserPhoto);
-        mImageViewBookPhoto = findViewById(R.id.imageViewAcceptedRequestBookPhoto);
+        mImageProfilePhoto = findViewById(R.id.imageViewBookRequestHandoffUserPhoto);
+        mImageViewBookPhoto = findViewById(R.id.imageViewBookRequestHandoffBookPhoto);
 
         setAllViews();
 
-        mButtonScanISBN = findViewById(R.id.buttonAcceptedRequestScanISBN);
-        mButtonConfirmHandoff = findViewById(R.id.buttonAcceptedRequestConfirm);
+        mButtonScanISBN = findViewById(R.id.buttonBookRequestHandoffScanISBN);
+        mButtonConfirmHandoff = findViewById(R.id.buttonBookRequestHandoffConfirm);
 
-        mLinearLayoutViewPickup = findViewById(R.id.linearLayoutAcceptedRequestLocation);
+        mLinearLayoutViewPickup = findViewById(R.id.linearLayoutBookRequestHandoffLocation);
 
         mButtonScanISBN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +110,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
             }
         });
 
-        ConstraintLayout borrowerConstraintLayout = findViewById(R.id.constraintLayoutAcceptedRequestRequester);
+        ConstraintLayout borrowerConstraintLayout = findViewById(R.id.constraintLayoutBookRequestHandoffUserRole);
         borrowerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

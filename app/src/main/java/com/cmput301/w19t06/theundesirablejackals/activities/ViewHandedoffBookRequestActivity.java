@@ -99,15 +99,11 @@ public class ViewAcceptedBorrowRequestActivity extends AppCompatActivity {
         bookTitle = findViewById(R.id.textViewAcceptedBorrowBookTitle);
         bookAuthor = findViewById(R.id.textViewAcceptedBorrowBookAuthor);
         bookISBN = findViewById(R.id.textViewAcceptedBorrowBookIsbn);
-        scannedISBN = findViewById(R.id.textViewAcceptedBorrowScannedISBN);
 
         profilePhoto = findViewById(R.id.imageViewAcceptedBorrowUserPhoto);
         bookPhoto = findViewById(R.id.imageViewAcceptedBorrowBookPhoto);
 
         setAllViews();
-
-        buttonScanISBN = findViewById(R.id.buttonAcceptedBorrowScanISBN);
-        buttonConfirmHandoff = findViewById(R.id.buttonAcceptedBorrowConfirm);
 
         linearLayoutViewPickup = findViewById(R.id.linearLayoutAcceptedBorrowLocation);
 
@@ -127,7 +123,7 @@ public class ViewAcceptedBorrowRequestActivity extends AppCompatActivity {
     }
     private void setAllViews() {
         ownerUsername.setText(request.getBookRequested().getOwner());
-        //ownerEmail.setText(borrower.getEmail());
+        //ownerEmail.setText(request.getEmail());
         mDatabaseHelper.getBookFromDatabase(request.getBookRequested().getIsbn(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
@@ -145,7 +141,7 @@ public class ViewAcceptedBorrowRequestActivity extends AppCompatActivity {
             }
         });
 
-        //loadUserPhoto();
+       // loadUserPhoto();
     }
 
     private void  doConfirmHandOff() {
