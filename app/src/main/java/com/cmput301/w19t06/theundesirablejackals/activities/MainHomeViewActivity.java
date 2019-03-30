@@ -430,14 +430,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             }
                         }
                     });
-//                    try {
-//                        inputStream = getContentResolver().openInputStream(imageUri);
-//                        Bitmap image = BitmapFactory.decodeStream(inputStream);
-//
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
-//                    }
                 }
                 break;
         }
