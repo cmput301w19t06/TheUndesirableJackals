@@ -2,6 +2,7 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -79,6 +80,8 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mCategory = findViewById(R.id.textViewViewOwnedBookCategory);
         mDescription = findViewById(R.id.textViewViewOwnedBookBookDescription);
 
+        setStatusTextViewColor();
+
         mTitle.setText(mOwnedBook.getTitle());
         mAuthor.setText(mOwnedBook.getAuthor());
         mIsbn.setText("ISBN: " + mOwnedBook.getIsbn());
@@ -127,6 +130,23 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setStatusTextViewColor() {
+        switch (mBookInformation.getStatus()) {
+            case REQUESTED:
+                mStatus.setTextColor(Color.parseColor("#EA4335"));
+                break;
+            case ACCEPTED:
+                mStatus.setTextColor(Color.parseColor("#4285F4"));
+                break;
+            case BORROWED:
+                mStatus.setTextColor(Color.parseColor("#A52A2A"));
+                break;
+            case AVAILABLE:
+                mStatus.setTextColor(Color.parseColor("#34A853"));
+                break;
+        }
     }
 
     private void deleteBook() {

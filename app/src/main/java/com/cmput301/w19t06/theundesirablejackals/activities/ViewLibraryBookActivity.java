@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -99,6 +100,8 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mCategory.setText("Category: "+ mLibraryBook.getCategories());
         mDescription.setText(mBookInformation.getDescription());
 
+        setStatusTextViewColor();
+
         setBookPhotoView();
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -177,6 +180,22 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                 Uri photoData = Uri.fromFile(image);
                 mBookPhotoView.setImageURI(photoData);
             }
+        }
+    }
+    private void setStatusTextViewColor() {
+        switch (mBookInformation.getStatus()) {
+            case REQUESTED:
+                mStatus.setTextColor(Color.parseColor("#EA4335"));
+                break;
+            case ACCEPTED:
+                mStatus.setTextColor(Color.parseColor("#4285F4"));
+                break;
+            case BORROWED:
+                mStatus.setTextColor(Color.parseColor("#A52A2A"));
+                break;
+            case AVAILABLE:
+                mStatus.setTextColor(Color.parseColor("#34A853"));
+                break;
         }
     }
 

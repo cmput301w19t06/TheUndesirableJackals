@@ -217,5 +217,6 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
                 }
             }
         });
+        finish();
     }
 }
