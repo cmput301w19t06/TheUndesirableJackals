@@ -1,8 +1,10 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,8 +15,11 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
@@ -30,6 +35,7 @@ public class ViewBookRequestInfo extends AppCompatActivity {
     private final Double HEIGHT_RATIO = 0.5;
 
     private DatabaseHelper mDatabaseHelper;
+    private BroadcastReceiver currentActivityReceiver;
 
     private TextView mTextViewUsername;
     private TextView mTextViewEmail;
@@ -63,6 +69,9 @@ public class ViewBookRequestInfo extends AppCompatActivity {
         getWindow().setLayout(width, (int) (height * HEIGHT_RATIO));
 
         mDatabaseHelper = new DatabaseHelper();
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
         Intent intent = getIntent();
         mBookRequest = (BookRequest) intent.getSerializableExtra(BOOK_REQUEST_INFO);
@@ -224,6 +233,51 @@ public class ViewBookRequestInfo extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void messageReceivedRefresh(){
+        mDatabaseHelper.getRequest(mBookRequest.getBorrower().getUserName(), mBookRequest.getBookRequestBorrowKey(), new BookRequestCallback() {
+            @Override
+            public void onCallback(BookRequest bookRequest) {
+                if(bookRequest != null && bookRequest.getCurrentStatus() == BookRequestStatus.HANDED_OFF){
+                    finish();
+                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewHandedoffBookRequestActivity.class);
+                    intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
+                    startActivity(intent);
+
+                }else if(bookRequest != null && bookRequest.getCurrentStatus() == BookRequestStatus.BORROWED) {
+//                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewReturningLendRequestAcitivity.class);
+//                    intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
+//                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        currentActivityReceiver = new CurrentActivityReceiver(this);
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(currentActivityReceiver);
+        currentActivityReceiver = null;
+        super.onStop();
     }
 
 }

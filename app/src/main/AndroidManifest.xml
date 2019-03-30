@@ -121,7 +121,7 @@
             android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".EditContactInfoActivity" />
         <activity android:name=".FriendsListActivity" />
-        <activity android:name=".BorrowedListActivity" />
+        <activity android:name=".BorrowRequestListActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
         <activity

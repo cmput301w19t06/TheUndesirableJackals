@@ -34,7 +34,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * Pulls all Borrowed book requests and displays them here
  * Author: Kaya Thiessen
  */
-public class BorrowedListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+public class BorrowRequestListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
@@ -138,7 +138,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
             doViewLibraryBook(requestsRecyclerViewAdapter.get(position).getBookRequested());
         }
         else if(status == BookRequestStatus.ACCEPTED || status == BookRequestStatus.RETURNING){
-            intent = new Intent(BorrowedListActivity.this,
+            intent = new Intent(BorrowRequestListActivity.this,
                                 ViewBookRequestInfo.class);
             intent.putExtra(ViewBookRequestInfo.BOOK_REQUEST_INFO,
                     requestsRecyclerViewAdapter.get(position));
@@ -147,12 +147,12 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
 
         }
         else if(status == BookRequestStatus.HANDED_OFF){
-            intent = new Intent(BorrowedListActivity.this, ViewHandedoffBookRequestActivity.class);
+            intent = new Intent(BorrowRequestListActivity.this, ViewHandedoffBookRequestActivity.class);
             intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
         else if(status == BookRequestStatus.BORROWED) {
-            intent = new Intent(BorrowedListActivity.this, ViewBorrowedBookRequestActivity.class);
+            intent = new Intent(BorrowRequestListActivity.this, ViewBorrowedBookRequestActivity.class);
             intent.putExtra(ViewBorrowedBookRequestActivity.BORROWED_REQUEST, requestsRecyclerViewAdapter.get(position));
             startActivity(intent);
         }
@@ -235,7 +235,7 @@ public class BorrowedListActivity extends AppCompatActivity implements SwipeRefr
         databaseHelper.getBookFromDatabase(bookInformation.getIsbn(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
-                Intent intent = new Intent(BorrowedListActivity.this, ViewLibraryBookActivity.class);
+                Intent intent = new Intent(BorrowRequestListActivity.this, ViewLibraryBookActivity.class);
                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW, book);
                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, bookInformation);
                 startActivity(intent);
