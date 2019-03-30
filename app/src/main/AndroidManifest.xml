@@ -51,7 +51,7 @@
             android:name=".ViewPickupLocationActivity"
             android:label="@string/title_activity_view_pickup_location" />
         <activity
-            android:name=".ViewAcceptedBookRequestActivity"
+            android:name=".ViewAcceptedLendRequestActivity"
             android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".EditPersonalProfileActivity" />
