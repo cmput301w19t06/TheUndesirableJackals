@@ -28,6 +28,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
 
     private static final String TAG = "RequestAdapter";
     private BookRequestList dataSet;
+    //private BookRequestList dataCopy;
     private RecyclerViewClickListener myListener;
 
 
