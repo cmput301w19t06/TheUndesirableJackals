@@ -23,25 +23,13 @@ public class User {
     private UserInformation userInfo;
     private BookToInformationMap ownedBooks;
     private BookToInformationMap borrowedBooks;
-    private BookToInformationMap favouriteBooks;
 
-
-    private UserNotificationList notifications;
-
-    // topics of interest
-    private ArrayList<BookGenres> genreOfInterests;
-
-//    private ArrayList<String> friends;
 
 
     public User() {
         userInfo = new UserInformation();
         ownedBooks = new BookToInformationMap();
         borrowedBooks = new BookToInformationMap();
-        favouriteBooks = new BookToInformationMap();
-        notifications = new UserNotificationList();
-        genreOfInterests = new ArrayList<BookGenres>();
-//        friends = new ArrayList<>();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, -113.5263);
@@ -59,16 +47,11 @@ public class User {
         userInfo = new UserInformation(userName, email, phoneNumber);
         ownedBooks = new BookToInformationMap();
         borrowedBooks = new BookToInformationMap();
-        favouriteBooks = new BookToInformationMap();
-//        lendRequests = new BookRequestListCallback();
-//        borrowRequests = new BookRequestListCallback();
-        notifications = new UserNotificationList();
-        genreOfInterests = new ArrayList<BookGenres>();
-//        friends = new ArrayList<>();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, -113.5263);
     }
+
 
     /**
      *
@@ -78,6 +61,7 @@ public class User {
         return userInfo;
     }
 
+
     /**
      *
      * @return Books that is owned by the user
@@ -85,6 +69,7 @@ public class User {
     public BookToInformationMap getOwnedBooks() {
         return ownedBooks;
     }
+
 
     /**
      *
@@ -94,21 +79,6 @@ public class User {
         return borrowedBooks;
     }
 
-    /**
-     *
-     * @return BookRequestListCallback of all the lend requests of the user
-     */
-//    public BookRequestListCallback getLendRequests() {
-//        return lendRequests;
-//    }
-
-    /**
-     *
-     * @return BookRequestListCallback of all the barrow BookRequest of the user
-     */
-//    public BookRequestListCallback getBorrowRequests() {
-//        return borrowRequests;
-//    }
 
     /**
      *
@@ -118,84 +88,13 @@ public class User {
         return pickUpLocation;
     }
 
-    /**
-     *
-     * @return the list of notifications for the user
-     */
-    public UserNotificationList getNotifications() {
-        return notifications;
-    }
-
-    /**
-     * @param notifications list that will overwrite the current notification list of the user
-     */
-    public void setNotifications(UserNotificationList notifications) {
-        this.notifications = notifications;
-    }
-
-    /**
-     *
-     * @return returns an ArrayList of all the genres that the user is interested in
-     */
-    public ArrayList<BookGenres> getGenreOfInterests() {
-        return genreOfInterests;
-    }
-
-    /**
-     *
-     * @param interests sets the genre of interests of the user
-     */
-    public void setGenreOfInterests(ArrayList<BookGenres> interests) {
-        this.genreOfInterests = interests;
-    }
-
-    /**
-     *
-     * @return a BookToInformationMap of the user's favourite books
-     */
-    public BookToInformationMap getFavouriteBooks() {
-        return favouriteBooks;
-    }
-
-    /**
-     *
-     * @param book to be added to the favourite book list
-     */
-    public void addFavouriteBooks(Book book, String descriptionKey) {
-        favouriteBooks.addBook(book.getIsbn(), descriptionKey);
-    }
-
-    /**
-     * Overwrites the users favourite books list
-     * @param favouriteBooks new favourite book list
-     */
-    public void setFavouriteBooks(BookToInformationMap favouriteBooks) {
-        this.favouriteBooks = favouriteBooks;
-    }
-
-//    /**
-//     *
-//     * @return UserList of all the user's friends
-//     */
-//    public ArrayList<String> getFriends() {
-//        return friends;
-//    }
-//
-//    /**
-//     *
-//     * @param friends new list of friends
-//     */
-//    public void setFriends(ArrayList<String> friends) {
-//        this.friends = friends;
-//    }
-
-
 
     /**
      * Required setter for Firebase
      * @param geolocation  the geolocation which will set the pickuplocation for User user
      */
     public void setPickUpLocation(Geolocation geolocation){this.pickUpLocation = geolocation;}
+
 
     /**
      * Required setter for Firebase
@@ -205,21 +104,6 @@ public class User {
         this.borrowedBooks = borrowedBooks;
     }
 
-    /**
-     * Required setter for Firebase
-     * @param borrowRequests
-     */
-//    public void setBorrowRequests(BookRequestListCallback borrowRequests) {
-//        this.borrowRequests = borrowRequests;
-//    }
-
-    /**
-     * Required setter for Firebase
-     * @param lendRequests
-     */
-//    public void setLendRequests(BookRequestListCallback lendRequests) {
-//        this.lendRequests = lendRequests;
-//    }
 
     /**
      * Required setter for Firebase
@@ -229,6 +113,7 @@ public class User {
         this.ownedBooks = ownedBooks;
     }
 
+
     /**
      * Add an owned book to user's owned book list, and set user as owner
      * @param book
@@ -236,6 +121,7 @@ public class User {
     public void addOwnedBook(Book book, String descriptionKey){
         this.ownedBooks.addBook(book.getIsbn(), descriptionKey);
     }
+
 
     /**
      * Required setter for Firebase
@@ -246,44 +132,12 @@ public class User {
     }
 
 
-    /**
-     *
-     * @param genre to added to the user's genres of interest
-     */
-    public void addGenreOfInterest(BookGenres genre) {genreOfInterests.add(genre);}
-
-    /**
-     *
-     * @param user to be added as a new friend (#no_new_friends)
-     */
-    public void addFriend(User user) {}
-
-//    /**
-//     *
-//     * @param request new lend request to be added to lend request list
-//     */
-//    public void addLendRequest(BookRequest request) {
-//        lendRequests.addRequest(request);
-//    }
-
-//    /**
-//     *
-//     * @param request new book request to be added to borrow request list
-//     */
-//    public void addBorrowRequest(BookRequest request) {
-//        borrowRequests.addRequest(request);
-//    }
-
-
-
     @Override
     public String toString() {
         return "User{" +
                 "\nuserInfo=" + userInfo +
                 ",\nownedBooks=" + ownedBooks +
                 ",\nborrowedBooks=" + borrowedBooks +
-                ",\nfavouriteBooks=" + favouriteBooks +
-                ",\ngenreOfInterests=" + genreOfInterests +
                 ",\npickUpLocation="+ pickUpLocation +
                 '}';
     }
