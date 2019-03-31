@@ -9,87 +9,83 @@
 
     <ImageView
         android:id="@+id/imageViewMyBooksItemPhoto"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="15dp"
+        android:layout_width="94dp"
+        android:layout_height="131dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewMyBooksItemAuthor"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewMyBooksItemTitle"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/book_icon" />
 
     <TextView
         android:id="@+id/textViewMyBooksItemStatus"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:maxLines="1"
         android:text="Status"
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
         android:textStyle="bold|italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewMyBooksItemPhoto" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewMyBooksItemPhoto"
+        app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemIsbn" />
 
     <TextView
         android:id="@+id/textViewMyBooksItemTitle"
-        android:layout_width="290dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:autoSizeTextType="uniform"
-        android:text="Title"
         android:maxLines="1"
+        android:text="Title"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
+        app:layout_constraintTop_toTopOf="@+id/imageViewMyBooksItemPhoto" />
 
     <TextView
         android:id="@+id/textViewMyBooksItemAuthor"
-        android:layout_width="290dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:autoSizeTextType="uniform"
-        android:text="Author"
         android:maxLines="1"
-        android:textSize="14sp"
+        android:text="Author"
+        android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
         app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemTitle" />
 
     <TextView
         android:id="@+id/textViewMyBooksItemIsbn"
-        android:layout_width="290dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="ISBN"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemAuthor"
-        app:layout_constraintVertical_bias="0.0" />
+        android:text="ISBN"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewMyBooksItemPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemAuthor" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="395dp"
-        android:layout_height="1dp"
+        android:layout_height="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="?android:attr/listDivider"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMyBooksItemIsbn" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewMyBooksItemPhoto" />
 
 </android.support.constraint.ConstraintLayout>
