@@ -115,7 +115,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                 statusTextView.setTextColor(Color.parseColor("#4285F4"));
                 break;
             case BORROWED:
-                statusTextView.setTextColor(Color.parseColor("##A52A2A"));
+                statusTextView.setTextColor(Color.parseColor("#A52A2A"));
                 break;
             case AVAILABLE:
                 statusTextView.setTextColor(Color.parseColor("#34A853"));
