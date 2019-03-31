@@ -37,11 +37,15 @@ import java.util.ArrayList;
  * Author: Kaya Thiessen
  */
 public class ViewFriendsListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+
+    public static final String FRIENDS_ALREADY = "Friends";
+
     private FriendsRecyclerViewAdapter friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
+    private boolean doneDatabaseFetch = false;
     private Toolbar toolbar;
 
     @Override
@@ -49,6 +53,18 @@ public class ViewFriendsListActivity extends AppCompatActivity implements SwipeR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
         databaseHelper = new DatabaseHelper();
+
+        databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation userInformation) {
+                doneDatabaseFetch = true;
+                if(userInformation != null){
+                    currentUser = userInformation;
+                }else{
+                    showToast("Something went wrong connecting to database");
+                }
+            }
+        });
 
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
@@ -98,9 +114,19 @@ public class ViewFriendsListActivity extends AppCompatActivity implements SwipeR
     }
 
     private void recyclerOnClick(View view, int position) {
+        view.setClickable(false);
         //TODO implement lent list click listener functionality
         //TODO Bring up the ViewOther'sProfile Activity
-        showToast("ART DO YOUR MAGIC SHIT HERE");
+        UserInformation userInformation = friendsRecyclerViewAdapter.get(position);
+
+        Intent intent = new Intent(ViewFriendsListActivity.this, OthersProfileActivity.class);
+        intent.putExtra(OthersProfileActivity.USERNAME, userInformation.getUserName());
+        intent.putExtra(FRIENDS_ALREADY, true);
+        startActivity(intent);
+
+        view.setClickable(true);
+
+
 
     }
 
@@ -139,21 +165,30 @@ public class ViewFriendsListActivity extends AppCompatActivity implements SwipeR
 
     private void getFriendsList() {
         friendsRecyclerViewAdapter.setDataSet(new UserList());
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                if(user != null){
-                    databaseHelper.getFriendsList(user.getUserInfo().getUserName(), new UserListCallback() {
-                        @Override
-                        public void onCallback(UserList userList) {
-                            if(userList != null){
-                                friendsRecyclerViewAdapter.setDataSet(userList);
-                            }
+
+        if(doneDatabaseFetch && currentUser != null) {
+                databaseHelper.getFriendsList(currentUser.getUserName(), new UserListCallback() {
+                    @Override
+                    public void onCallback(UserList userList) {
+                        if (userList != null) {
+                            friendsRecyclerViewAdapter.setDataSet(userList);
                         }
-                    });
+                    }
+                });
+        }else{
+            databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+                @Override
+                public void onCallback(UserInformation userInformation) {
+                    doneDatabaseFetch = true;
+                    if(userInformation != null){
+                        currentUser = userInformation;
+                        onRefresh();
+                    }else{
+                        showToast("Something went wrong connecting to database");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void showToast(String message){

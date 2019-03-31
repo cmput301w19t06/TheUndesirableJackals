@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+
 
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -18,18 +21,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SelectLocationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class SelectLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseHelper databaseHelper;
     // contains new coordinates
     private Double lat;
     private Double lng;
     private Button submit;
+    Toolbar toolbar;
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        toolbar = findViewById(R.id.toolbarEditPickupLocation);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Edit Pickup Location");
+        setSupportActionBar(toolbar);
 
         setContentView(R.layout.activity_select_location);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -49,6 +57,12 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
              */
             public void onClick(View view) {
                 returnLocation();
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

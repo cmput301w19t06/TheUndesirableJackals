@@ -17,12 +17,15 @@ import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
@@ -221,6 +224,12 @@ public class ViewBorrowedBookRequestActivity extends AppCompatActivity {
     }
 
     private void doRequestUpdate() {
+        updateBookRequestStatus();
+        updateCurrentUserBorrowedBooks();
+        finish();
+    }
+
+    private void updateBookRequestStatus() {
         mBookRequest.setCurrentStatus(BookRequestStatus.RETURNING);
         mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
             @Override
@@ -230,6 +239,28 @@ public class ViewBorrowedBookRequestActivity extends AppCompatActivity {
                 } else {
                     ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
                 }
+            }
+        });
+
+    }
+
+
+    private void updateCurrentUserBorrowedBooks() {
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                BookToInformationMap borrowedBooks = user.getBorrowedBooks();
+                borrowedBooks.deleteBook(mBookRequest.getBookRequested().getIsbn());
+                mDatabaseHelper.updateBorrowedBooks(borrowedBooks, new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+                        if (bool) {
+                            ToastMessage.show(getApplicationContext(), "Book deleted from your borrowed list");
+                        } else {
+                            ToastMessage.show(getApplicationContext(), "Failed to update borrowed books in database");
+                        }
+                    }
+                });
             }
         });
     }

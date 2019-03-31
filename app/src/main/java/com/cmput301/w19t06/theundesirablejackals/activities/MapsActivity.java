@@ -45,14 +45,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        databaseHelper = new DatabaseHelper();
-
-        toolbar = findViewById(R.id.tool_bar);
+        toolbar = findViewById(R.id.toolbarEditPickupLocation);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
-        toolbar.setTitle("Maps");
+        toolbar.setTitle("Edit Pickup Location");
         setSupportActionBar(toolbar);
 
+
+        databaseHelper = new DatabaseHelper();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -89,6 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 finish();
             }
         });
+
 
     }
 

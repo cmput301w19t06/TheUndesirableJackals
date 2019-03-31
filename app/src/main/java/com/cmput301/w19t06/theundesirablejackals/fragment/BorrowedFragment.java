@@ -73,12 +73,14 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
+                view.setClickable(false);
                 Book clickedBook = borrowedRecyclerViewAdapter.getBook(position);
                 BookInformation clickedbookInformation = borrowedRecyclerViewAdapter.getInformation(position);
                 Intent intent = new Intent(getActivity(), ViewBorrowedBookActivity.class);
                 intent.putExtra(ViewBorrowedBookActivity.BORROWED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
                 intent.putExtra(ViewBorrowedBookActivity.BORROWED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
                 startActivity(intent);
+                view.setClickable(true);
             }
         };
 
@@ -152,9 +154,7 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
                             });
                         }
                     }
-
                 }
-
             }
         });
     }

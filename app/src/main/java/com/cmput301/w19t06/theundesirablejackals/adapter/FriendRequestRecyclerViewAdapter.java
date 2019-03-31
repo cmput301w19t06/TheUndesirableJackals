@@ -186,7 +186,7 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
 
 
 
-    public void somePublicMethod(int position){
+    public void swipeToDecline(int position){
         internalClickListener.onDeclineClick(position);
     }
 

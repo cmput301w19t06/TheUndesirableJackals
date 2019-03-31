@@ -19,8 +19,8 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <include layout="@layout/toolbar" />
-
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbarEditPickupLocation"/>
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"

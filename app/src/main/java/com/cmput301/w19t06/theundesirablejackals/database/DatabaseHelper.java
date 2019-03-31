@@ -386,23 +386,13 @@ public class DatabaseHelper{
      * @param booleanCallback The callback status of the request on the database
      */
     public void makeFriendRequest(FriendRequest friendRequest, final BooleanCallback booleanCallback){
-        if(friendRequest.getRequestReceiverKey().isEmpty()){
-            friendRequest.setRequestSenderKey(friendsReference
-                    .child(friendRequest.getRequestSender().getUserName())
-                    .child("sent")
-                    .push().getKey());
-        }
-        if(friendRequest.getRequestReceiverKey().isEmpty()) {
-            friendRequest.setRequestReceiverKey(friendsReference
+        if(friendRequest.getRequestKey().isEmpty()) {
+            friendRequest.setRequestKey(friendsReference
                     .child(friendRequest.getRequestReceiver().getUserName())
                     .child("received")
                     .push().getKey());
         }
-        final FriendRequest temp = new FriendRequest(friendRequest.getRequestSender(),
-                                                friendRequest.getRequestReceiver(),
-                                                friendRequest.getRequestSenderKey(),
-                                                friendRequest.getRequestReceiverKey());
-        updateFriendRequest(temp, new BooleanCallback() {
+        updateFriendRequest(friendRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
                 booleanCallback.onCallback(bool);
@@ -420,67 +410,47 @@ public class DatabaseHelper{
      */
     public void updateFriendRequest(final FriendRequest friendRequest, final BooleanCallback booleanCallback){
         friendsReference
-                .child(friendRequest.getRequestSender().getUserName())
-                .child("sent")
-                .child(friendRequest.getRequestSenderKey())
+                .child(friendRequest.getRequestReceiver().getUserName())
+                .child("received")
+                .child(friendRequest.getRequestKey())
                 .setValue(friendRequest)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            friendsReference
-                                    .child(friendRequest.getRequestReceiver().getUserName())
-                                    .child("received")
-                                    .child(friendRequest.getRequestReceiverKey())
-                                    .setValue(friendRequest)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                booleanCallback.onCallback(true);
-                                            } else {
-                                                booleanCallback.onCallback(false);
-                                            }
-                                        }
-                                    });
-                        }else{
+                        if (task.isSuccessful()) {
+                            booleanCallback.onCallback(true);
+                        } else {
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+
+    }
+
+
+    /**
+     * Delete a friend request from the database
+     * @param friendRequest
+     * @param booleanCallback
+     */
+    public void deleteFriendRequest(FriendRequest friendRequest, final BooleanCallback booleanCallback){
+        friendsReference
+                .child(friendRequest.getRequestReceiver().getUserName())
+                .child("received")
+                .child(friendRequest.getRequestKey())
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            booleanCallback.onCallback(true);
+                        } else {
                             booleanCallback.onCallback(false);
                         }
                     }
                 });
     }
 
-    /**
-     * Get all friend requests that the user in userInformation has sent out
-     * @param userInformation The user who's 'sent' friend requests are to be retrieved
-     * @param friendRequestListCallback the callback which will deliver the friend request list
-     */
-    public void getSentFriendRequests(UserInformation userInformation, final FriendRequestListCallback friendRequestListCallback){
-        friendsReference
-                .child(userInformation.getUserName())
-                .child("sent")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
-                        if(dataSnapshot.exists()){
-                            for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                                if(dataSnapshot1.exists()){
-                                    friendRequests.add(dataSnapshot1.getValue(FriendRequest.class));
-                                }
-                            }
-                        }
-                        friendRequestListCallback.onCallback(friendRequests);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e(TAG, databaseError.getMessage());
-                        Log.d(TAG, "Error occured getting friend requests");
-                        friendRequestListCallback.onCallback(null);
-                    }
-                });
-    }
 
 
     /**
@@ -528,9 +498,14 @@ public class DatabaseHelper{
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d(TAG, dataSnapshot.toString());
+                        Log.d(TAG, "From inside get friends list");
                         UserList userList = new UserList();
                         if(dataSnapshot.exists()){
-                            userList = dataSnapshot.getValue(UserList.class);
+                            userList = (UserList) dataSnapshot.getValue(UserList.class);
+                            for(UserInformation userInformation : userList.getUserlist()){
+                                Log.d(TAG, userInformation.toString());
+                            }
                         }
                         userListCallback.onCallback(userList);
                     }
@@ -810,9 +785,9 @@ public class DatabaseHelper{
     /**
      * This function will update all the user's borrowed books
      * @param bookToInformationMap  the full BookToInformationMap of borrowed books
-     * @param onCallback A callback used to tell the status of the database write
+     * @param booleanCallback A callback used to tell the status of the database write
      */
-    public void updateBorrowedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
+    public void updateBorrowedBooks(BookToInformationMap bookToInformationMap, final BooleanCallback booleanCallback){
         HashMap<String, Object> update = new HashMap<>();
         update.put("borrowedBooks", bookToInformationMap);
         usersReference
@@ -822,9 +797,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -834,9 +809,9 @@ public class DatabaseHelper{
     /**
      * This function will update all the user's favourite books
      * @param bookToInformationMap  the full BookToInformationMap of favourite books
-     * @param onCallback A callback used to tell the status of the database write
+     * @param booleanCallback A callback used to tell the status of the database write
      */
-    public void updateFavouriteBooks(BookToInformationMap bookToInformationMap, final BooleanCallback onCallback){
+    public void updateFavouriteBooks(BookToInformationMap bookToInformationMap, final BooleanCallback booleanCallback){
         HashMap<String, Object> update = new HashMap<>();
         update.put("favouriteBooks", bookToInformationMap);
         usersReference
@@ -846,9 +821,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -895,9 +870,9 @@ public class DatabaseHelper{
     /**
      * This requires the borrowed book in order to remove the book from the database
      * @param bookInformation  the book which needs to be removed
-     * @param onCallback  The callback which is used to tell the status of the database update
+     * @param booleanCallback  The callback which is used to tell the status of the database update
      */
-    public void deleteBorrowedBook(BookInformation bookInformation, final BooleanCallback onCallback){
+    public void deleteBorrowedBook(BookInformation bookInformation, final BooleanCallback booleanCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("borrowedBooks")
@@ -908,9 +883,9 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });
@@ -921,9 +896,9 @@ public class DatabaseHelper{
     /**
      * This requires the favourite book in order to remove the book from the database
      * @param bookInformation  the book which needs to be removed
-     * @param onCallback  The callback which is used to tell the status of the database update
+     * @param booleanCallback  The callback which is used to tell the status of the database update
      */
-    public void deleteFavouriteBook(BookInformation bookInformation, final BooleanCallback onCallback){
+    public void deleteFavouriteBook(BookInformation bookInformation, final BooleanCallback booleanCallback){
         usersReference
                 .child(currentUser.getUid())
                 .child("favouriteBooks")
@@ -934,9 +909,28 @@ public class DatabaseHelper{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            onCallback.onCallback(true);
+                            booleanCallback.onCallback(true);
                         }else{
-                            onCallback.onCallback(false);
+                            booleanCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
+
+    public void addFavouriteBook(BookInformation bookInformation, final BooleanCallback booleanCallback){
+        usersReference
+                .child(currentUser.getUid())
+                .child("favouriteBooks")
+                .child("books")
+                .child(bookInformation.getIsbn())
+                .setValue(bookInformation.getBookInformationKey())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            booleanCallback.onCallback(true);
+                        }else{
+                            booleanCallback.onCallback(false);
                         }
                     }
                 });

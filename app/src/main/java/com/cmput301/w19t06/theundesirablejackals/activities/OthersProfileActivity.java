@@ -88,6 +88,9 @@ public class OthersProfileActivity extends AppCompatActivity {
             }
         });
 
+        boolean alreadyFriend = intent.hasExtra(ViewFriendsListActivity.FRIENDS_ALREADY);
+
+
         mProfilePhoto = findViewById(R.id.imageViewOthersProfilePhoto);
         mTextViewUsername = findViewById(R.id.textViewOthersProfileActivityUserName);
         mTextViewEmail = findViewById(R.id.textViewOthersProfileActivityEmail);
@@ -97,21 +100,38 @@ public class OthersProfileActivity extends AppCompatActivity {
         mMessageUser = findViewById(R.id.floatingButtonOthersProfileViewSendMessage);
         mAddUserAsFriend = findViewById(R.id.floatingButtonOtherProfileViewAddFriend);
 
-        mAddUserAsFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makeNewFriendRequest();
-            }
-        });
+        if(!alreadyFriend) {
+            mAddUserAsFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.setClickable(false);
+                    makeNewFriendRequest();
+                }
+            });
+        }else{
+            mAddUserAsFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showToast("This user is already your friend!");
+                }
+            });
+        }
 
 
         mMessageUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.setClickable(false);
                 doSendOwnerMessageProcess();
+                view.setClickable(true);
+
             }
         });
 
+    }
+
+    private void showToast(String message){
+        ToastMessage.show(this, message);
     }
 
     public void doSendOwnerMessageProcess() {
@@ -179,6 +199,7 @@ public class OthersProfileActivity extends AppCompatActivity {
     }
 
     private void makeNewFriendRequest() {
+
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(final User user) {
@@ -196,7 +217,6 @@ public class OthersProfileActivity extends AppCompatActivity {
                                 } else {
                                     sendNewFriendRequest(user.getUserInfo());
                                 }
-
                             }
                         });
                     }
