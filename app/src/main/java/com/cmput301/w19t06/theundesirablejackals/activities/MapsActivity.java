@@ -9,6 +9,8 @@ package com.cmput301.w19t06.theundesirablejackals.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,13 +27,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseHelper databaseHelper;
     // contains new coordinates
     private Double newLat = null;
     private Double newLng = null;
     private Button submit;
     private Button cancel;
+    private Toolbar toolbar;
 
     private GoogleMap mMap;
 
@@ -39,6 +42,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        toolbar = findViewById(R.id.toolbarEditPickupLocation);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Edit Pickup Location");
+        setSupportActionBar(toolbar);
+
 
         databaseHelper = new DatabaseHelper();
 
@@ -70,6 +78,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startMainHomeView();
             }
         });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
     }
 
     /**
