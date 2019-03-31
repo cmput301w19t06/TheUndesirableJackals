@@ -122,33 +122,52 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         int id = item.getItemId();
         String menuTitle;
         BookRequestList filteredItem = new BookRequestList();
-        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataSet();
+        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataCopy();
 
         switch (id){
-            case R.id.itemMenuBorrowedRequestDenied:
+
+            case R.id.itemRequestsMenuRequested:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Borrowed...");
+                ToastMessage.show(this, "Viewing Requested...");
                 break;
-            case R.id.itemMenuBorrowedRequestAccepted:
+            case R.id.itemRequestsMenuDenied:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Denied...");
+                break;
+            case R.id.itemRequestsMenuAccepted:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Accepted...");
                 break;
-            case R.id.itemMenuBorrowedRequestRequested:
+            case R.id.itemRequestsMenuHandedOff:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Pending...");
+                ToastMessage.show(this, "Viewing Handed off...");
+                break;
+            case R.id.itemRequestsMenuBorrowed:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Borrowed...");
+                break;
+            case R.id.itemRequestsMenuReturned:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Returned...");
                 break;
         }
 
         if(item.equals(mSelectedFilter)) {
             mSelectedFilter = null;
             item.setChecked(false);
-            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataSet());
+            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataCopy());
         } else {
             item.setChecked(true);
             mSelectedFilter = item;
