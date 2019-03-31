@@ -336,11 +336,12 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
             if(book.getTitle()!=null && ! book.getTitle().isEmpty() && title.toLowerCase().contains(userInput)){
                 Log.d(TAG, title);
                 listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
 
             }
-            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
-                Log.d(TAG, author);
-            }
+//            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty() && ){
+//                Log.d(TAG, author);
+//            }
 
         }
 
