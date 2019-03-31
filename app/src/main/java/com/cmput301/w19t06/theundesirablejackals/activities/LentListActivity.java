@@ -115,33 +115,52 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
         int id = item.getItemId();
         String menuTitle;
         BookRequestList filteredItem = new BookRequestList();
-        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataSet();
+        BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataCopy();
 
         switch (id) {
-            case R.id.itemMenuBorrowedRequestDenied:
+            case R.id.itemRequestsMenuRequested:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Requested...");
+                break;
+            case R.id.itemRequestsMenuDenied:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Denied...");
+                break;
+            case R.id.itemRequestsMenuAccepted:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                Log.d(TAG, menuTitle);
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Accepted...");
+                break;
+            case R.id.itemRequestsMenuHandedOff:
+                menuTitle = item.getTitle().toString().toUpperCase();
+                filterThrough(filteredItem,toFilterThrough,menuTitle);
+                requestsRecyclerViewAdapter.setDataSet(filteredItem);
+                ToastMessage.show(this, "Viewing Handed off...");
+                break;
+            case R.id.itemRequestsMenuBorrowed:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Borrowed...");
                 break;
-            case R.id.itemMenuBorrowedRequestAccepted:
+            case R.id.itemRequestsMenuReturned:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Accepted...");
-                break;
-            case R.id.itemMenuBorrowedRequestRequested:
-                menuTitle = item.getTitle().toString().toUpperCase();
-                filterThrough(filteredItem,toFilterThrough,menuTitle);
-                requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Pending...");
+                ToastMessage.show(this, "Viewing Returned...");
                 break;
         }
 
         if(item.equals(mSelectedFilter)) {
             mSelectedFilter = null;
             item.setChecked(false);
-            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataSet());
+            requestsRecyclerViewAdapter.setDataSet(requestsRecyclerViewAdapter.getDataCopy());
         } else {
             item.setChecked(true);
             mSelectedFilter = item;
@@ -155,6 +174,22 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
         this.requestsRecyclerViewAdapter = adapter;
     }
     */
+    /**
+     * Resets the filter menu options every new choice
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        for(int i=0; i<menu.size(); i++){
+            if(menu.getItem(i).equals(mSelectedFilter)) {
+                continue;
+            } else {
+                menu.getItem(i).setChecked(false);
+            }
+        }
+        return true;
+    }
 
     /**
      * Filters the list of books visible on My Books tab by status
@@ -164,6 +199,7 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
      */
     // filters through books by status
     private void filterThrough(BookRequestList filteredItem, BookRequestList toFilterThrough, String menuTitle) {
+        Log.d(TAG, String.valueOf(toFilterThrough.size()));
         for(int i = 0; i < toFilterThrough.size(); i++){
             //get the status of the book
             String status = toFilterThrough.get(i).getCurrentStatus().toString();
@@ -248,6 +284,7 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
                             @Override
                             public void onCallback(BookRequestList bookRequestList) {
                                 requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                                requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
                             }
                         });
                     }
@@ -258,6 +295,8 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
                 @Override
                 public void onCallback(BookRequestList bookRequestList) {
                     requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                    requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
+
                 }
             });
         }
