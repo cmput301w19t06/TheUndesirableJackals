@@ -16,9 +16,9 @@
         android:checkable="true"/>
 
     <item
-        android:id="@+id/itemRequestsMenuDeclined"
+        android:id="@+id/itemRequestsMenuDenied"
         android:orderInCategory="100"
-        android:title="Declined"
+        android:title="Denied"
         app:showAsAction="never"
         android:checkable="true"/>
 
@@ -43,9 +43,9 @@
         app:showAsAction="never"
         android:checkable="true"/>
     <item
-        android:id="@+id/itemRequestsMenuReturning"
+        android:id="@+id/itemRequestsMenuReturned"
         android:orderInCategory="100"
-        android:title="Returning"
+        android:title="Returned"
         app:showAsAction="never"
         android:checkable="true"/>
 
