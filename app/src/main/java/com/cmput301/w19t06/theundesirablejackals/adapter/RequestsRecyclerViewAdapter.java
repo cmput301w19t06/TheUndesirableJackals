@@ -213,6 +213,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                     public void onCallback(boolean bool) {
                         if(bool){
                             dataSet.getBookRequests().remove(position);
+                            dataCopy.getBookRequests().remove(position);
                             notifyItemRemoved(position);
                             notifyDataSetChanged();
                         }else{
