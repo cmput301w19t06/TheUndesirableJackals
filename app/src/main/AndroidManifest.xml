@@ -125,7 +125,6 @@
         <activity android:name=".ViewFriendsListActivity" />
         <activity android:name=".ViewFriendRequestsActivity" />
         <activity android:name=".BorrowRequestListActivity" />
-        <activity android:name=".ViewFriendRequestsActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
@@ -149,7 +148,6 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".BookSearchActivity" />
         <activity
             android:name=".SelectLocationActivity"
             android:label="@string/title_activity_select_location" />

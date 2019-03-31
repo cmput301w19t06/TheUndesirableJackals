@@ -13,12 +13,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.FriendRequestRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.InternalClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
 import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.FriendRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -30,7 +32,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserList;
 
 import java.util.ArrayList;
 
-public class ViewFriendRequestsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+public class ViewFriendRequestsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener, InternalClickListener {
     private FriendRequestRecyclerViewAdapter friendRequestRecyclerViewAdapter = new FriendRequestRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -65,7 +67,8 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        friendRequestRecyclerViewAdapter.setMyListener((RecyclerViewClickListener) this);
+        friendRequestRecyclerViewAdapter.setMyListener(this);
+        friendRequestRecyclerViewAdapter.setInternalClickListener(this);
         recyclerView.setAdapter(friendRequestRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
         swipeRefreshLayout.post(new Runnable() {
@@ -156,4 +159,27 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
         ToastMessage.show(this, message);
     }
 
+    @Override
+    public void onAcceptClick(int position) {
+        FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
+        friendRequest.setRequestStatus(FriendRequest.FriendStatus.ACCEPTED);
+        databaseHelper.updateFriendRequest(friendRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                showToast("AcceptClick");
+            }
+        });
+    }
+
+    @Override
+    public void onDeclineClick(int position) {
+        FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
+        friendRequest.setRequestStatus(FriendRequest.FriendStatus.DECLINED);
+        databaseHelper.updateFriendRequest(friendRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                showToast("DeclineClick");
+            }
+        });
+    }
 }

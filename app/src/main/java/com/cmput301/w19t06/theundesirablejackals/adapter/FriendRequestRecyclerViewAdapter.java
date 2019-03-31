@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,28 +32,43 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
     private ArrayList<FriendRequest> dataSet;
     private RecyclerViewClickListener myListener;
     private DatabaseHelper databaseHelper = new DatabaseHelper();
+    private InternalClickListener internalClickListener;
+
 
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // each data item is a MyHealthStats member
         public ConstraintLayout mainTextView;
+        private InternalClickListener internalClickListener;
         private RecyclerViewClickListener myListener;
+        private Button acceptButton;
+        private Button declineButton;
 
 
-        MyViewHolder(ConstraintLayout v, RecyclerViewClickListener listener) {
+        MyViewHolder(ConstraintLayout v, RecyclerViewClickListener listener, InternalClickListener internalClickListener) {
             super(v);
-            myListener = listener;
-            mainTextView = v;
-
+            this.myListener = listener;
+            this.internalClickListener = internalClickListener;
+            this.mainTextView = v;
+            acceptButton = this.mainTextView.findViewById(R.id.buttonItemFriendRequestAcceptRequest);
+            declineButton = this.mainTextView.findViewById(R.id.buttonItemFriendRequestDeclineRequest);
+            acceptButton.setOnClickListener(this);
+            declineButton.setOnClickListener(this);
             mainTextView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v){
-            myListener.onClick(v, getAdapterPosition());
+            if(v.getId() == acceptButton.getId()){
+                internalClickListener.onAcceptClick(getAdapterPosition());
+            }else if(v.getId() == declineButton.getId()){
+                internalClickListener.onDeclineClick(getAdapterPosition());
+            }else {
+                myListener.onClick(v, getAdapterPosition());
+            }
         }
 
     }
@@ -76,7 +92,7 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
         // create a new view
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_friend_request, parent, false);
-        MyViewHolder vh = new MyViewHolder(v, myListener);
+        MyViewHolder vh = new MyViewHolder(v, myListener, internalClickListener);
         return vh;
     }
 
@@ -87,7 +103,13 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
         // - replace the contents of the view with that element
         TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewItemFriendRequestUserName);
         TextView emailTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewItemFriendRequestEmail);
-        final ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendRequestPhoto);
+        ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendRequestPhoto);
+        UserInformation sender = dataSet.get(position).getRequestSender();
+        usernameTextView.setText(sender.getUserName());
+        emailTextView.setText(sender.getEmail());
+        Picasso.get()
+                .load(R.drawable.ic_person_outline_grey_24dp)
+                .into(profileImageView);
 
 
 //        UserInformation i = (UserInformation) dataSet.getUser(position);
@@ -107,20 +129,25 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
 //        super.onViewAttachedToWindow(holder);
 //        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendsPhoto);
         int position = holder.getAdapterPosition();
-        FriendRequest friendRequest = dataSet.get(position);
+        final ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendRequestPhoto);
+        UserInformation sender = dataSet.get(position).getRequestSender();
 
-        /*
-        //Todo --> no idea what this is... figure it out
-        if(bookStatus == BookStatus.UNKNOWN){
-            if(book.getThumbnail() != null && !book.getThumbnail().isEmpty()){
-                Picasso.get()
-                        .load(book.getThumbnail())
-                        .error(R.drawable.book_icon)
-                        .placeholder(R.drawable.book_icon)
-                        .into(bookThumbnail);
-            }
+        if (sender.getUserPhoto() != null && !sender.getUserPhoto().isEmpty()) {
+            databaseHelper.getProfilePictureUri(sender, new UriCallback() {
+                @Override
+                public void onCallback(Uri uri) {
+                    if (uri != null) {
+                        Picasso.get()
+                                .load(uri)
+                                .error(R.drawable.ic_person_outline_grey_24dp)
+                                .placeholder(R.drawable.ic_loading_with_text)
+                                .into(profileImageView);
+
+                    }
+                }
+
+            });
         }
-        */
     }
 
     public void deleteItem(int position){
@@ -148,72 +175,19 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
         myListener = listener;
     }
 
+    public void setInternalClickListener(InternalClickListener acceptListener){
+        this.internalClickListener = acceptListener;
+    }
+
     public void setDataSet(ArrayList<FriendRequest> data){
         dataSet = new ArrayList<FriendRequest>(data);
         updateItems();
     }
 
-//    public void doDeleteFriend(final int position) {
-//        final UserInformation userInformation = dataSet.getUser(position);
-//        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-//            @Override
-//            public void onCallback(User user) {
-//                if (user != null) {
-//                    final UserInformation currentMe = user.getUserInfo();
-//                    databaseHelper.getFriendsList(userInformation.getUserName(), new UserListCallback() {
-//                        @Override
-//                        public void onCallback(UserList userList) {
-//                            if(userList != null){
-//                                userList.getUserlist().remove(currentMe);
-//                                databaseHelper.updateFriendsList(userInformation.getUserName(), userList, new BooleanCallback() {
-//                                    @Override
-//                                    public void onCallback(boolean bool) {
-//                                        if(bool){
-//                                            databaseHelper.getFriendsList(currentMe.getUserName(), new UserListCallback() {
-//                                                @Override
-//                                                public void onCallback(UserList userList) {
-//                                                    if (userList != null) {
-//                                                        userList.getUserlist().remove(userInformation);
-//                                                        databaseHelper.updateFriendsList(currentMe.getUserName(), userList, new BooleanCallback() {
-//                                                            @Override
-//                                                            public void onCallback(boolean bool) {
-//                                                                if (bool) {
-//                                                                    Log.d(TAG, "Friend removed");
-//                                                                    dataSet.getUserlist().remove(position);
-//                                                                    notifyItemRemoved(position);
-//                                                                    notifyDataSetChanged();
-//                                                                } else {
-//                                                                    Log.d(TAG, "Current User friendList was not updates");
-//                                                                    Log.e(TAG, "Current User friendlist update callback");
-//                                                                }
-//                                                            }
-//                                                        });
-//                                                    } else {
-//                                                        Log.d(TAG, "Current User's friend list came back null");
-//                                                        Log.e(TAG, "CurrentMe userlist callback");
-//                                                    }
-//                                                }
-//                                            });
-//                                        }else{
-//                                            Log.d(TAG, "Old Friend friendList was not updates");
-//                                            Log.e(TAG, "Old Friend friendlist update callback");
-//                                        }
-//                                    }
-//                                });
-//                            }else{
-//                                Log.d(TAG, "Old Friend's friend list came back null");
-//                                Log.e(TAG, "Old Friend userlist callback");
-//                            }
-//                        }
-//                    });
-//
-//                }
-//            }
-//        });
-//    }
+
 
     public void somePublicMethod(int position){
-
+        internalClickListener.onDeclineClick(position);
     }
 
 }

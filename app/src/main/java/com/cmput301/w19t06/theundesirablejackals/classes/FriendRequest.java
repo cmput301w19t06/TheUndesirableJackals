@@ -9,9 +9,14 @@ import java.io.Serializable;
  * @author Art Limbaga
  */
 public class FriendRequest implements Serializable {
+    public enum FriendStatus{
+        PENDING,
+        ACCEPTED,
+        DECLINED
+    }
     private UserInformation requestSender;
     private UserInformation requestReceiver;
-    private boolean requestAccepted;
+    private FriendStatus requestStatus;
     private String requestSenderKey;
     private String requestReceiverKey;
 
@@ -27,7 +32,7 @@ public class FriendRequest implements Serializable {
         this.requestSender = requestSender;
         this.requestReceiverKey = new String();
         this.requestSenderKey = new String();
-        this.requestAccepted = false;
+        this.requestStatus = FriendStatus.PENDING;
     }
 
     /**
@@ -42,7 +47,7 @@ public class FriendRequest implements Serializable {
         this.requestSender = requestSender;
         this.requestSenderKey = requestSenderKey;
         this.requestReceiverKey= requestReceiverKey;
-        this.requestAccepted = false;
+        this.requestStatus = FriendStatus.PENDING;
     }
 
 
@@ -62,12 +67,13 @@ public class FriendRequest implements Serializable {
         this.requestReceiver = requestReceiver;
     }
 
-    public boolean isRequestAccpeted() {
-        return requestAccepted;
+
+    public void setRequestStatus(FriendStatus status) {
+        this.requestStatus = status;
     }
 
-    public void setRequestAccpeted(boolean requestAccpeted) {
-        this.requestAccepted = requestAccpeted;
+    public FriendStatus getRequestStatus() {
+        return requestStatus;
     }
 
     public String getRequestSenderKey() {
