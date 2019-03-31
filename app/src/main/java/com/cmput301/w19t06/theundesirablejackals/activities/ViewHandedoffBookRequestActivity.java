@@ -270,6 +270,10 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    private void updateBorrowedBookList() {
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
@@ -289,7 +293,6 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
         });
 
-        finish();
     }
 
     private void updateBorrowedBookList() {
