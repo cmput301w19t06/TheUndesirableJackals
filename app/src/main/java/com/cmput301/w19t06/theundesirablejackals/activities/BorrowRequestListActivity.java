@@ -251,6 +251,7 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
                             @Override
                             public void onCallback(BookRequestList bookRequestList) {
                                 requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                                requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
                             }
                         });
                     }
@@ -261,6 +262,8 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
                 @Override
                 public void onCallback(BookRequestList bookRequestList) {
                     requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                    requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
+
                 }
             });
         }
