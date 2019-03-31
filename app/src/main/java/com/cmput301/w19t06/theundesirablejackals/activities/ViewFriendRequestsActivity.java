@@ -85,7 +85,6 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
                 finish();
             }
         });
