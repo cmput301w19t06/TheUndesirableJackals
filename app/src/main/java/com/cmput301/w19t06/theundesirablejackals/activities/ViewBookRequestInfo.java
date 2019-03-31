@@ -245,10 +245,10 @@ public class ViewBookRequestInfo extends AppCompatActivity {
                     intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
                     startActivity(intent);
 
-                }else if(bookRequest != null && bookRequest.getCurrentStatus() == BookRequestStatus.BORROWED) {
-//                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewReturningLendRequestAcitivity.class);
-//                    intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
-//                    startActivity(intent);
+                }else if(bookRequest != null && bookRequest.getCurrentStatus() == BookRequestStatus.RETURNING) {
+                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewReturningLendRequestAcitivity.class);
+                    intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
+                    startActivity(intent);
                     finish();
                 }
             }
