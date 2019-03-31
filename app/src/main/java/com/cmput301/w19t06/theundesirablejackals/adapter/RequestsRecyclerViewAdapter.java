@@ -212,12 +212,14 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                     @Override
                     public void onCallback(boolean bool) {
                         if(bool){
-                            dataSet.getBookRequests().remove(position);
-                            dataCopy.getBookRequests().remove(position);
-                            notifyItemRemoved(position);
-                            notifyDataSetChanged();
+//                            dataSet.getBookRequests().remove(position);
+//                            dataCopy.getBookRequests().remove(position);
+//                            notifyItemRemoved(position);
+//                            notifyDataSetChanged();
+                            Log.d(TAG, "Request deleted");
                         }else{
-                            notifyItemChanged(position);
+//                            notifyItemChanged(position);
+                            Log.d(TAG, "Request not deleted");
                         }
                     }
                 });

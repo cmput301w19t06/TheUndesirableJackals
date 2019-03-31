@@ -236,6 +236,14 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
     }
 
     private void doRequestUpdate() {
+
+        updateBookRequest();
+        updateBookInformationStatus();
+        updateBorrowedBookList();
+        finish();
+    }
+
+    private void updateBookRequest() {
         mBookRequest.setCurrentStatus(BookRequestStatus.BORROWED);
         mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
             @Override
@@ -247,6 +255,9 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateBookInformationStatus() {
         mBookRequest.getBookRequested().setStatus(BookStatus.BORROWED);
         mDatabaseHelper.updateBookInformation(mBookRequest.getBookRequested(), new BooleanCallback() {
             @Override
@@ -259,6 +270,10 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    private void updateBorrowedBookList() {
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
@@ -278,6 +293,5 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
         });
 
-        finish();
     }
 }
