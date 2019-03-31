@@ -54,7 +54,7 @@ public class FriendsListActivity extends AppCompatActivity implements SwipeRefre
         LocalBroadcastManager.getInstance(this).
                 registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendListActivityFriends);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewFriendsListActivityFriends);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activitySwipeFriendsListRefreshLayout);
 
         ItemTouchHelper itemTouchHelper;
