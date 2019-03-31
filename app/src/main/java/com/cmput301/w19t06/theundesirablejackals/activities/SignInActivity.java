@@ -15,22 +15,13 @@ import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-//import com.firebase.ui.auth.IdpResponse;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.storage.FirebaseStorage;
-//import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
 
-//    private FirebaseUser currentUser;
     private static final String TAG = "SignInActivity";
-    public static final int REQUEST_SIGN_IN = 100;
     private static final int SIGN_IN_AND_AUTH = 101;
     DatabaseHelper databaseHelper;
 

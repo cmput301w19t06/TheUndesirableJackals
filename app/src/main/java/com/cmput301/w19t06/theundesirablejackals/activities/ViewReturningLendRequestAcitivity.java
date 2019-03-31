@@ -15,20 +15,19 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
-public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
-    public final static String ACCEPTED_REQUEST = "AcceptedRequest";
-    public final static int BARCODE_SCANNER = 1000;
+public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
 
-    private final static String ACTIVITY_TAG = "ViewAcceptedBookRequest";
+    public final static String RETURNING_REQUEST = "ReturningRequest";
+    public final static int BARCODE_SCANNER = 5000;
+
+    private final static String ACTIVITY_TAG = "ViewReturningLend";
     private BookRequest mBookRequest;
 
     // ratio in relation to the original display
@@ -37,7 +36,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     private DatabaseHelper mDatabaseHelper;
 
     private TextView mTextViewBorrowerUsername;
-    private TextView mTextViewBorowerEmail;
+    private TextView mTextViewBorrowerEmail;
     private TextView mTextViewBookTitle;
     private TextView mTextViewBookAuthor;
     private TextView mTextViewBookISBN;
@@ -48,7 +47,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     private ImageView mImageProfilePhoto;
 
     private Button mButtonScanISBN;
-    private Button mButtonConfirmHandoff;
+    private Button mButtonReceiveBook;
 
     private LinearLayout mLinearLayoutViewPickup;
 
@@ -70,10 +69,10 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         mDatabaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
-        mBookRequest = (BookRequest) intent.getSerializableExtra(ACCEPTED_REQUEST);
+        mBookRequest = (BookRequest) intent.getSerializableExtra(RETURNING_REQUEST);
 
         mTextViewBorrowerUsername = findViewById(R.id.textViewBookRequestHandoffUserName);
-        mTextViewBorowerEmail = findViewById(R.id.textViewBookRequestHandoffEmail);
+        mTextViewBorrowerEmail = findViewById(R.id.textViewBookRequestHandoffEmail);
         mTextViewBookTitle = findViewById(R.id.textViewBookRequestHandoffBookTitle);
         mTextViewBookAuthor = findViewById(R.id.textViewBookRequestHandoffBookAuthor);
         mTextViewBookISBN = findViewById(R.id.textViewBookRequestHandoffBookIsbn);
@@ -86,29 +85,30 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         setAllViews();
 
         mButtonScanISBN = findViewById(R.id.buttonBookRequestHandoffScanISBN);
-        mButtonConfirmHandoff = findViewById(R.id.buttonBookRequestHandoffConfirm);
+        mButtonReceiveBook = findViewById(R.id.buttonBookRequestHandoffConfirm);
+        mButtonReceiveBook.setText("Receive Book");
 
         mLinearLayoutViewPickup = findViewById(R.id.linearLayoutBookRequestHandoffLocation);
 
         mButtonScanISBN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, ScanBarcodeActivity.class);
+                Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, ScanBarcodeActivity.class);
                 startActivityForResult(intent, BARCODE_SCANNER);
             }
         });
 
-        mButtonConfirmHandoff.setOnClickListener(new View.OnClickListener() {
+        mButtonReceiveBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doConfirmHandOff();
+                doConfirmReceive();
             }
         });
 
         mLinearLayoutViewPickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               doViewPickupLocation();
+                doViewPickupLocation();
             }
         });
 
@@ -116,7 +116,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         borrowerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, OthersProfileActivity.class);
+                Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, OthersProfileActivity.class);
                 intent.putExtra(OthersProfileActivity.USERNAME, mBookRequest.getBorrower().getUserName());
                 startActivity(intent);
             }
@@ -128,7 +128,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
             ToastMessage.show(getApplicationContext(), "Book owner done messed up and accepted your request without setting a location... ");
             return;
         }
-        Intent intent = new Intent(ViewAcceptedLendRequestActivity.this, ViewPickupLocationActivity.class);
+        Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, ViewPickupLocationActivity.class);
         intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
         startActivity(intent);
     }
@@ -138,7 +138,7 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
         mTextViewUserRole.setText("Borrower: ");
         UserInformation borrower = mBookRequest.getBorrower();
         mTextViewBorrowerUsername.setText(borrower.getUserName());
-        mTextViewBorowerEmail.setText(borrower.getEmail());
+        mTextViewBorrowerEmail.setText(borrower.getEmail());
         mDatabaseHelper.getBookFromDatabase(mBookRequest.getBookRequested().getIsbn(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
@@ -184,14 +184,14 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
                 mTextViewScannedISBN.setText(data.getStringExtra("ISBN"));
                 ToastMessage.show(getApplicationContext(), "ISBN scanned");
             } else {
-              ToastMessage.show(getApplicationContext(), "No results found");
+                ToastMessage.show(getApplicationContext(), "No results found");
             }
         } else {
             Log.d(ACTIVITY_TAG, "Unrecognized request code");
         }
     }
 
-    private void  doConfirmHandOff() {
+    private void  doConfirmReceive() {
 
         if(mTextViewScannedISBN.getText().toString().isEmpty()) {
             ToastMessage.show(getApplicationContext(), "Please scan barcode for ISBN");
@@ -206,17 +206,17 @@ public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     }
 
     private void doHandOffUpdates(){
-        mBookRequest.setCurrentStatus(BookRequestStatus.HANDED_OFF);
-        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
-            @Override
-            public void onCallback(boolean bool) {
-                if(bool){
-                    ToastMessage.show(getApplicationContext(), "Book has been handed off, please give the book to the requester");
-                }else{
-                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
-                }
-            }
-        });
-        finish();
+        ToastMessage.show(getApplicationContext(), "Do database stuff to make book available again");
+//        mBookRequest.setCurrentStatus(BookRequestStatus.);
+//        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
+//            @Override
+//            public void onCallback(boolean bool) {
+//                if(bool){
+//                    ToastMessage.show(getApplicationContext(), "Book has been handed off, please give the book to the requester");
+//                }else{
+//                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+//                }
+//            }
+//        });
     }
 }

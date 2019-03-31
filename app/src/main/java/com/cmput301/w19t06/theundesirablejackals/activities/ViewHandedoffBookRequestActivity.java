@@ -1,60 +1,43 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
+
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
-import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
-import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
-import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
-import com.cmput301.w19t06.theundesirablejackals.user.User;
-import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
+
+import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
+
+import com.squareup.picasso.Picasso;
 
 public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
     public final static String HANDED_OFF_REQUEST = "HandedOffRequest";
@@ -74,12 +57,13 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
     private TextView mTextViewBookAuthor;
     private TextView mTextViewBookISBN;
     private TextView mTextViewScannedISBN;
+    private TextView mTextViewUserRole;
 
     private ImageView mImageViewBookPhoto;
     private ImageView mImageProfilePhoto;
 
     private Button mButtonScanISBN;
-    private Button mButtonRecieveBook;
+    private Button mButtonReceiveBook;
 
     private LinearLayout mLinearLayoutViewPickup;
 
@@ -109,6 +93,8 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
         mTextViewBookAuthor = findViewById(R.id.textViewBookRequestHandoffBookAuthor);
         mTextViewBookISBN = findViewById(R.id.textViewBookRequestHandoffBookIsbn);
         mTextViewScannedISBN = findViewById(R.id.textViewBookRequestHandoffScannedISBN);
+        mTextViewUserRole = findViewById(R.id.textViewBookRequestHandoffUserRole);
+
 
         mImageProfilePhoto = findViewById(R.id.imageViewBookRequestHandoffUserPhoto);
         mImageViewBookPhoto = findViewById(R.id.imageViewBookRequestHandoffBookPhoto);
@@ -116,8 +102,8 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
         setAllViews();
 
         mButtonScanISBN = findViewById(R.id.buttonBookRequestHandoffScanISBN);
-        mButtonRecieveBook = findViewById(R.id.buttonBookRequestHandoffConfirm);
-        mButtonRecieveBook.setText("Receive Book");
+        mButtonReceiveBook = findViewById(R.id.buttonBookRequestHandoffConfirm);
+        mButtonReceiveBook.setText("Receive Book");
 
         mLinearLayoutViewPickup = findViewById(R.id.linearLayoutBookRequestHandoffLocation);
 
@@ -129,7 +115,7 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
         });
 
-        mButtonRecieveBook.setOnClickListener(new View.OnClickListener() {
+        mButtonReceiveBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 doConfirmReceive();
@@ -166,6 +152,7 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
 
 
     private void setAllViews() {
+        mTextViewUserRole.setText("Owner: ");
         mDatabaseHelper.getBookFromDatabase(mBookRequest.getBookRequested().getIsbn(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
@@ -246,17 +233,29 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
     }
 
     private void doRequestUpdate() {
-        ToastMessage.show(ViewHandedoffBookRequestActivity.this, "DEVON, INSERT WORK HERE");
-//        mBookRequest.setCurrentStatus(BookRequestStatus.HANDED_OFF);
-//        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
-//            @Override
-//            public void onCallback(boolean bool) {
-//                if (bool) {
-//                    ToastMessage.show(getApplicationContext(), "Book has been handed off, please give the book to the requester");
-//                } else {
-//                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
-//                }
-//            }
-//        });
+        mBookRequest.setCurrentStatus(BookRequestStatus.BORROWED);
+        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    ToastMessage.show(getApplicationContext(), "Book is now borrowed");
+                } else {
+                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+                }
+            }
+        });
+        mBookRequest.getBookRequested().setStatus(BookStatus.BORROWED);
+        mDatabaseHelper.updateBookInformation(mBookRequest.getBookRequested(), new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    ToastMessage.show(getApplicationContext(),"Owner's book status has changed");
+                }else {
+                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+                }
+            }
+
+        });
+        finish();
     }
 }

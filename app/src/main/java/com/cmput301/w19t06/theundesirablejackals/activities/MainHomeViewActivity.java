@@ -109,7 +109,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                         intent = new Intent(MainHomeViewActivity.this, MessagesActivity.class);
                         break;
                     case R.id.itemMenuBorrowRequests:
-                        intent = new Intent(MainHomeViewActivity.this, BorrowedListActivity.class);
+                        intent = new Intent(MainHomeViewActivity.this, BorrowRequestListActivity.class);
                         break;
                     case R.id.itemMenuLendRequests:
                         intent = new Intent(MainHomeViewActivity.this, LentListActivity.class);
@@ -430,14 +430,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                             }
                         }
                     });
-//                    try {
-//                        inputStream = getContentResolver().openInputStream(imageUri);
-//                        Bitmap image = BitmapFactory.decodeStream(inputStream);
-//
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
-//                    }
                 }
                 break;
         }

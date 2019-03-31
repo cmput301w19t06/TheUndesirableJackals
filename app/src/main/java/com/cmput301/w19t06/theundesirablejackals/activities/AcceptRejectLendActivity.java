@@ -334,7 +334,6 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
 
     }
 
-
     private void getDefaultPickupLocation() {
         mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override

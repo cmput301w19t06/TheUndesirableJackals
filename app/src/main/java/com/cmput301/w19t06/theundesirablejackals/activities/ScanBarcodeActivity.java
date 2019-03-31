@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,6 +82,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     BARCODE_PERMISSION_REQUEST);
+
         }
     }
 
@@ -230,23 +233,50 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode== BARCODE_PERMISSION_REQUEST) {
+            if (grantResults.length == 2 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Toast.makeText(this, "Scanner wont work without permission!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void returnToCaller() {
         Log.d(TAG, "Returning to caller");
-        Intent intent;
+        Intent intent = new Intent();
+        boolean recognizedCaller = false;
 
         if (this.getCallingActivity().getClassName().equals(ViewAcceptedLendRequestActivity.class.getName())) {
             intent = new Intent(ScanBarcodeActivity.this, ViewAcceptedLendRequestActivity.class);
-            if (mBarcodesFound.size() > 0) {
-                intent.putExtra("ISBN", mBarcodesFound.get(0));
-                setResult(RESULT_OK, intent);
-            }
+            recognizedCaller = true;
         }
         if (this.getCallingActivity().getClassName().equals(ViewHandedoffBookRequestActivity.class.getName())) {
             intent = new Intent(ScanBarcodeActivity.this, ViewHandedoffBookRequestActivity.class);
-            if (mBarcodesFound.size() > 0) {
-                intent.putExtra("ISBN", mBarcodesFound.get(0));
-                setResult(RESULT_OK, intent);
-            }
+            recognizedCaller = true;
+
+        }
+        if (this.getCallingActivity().getClassName().equals(ViewBorrowedBookRequestActivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewBorrowedBookRequestActivity.class);
+            recognizedCaller = true;
+        }
+        if (this.getCallingActivity().getClassName().equals(ViewReturningLendRequestAcitivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewReturningLendRequestAcitivity.class);
+            recognizedCaller = true;
+        }
+
+        if (mBarcodesFound.size() > 0 && recognizedCaller) {
+            intent.putExtra("ISBN", mBarcodesFound.get(0));
+            setResult(RESULT_OK, intent);
         }
         // add more if statements when a new caller wants ISBN scanned
         finish();

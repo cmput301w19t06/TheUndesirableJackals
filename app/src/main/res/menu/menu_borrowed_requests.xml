@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity">
+tools:context="com.cmput301.w19t06.theundesirablejackals.activities.BorrowRequestListActivity">
 
 <item
     android:id="@+id/itemMenuBorrowedRequestBorrowed"

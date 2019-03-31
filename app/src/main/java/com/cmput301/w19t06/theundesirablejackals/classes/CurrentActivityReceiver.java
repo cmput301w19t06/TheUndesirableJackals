@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.cmput301.w19t06.theundesirablejackals.activities.BorrowedListActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.BorrowRequestListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.ChatActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.FriendsListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.LentListActivity;
 import com.cmput301.w19t06.theundesirablejackals.activities.MessagesActivity;
+import com.cmput301.w19t06.theundesirablejackals.activities.ViewBookRequestInfo;
 
 
 //https://stackoverflow.com/questions/43965306/how-to-find-out-the-current-top-activity-from-onmessagereceived-of-firebaseme
@@ -34,10 +36,14 @@ public class CurrentActivityReceiver extends BroadcastReceiver {
             ((ChatActivity)receivingActivity).updateMessages();
         }else if(receivingActivity.getClass().equals(MessagesActivity.class)){
             ((MessagesActivity)receivingActivity).update();
-        }else if(receivingActivity.getClass().equals(BorrowedListActivity.class)){
-            ((BorrowedListActivity)receivingActivity).onRefresh();
+        }else if(receivingActivity.getClass().equals(BorrowRequestListActivity.class)){
+            ((BorrowRequestListActivity)receivingActivity).onRefresh();
         }else if(receivingActivity.getClass().equals(LentListActivity.class)){
             ((LentListActivity)receivingActivity).onRefresh();
+        }else if(receivingActivity.getClass().equals(FriendsListActivity.class)) {
+            ((FriendsListActivity) receivingActivity).onRefresh();
+        }else if(receivingActivity.getClass().equals(ViewBookRequestInfo.class)) {
+            ((ViewBookRequestInfo) receivingActivity).messageReceivedRefresh();
         }
     }
 }

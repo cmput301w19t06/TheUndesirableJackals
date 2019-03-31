@@ -31,7 +31,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * List view of all current lent requests. Allow the user to view more about them
  * Author: Kaya Thiessen
  */
-public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
+public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     public static final int DELETE_OR_ACCEPT = 420;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
@@ -105,7 +105,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.itemMenuLentLent:
                 ToastMessage.show(this, "Viewing Currently Lent...");
                 break;
@@ -130,7 +130,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     }
     */
 
-    private void recyclerOnClick(View view, int position){
+    private void recyclerOnClick(View view, int position) {
         //TODO implement lent list click listener functionality
         BookRequest clickedRequest = requestsRecyclerViewAdapter.get(position);
         BookRequestStatus bookRequestStatus = clickedRequest.getCurrentStatus();
@@ -144,17 +144,40 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
             case DENIED:
                 ToastMessage.show(LentListActivity.this, "This request will be remove once requester has seen denied request");
                 break;
+
             case ACCEPTED:
                 intent = new Intent(LentListActivity.this, ViewAcceptedLendRequestActivity.class);
                 intent.putExtra(ViewAcceptedLendRequestActivity.ACCEPTED_REQUEST, requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
                 break;
+
+            case HANDED_OFF:
+                intent = new Intent(LentListActivity.this, ViewBookRequestInfo.class);
+                intent.putExtra(ViewBookRequestInfo.BOOK_REQUEST_INFO,
+                        requestsRecyclerViewAdapter.get(position));
+                intent.putExtra(ViewBookRequestInfo.VIEW_REQUEST_AS, ViewBookRequestInfo.ViewRequestInfoAs.OWNER);
+                startActivity(intent);
+                break;
+
             case BORROWED:
-                ToastMessage.show(LentListActivity.this, "Waiting for borrower to return the book...");
+                intent = new Intent(LentListActivity.this, ViewBookRequestInfo.class);
+                intent.putExtra(ViewBookRequestInfo.BOOK_REQUEST_INFO,
+                        requestsRecyclerViewAdapter.get(position));
+                intent.putExtra(ViewBookRequestInfo.VIEW_REQUEST_AS, ViewBookRequestInfo.ViewRequestInfoAs.OWNER);
+                startActivity(intent);
+                break;
+
+
+            case RETURNING:
+                intent = new Intent(LentListActivity.this, ViewReturningLendRequestAcitivity.class);
+                intent.putExtra(ViewReturningLendRequestAcitivity.RETURNING_REQUEST,
+                        requestsRecyclerViewAdapter.get(position));
+                startActivity(intent);
+                break;
+
             default:
                 break;
         }
-
     }
 
     @Override
@@ -180,7 +203,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                     }
                 }
             });
-        }else{
+        } else {
             databaseHelper.getLendRequests(currentUser.getUserName(), new BookRequestListCallback() {
                 @Override
                 public void onCallback(BookRequestList bookRequestList) {
@@ -192,19 +215,18 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode){
+        switch (requestCode) {
             case DELETE_OR_ACCEPT:
-                if (resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     String result = data.getStringExtra("resultAD");
-                    if (result == "true"){
+                    if (result == "true") {
                         //for all elements in Recycler view. If book title = same title, delete
                         ToastMessage.show(getApplicationContext(), "Request Accepted");
-                    }
-                    else if (result == "false"){
+                    } else if (result == "false") {
                         //databaseHelper.deleteRequest()
-                                ToastMessage.show(getApplicationContext(), "Request Deleted");
+                        ToastMessage.show(getApplicationContext(), "Request Deleted");
                         //    }
-                       // });
+                        // });
 
                     }
                 }
@@ -230,7 +252,7 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         LocalBroadcastManager.getInstance(this).
                 unregisterReceiver(currentActivityReceiver);
         currentActivityReceiver = null;

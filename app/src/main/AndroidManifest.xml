@@ -34,7 +34,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".AlternateSignInActivity"></activity>
+        <activity
+            android:name=".ViewReturningLendRequestAcitivity"
+            android:theme="@style/AppTheme.WindowedView" />
+        <activity
+            android:name=".ViewBorrowedBookRequestActivity"
+            android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".ScanBarcodeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -67,9 +73,10 @@
         </activity>
         <activity
             android:name=".ViewHandedoffBookRequestActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.WindowedView" />
         <activity
-            android:name=".ViewBookRequestInfoAsBorrowerActivity"
+            android:name=".ViewBookRequestInfo"
             android:theme="@style/AppTheme.WindowedView" />
         <activity
             android:name=".EditOwnedBookActivity"
@@ -116,7 +123,7 @@
             android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".EditContactInfoActivity" />
         <activity android:name=".FriendsListActivity" />
-        <activity android:name=".BorrowedListActivity" />
+        <activity android:name=".BorrowRequestListActivity" />
         <activity android:name=".LentListActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
