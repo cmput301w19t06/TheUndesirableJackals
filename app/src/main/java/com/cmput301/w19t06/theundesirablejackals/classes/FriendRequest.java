@@ -9,16 +9,10 @@ import java.io.Serializable;
  * @author Art Limbaga
  */
 public class FriendRequest implements Serializable {
-    public enum FriendStatus{
-        PENDING,
-        ACCEPTED,
-        DECLINED
-    }
     private UserInformation requestSender;
     private UserInformation requestReceiver;
-    private FriendStatus requestStatus;
-    private String requestSenderKey;
-    private String requestReceiverKey;
+
+    private String requestKey;
 
     public FriendRequest(){}
 
@@ -30,24 +24,19 @@ public class FriendRequest implements Serializable {
     public FriendRequest(UserInformation requestSender, UserInformation requestReceiver) {
         this.requestReceiver = requestReceiver;
         this.requestSender = requestSender;
-        this.requestReceiverKey = new String();
-        this.requestSenderKey = new String();
-        this.requestStatus = FriendStatus.PENDING;
+        this.requestKey = new String();
     }
 
     /**
      * Create a friend request with the database keys
      * @param requestSender
      * @param requestReceiver
-     * @param requestSenderKey
-     * @param requestReceiverKey
+     * @param requestKey
      */
-    public FriendRequest(UserInformation requestSender, UserInformation requestReceiver, String requestSenderKey, String requestReceiverKey) {
+    public FriendRequest(UserInformation requestSender, UserInformation requestReceiver, String requestKey) {
         this.requestReceiver = requestReceiver;
         this.requestSender = requestSender;
-        this.requestSenderKey = requestSenderKey;
-        this.requestReceiverKey= requestReceiverKey;
-        this.requestStatus = FriendStatus.PENDING;
+        this.requestKey = requestKey;
     }
 
 
@@ -68,27 +57,11 @@ public class FriendRequest implements Serializable {
     }
 
 
-    public void setRequestStatus(FriendStatus status) {
-        this.requestStatus = status;
+    public String getRequestKey() {
+        return requestKey;
     }
 
-    public FriendStatus getRequestStatus() {
-        return requestStatus;
-    }
-
-    public String getRequestSenderKey() {
-        return requestSenderKey;
-    }
-
-    public void setRequestSenderKey(String requestSenderKey) {
-        this.requestSenderKey = requestSenderKey;
-    }
-
-    public String getRequestReceiverKey() {
-        return requestReceiverKey;
-    }
-
-    public void setRequestReceiverKey(String requestReceiverKey) {
-        this.requestReceiverKey = requestReceiverKey;
+    public void setRequestKey(String requestKey) {
+        this.requestKey = requestKey;
     }
 }

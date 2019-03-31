@@ -161,12 +161,35 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
 
     @Override
     public void onAcceptClick(int position) {
-        FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
-        friendRequest.setRequestStatus(FriendRequest.FriendStatus.ACCEPTED);
-        databaseHelper.updateFriendRequest(friendRequest, new BooleanCallback() {
+        final FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
+        final String currentUser = friendRequest.getRequestReceiver().getUserName();
+        databaseHelper.deleteFriendRequest(friendRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
-                showToast("AcceptClick");
+                if (bool) {
+                    databaseHelper.getFriendsList(currentUser, new UserListCallback() {
+                        @Override
+                        public void onCallback(UserList userList) {
+                            if (userList != null) {
+                                userList.getUserlist().add(0, friendRequest.getRequestSender());
+                                databaseHelper.updateFriendsList(currentUser, userList, new BooleanCallback() {
+                                    @Override
+                                    public void onCallback(boolean bool) {
+                                        if (bool) {
+                                            showToast("Friend added");
+                                        } else {
+                                            showToast("Something went wrong");
+                                        }
+                                    }
+                                });
+                            } else {
+                                showToast("Something went wrong");
+                            }
+                        }
+                    });
+                }else{
+                    showToast("Something went wrong");
+                }
             }
         });
     }
@@ -174,11 +197,14 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
     @Override
     public void onDeclineClick(int position) {
         FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
-        friendRequest.setRequestStatus(FriendRequest.FriendStatus.DECLINED);
-        databaseHelper.updateFriendRequest(friendRequest, new BooleanCallback() {
+        databaseHelper.deleteFriendRequest(friendRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
-                showToast("DeclineClick");
+                if(bool) {
+                    showToast("DeclineClick");
+                }else{
+                    showToast("Something went wrong");
+                }
             }
         });
     }
