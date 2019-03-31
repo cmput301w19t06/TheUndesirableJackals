@@ -45,6 +45,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        toolbar = findViewById(R.id.toolbarEditPickupLocation);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setTitle("Edit Pickup Location");
+        setSupportActionBar(toolbar);
+
 
         databaseHelper = new DatabaseHelper();
 
@@ -89,6 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 finish();
             }
         });
+
 
     }
 
