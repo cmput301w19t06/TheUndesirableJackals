@@ -107,8 +107,8 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_borrowed_requests, menu);
-        MenuItem menuItem = menu.findItem(R.id.itemBorrowRequestsMenusSearch);
+        inflater.inflate(R.menu.menu_requests, menu);
+        MenuItem menuItem = menu.findItem(R.id.itemRequestsMenusSearch);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         return true;
