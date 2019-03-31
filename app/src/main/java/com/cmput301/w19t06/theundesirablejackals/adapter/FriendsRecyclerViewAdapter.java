@@ -33,6 +33,8 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
     private DatabaseHelper databaseHelper = new DatabaseHelper();
 
 
+
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -57,11 +59,6 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
 
     }
 
-//    // Provide a suitable constructor (depends on the kind of dataset)
-//    public BooksRecyclerViewAdapter(RecyclerViewClickListener listener) {
-//        myListener = listener;
-//        dataSet = new BookToInformationMap();
-//    }
 
     public FriendsRecyclerViewAdapter(){
         //get the data.... Unsure if this is it...
@@ -80,6 +77,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         return vh;
     }
 
+
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(FriendsRecyclerViewAdapter.MyViewHolder holder, final int position) {
@@ -87,27 +85,37 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         // - replace the contents of the view with that element
         TextView usernameTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewItemFriendsUserName);
         TextView emailTextView = (TextView) holder.mainTextView.findViewById(R.id.textViewItemFriendsEmail);
-        final ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendsPhoto);
+
+        UserInformation userInformation = (UserInformation) dataSet.getUser(position);
+
+        String username = userInformation.getUserName();
+        String email = userInformation.getEmail();
 
 
-        UserInformation i = (UserInformation) dataSet.getUser(position);
-
-
-        // get URL of the thumbnail
-        String profile = i.getUserPhoto();
-        String username = i.getUserName();
-        String email = i.getEmail();
-
-        emailTextView.setText(email);
-
-        if(profile != null) {
+        if(username != null) {
             usernameTextView.setText(username);
         }
         if(email != null) {
             emailTextView.setText(email);
         }
+
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return dataSet.size();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(FriendsRecyclerViewAdapter.MyViewHolder holder){
+        int position = holder.getAdapterPosition();
+        final ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendsPhoto);
+        UserInformation userInformation = dataSet.getUser(position);
+        // get URL of the thumbnail
+        String profile = userInformation.getUserPhoto();
         if(profile != null && !profile.isEmpty()) {
-            databaseHelper.getProfilePictureUri(i, new UriCallback() {
+            databaseHelper.getProfilePictureUri(userInformation, new UriCallback() {
                 @Override
                 public void onCallback(Uri uri) {
                     if(uri != null) {
@@ -131,33 +139,6 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return dataSet.size();
-    }
-
-    @Override
-    public void onViewAttachedToWindow(FriendsRecyclerViewAdapter.MyViewHolder holder){
-//        super.onViewAttachedToWindow(holder);
-//        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendsPhoto);
-        int position = holder.getAdapterPosition();
-        UserInformation u = dataSet.getUser(position);
-
-        /*
-        //Todo --> no idea what this is... figure it out
-        if(bookStatus == BookStatus.UNKNOWN){
-            if(book.getThumbnail() != null && !book.getThumbnail().isEmpty()){
-                Picasso.get()
-                        .load(book.getThumbnail())
-                        .error(R.drawable.book_icon)
-                        .placeholder(R.drawable.book_icon)
-                        .into(bookThumbnail);
-            }
-        }
-        */
-    }
-
     public void deleteItem(int position){
         dataSet.delete(dataSet.getUser(position));
         this.notifyItemRemoved(position);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
@@ -170,21 +151,22 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         updateItems();
     }
 
+    public UserInformation get(int position) {
+        return dataSet.getUser(position);
+    }
+
 
     private void updateItems(){
         this.notifyDataSetChanged();
     }
 
-    public UserInformation getUserInformation(int position){
-        return dataSet.getUser(position);
-    }
 
     public void setMyListener(RecyclerViewClickListener listener){
         myListener = listener;
     }
 
     public void setDataSet(UserList data){
-        dataSet = new UserList(data.getUserlist());
+        dataSet = data;
         updateItems();
     }
 

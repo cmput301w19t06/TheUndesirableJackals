@@ -134,7 +134,8 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
 
     @Override
-    public void onClick(View view, int position) {
+    public void onClick(final View view, int position) {
+        view.setClickable(false);
         final Book clickedBook = libraryRecyclerViewAdapter.getBook(position);
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         databaseHelper.getAllBookInformations(clickedBook, new BookInformationListCallback() {
@@ -148,12 +149,14 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         intent.putExtra(ShowBookOwnersActivity.BOOK_OBJECT, clickedBook);
                         intent.putExtra(ShowBookOwnersActivity.LIST_OF_OWNERS, bookInformationList);
                         startActivity(intent);
+                        view.setClickable(true);
 
                     } else if (bookInformationList.size() == 0) {
                         // book was added by someone in the past but is now deleted
                         // and no other copies exist in our database
                         ToastMessage.show(getActivity(),
                                 "This book is not owned by any users.");
+                        view.setClickable(true);
 
                     } else {
 
@@ -168,9 +171,11 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW,
                                     bookInformationList.get(0));
                             startActivity(intent);
+                            view.setClickable(true);
 
                         } else {
                             ToastMessage.show(getActivity(), "Book is currently unavailable.");
+                            view.setClickable(true);
                         }
 
 
@@ -182,6 +187,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     // and no other copies exist in our database
                     ToastMessage.show(getActivity(),
                             "Database error");
+                    view.setClickable(true);
                 }
             }
         });

@@ -53,12 +53,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         databaseHelper = new DatabaseHelper();
 
-        toolbar = findViewById(R.id.tool_bar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_back);
-        toolbar.setTitle("Maps");
-        setSupportActionBar(toolbar);
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

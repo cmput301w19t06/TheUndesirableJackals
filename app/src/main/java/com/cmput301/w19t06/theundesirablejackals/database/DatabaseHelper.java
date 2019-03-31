@@ -498,9 +498,14 @@ public class DatabaseHelper{
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d(TAG, dataSnapshot.toString());
+                        Log.d(TAG, "From inside get friends list");
                         UserList userList = new UserList();
                         if(dataSnapshot.exists()){
-                            userList = dataSnapshot.getValue(UserList.class);
+                            userList = (UserList) dataSnapshot.getValue(UserList.class);
+                            for(UserInformation userInformation : userList.getUserlist()){
+                                Log.d(TAG, userInformation.toString());
+                            }
                         }
                         userListCallback.onCallback(userList);
                     }

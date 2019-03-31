@@ -161,27 +161,59 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
 
     @Override
     public void onAcceptClick(int position) {
-        final FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
-        final String currentUser = friendRequest.getRequestReceiver().getUserName();
+        FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
+        final UserInformation currentUser = friendRequest.getRequestReceiver();
+        final UserInformation sender = friendRequest.getRequestSender();
+        friendRequestRecyclerViewAdapter.deleteItem(position);
         databaseHelper.deleteFriendRequest(friendRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
                 if (bool) {
-                    databaseHelper.getFriendsList(currentUser, new UserListCallback() {
+                    databaseHelper.getFriendsList(currentUser.getUserName(), new UserListCallback() {
                         @Override
                         public void onCallback(UserList userList) {
                             if (userList != null) {
-                                userList.getUserlist().add(0, friendRequest.getRequestSender());
-                                databaseHelper.updateFriendsList(currentUser, userList, new BooleanCallback() {
-                                    @Override
-                                    public void onCallback(boolean bool) {
-                                        if (bool) {
-                                            showToast("Friend added");
-                                        } else {
-                                            showToast("Something went wrong");
+                                if(userList.contains(sender)) {
+                                    showToast("Friend already exists");
+                                    return;
+                                }else {
+                                    userList.getUserlist().add(0, sender);
+                                    databaseHelper.updateFriendsList(currentUser.getUserName(), userList, new BooleanCallback() {
+                                        @Override
+                                        public void onCallback(boolean bool) {
+                                            if (bool) {
+                                                showToast("Friend added");
+                                            } else {
+                                                showToast("Something went wrong");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                showToast("Something went wrong");
+                            }
+                        }
+                    });
+                    databaseHelper.getFriendsList(sender.getUserName(), new UserListCallback() {
+                        @Override
+                        public void onCallback(UserList userList) {
+                            if (userList != null) {
+                                if(userList.contains(currentUser)) {
+                                    showToast("Friend already exists");
+                                    return;
+                                }else {
+                                    userList.getUserlist().add(0, currentUser);
+                                    databaseHelper.updateFriendsList(sender.getUserName(), userList, new BooleanCallback() {
+                                        @Override
+                                        public void onCallback(boolean bool) {
+                                            if (bool) {
+                                                showToast("Friend added");
+                                            } else {
+                                                showToast("Something went wrong");
+                                            }
+                                        }
+                                    });
+                                }
                             } else {
                                 showToast("Something went wrong");
                             }
@@ -195,11 +227,12 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
     }
 
     @Override
-    public void onDeclineClick(int position) {
+    public void onDeclineClick(final int position) {
         FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
         databaseHelper.deleteFriendRequest(friendRequest, new BooleanCallback() {
             @Override
             public void onCallback(boolean bool) {
+                friendRequestRecyclerViewAdapter.deleteItem(position);
                 if(bool) {
                     showToast("DeclineClick");
                 }else{
