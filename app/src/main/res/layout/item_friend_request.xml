@@ -62,7 +62,7 @@
             style="@android:style/Widget.Material.Button.Borderless.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp"
             android:text="Decline"
             android:textColor="@color/colorAccent"
             tools:layout_editor_absoluteX="71dp"
