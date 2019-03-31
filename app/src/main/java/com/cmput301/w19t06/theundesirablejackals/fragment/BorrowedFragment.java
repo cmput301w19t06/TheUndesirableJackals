@@ -152,9 +152,7 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
                             });
                         }
                     }
-
                 }
-
             }
         });
     }
