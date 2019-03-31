@@ -37,7 +37,8 @@
         <activity android:name=".AlternateSignInActivity"></activity>
         <activity
             android:name=".ViewReturningLendRequestAcitivity"
-            android:theme="@style/AppTheme.WindowedView" />
+            android:theme="@style/AppTheme.WindowedView"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".ViewBorrowedBookRequestActivity"
             android:theme="@style/AppTheme.WindowedView" />
