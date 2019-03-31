@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.view.View;
 
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
@@ -32,7 +34,7 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
  * List view of all current lent requests. Allow the user to view more about them
  * Author: Kaya Thiessen
  */
-public class LentListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+public class LentListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     public static final int DELETE_OR_ACCEPT = 420;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
@@ -97,7 +99,10 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_lend_request, menu);
+        inflater.inflate(R.menu.menu_requests, menu);
+        MenuItem menuItem = menu.findItem(R.id.itemRequestsMenusSearch);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -113,23 +118,23 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
         BookRequestList toFilterThrough = requestsRecyclerViewAdapter.getDataSet();
 
         switch (id) {
-            case R.id.itemMenuLentLent:
+            case R.id.itemMenuBorrowedRequestDenied:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Denied...");
+                ToastMessage.show(this, "Viewing Borrowed...");
                 break;
-            case R.id.itemMenuLentAccepted:
+            case R.id.itemMenuBorrowedRequestAccepted:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
                 ToastMessage.show(this, "Viewing Accepted...");
                 break;
-            case R.id.itemMenuLentRequested:
+            case R.id.itemMenuBorrowedRequestRequested:
                 menuTitle = item.getTitle().toString().toUpperCase();
                 filterThrough(filteredItem,toFilterThrough,menuTitle);
                 requestsRecyclerViewAdapter.setDataSet(filteredItem);
-                ToastMessage.show(this, "Viewing Requested...");
+                ToastMessage.show(this, "Viewing Pending...");
                 break;
         }
 
@@ -302,5 +307,45 @@ public class LentListActivity extends AppCompatActivity implements SwipeRefreshL
                 unregisterReceiver(currentActivityReceiver);
         currentActivityReceiver = null;
         super.onStop();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String userInput = newText.toLowerCase();
+        BookRequestList listItem = new BookRequestList();
+
+        BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataCopy();
+        Log.d(TAG, String.valueOf(toSearchThrough.size()));
+
+        for ( int i = 0; i< toSearchThrough.size(); i++){
+            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
+            Book book = requestsRecyclerViewAdapter.getRelatedBook(isbn);
+            String author = book.getAuthor();
+            String title = book.getTitle();
+
+            if(book.getTitle()!=null && ! book.getTitle().isEmpty() && title.toLowerCase().contains(userInput)){
+                Log.d(TAG, title);
+                listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
+
+            }
+            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty() && author.toLowerCase().contains(userInput) ){
+                Log.d(TAG, author);
+                listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
+            }
+            else if(book.getIsbn()!=null && ! book.getIsbn().isEmpty() && isbn.toLowerCase().contains(userInput)){
+                listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
+            }
+
+        }
+
+        return true;
     }
 }
