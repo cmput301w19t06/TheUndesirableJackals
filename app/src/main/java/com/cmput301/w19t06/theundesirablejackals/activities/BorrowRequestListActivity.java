@@ -320,45 +320,32 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        //String userInput = newText.toLowerCase();
+        String userInput = newText.toLowerCase();
         BookRequestList listItem = new BookRequestList();
-        DatabaseHelper data = new DatabaseHelper();
 
-        BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataSet();
+        BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataCopy();
         //Log.d(TAG, String.valueOf(toSearchThrough.size()));
 
         Log.d(TAG, toSearchThrough.get(1).getBookRequested().getIsbn());
-        final ArrayList<Book> mybooks = new ArrayList<Book>();
         for ( int i = 0; i< toSearchThrough.size(); i++){
             String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
-            //String mtitle;
-            final int  tempInt = i;
-            String author;
-            data.getBookFromDatabase(isbn, new BookCallback() {
-                @Override
-                public void onCallback(Book book) {
-                    String userInput = newText.toLowerCase();
-                    if(book != null){
-                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
-                            String title = book.getTitle();
-                            mybooks.add(book);
-                            Log.d(TAG, title);
-                            if(title.toLowerCase().contains(userInput)){
-                                Log.d(TAG, "Found a title");
-                                //listItem.addRequest(toSearchThrough.get(tempInt));
+            Book book = requestsRecyclerViewAdapter.getRelatedBook(isbn);
+            String author = book.getAuthor();
+            String title = book.getTitle();
 
-                            }
-                        }
-                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
-                            String author = book.getAuthor();
-                            Log.d(TAG, author);
-                        }
+            if(book.getTitle()!=null && ! book.getTitle().isEmpty() && title.toLowerCase().contains(userInput)){
+                Log.d(TAG, title);
+                listItem.addRequest(toSearchThrough.get(i));
 
-                    }
-                }
-            });
+            }
+            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
+                Log.d(TAG, author);
+            }
 
         }
+
+
+
 
 
 

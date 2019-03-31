@@ -23,13 +23,16 @@ import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRecyclerViewAdapter.MyViewHolder> {
 
     private static final String TAG = "RequestAdapter";
     private BookRequestList dataSet;
     private BookRequestList dataCopy;
-    //private BookRequestList dataCopy;
+    private HashMap<String, Book> bookList = new HashMap<>();
     private RecyclerViewClickListener myListener;
 
 
@@ -114,7 +117,7 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
                 if(book != null){
                     titleTextView.setText(book.getTitle());
                     authorTextView.setText(book.getAuthor());
-
+                    bookList.put(book.getIsbn(), book);
                     String thumbnail = book.getThumbnail();
 
                     if(thumbnail != null && !thumbnail.isEmpty()) {
@@ -185,6 +188,18 @@ public class RequestsRecyclerViewAdapter extends RecyclerView.Adapter<RequestsRe
 
     public BookRequestList getDataSet(){
         return dataSet;
+    }
+
+    public BookRequestList getDataCopy() {
+        return dataCopy;
+    }
+
+    public void setDataCopy(BookRequestList dataCopy) {
+        this.dataCopy = dataCopy;
+    }
+
+    public Book getRelatedBook(String isbn){
+        return bookList.get(isbn);
     }
 
     public BookRequest get(int i){
