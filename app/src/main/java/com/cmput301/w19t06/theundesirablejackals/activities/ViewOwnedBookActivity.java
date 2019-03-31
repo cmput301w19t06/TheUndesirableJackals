@@ -175,7 +175,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                     } else {
                         item.setIcon(R.drawable.ic_action_add_favorite);
                         isFavourite = false;
-                        toggleFavourite = true;
+                        toggleFavourite = false;
                     }
                 }
 
