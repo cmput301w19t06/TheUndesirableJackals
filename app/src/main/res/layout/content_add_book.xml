@@ -192,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:onClick="isbnReader"
             android:text="@string/buttonCaptureBarcodePicture"
@@ -200,7 +200,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonAddOwnedBookChoosePhoto" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextAddBookChooseBookPhoto" />
 
         <ImageView
             android:id="@+id/imageViewViewOwnedBookPhoto"
@@ -214,20 +214,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_image_grey_24dp" />
-
-        <Button
-            android:id="@+id/buttonAddOwnedBookChoosePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="232dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="onClick_ChooseBookPhoto"
-            android:text="Choose book photo"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageViewViewOwnedBookPhoto" />
 
         <Button
             android:id="@+id/buttonAddBookActivityDone"
@@ -245,6 +231,19 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextAddBookBookDescription" />
+
+        <TextView
+            android:id="@+id/editTextAddBookChooseBookPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="onClick_ChooseBookPhoto"
+            android:text="Choose Book Photo"
+            android:textColor="@color/fui_linkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewViewOwnedBookPhoto" />
 
 
     </android.support.constraint.ConstraintLayout>
