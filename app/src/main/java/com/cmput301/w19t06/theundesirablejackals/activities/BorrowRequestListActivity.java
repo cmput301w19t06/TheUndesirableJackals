@@ -329,7 +329,6 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         BookRequestList toSearchThrough = requestsRecyclerViewAdapter.getDataCopy();
         //Log.d(TAG, String.valueOf(toSearchThrough.size()));
 
-        Log.d(TAG, toSearchThrough.get(1).getBookRequested().getIsbn());
         for ( int i = 0; i< toSearchThrough.size(); i++){
             String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
             Book book = requestsRecyclerViewAdapter.getRelatedBook(isbn);
