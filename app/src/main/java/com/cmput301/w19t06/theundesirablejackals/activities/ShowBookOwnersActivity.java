@@ -25,7 +25,7 @@ public class ShowBookOwnersActivity extends AppCompatActivity{
 
     // ratio in relation to the original display
     private final Double WIDTH_RATIO = 0.9;
-    private final Double HEIGHT_RATIO = 0.85;
+    private final Double HEIGHT_RATIO = 0.6;
 
     private DatabaseHelper mDatabaseHelper;
     private RecyclerView mBookOwnersRecyclerView;

@@ -60,6 +60,10 @@ public class BookToInformationMap {
         books.remove(book.getIsbn());
     }
 
+    public void deleteBook(String isbn) {
+        books.remove(isbn);
+    }
+
     /**
      *
      * @return an ArrayList of books containing all the books in the list

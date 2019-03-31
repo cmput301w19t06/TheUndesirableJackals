@@ -15,8 +15,11 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
@@ -199,24 +202,42 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         }
 
         if(mTextViewScannedISBN.getText().toString().equals(mBookRequest.getBookRequested().getIsbn())) {
-            doHandOffUpdates();
+            doReceiveUpdates();
         } else {
             ToastMessage.show(getApplicationContext(),"Scanned barcode does not match requested book ISBN");
         }
     }
 
-    private void doHandOffUpdates(){
-        ToastMessage.show(getApplicationContext(), "Do database stuff to make book available again");
-//        mBookRequest.setCurrentStatus(BookRequestStatus.);
-//        mDatabaseHelper.updateLendRequest(mBookRequest, new BooleanCallback() {
-//            @Override
-//            public void onCallback(boolean bool) {
-//                if(bool){
-//                    ToastMessage.show(getApplicationContext(), "Book has been handed off, please give the book to the requester");
-//                }else{
-//                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
-//                }
-//            }
-//        });
+    private void doReceiveUpdates(){
+        deleteBookRequestStatus();
+        updateBookInformationStatus();
+        finish();
+    }
+
+    private void deleteBookRequestStatus() {
+        mDatabaseHelper.deleteRequest(mBookRequest, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if(bool) {
+                    ToastMessage.show(getApplicationContext(), "Book is returned, and book request is deleted.");
+                } else {
+                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+                }
+            }
+        });
+    }
+
+    private void updateBookInformationStatus() {
+        mBookRequest.getBookRequested().setStatus(BookStatus.AVAILABLE);
+        mDatabaseHelper.updateBookInformation(mBookRequest.getBookRequested(), new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    ToastMessage.show(getApplicationContext(),"You book is now available for borrowing");
+                }else {
+                    ToastMessage.show(getApplicationContext(), "Something happened, check your network connection and try again");
+                }
+            }
+        });
     }
 }
