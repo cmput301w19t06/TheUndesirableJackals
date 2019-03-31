@@ -5,6 +5,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookGenres;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -18,11 +19,12 @@ import java.util.ArrayList;
  * @see BookToInformationMap
  * @see UserList
  */
-public class User {
+public class User implements Serializable {
     private Geolocation pickUpLocation;
     private UserInformation userInfo;
     private BookToInformationMap ownedBooks;
     private BookToInformationMap borrowedBooks;
+    private BookToInformationMap favouriteBooks;
 
 
 
@@ -47,6 +49,7 @@ public class User {
         userInfo = new UserInformation(userName, email, phoneNumber);
         ownedBooks = new BookToInformationMap();
         borrowedBooks = new BookToInformationMap();
+        favouriteBooks = new BookToInformationMap();
 
         // pick up location as default at the U of A
         pickUpLocation = new Geolocation(53.5232, -113.5263);
@@ -131,6 +134,18 @@ public class User {
         this.userInfo = userInfo;
     }
 
+    public BookToInformationMap getFavouriteBooks() {
+        return favouriteBooks;
+    }
+
+    public void setFavouriteBooks(BookToInformationMap favouriteBooks) {
+        this.favouriteBooks = favouriteBooks;
+    }
+
+
+    public void addFavouriteBook(String isbn, String informationkey) {
+        favouriteBooks.addBook(isbn, informationkey);
+    }
 
     @Override
     public String toString() {

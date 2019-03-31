@@ -46,6 +46,7 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private View view;
     private BooksRecyclerViewAdapter booksRecyclerViewAdapter;
     private SwipeRefreshLayout ownedBooksSwipeRefreshLayout;
+    private User loggedInUser;
 
     public MyBooksFragment(){
 
@@ -136,6 +137,7 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
         databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
             @Override
             public void onCallback(User user) {
+                loggedInUser = user;
                 if(user != null && user.getOwnedBooks() != null && user.getOwnedBooks().getBooks() != null) {
                     final HashMap<String, Object> map = user.getOwnedBooks().getBooks();
                     if(map.size() > 0) {
