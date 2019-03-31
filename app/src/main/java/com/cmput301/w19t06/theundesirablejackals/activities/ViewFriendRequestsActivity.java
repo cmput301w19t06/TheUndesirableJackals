@@ -16,6 +16,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.FriendRequestRecyclerVi
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
