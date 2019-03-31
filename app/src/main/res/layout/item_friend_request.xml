@@ -45,19 +45,6 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewItemFriendRequestPhoto"
         app:layout_constraintTop_toBottomOf="@+id/textViewItemFriendRequestUserName" />
 
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="395dp"
-        android:layout_height="6dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
@@ -74,7 +61,7 @@
             android:id="@+id/button4"
             style="@android:style/Widget.Material.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="100dp"
             android:text="Decline"
             android:textColor="@color/colorAccent"
@@ -85,7 +72,7 @@
             android:id="@+id/button3"
             style="@android:style/Widget.Material.Button.Borderless.Small"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:text="Accept"
             android:textColor="@color/colorPrimary"
             tools:layout_editor_absoluteX="176dp"
@@ -94,6 +81,18 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="395dp"
+        android:layout_height="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
 </android.support.constraint.ConstraintLayout>
