@@ -342,56 +342,17 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
                 requestsRecyclerViewAdapter.setDataSet(listItem);
 
             }
-//            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty() && ){
-//                Log.d(TAG, author);
-//            }
+            else if(book.getAuthor()!=null && ! book.getAuthor().isEmpty() && author.toLowerCase().contains(userInput) ){
+                Log.d(TAG, author);
+                listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
+            }
+            else if(book.getIsbn()!=null && ! book.getIsbn().isEmpty() && isbn.toLowerCase().contains(userInput)){
+                listItem.addRequest(toSearchThrough.get(i));
+                requestsRecyclerViewAdapter.setDataSet(listItem);
+            }
 
         }
-
-
-
-
-
-
-//        for (int i = 0; i < toSearchThrough.size();i++){
-//
-//            String isbn = toSearchThrough.get(i).getBookRequested().getIsbn();
-//            String title;
-//            String author;
-//
-//            data.getBookFromDatabase(isbn, new BookCallback() {
-//                @Override
-//                public void onCallback(Book book) {
-//
-//                    if(book != null){
-//                        if(book.getTitle()!=null && ! book.getTitle().isEmpty()){
-//                            title = book.getTitle();
-//                            Log.d(TAG, title);
-//                        }
-//                        if(book.getAuthor()!=null && ! book.getAuthor().isEmpty()){
-//                            author = book.getAuthor();
-//                            Log.d(TAG, author);
-//                        }
-//                    }
-//                    Log.d()
-//                }
-//
-//            });
-//
-//
-////            String author = toSearchThrough.get(i).getBookRequested().getAuthor();
-////            String title = toSearchThrough.get(i).getTitle();
-//            if (isbn.toLowerCase().contains(userInput)) {
-//
-//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
-//
-//            } else if (author.toLowerCase().contains(userInput)) {
-//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
-//            } else if (title.toLowerCase().contains(userInput)) {
-//                listItem.addPair(toSearchThrough.getBook(i), toSearchThrough.getInformation(i));
-//            }
-//
-//        }
         return true;
     }
 }
