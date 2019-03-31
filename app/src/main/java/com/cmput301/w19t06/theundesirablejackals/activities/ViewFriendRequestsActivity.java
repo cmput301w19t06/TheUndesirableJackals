@@ -16,13 +16,18 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.FriendRequestRecyclerVi
 import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.FriendRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserListCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.cmput301.w19t06.theundesirablejackals.user.UserList;
+
+import java.util.ArrayList;
 
 public class ViewFriendRequestsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     private FriendRequestRecyclerViewAdapter friendRequestRecyclerViewAdapter = new FriendRequestRecyclerViewAdapter();
@@ -97,8 +102,27 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        getFriendsList();
+        getFriendRequestList();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void getFriendRequestList() {
+        friendRequestRecyclerViewAdapter.setDataSet(new ArrayList<FriendRequest>());
+        databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
+            @Override
+            public void onCallback(UserInformation user) {
+                if(user != null){
+                    databaseHelper.getReceivedFriendRequests(user, new FriendRequestListCallback() {
+                        @Override
+                        public void onCallback(ArrayList<FriendRequest> friendRequests) {
+                            if(friendRequests != null){
+                                friendRequestRecyclerViewAdapter.setDataSet(friendRequests);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -127,24 +151,6 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
     }
 
 
-    private void getFriendsList() {
-        friendRequestRecyclerViewAdapter.setDataSet(new UserList());
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                if(user != null){
-                    databaseHelper.getFriendsList(user.getUserInfo().getUserName(), new UserListCallback() {
-                        @Override
-                        public void onCallback(UserList userList) {
-                            if(userList != null){
-                                friendRequestRecyclerViewAdapter.setDataSet(userList);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
 
     private void showToast(String message){
         ToastMessage.show(this, message);
