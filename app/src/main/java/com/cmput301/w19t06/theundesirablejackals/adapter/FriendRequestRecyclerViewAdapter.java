@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
+import com.cmput301.w19t06.theundesirablejackals.classes.FriendRequest;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
@@ -21,11 +22,13 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.cmput301.w19t06.theundesirablejackals.user.UserList;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<FriendRequestRecyclerViewAdapter.MyViewHolder> {
 
     private static final String TAG = "FriendRequestRVAdapter";
 
-    private UserList dataSet;
+    private ArrayList<FriendRequest> dataSet;
     private RecyclerViewClickListener myListener;
     private DatabaseHelper databaseHelper = new DatabaseHelper();
 
@@ -62,7 +65,7 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
 
     public FriendRequestRecyclerViewAdapter(){
         //get the data.... Unsure if this is it...
-        dataSet = new UserList();
+        dataSet = new ArrayList<>();
     }
 
 
@@ -87,45 +90,10 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
         final ImageView profileImageView = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendRequestPhoto);
 
 
-        UserInformation i = (UserInformation) dataSet.getUser(position);
+//        UserInformation i = (UserInformation) dataSet.getUser(position);
 
 
-        // get URL of the thumbnail
-        String profile = i.getUserPhoto();
-        String username = i.getUserName();
-        String email = i.getEmail();
 
-        emailTextView.setText(email);
-
-        if(profile != null) {
-            usernameTextView.setText(username);
-        }
-        if(email != null) {
-            emailTextView.setText(email);
-        }
-        if(profile != null && !profile.isEmpty()) {
-            databaseHelper.getProfilePictureUri(i, new UriCallback() {
-                @Override
-                public void onCallback(Uri uri) {
-                    if(uri != null) {
-                        Picasso.get()
-                                .load(uri)
-                                .error(R.drawable.book_icon)
-                                .placeholder(R.drawable.book_icon)
-                                .into(profileImageView);
-                    }else{
-                        Picasso.get()
-                                .load(R.drawable.book_icon)
-                                .into(profileImageView);
-                    }
-                }
-            });
-
-        }else{
-            Picasso.get()
-                    .load(R.drawable.book_icon)
-                    .into(profileImageView);
-        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -139,7 +107,7 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
 //        super.onViewAttachedToWindow(holder);
 //        ImageView bookThumbnail = (ImageView) holder.mainTextView.findViewById(R.id.imageViewItemFriendsPhoto);
         int position = holder.getAdapterPosition();
-        UserInformation u = dataSet.getUser(position);
+        FriendRequest friendRequest = dataSet.get(position);
 
         /*
         //Todo --> no idea what this is... figure it out
@@ -156,14 +124,14 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
     }
 
     public void deleteItem(int position){
-        dataSet.delete(dataSet.getUser(position));
+        dataSet.remove(position);
         this.notifyItemRemoved(position);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
         this.notifyItemRangeChanged(position, this.getItemCount());
         updateItems();
     }
 
-    public void addItem(UserInformation u){
-        dataSet.add(u);
+    public void addItem(FriendRequest friendRequest){
+        dataSet.add(friendRequest);
         updateItems();
     }
 
@@ -172,76 +140,80 @@ public class FriendRequestRecyclerViewAdapter extends RecyclerView.Adapter<Frien
         this.notifyDataSetChanged();
     }
 
-    public UserInformation getUserInformation(int position){
-        return dataSet.getUser(position);
+    public FriendRequest getRequest(int position){
+        return dataSet.get(position);
     }
 
     public void setMyListener(RecyclerViewClickListener listener){
         myListener = listener;
     }
 
-    public void setDataSet(UserList data){
-        dataSet = new UserList(data.getUserlist());
+    public void setDataSet(ArrayList<FriendRequest> data){
+        dataSet = new ArrayList<FriendRequest>(data);
         updateItems();
     }
 
-    public void doDeleteFriend(final int position) {
-        final UserInformation userInformation = dataSet.getUser(position);
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                if (user != null) {
-                    final UserInformation currentMe = user.getUserInfo();
-                    databaseHelper.getFriendsList(userInformation.getUserName(), new UserListCallback() {
-                        @Override
-                        public void onCallback(UserList userList) {
-                            if(userList != null){
-                                userList.getUserlist().remove(currentMe);
-                                databaseHelper.updateFriendsList(userInformation.getUserName(), userList, new BooleanCallback() {
-                                    @Override
-                                    public void onCallback(boolean bool) {
-                                        if(bool){
-                                            databaseHelper.getFriendsList(currentMe.getUserName(), new UserListCallback() {
-                                                @Override
-                                                public void onCallback(UserList userList) {
-                                                    if (userList != null) {
-                                                        userList.getUserlist().remove(userInformation);
-                                                        databaseHelper.updateFriendsList(currentMe.getUserName(), userList, new BooleanCallback() {
-                                                            @Override
-                                                            public void onCallback(boolean bool) {
-                                                                if (bool) {
-                                                                    Log.d(TAG, "Friend removed");
-                                                                    dataSet.getUserlist().remove(position);
-                                                                    notifyItemRemoved(position);
-                                                                    notifyDataSetChanged();
-                                                                } else {
-                                                                    Log.d(TAG, "Current User friendList was not updates");
-                                                                    Log.e(TAG, "Current User friendlist update callback");
-                                                                }
-                                                            }
-                                                        });
-                                                    } else {
-                                                        Log.d(TAG, "Current User's friend list came back null");
-                                                        Log.e(TAG, "CurrentMe userlist callback");
-                                                    }
-                                                }
-                                            });
-                                        }else{
-                                            Log.d(TAG, "Old Friend friendList was not updates");
-                                            Log.e(TAG, "Old Friend friendlist update callback");
-                                        }
-                                    }
-                                });
-                            }else{
-                                Log.d(TAG, "Old Friend's friend list came back null");
-                                Log.e(TAG, "Old Friend userlist callback");
-                            }
-                        }
-                    });
+//    public void doDeleteFriend(final int position) {
+//        final UserInformation userInformation = dataSet.getUser(position);
+//        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+//            @Override
+//            public void onCallback(User user) {
+//                if (user != null) {
+//                    final UserInformation currentMe = user.getUserInfo();
+//                    databaseHelper.getFriendsList(userInformation.getUserName(), new UserListCallback() {
+//                        @Override
+//                        public void onCallback(UserList userList) {
+//                            if(userList != null){
+//                                userList.getUserlist().remove(currentMe);
+//                                databaseHelper.updateFriendsList(userInformation.getUserName(), userList, new BooleanCallback() {
+//                                    @Override
+//                                    public void onCallback(boolean bool) {
+//                                        if(bool){
+//                                            databaseHelper.getFriendsList(currentMe.getUserName(), new UserListCallback() {
+//                                                @Override
+//                                                public void onCallback(UserList userList) {
+//                                                    if (userList != null) {
+//                                                        userList.getUserlist().remove(userInformation);
+//                                                        databaseHelper.updateFriendsList(currentMe.getUserName(), userList, new BooleanCallback() {
+//                                                            @Override
+//                                                            public void onCallback(boolean bool) {
+//                                                                if (bool) {
+//                                                                    Log.d(TAG, "Friend removed");
+//                                                                    dataSet.getUserlist().remove(position);
+//                                                                    notifyItemRemoved(position);
+//                                                                    notifyDataSetChanged();
+//                                                                } else {
+//                                                                    Log.d(TAG, "Current User friendList was not updates");
+//                                                                    Log.e(TAG, "Current User friendlist update callback");
+//                                                                }
+//                                                            }
+//                                                        });
+//                                                    } else {
+//                                                        Log.d(TAG, "Current User's friend list came back null");
+//                                                        Log.e(TAG, "CurrentMe userlist callback");
+//                                                    }
+//                                                }
+//                                            });
+//                                        }else{
+//                                            Log.d(TAG, "Old Friend friendList was not updates");
+//                                            Log.e(TAG, "Old Friend friendlist update callback");
+//                                        }
+//                                    }
+//                                });
+//                            }else{
+//                                Log.d(TAG, "Old Friend's friend list came back null");
+//                                Log.e(TAG, "Old Friend userlist callback");
+//                            }
+//                        }
+//                    });
+//
+//                }
+//            }
+//        });
+//    }
 
-                }
-            }
-        });
+    public void somePublicMethod(int position){
+
     }
 
 }
