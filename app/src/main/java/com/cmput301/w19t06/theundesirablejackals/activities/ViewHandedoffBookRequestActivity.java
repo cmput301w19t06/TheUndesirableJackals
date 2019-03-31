@@ -26,6 +26,7 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 
@@ -33,8 +34,10 @@ import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallback;
 
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import com.squareup.picasso.Picasso;
@@ -256,6 +259,25 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
             }
 
         });
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                BookToInformationMap borrowedBooks = user.getBorrowedBooks();
+                borrowedBooks.addBook(mBookRequest.getBookRequested().getIsbn(), mBookRequest.getBookRequested().getBookInformationKey());
+
+                mDatabaseHelper.updateBorrowedBooks(borrowedBooks, new BooleanCallback() {
+                    @Override
+                    public void onCallback(boolean bool) {
+                        if(bool) {
+                            ToastMessage.show(getApplicationContext(), "Your borrowed book list has been updated");
+                        } else {
+                            ToastMessage.show(getApplicationContext(), "Failed to update borrowed books in database");
+                        }
+                    }
+                });
+            }
+        });
+
         finish();
     }
 }
