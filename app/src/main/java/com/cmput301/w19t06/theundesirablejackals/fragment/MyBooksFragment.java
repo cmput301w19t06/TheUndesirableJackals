@@ -80,13 +80,14 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
+                view.setClickable(false);
                 Book clickedBook = booksRecyclerViewAdapter.getBook(position);
                 BookInformation clickedbookInformation = booksRecyclerViewAdapter.getInformation(position);
                 Intent intent = new Intent(getActivity(), ViewOwnedBookActivity.class);
                 intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
                 intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
                 startActivity(intent);
-
+                view.setClickable(true);
             }
         };
 
