@@ -56,6 +56,8 @@ public class MessagesActivity extends AppCompatActivity implements RecyclerViewC
         toolbarMessages.setNavigationIcon(R.drawable.ic_action_back);
         setSupportActionBar(toolbarMessages);
 
+
+
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
                 registerReceiver(currentActivityReceiver, CurrentActivityReceiver.CURRENT_ACTIVITY_RECEIVER_FILTER);

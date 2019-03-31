@@ -93,7 +93,6 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainHomeViewActivity.class));
                 finish();
             }
         });
