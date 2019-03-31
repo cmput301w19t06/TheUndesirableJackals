@@ -294,26 +294,4 @@ public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
         });
 
     }
-
-    private void updateBorrowedBookList() {
-        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                BookToInformationMap borrowedBooks = user.getBorrowedBooks();
-                borrowedBooks.addBook(mBookRequest.getBookRequested().getIsbn(), mBookRequest.getBookRequested().getBookInformationKey());
-
-                mDatabaseHelper.updateBorrowedBooks(borrowedBooks, new BooleanCallback() {
-                    @Override
-                    public void onCallback(boolean bool) {
-                        if(bool) {
-                            ToastMessage.show(getApplicationContext(), "Your borrowed book list has been updated");
-                        } else {
-                            ToastMessage.show(getApplicationContext(), "Failed to update borrowed books in database");
-                        }
-                    }
-                });
-            }
-        });
-
-    }
 }
