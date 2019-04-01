@@ -1,5 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in, main menu, user profile and edit profile testing
+ * Will navigate trough the sequence until it reaches the option to change phone number
+ * It will input a new phone number and it should be updated on the database
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;

@@ -1,5 +1,14 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in, tab navigation and fragment click testing
+ * Will check all tabs
+ * Will iterate through all owned books in tab "My Books", click on them and briefly display
+ * the book's description
+ * It will show 4 books for the testing account
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.Espresso;

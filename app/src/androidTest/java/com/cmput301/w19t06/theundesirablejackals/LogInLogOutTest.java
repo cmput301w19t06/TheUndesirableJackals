@@ -1,5 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in and log out testing
+ * Will log in with the UI testing account we have created to check the proper authentication
+ * of the app
+ * SHould be run first since the rest of the UI tests rely on this functionality working
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;

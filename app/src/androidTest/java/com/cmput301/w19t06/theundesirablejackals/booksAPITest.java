@@ -1,5 +1,14 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Add a book and API testing
+ * UI test that logs in and selects the option to add a book
+ * It will fill the ISBN section of the book and wait for a response from Google Books API
+ * It will check the retrieved data of author and categories and compare it with the parameters
+ * we have
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.Espresso;

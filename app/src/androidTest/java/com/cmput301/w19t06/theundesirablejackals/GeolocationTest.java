@@ -1,5 +1,13 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in, main menu and Google maps API testing
+ * Will simply logs ins and select the "my pickup location" option on the menu
+ * Will display the default pick up location of the user
+ * For test account it will be at the U of A
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
