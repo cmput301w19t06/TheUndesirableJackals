@@ -59,7 +59,12 @@ public class BookInformationPairing {
     public void addSingle(Book book){
         this.bookList.add(book);
         this.bookInformationList.add(new BookInformation(BookStatus.UNKNOWN, book.getIsbn(), "ANON"));
+    }
 
+    public void addOwner(Book book, BookInformation bookInformation) {
+        book.setIsbn("SET_TO_OWNER");
+        this.bookList.add(book);
+        this.bookInformationList.add(bookInformation);
     }
 
 

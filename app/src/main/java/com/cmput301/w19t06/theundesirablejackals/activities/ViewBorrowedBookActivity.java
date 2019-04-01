@@ -102,7 +102,9 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         mButtonReturnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(getApplicationContext(), "Returning....");
+                Intent intent = new Intent(ViewBorrowedBookActivity.this, BorrowRequestListActivity.class);
+                intent.putExtra(BorrowRequestListActivity.SEARCH_BY_ISBN, mBorrowedBook.getIsbn());
+                startActivity(intent);
             }
         });
 
