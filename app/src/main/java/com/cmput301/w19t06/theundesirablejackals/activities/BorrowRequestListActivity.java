@@ -22,6 +22,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.RequestsRecyclerViewAda
 import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.CurrentActivityReceiver;
@@ -39,12 +40,17 @@ import java.util.ArrayList;
  * Author: Kaya Thiessen
  */
 public class BorrowRequestListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
+
+    public final static String SEARCH_BY_ISBN = "SearchByTitle";
+    private String ACTIVITY_TAG = "BorrowRequestList";
+
     private Toolbar toolbar;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
+    private String isbnSearch;
 
     public static final String TAG = "BorrowRequest";
     private MenuItem mSelectedFilter;
@@ -54,6 +60,11 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrow_requests);
         databaseHelper = new DatabaseHelper();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            isbnSearch = (String) intent.getSerializableExtra(SEARCH_BY_ISBN);
+        }
 
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
@@ -96,6 +107,7 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
                 finish();
             }
         });
+
     }
 
     @Override
@@ -268,8 +280,21 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
                         databaseHelper.getBorrowRequests(userInformation.getUserName(), new BookRequestListCallback() {
                             @Override
                             public void onCallback(BookRequestList bookRequestList) {
-                                requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+
                                 requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
+                                BookRequestList searchedBookRequest = new BookRequestList();
+
+                                if(isbnSearch!=null && !isbnSearch.isEmpty()) {
+                                    for (BookRequest request: bookRequestList.getBookRequests()) {
+                                        if(request.getBookRequested().getIsbn().equals(isbnSearch)) {
+                                            searchedBookRequest.addRequest(request);
+                                        }
+                                    }
+                                    isbnSearch = "";
+                                    requestsRecyclerViewAdapter.setDataSet(searchedBookRequest);
+                                } else {
+                                    requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                                }
                             }
                         });
                     }
@@ -372,5 +397,6 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         }
         return true;
     }
+
 }
 
