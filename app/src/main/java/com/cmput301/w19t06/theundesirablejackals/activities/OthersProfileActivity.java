@@ -34,9 +34,8 @@ import com.squareup.picasso.Picasso;
 
 /**
  * Activity used to display friends profile + give option to message them
- * Author: Kaya Thiessen
- * <p>
- * TODO: implement send message and send friend request option
+ * @Author: Kaya Thiessen
+ * @Author: Art Limbaga
  * displays the user contact info given a user name
  */
 

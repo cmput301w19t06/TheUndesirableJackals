@@ -36,8 +36,9 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import java.util.ArrayList;
 
 /**
- * Pulls all Borrowed book requests and displays them here
+ * Pulls all Borrowed book requests and displays them here using recycler view
  * Author: Kaya Thiessen
+ * See BooksRecyclerViewAdapter
  */
 public class BorrowRequestListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
 

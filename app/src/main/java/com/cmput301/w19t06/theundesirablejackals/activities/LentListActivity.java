@@ -31,7 +31,7 @@ import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallbac
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 /**
- * List view of all current lent requests. Allow the user to view more about them
+ * List view of all current lent requests. Allows clickable options to view more on request and take action depending on status
  * Author: Kaya Thiessen
  */
 public class LentListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {

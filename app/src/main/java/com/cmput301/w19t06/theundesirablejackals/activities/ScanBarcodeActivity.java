@@ -32,6 +32,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+/**
+ * Allows user to scan ISBN code
+ * @author Devon Deweert
+ * @see LentListActivity
+ */
 
 public class ScanBarcodeActivity extends AppCompatActivity {
 

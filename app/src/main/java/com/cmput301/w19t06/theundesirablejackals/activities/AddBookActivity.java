@@ -43,7 +43,8 @@ import java.util.Locale;
 
 /**
  * This Activity adds books to a persons library. This is the main access to the two fragments
- * Author: Kaya Thiessen
+ * @Author: Kaya Thiessen
+ * @Author: Devon Deweert
  */
 
 public class AddBookActivity extends AppCompatActivity {

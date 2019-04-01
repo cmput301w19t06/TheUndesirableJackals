@@ -28,6 +28,13 @@ import com.cmput301.w19t06.theundesirablejackals.database.UserInformationCallbac
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
+/**
+ * When book is selected from Borrowed Book request when accepted of currently borrowed. Works for Handoff and pick up of book
+ *
+ * @author Kaya Thiessen
+ * @author Devon Deweert
+ * @see BorrowRequestListActivityListActivity
+ */
 
 public class ViewBorrowedBookRequestActivity extends AppCompatActivity {
 

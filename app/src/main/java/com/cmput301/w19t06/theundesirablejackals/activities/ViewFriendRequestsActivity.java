@@ -32,6 +32,15 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserList;
 
 import java.util.ArrayList;
 
+import static com.cmput301.w19t06.theundesirablejackals.activities.ViewFriendsListActivity.FRIENDS_ALREADY;
+
+/**
+ * Allows user to view and accept/decline friend requests
+ *
+ * @author Kaya Thiessen
+ * @author Devon Deweert
+ */
+
 public class ViewFriendRequestsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener, InternalClickListener {
     private FriendRequestRecyclerViewAdapter friendRequestRecyclerViewAdapter = new FriendRequestRecyclerViewAdapter();
     private BroadcastReceiver currentActivityReceiver;
@@ -98,7 +107,15 @@ public class ViewFriendRequestsActivity extends AppCompatActivity implements Swi
     private void recyclerOnClick(View view, int position) {
         //TODO implement lent list click listener functionality
         //TODO Bring up the ViewOther'sProfile Activity
-        showToast("ART DO YOUR MAGIC SHIT HERE");
+        FriendRequest friendRequest = friendRequestRecyclerViewAdapter.getRequest(position);
+        final UserInformation userInformation = friendRequest.getRequestSender();
+
+        Intent intent = new Intent(ViewFriendRequestsActivity.this, com.cmput301.w19t06.theundesirablejackals.activities.OthersProfileActivity.class);
+        intent.putExtra(OthersProfileActivity.USERNAME, userInformation.getUserName());
+        intent.putExtra(FRIENDS_ALREADY, false);
+        startActivity(intent);
+
+        view.setClickable(true);
 
     }
 
