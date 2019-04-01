@@ -6,6 +6,12 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import java.io.Serializable;
 
+/**
+ * This class holds book information of a book with respect to who owns the book.
+ * @author Devon Deweert
+ * @author Art Limbaga
+ * @see Book
+ */
 public class BookInformation implements Serializable {
     private String bookInformationKey;
     private String isbn;

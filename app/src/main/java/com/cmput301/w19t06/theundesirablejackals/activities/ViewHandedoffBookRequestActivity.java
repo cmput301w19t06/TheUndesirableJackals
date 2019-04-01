@@ -42,6 +42,11 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 
 import com.squareup.picasso.Picasso;
 
+/**
+ * Displays the requests information and a barcode scanner for the borrower to receive the book
+ * and indicate that the book is no borrowed
+ * @author Art Limbaga
+ */
 public class ViewHandedoffBookRequestActivity extends AppCompatActivity {
     public final static String HANDED_OFF_REQUEST = "HandedOffRequest";
     public final static int BARCODE_SCANNER = 2000;

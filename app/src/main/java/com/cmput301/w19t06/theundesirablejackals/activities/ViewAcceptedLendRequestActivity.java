@@ -24,6 +24,10 @@ import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
+/**
+ * Displays an accepted book request to a book owner for scanning the barcode and indicate hand off.
+ * @author Art Limbaga
+ */
 public class ViewAcceptedLendRequestActivity extends AppCompatActivity {
     public final static String ACCEPTED_REQUEST = "AcceptedRequest";
     public final static int BARCODE_SCANNER = 1000;

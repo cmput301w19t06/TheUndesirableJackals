@@ -3,6 +3,11 @@ package com.cmput301.w19t06.theundesirablejackals.book;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * An ArrayList of books used to store multiple books.
+ * @author Art Limbaga
+ */
+
 public class BookList {
     private ArrayList<Book> books;
 

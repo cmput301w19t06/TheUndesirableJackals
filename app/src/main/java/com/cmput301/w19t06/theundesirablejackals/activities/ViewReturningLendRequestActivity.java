@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequest;
-import com.cmput301.w19t06.theundesirablejackals.book.BookRequestStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
@@ -25,7 +24,11 @@ import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
-public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
+/**
+ * Displays book requests to owner when the borrower scans a borrowed book for return.
+ * @author Art Limbaga
+ */
+public class ViewReturningLendRequestActivity extends AppCompatActivity {
 
     public final static String RETURNING_REQUEST = "ReturningRequest";
     public final static int BARCODE_SCANNER = 5000;
@@ -96,7 +99,7 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         mButtonScanISBN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, ScanBarcodeActivity.class);
+                Intent intent = new Intent(ViewReturningLendRequestActivity.this, ScanBarcodeActivity.class);
                 startActivityForResult(intent, BARCODE_SCANNER);
             }
         });
@@ -119,24 +122,29 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         borrowerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, OthersProfileActivity.class);
+                Intent intent = new Intent(ViewReturningLendRequestActivity.this, OthersProfileActivity.class);
                 intent.putExtra(OthersProfileActivity.USERNAME, mBookRequest.getBorrower().getUserName());
                 startActivity(intent);
             }
         });
     }
 
+    /**
+     * Launches ViewPickUpLocationActivity to display pickup location of the requested book
+     */
     private void doViewPickupLocation() {
         if(mBookRequest.getPickuplocation() == null) {
             ToastMessage.show(getApplicationContext(), "Book owner done messed up and accepted your request without setting a location... ");
             return;
         }
-        Intent intent = new Intent(ViewReturningLendRequestAcitivity.this, ViewPickupLocationActivity.class);
+        Intent intent = new Intent(ViewReturningLendRequestActivity.this, ViewPickupLocationActivity.class);
         intent.putExtra(ViewPickupLocationActivity.PICKUP_LOCATION, mBookRequest.getPickuplocation());
         startActivity(intent);
     }
 
-
+    /**
+     * Sets all the views for the layout of this activity
+     */
     private void setAllViews() {
         mTextViewUserRole.setText("Borrower: ");
         UserInformation borrower = mBookRequest.getBorrower();
@@ -162,6 +170,9 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         loadUserPhoto();
     }
 
+    /**
+     * Accesses the database to load the borrower's photo into the activity's view
+     */
     private void loadUserPhoto() {
         if (mBookRequest.getBorrower().getUserPhoto() != null
                 && !mBookRequest.getBorrower().getUserPhoto().isEmpty()) {
@@ -194,6 +205,9 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets called when receive button is pressed.
+     */
     private void  doConfirmReceive() {
 
         if(mTextViewScannedISBN.getText().toString().isEmpty()) {
@@ -208,12 +222,19 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Runs when receiving a book is confirmed to valid
+     */
     private void doReceiveUpdates(){
         deleteBookRequestStatus();
         updateBookInformationStatus();
         finish();
     }
 
+    /**
+     * Once a book has been returned to the owner, the requests will be purged from existance
+     * byt this function to indicate the end of a book request
+     */
     private void deleteBookRequestStatus() {
         mDatabaseHelper.deleteRequest(mBookRequest, new BooleanCallback() {
             @Override
@@ -227,6 +248,9 @@ public class ViewReturningLendRequestAcitivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Updates the book information of the book to indicate that it is available for borrowing
+     */
     private void updateBookInformationStatus() {
         mBookRequest.getBookRequested().setStatus(BookStatus.AVAILABLE);
         mDatabaseHelper.updateBookInformation(mBookRequest.getBookRequested(), new BooleanCallback() {

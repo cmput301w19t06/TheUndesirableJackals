@@ -1,9 +1,4 @@
 package com.cmput301.w19t06.theundesirablejackals.fragment;
-/**
- * Fragment to show the books a user owns
- * The user can add new books and check the book's status
- * @see MyBookModdelClass, MyBooksRecyclerViewAdapter
- */
 
 
 
@@ -38,10 +33,13 @@ import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.HashMap;
-
-/*
-* Created by Mohamed on 21/02/2019
+/**
+ * Fragment to show the books a user owns the user can add new books and check the book's status
+ * @author Mohammed
+ * @author Devon Deweert
+ * @see BooksRecyclerViewAdapter
  */
+
 public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private View view;
     private BooksRecyclerViewAdapter booksRecyclerViewAdapter;
@@ -130,7 +128,10 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     }
 
-
+    /**
+     * Accesses database to load in data containing details about the current logged in user's
+     * owned books
+     */
     private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         booksRecyclerViewAdapter.setDataSet(new BookInformationPairing());

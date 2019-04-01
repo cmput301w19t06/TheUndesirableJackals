@@ -37,7 +37,9 @@ import java.util.ArrayList;
 
 /**
  * Pulls all Borrowed book requests and displays them here using recycler view
- * Author: Kaya Thiessen
+ * @author : Kaya Thiessen
+ * @author : Art Limbaga
+ * @author : Devon Deweert
  * See BooksRecyclerViewAdapter
  */
 public class BorrowRequestListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
@@ -189,6 +191,12 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handles any clicks on the recycler view
+     * @param view
+     * @param position
+     */
+
     private void recyclerOnClick(View view, int position){
         //TODO implement lent list click listener functionality
         BookRequestStatus status = requestsRecyclerViewAdapter.get(position).getCurrentStatus();
@@ -263,7 +271,10 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         }
     }
 
-
+    /**
+     * This is called when the user swipes down at the dop of recycler view. It will refresh the
+     * recyclerview by grabbing data from the database
+     */
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
@@ -271,6 +282,9 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * Gets all the borrow requests of the current logged in user from the database
+     */
     private void getBorrowRequests() {
         if (currentUser == null) {
             databaseHelper.getCurrentUserInfoFromDatabase(new UserInformationCallback() {
@@ -312,6 +326,7 @@ public class BorrowRequestListActivity extends AppCompatActivity implements Sear
             });
         }
     }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

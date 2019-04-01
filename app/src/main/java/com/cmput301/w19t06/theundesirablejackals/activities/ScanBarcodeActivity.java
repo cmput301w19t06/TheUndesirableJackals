@@ -274,8 +274,8 @@ public class ScanBarcodeActivity extends AppCompatActivity {
             intent = new Intent(ScanBarcodeActivity.this, ViewBorrowedBookRequestActivity.class);
             recognizedCaller = true;
         }
-        if (this.getCallingActivity().getClassName().equals(ViewReturningLendRequestAcitivity.class.getName())) {
-            intent = new Intent(ScanBarcodeActivity.this, ViewReturningLendRequestAcitivity.class);
+        if (this.getCallingActivity().getClassName().equals(ViewReturningLendRequestActivity.class.getName())) {
+            intent = new Intent(ScanBarcodeActivity.this, ViewReturningLendRequestActivity.class);
             recognizedCaller = true;
         }
 

@@ -37,7 +37,7 @@
         <activity android:name="com.cmput301.w19t06.theundesirablejackals.fragment.FavouriteFragment"></activity>
         <activity android:name=".AlternateSignInActivity" />
         <activity
-            android:name=".ViewReturningLendRequestAcitivity"
+            android:name=".ViewReturningLendRequestActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.WindowedView" />
         <activity
@@ -63,7 +63,6 @@
             android:name=".ViewAcceptedLendRequestActivity"
             android:theme="@style/AppTheme.WindowedView" />
         <activity android:name=".ChatActivity" />
-        <activity android:name=".EditPersonalProfileActivity" />
         <activity
             android:name=".MessagesActivity"
             android:label="@string/title_activity_message"

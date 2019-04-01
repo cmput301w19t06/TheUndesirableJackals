@@ -3,6 +3,11 @@ package com.cmput301.w19t06.theundesirablejackals.book;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Stores Book information in an ArrayList for ease of access. Serializable is implemented to enable
+ * data transfer of type BookInformationList across multiple activities
+ * @author Art Limbaga
+ */
 public class BookInformationList implements Serializable {
     ArrayList<BookInformation> bookInformations;
 

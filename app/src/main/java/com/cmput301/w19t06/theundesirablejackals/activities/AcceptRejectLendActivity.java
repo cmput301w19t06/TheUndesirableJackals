@@ -170,7 +170,6 @@ public class AcceptRejectLendActivity extends AppCompatActivity {
                 }
             }
         });
-
         loadUserPhoto();
     }
 

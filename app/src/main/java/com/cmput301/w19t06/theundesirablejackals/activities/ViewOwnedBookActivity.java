@@ -278,6 +278,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDIT_BOOK) {
@@ -320,7 +321,6 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 } else {
                     Log.d(ACTIVITY_TAG, "Book delete from favourites failed");
                 }
-
             }
         });
     }

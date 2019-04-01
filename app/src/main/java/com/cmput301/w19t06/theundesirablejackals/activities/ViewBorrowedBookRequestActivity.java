@@ -33,7 +33,6 @@ import com.squareup.picasso.Picasso;
  *
  * @author Kaya Thiessen
  * @author Devon Deweert
- * @see BorrowRequestListActivityListActivity
  */
 
 public class ViewBorrowedBookRequestActivity extends AppCompatActivity {

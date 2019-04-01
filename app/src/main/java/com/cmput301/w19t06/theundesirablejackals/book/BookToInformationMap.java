@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 /**
  * This class helps with sorting and searching local list of books.
- * @author Art Limbaga
+ * @author Devon Deweert
  * @see Book
  */
 public class BookToInformationMap implements Serializable {

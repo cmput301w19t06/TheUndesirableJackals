@@ -263,8 +263,8 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
 
 
             case RETURNING:
-                intent = new Intent(LentListActivity.this, ViewReturningLendRequestAcitivity.class);
-                intent.putExtra(ViewReturningLendRequestAcitivity.RETURNING_REQUEST,
+                intent = new Intent(LentListActivity.this, ViewReturningLendRequestActivity.class);
+                intent.putExtra(ViewReturningLendRequestActivity.RETURNING_REQUEST,
                         requestsRecyclerViewAdapter.get(position));
                 startActivity(intent);
                 break;

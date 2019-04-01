@@ -457,6 +457,12 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Handles what needs to be done when after permission request response has been given by the user
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode,

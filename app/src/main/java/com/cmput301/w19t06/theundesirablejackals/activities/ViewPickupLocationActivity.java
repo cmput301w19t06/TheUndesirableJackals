@@ -12,6 +12,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * A google map activity used to view the pick up location of a book request
+ * @author Art Limbaga
+ */
 public class ViewPickupLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public final static String PICKUP_LOCATION = "PickupLocation";

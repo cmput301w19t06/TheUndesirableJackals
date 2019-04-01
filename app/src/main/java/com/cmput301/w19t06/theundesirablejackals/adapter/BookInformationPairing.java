@@ -8,6 +8,9 @@ import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 
 import java.util.HashMap;
 
+/**
+ *
+ */
 public class BookInformationPairing {
     private BookList bookList;
     private BookInformationList bookInformationList;

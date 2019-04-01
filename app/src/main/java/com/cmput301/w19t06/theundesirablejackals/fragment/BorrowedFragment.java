@@ -33,7 +33,12 @@ import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
 import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.util.HashMap;
-
+/**
+ * Fragment to show books borrowed by the user.
+ * @author Mohammed
+ * @author Devon Deweert
+ * @see BooksRecyclerViewAdapter
+ */
 public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     View view;
     private BooksRecyclerViewAdapter borrowedRecyclerViewAdapter;
@@ -129,6 +134,9 @@ public class BorrowedFragment extends Fragment implements SwipeRefreshLayout.OnR
         borrowedBoosSwipeRefreshLayout.setRefreshing(false);
     }
 
+    /**
+     * Accesses firebase to grab all the borrowed books by the user
+     */
     private void getBooks(){
         final DatabaseHelper databaseHelper = new DatabaseHelper();
         borrowedRecyclerViewAdapter.setDataSet(new BookInformationPairing());

@@ -246,7 +246,7 @@ public class ViewBookRequestInfo extends AppCompatActivity {
                     startActivity(intent);
 
                 }else if(bookRequest != null && bookRequest.getCurrentStatus() == BookRequestStatus.RETURNING) {
-                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewReturningLendRequestAcitivity.class);
+                    Intent intent = new Intent(ViewBookRequestInfo.this, ViewReturningLendRequestActivity.class);
                     intent.putExtra(ViewHandedoffBookRequestActivity.HANDED_OFF_REQUEST, bookRequest);
                     startActivity(intent);
                     finish();

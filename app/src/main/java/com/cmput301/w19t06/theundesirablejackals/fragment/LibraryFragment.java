@@ -34,8 +34,12 @@ import com.cmput301.w19t06.theundesirablejackals.database.BookInformationListCal
 import com.cmput301.w19t06.theundesirablejackals.database.BookListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 
-/*
- * Created by Mohamed on 21/02/2019
+/**
+ * Fragment to show library books. Library books are considered as books that are added to the app
+ * by users, either by scanning or manually entering details about a book
+ * @author Mohammed
+ * @author Devon Deweert
+ * @see BooksRecyclerViewAdapter
  */
 public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener{
     public View view;
@@ -101,6 +105,9 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Uses Firebase to load in all the books and adding each of them to the recycler view
+     */
     private void getBooks(){
         //If we got any data from file, add it to the
         //(now finished with setup) recyclerViewAdapter

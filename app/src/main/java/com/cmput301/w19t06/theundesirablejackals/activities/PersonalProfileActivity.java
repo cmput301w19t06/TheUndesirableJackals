@@ -58,6 +58,12 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.HashMap;
 
+/**
+ * Displays personal profile of the current logged in user. Allows for profile edits such as changing
+ * the profile photo and contact phone number. This activity will also display all the favourite
+ * books of the current logged in user.
+ * @author Art Limbagaa
+ */
 public class PersonalProfileActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     public static final int IMAGE_GALLERY_REQUEST = 700;
     private static final int GALLERY_PERMISSION_REQUEST = 701;

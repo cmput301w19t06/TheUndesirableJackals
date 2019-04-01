@@ -19,6 +19,10 @@ import com.firebase.ui.auth.IdpResponse;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Registers the user with a unique username and prompts then enter a contact number
+ * @author Art Limbaga
+ */
 public class SignInActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInActivity";

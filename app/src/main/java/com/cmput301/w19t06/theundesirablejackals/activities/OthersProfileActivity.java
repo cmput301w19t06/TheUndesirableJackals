@@ -33,7 +33,7 @@ import com.squareup.picasso.Picasso;
 
 
 /**
- * Activity used to display friends profile + give option to message them
+ * Activity used to display friends profile and give option to message and send friend request
  * @Author: Kaya Thiessen
  * @Author: Art Limbaga
  * displays the user contact info given a user name

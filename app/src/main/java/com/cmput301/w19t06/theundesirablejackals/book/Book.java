@@ -15,8 +15,6 @@ import java.util.ArrayList;
  * @author Art Limbaga
  * @author Felipe Rodriguez
  * @see BookStatus
- * @see Geolocation
- * @see BookGenres
  */
 public class Book implements Serializable {
     private String title;

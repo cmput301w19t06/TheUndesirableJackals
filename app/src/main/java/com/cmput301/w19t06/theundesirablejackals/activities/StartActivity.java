@@ -20,6 +20,12 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 
+/**
+ * The first activity upon launching the app. It will check if someone is already logged
+ * in in the current running device and continues to MainHomeViewActivity if someone is logged in.
+ * Otherwise, this activity will prompt the user to sign in/ register.
+ * @author Art Limbaga
+ */
 public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;

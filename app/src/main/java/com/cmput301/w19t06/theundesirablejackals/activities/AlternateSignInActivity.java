@@ -31,6 +31,10 @@ public class AlternateSignInActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Takes the email and password and tries to authenticate user
+     * @param view
+     */
     public void OnClick_buttonAlternateSignIn(View view) {
         EditText editTextEmail = findViewById(R.id.editTextAlternateSignInEmail);
         EditText editTextPassword = findViewById(R.id.editTextAlternateSignInPassword);
