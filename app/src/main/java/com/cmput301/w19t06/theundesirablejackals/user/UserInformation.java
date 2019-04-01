@@ -90,9 +90,9 @@ public class UserInformation implements Serializable {
     @Override
     public String toString() {
         return "{" +
-                "userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                "userName='" + userName + "'" +
+                ", email='" + email + "'" +
+                ", phoneNumber='" + phoneNumber + "'" +
                 '}';
     }
 

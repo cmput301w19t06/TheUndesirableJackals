@@ -27,6 +27,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textViewViewBorrowedBookBookOwner"
                 android:layout_width="0dp"
@@ -37,6 +38,7 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center_horizontal"
                 android:text="Book Owner"
+                android:textColor="@color/fui_linkColor"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
