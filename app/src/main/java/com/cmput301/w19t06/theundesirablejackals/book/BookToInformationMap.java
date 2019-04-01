@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.book;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * @author Art Limbaga
  * @see Book
  */
-public class BookToInformationMap {
+public class BookToInformationMap implements Serializable {
     private HashMap<String, Object> books;
 
     /**

@@ -7,6 +7,9 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +17,12 @@ import android.widget.TextView;
 
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -31,7 +37,7 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
     private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
     public final static String BORROWED_BOOK_FROM_RECYCLER_VIEW = "BorrowedBookFromRecyclerView";
     public final static String BORROWED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
-
+    private final static String ACTIVITY_TAG = "ViewBorrowedBook";
     private Toolbar mToolbar;
 
     private DatabaseHelper mDatabaseHelper;
@@ -40,6 +46,9 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
     private BookInformation mBookInformation;
 
     private Button mButtonReturnBook;
+
+    private boolean isFavourite;
+    private boolean toggleFavourite;
 
     private TextView mTitle;
     private TextView mAuthor;
@@ -93,7 +102,9 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
         mButtonReturnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage.show(getApplicationContext(), "Returning....");
+                Intent intent = new Intent(ViewBorrowedBookActivity.this, BorrowRequestListActivity.class);
+                intent.putExtra(BorrowRequestListActivity.SEARCH_BY_ISBN, mBorrowedBook.getIsbn());
+                startActivity(intent);
             }
         });
 
@@ -106,6 +117,28 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_view_others_book, menu);
+        setFavouriteIcon(menu.findItem(R.id.itemMenuOthersBookViewFavorite));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        // switch case just in case we add another option
+        if (id == R.id.itemMenuOthersBookViewFavorite) {
+            toggleFavouriteIcon(item);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setBookPhotoView() {
@@ -139,5 +172,79 @@ public class ViewBorrowedBookActivity extends AppCompatActivity {
                 mBookPhotoView.setImageURI(photoData);
             }
         }
+    }
+
+    private void setFavouriteIcon(final MenuItem item) {
+        Log.d(ACTIVITY_TAG, item.toString());
+
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                BookToInformationMap favouriteBooks = user.getFavouriteBooks();
+                if (favouriteBooks != null) {
+                    if (favouriteBooks.contains(mBorrowedBook)) {
+                        item.setIcon(R.drawable.ic_is_favorite);
+                        isFavourite = true;
+                        toggleFavourite = true;
+                    } else {
+                        item.setIcon(R.drawable.ic_action_add_favorite);
+                        isFavourite = false;
+                        toggleFavourite = false;
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void toggleFavouriteIcon(MenuItem item) {
+        toggleFavourite = !toggleFavourite;
+        if(toggleFavourite) {
+            item.setIcon(R.drawable.ic_is_favorite);
+        } else {
+            item.setIcon(R.drawable.ic_action_add_favorite);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        updateFavouriteBooks();
+    }
+
+    private void updateFavouriteBooks() {
+        if(isFavourite && !toggleFavourite) {
+            deleteFavourite();
+        }
+        if(!isFavourite && toggleFavourite) {
+            addFavourite();
+        }
+    }
+
+    private void deleteFavourite() {
+        mDatabaseHelper.deleteFavouriteBook(mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    Log.d(ACTIVITY_TAG, "Book deleted from favourites");
+                } else {
+                    Log.d(ACTIVITY_TAG, "Book delete from favourites failed");
+                }
+
+            }
+        });
+    }
+
+    private void addFavourite() {
+        mDatabaseHelper.addFavouriteBook(mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    Log.d(ACTIVITY_TAG, "Book added to favourites");
+                } else {
+                    Log.d(ACTIVITY_TAG, "Book add to favourites failed");
+                }
+            }
+        });
     }
 }

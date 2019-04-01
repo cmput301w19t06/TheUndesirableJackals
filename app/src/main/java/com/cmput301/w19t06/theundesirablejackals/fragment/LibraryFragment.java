@@ -54,8 +54,6 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         RecyclerView.LayoutManager mainLayoutManager;
         RecyclerView libraryRecyclerView;
 
-
-
         //Setting up the main page recyclerView using findViewById
         libraryRecyclerView = (RecyclerView) view.findViewById(R.id.libraryRecyclerView);
         librarySwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.librarySwipeRefreshLayout);

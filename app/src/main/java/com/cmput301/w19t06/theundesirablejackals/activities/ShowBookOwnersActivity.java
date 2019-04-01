@@ -63,25 +63,32 @@ public class ShowBookOwnersActivity extends AppCompatActivity{
         RecyclerViewClickListener clickListener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
+                view.setClickable(false);
                 BookInformation bookInfo = mClickedBookOwners.get(position);
                 Intent intent = new Intent(ShowBookOwnersActivity.this, ViewLibraryBookActivity.class);
                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW, mClickedBook);
                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, bookInfo);
                 startActivity(intent);
+                view.setClickable(true);
+
             }
         };
 
         mBookOwnersRecyclerViewAdapter = new BooksRecyclerViewAdapter();
         mBookOwnersRecyclerViewAdapter.setMyListener(clickListener);
         mBookOwnersRecyclerView.setAdapter(mBookOwnersRecyclerViewAdapter);
+
+        setRecyclerView();
+
+    }
+
+
+    private void setRecyclerView() {
         BookInformationPairing bookInformationPairing = new BookInformationPairing();
         for(BookInformation bookInfo:mClickedBookOwners.getBookInformations()) {
-            bookInformationPairing.addSingle(mClickedBook);
+            bookInformationPairing.addOwner(mClickedBook, bookInfo);
         }
         mBookOwnersRecyclerViewAdapter.setDataSet(bookInformationPairing);
-
-
-
     }
 
 }

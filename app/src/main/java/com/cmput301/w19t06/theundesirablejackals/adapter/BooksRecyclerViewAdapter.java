@@ -1,6 +1,7 @@
 package com.cmput301.w19t06.theundesirablejackals.adapter;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +94,7 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
                 statusTextView.setText(status.toString());
             }
         }
+
         if(title != null) {
             titleTextView.setText(title);
         }
@@ -100,7 +102,14 @@ public class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecycler
             authorTextView.setText(author);
         }
         if(isbn != null) {
-            isbnTextView.setText("ISBN: "+ isbn);
+            if(b.getIsbn().equals("SET_TO_OWNER")) {
+                isbnTextView.setText("Owner: " + i.getOwner());
+                isbnTextView.setTypeface(null, Typeface.BOLD);
+
+            } else {
+                isbnTextView.setText("ISBN: "+ isbn);
+            }
+
         }
         Picasso.get()
                 .load(R.drawable.book_icon)

@@ -36,6 +36,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button submit;
     private Button cancel;
     private Toolbar toolbar;
+    private final float mZoomLevel = 17.0f;
 
 
 
@@ -122,7 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // Add a marker in coord and move the camera
                 mMap.addMarker(new MarkerOptions().position(coord).title("Current pick up location")).showInfoWindow();;
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, mZoomLevel));
             }
         });
 
@@ -138,7 +139,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // add marker in new coord and move the camera
                 mMap.addMarker(new MarkerOptions().position(point).title("New pick up location")).showInfoWindow();;
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, mZoomLevel));
             }
         });
 
