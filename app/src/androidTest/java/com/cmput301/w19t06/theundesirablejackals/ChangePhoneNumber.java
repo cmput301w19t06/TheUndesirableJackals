@@ -1,5 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in, main menu, user profile and edit profile testing
+ * Will navigate trough the sequence until it reaches the option to change phone number
+ * It will input a new phone number and it should be updated on the database
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -39,13 +46,17 @@ public class ChangePhoneNumber {
     @Before
     public void logIn() {
         // input text in the EditTexts
-        onView(withId(R.id.editTextAlternateSignInEmail)).perform(typeText("rdrgues@hotmail.com"));
-        onView(withId(R.id.editTextAlternateSignInPassword)).perform(typeText("password"));
+        Espresso.onView(withId(R.id.editTextAlternateSignInEmail))
+                .perform(typeText("rdrgues@hotmail.com"));
+        Espresso.closeSoftKeyboard();
+        Espresso.onView(withId(R.id.editTextAlternateSignInPassword))
+                .perform(typeText("password"));
+        Espresso.closeSoftKeyboard();
         SystemClock.sleep(1500);
         // click the log in button
-        onView(withId(R.id.buttonAlternateSignIn)).perform(click());
+        Espresso.onView(withId(R.id.buttonAlternateSignIn)).perform(click());
 
-        SystemClock.sleep(1500);
+        SystemClock.sleep(3000);
     }
 
     @Test
@@ -71,7 +82,7 @@ public class ChangePhoneNumber {
         // input the new phone number and press "ok"
         onView(withId(R.id.editTextPrompNewPhoneNumberInput)).perform(typeText("7809155324"));
         onView(withText("OK")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click());
-        SystemClock.sleep(1500);
+        SystemClock.sleep(4000);
     }
 
 }

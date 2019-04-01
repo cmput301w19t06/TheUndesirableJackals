@@ -84,6 +84,21 @@ public class BookRequestList {
         return bookRequests.contains(bookRequest);
     }
 
+
+    /**
+     * Given book an isbn it will check if a book requested for that isbn
+     * @param isbn
+     * @return
+     */
+    public boolean contains(String isbn) {
+        for(BookRequest request: bookRequests) {
+            if (request.getBookRequested().getIsbn().equals(isbn)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int size(){return bookRequests.size();}
 
     public BookRequest get(int integer){return bookRequests.get(integer);}

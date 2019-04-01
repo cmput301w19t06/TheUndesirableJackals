@@ -1,5 +1,12 @@
 package com.cmput301.w19t06.theundesirablejackals;
 
+/**
+ * Log in, main menu and borrow/lend request testing
+ * Will navigate through the main menu and select the options to display borrow and lend requests
+ * For the testing account it will contain 0-4 and 2 books respectively
+ * @Version March 31, 2019
+ */
+
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -33,13 +40,17 @@ public class BorrowLendRequestsTest {
     @Before
     public void logIn() {
         // input text in the EditTexts
-        Espresso.onView(withId(R.id.editTextAlternateSignInEmail)).perform(typeText("rdrgues@hotmail.com"));
-        Espresso.onView(withId(R.id.editTextAlternateSignInPassword)).perform(typeText("password"));
+        Espresso.onView(withId(R.id.editTextAlternateSignInEmail))
+                .perform(typeText("rdrgues@hotmail.com"));
+        Espresso.closeSoftKeyboard();
+        Espresso.onView(withId(R.id.editTextAlternateSignInPassword))
+                .perform(typeText("password"));
+        Espresso.closeSoftKeyboard();
         SystemClock.sleep(1500);
         // click the log in button
         Espresso.onView(withId(R.id.buttonAlternateSignIn)).perform(click());
 
-        SystemClock.sleep(1500);
+        SystemClock.sleep(3000);
     }
 
     @Test

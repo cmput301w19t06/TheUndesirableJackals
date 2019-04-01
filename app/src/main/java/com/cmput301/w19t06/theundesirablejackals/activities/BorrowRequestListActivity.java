@@ -42,7 +42,7 @@ import java.util.ArrayList;
  */
 public class BorrowRequestListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
 
-    public final static String SEARCH_BY_ISBN = "SearchByTitle";
+    public final static String SEARCH_BY_ISBN = "SearchByIsbnBorrow";
     private String ACTIVITY_TAG = "BorrowRequestList";
 
     private Toolbar toolbar;

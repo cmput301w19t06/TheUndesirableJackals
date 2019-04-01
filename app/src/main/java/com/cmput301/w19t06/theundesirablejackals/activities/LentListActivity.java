@@ -37,10 +37,14 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 public class LentListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     public static final int DELETE_OR_ACCEPT = 420;
     private RequestsRecyclerViewAdapter requestsRecyclerViewAdapter = new RequestsRecyclerViewAdapter();
+    public final static String SEARCH_BY_ISBN = "SearchByIsbnLent";
+
     private BroadcastReceiver currentActivityReceiver;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DatabaseHelper databaseHelper;
     private UserInformation currentUser;
+    private String isbnSearch;
+
 
     public static final String TAG = "LentRequest";
     private MenuItem mSelectedFilter;
@@ -50,6 +54,11 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lend_requets);
         databaseHelper = new DatabaseHelper();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            isbnSearch = (String) intent.getSerializableExtra(SEARCH_BY_ISBN);
+        }
 
         currentActivityReceiver = new CurrentActivityReceiver(this);
         LocalBroadcastManager.getInstance(this).
@@ -282,8 +291,20 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
                         databaseHelper.getLendRequests(userInformation.getUserName(), new BookRequestListCallback() {
                             @Override
                             public void onCallback(BookRequestList bookRequestList) {
-                                requestsRecyclerViewAdapter.setDataSet(bookRequestList);
                                 requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
+                                BookRequestList searchedBookRequest = new BookRequestList();
+
+                                if(isbnSearch!=null && !isbnSearch.isEmpty()) {
+                                    for (BookRequest request: bookRequestList.getBookRequests()) {
+                                        if(request.getBookRequested().getIsbn().equals(isbnSearch)) {
+                                            searchedBookRequest.addRequest(request);
+                                        }
+                                    }
+                                    isbnSearch = "";
+                                    requestsRecyclerViewAdapter.setDataSet(searchedBookRequest);
+                                } else {
+                                    requestsRecyclerViewAdapter.setDataSet(bookRequestList);
+                                }
                             }
                         });
                     }
@@ -295,7 +316,6 @@ public class LentListActivity extends AppCompatActivity implements SearchView.On
                 public void onCallback(BookRequestList bookRequestList) {
                     requestsRecyclerViewAdapter.setDataSet(bookRequestList);
                     requestsRecyclerViewAdapter.setDataCopy(bookRequestList);
-
                 }
             });
         }
