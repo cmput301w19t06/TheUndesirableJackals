@@ -20,80 +20,105 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            app:expandedTitleMarginStart="8dp"
+            app:expandedTitleMarginBottom="8dp"
+            app:expandedTitleGravity="center_horizontal|bottom"
+            app:toolbarId="@+id/personalActivityToolbar">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/imageViewPersonalProfilePhoto"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="70dp"
-                android:src="@drawable/ic_action_username"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|start" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textViewPersonalProfileActivityUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
-                android:layout_marginTop="84dp"
-                android:text="Username"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|start" />
 
-            <TextView
-                android:id="@+id/textViewPersonalProfileActivityEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
-                android:layout_marginTop="110dp"
-                android:text="somemail@gmail.com"
-                android:textStyle="italic"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|start" />
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imageViewPersonalProfilePhoto"
+                    android:layout_width="234dp"
+                    android:layout_height="153dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_action_username"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp"
+                    app:layout_anchorGravity="bottom|start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.496"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textViewPersonalProfileActivityPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
-                android:layout_marginTop="132dp"
-                android:text="Phone: XXX XXX XXXX"
-                android:textSize="14sp"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|start" />
+                <TextView
+                    android:id="@+id/textViewPersonalProfileActivityUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Username"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_anchorGravity="bottom|start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewPersonalProfilePhoto" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="178dp"
-                android:text="My Favourite Books: "
-                android:textSize="24sp"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|start" />
+                <TextView
+                    android:id="@+id/textViewPersonalProfileActivityEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="somemail@gmail.com"
+                    android:textStyle="italic"
+                    app:layout_anchorGravity="bottom|start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPersonalProfileActivityUserName" />
+
+                <TextView
+                    android:id="@+id/textViewPersonalProfileActivityPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="80dp"
+                    android:text="Phone: XXX XXX XXXX"
+                    android:textSize="14sp"
+                    app:layout_anchorGravity="bottom|start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.509"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPersonalProfileActivityEmail" />
+
+            </android.support.constraint.ConstraintLayout>
 
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/personalActivityToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
+                android:contentInsetStart="0dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recylerViewPersonalProfileFavouriteBooks"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:id="@+id/favouriteBooksSwipeRefreshLayout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewPersonalProfileFavouriteBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </android.support.design.widget.CoordinatorLayout>

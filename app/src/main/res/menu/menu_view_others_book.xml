@@ -4,7 +4,7 @@
     tools:context="com.cmput301.w19t06.theundesirablejackals.activities.ViewLibraryBookActivity">
 
     <item
-        android:id="@+id/itemMenuLibraryBookViewFavorite"
+        android:id="@+id/itemMenuOthersBookViewFavorite"
         android:orderInCategory="300"
         android:title="User"
         android:icon="@drawable/ic_action_add_favorite"

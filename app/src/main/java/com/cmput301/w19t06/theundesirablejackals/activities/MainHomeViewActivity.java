@@ -61,6 +61,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
     private BooksRecyclerViewAdapter libraryBooksAdapter = new BooksRecyclerViewAdapter();
     private BooksRecyclerViewAdapter borrowedBooksAdapter = new BooksRecyclerViewAdapter();
     private MenuItem mSelectedFilter;
+    private User loggedInUser;
 
     private TextView mDrawerUsername;
     private TextView mDrawerEmail;
@@ -183,7 +184,7 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 UserInformation userInformation = user.getUserInfo();
                 String userName = userInformation.getUserName();
                 String email = userInformation.getEmail();
-
+                loggedInUser = user;
 
                 // display the info
                 TextView usernameView = (TextView) findViewById(R.id.textViewMenuUsername);
@@ -193,10 +194,6 @@ public class MainHomeViewActivity extends AppCompatActivity implements SearchVie
                 emailView.setText(email);
 
                 setProfilePhotoInDrawer(user);
-
-                // TODO: Change image to profile photo from database
-                //profilePhoto.setImageResource(R.drawable.default_profile_photo);
-
             }
         });
     }

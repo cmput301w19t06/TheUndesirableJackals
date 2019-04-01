@@ -9,7 +9,7 @@
         android:id="@+id/imageViewMenuProfile"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/ic_action_username"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
         android:onClick="OnClick_ProfileImage"/>

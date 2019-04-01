@@ -15,12 +15,8 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select pick up location"
-        android:textSize="24sp" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbarSelectPickupLocation"/>
 
     <fragment
         android:id="@+id/map"
@@ -32,8 +28,13 @@
 
     <Button
         android:id="@+id/submitLocation"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:background="@color/colorPrimary"
+        android:text="Done"
+        android:textColor="@color/browser_actions_text_color" />
+
+
 
 </LinearLayout>

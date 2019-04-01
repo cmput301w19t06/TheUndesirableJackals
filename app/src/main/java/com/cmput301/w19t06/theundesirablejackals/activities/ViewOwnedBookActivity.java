@@ -18,11 +18,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
+import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
+import com.cmput301.w19t06.theundesirablejackals.user.User;
 
 import java.io.File;
 
@@ -35,18 +39,23 @@ import java.io.File;
  */
 public class ViewOwnedBookActivity extends AppCompatActivity {
     private final static String ERROR_TAG_LOAD_IMAGE = "IMAGE_LOAD_ERROR";
-    private final static String ACTIVITY_TAG = "ViewOwnedBookACtivity";
+    private final static String ACTIVITY_TAG = "ViewOwnedBookActivity";
 
     public final static int EDIT_BOOK = 51;
 
     public final static String OWNED_BOOK_FROM_RECYCLER_VIEW = "OwnedBookFromRecyclerView";
     public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
+    public final static String LOGGED_IN_USER = "LoggedInUser";
 
     private Toolbar mToolbar;
     private DatabaseHelper databaseHelper;
 
     private Book mOwnedBook;
     private BookInformation mBookInformation;
+
+
+    private boolean isFavourite;
+    private boolean toggleFavourite;
 
     private ImageView mBookPhotoView;
     private TextView mTitle;
@@ -55,6 +64,8 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     private TextView mStatus;
     private TextView mCategory;
     private TextView mDescription;
+
+    private User mLoggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +76,12 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mToolbar.setTitle("Owned Book");
         setSupportActionBar(mToolbar);
 
-
         databaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
         mOwnedBook = (Book) intent.getSerializableExtra(OWNED_BOOK_FROM_RECYCLER_VIEW);
         mBookInformation = (BookInformation) intent.getSerializableExtra(OWNED_INFO_FROM_RECYCLER_VIEW);
+        mLoggedInUser = (User) intent.getSerializableExtra(LOGGED_IN_USER);
 
         mBookPhotoView = findViewById(R.id.imageViewViewOwnedBookPhoto);
         mTitle = findViewById(R.id.textViewViewOwnedBookBookTitle);
@@ -91,6 +102,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
 
         setBookPhotoView();
 
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,8 +115,10 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_owned_book, menu);
+        setFavouriteIcon(menu.findItem(R.id.itemMenuOwnedBookViewFavorite));
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -115,8 +129,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.itemMenuOwnedBookViewFavorite:
-                //TODO: Add/Delete from user's favorite
-                item.setIcon(R.drawable.ic_is_favorite);
+                toggleFavouriteIcon(item);
                 break;
             case R.id.itemMenuOwnedBookEdit:
                 editBook();
@@ -146,6 +159,31 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
             case AVAILABLE:
                 mStatus.setTextColor(Color.parseColor("#34A853"));
                 break;
+        }
+    }
+
+    private void setFavouriteIcon(final MenuItem item) {
+        Log.d(ACTIVITY_TAG, item.toString());
+
+        if (mLoggedInUser.getFavouriteBooks() != null) {
+            if (mLoggedInUser.getFavouriteBooks().contains(mOwnedBook)) {
+                item.setIcon(R.drawable.ic_is_favorite);
+                isFavourite = true;
+                toggleFavourite = true;
+            } else {
+                item.setIcon(R.drawable.ic_action_add_favorite);
+                isFavourite = false;
+                toggleFavourite = false;
+            }
+        }
+    }
+
+    private void toggleFavouriteIcon(MenuItem item) {
+        toggleFavourite = !toggleFavourite;
+        if(toggleFavourite) {
+            item.setIcon(R.drawable.ic_is_favorite);
+        } else {
+            item.setIcon(R.drawable.ic_action_add_favorite);
         }
     }
 
@@ -203,7 +241,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                                 if (image.exists()) {
                                     Uri photoData = Uri.fromFile(image);
                                     mBookPhotoView.setImageURI(photoData);
-                                    Log.d("ViewBookActiv", "image now exists... COOL");
+                                    Log.d(ACTIVITY_TAG, "image now exists... COOL");
                                 } else {
                                     ToastMessage.show(getApplicationContext(), "Something went quite wrong...");
                                 }
@@ -218,7 +256,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
             } else {
                 Uri photoData = Uri.fromFile(image);
                 mBookPhotoView.setImageURI(photoData);
-                Log.d("ViewBookActiv", "image already exists... COOL");
+                Log.d("ViewBookActivity", "image already exists... COOL");
             }
         }
     }
@@ -239,4 +277,48 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
             Log.d(ACTIVITY_TAG, "Unrecognized request code");
         }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        updateFavouriteBooks();
+    }
+
+    private void updateFavouriteBooks() {
+        if(isFavourite && !toggleFavourite) {
+            deleteFavourite();
+        }
+        if(!isFavourite && toggleFavourite) {
+            addFavourite();
+        }
+    }
+
+    private void deleteFavourite() {
+        databaseHelper.deleteFavouriteBook(mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    Log.d(ACTIVITY_TAG, "Book deleted from favourites");
+                } else {
+                    Log.d(ACTIVITY_TAG, "Book delete from favourites failed");
+                }
+
+            }
+        });
+    }
+
+    private void addFavourite() {
+        databaseHelper.addFavouriteBook(mBookInformation, new BooleanCallback() {
+            @Override
+            public void onCallback(boolean bool) {
+                if (bool) {
+                    Log.d(ACTIVITY_TAG, "Book added to favourites");
+                } else {
+                    Log.d(ACTIVITY_TAG, "Book add to favourites failed");
+                }
+            }
+        });
+    }
+
 }
