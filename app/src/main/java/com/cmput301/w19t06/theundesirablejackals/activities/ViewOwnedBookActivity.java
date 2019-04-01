@@ -22,6 +22,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
 import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
+import com.cmput301.w19t06.theundesirablejackals.book.BookStatus;
 import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
 import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
@@ -165,18 +166,11 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     }
 
     private void  doViewRequests() {
-        databaseHelper.getLendRequests(mLoggedInUser.getUserInfo().getUserName(), new BookRequestListCallback() {
-            @Override
-            public void onCallback(BookRequestList bookRequestList) {
-                if(bookRequestList!=null) {
-                    if (!bookRequestList.contains(mOwnedBook.getIsbn())) {
-                        ToastMessage.show(getApplicationContext(), "No Request for this book");
-                    } else {
-                        showRequests();
-                    }
-                }
-            }
-        });
+        if(mBookInformation.getStatus().equals(BookStatus.REQUESTED)) {
+            showRequests();
+        } else {
+            ToastMessage.show(getApplicationContext(), "No requests for this book");
+        }
     }
 
     private void showRequests() {
