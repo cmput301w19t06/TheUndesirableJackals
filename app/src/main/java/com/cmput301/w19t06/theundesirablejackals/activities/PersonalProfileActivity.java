@@ -13,16 +13,20 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,9 +37,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BooksRecyclerViewAdapter;
+import com.cmput301.w19t06.theundesirablejackals.adapter.RecyclerViewClickListener;
+import com.cmput301.w19t06.theundesirablejackals.book.Book;
+import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.Geolocation;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
+import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UriCallback;
@@ -45,11 +56,16 @@ import com.cmput301.w19t06.theundesirablejackals.user.UserInformation;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.HashMap;
 
-public class
-PersonalProfileActivity extends AppCompatActivity {
+public class PersonalProfileActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     public static final int IMAGE_GALLERY_REQUEST = 700;
     private static final int GALLERY_PERMISSION_REQUEST = 701;
+
+
+    private BooksRecyclerViewAdapter favouriteBooksAdapter;
+    private RecyclerView mRecyclerViewFavouriteBooks;
+    private SwipeRefreshLayout favouriteBooksSwipeRefreshLayout;
 
     private DatabaseHelper mDatabaseHelper;
 
@@ -61,10 +77,8 @@ PersonalProfileActivity extends AppCompatActivity {
     private TextView mTextViewUsername;
     private TextView mTextViewEmail;
     private TextView mTextViewPhoneNumber;
-    private TextView mTextViewEditProfile;
 
-    private RecyclerView mRecyclerViewFavouriteBooks;
-    private BooksRecyclerViewAdapter mAdapterFavouriteBooks;
+
 
 
     /**
@@ -77,10 +91,9 @@ PersonalProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_profile);
-
-        mToolBar = findViewById(R.id.toolbar);
+        mToolBar = findViewById(R.id.personalActivityToolbar);
         mToolBar.setNavigationIcon(R.drawable.ic_action_back);
-        mToolBar.setTitle("");
+        mToolBar.setTitle("My Favourite Books");
         setSupportActionBar(mToolBar);
 
         mDatabaseHelper = new DatabaseHelper();
@@ -90,7 +103,43 @@ PersonalProfileActivity extends AppCompatActivity {
         mTextViewEmail = findViewById(R.id.textViewPersonalProfileActivityEmail);
         mTextViewPhoneNumber = findViewById(R.id.textViewPersonalProfileActivityPhoneNumber);
 
-        mRecyclerViewFavouriteBooks = findViewById(R.id.recylerViewPersonalProfileFavouriteBooks);
+        favouriteBooksSwipeRefreshLayout = findViewById(R.id.favouriteBooksSwipeRefreshLayout);
+        mRecyclerViewFavouriteBooks = findViewById(R.id.recyclerViewPersonalProfileFavouriteBooks);
+
+        mRecyclerViewFavouriteBooks.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerViewFavouriteBooks.setLayoutManager(layoutManager);
+
+        RecyclerViewClickListener listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                view.setClickable(false);
+                Book clickedBook = favouriteBooksAdapter.getBook(position);
+                BookInformation clickedBookInformation = favouriteBooksAdapter.getInformation(position);
+                Intent intent = new Intent(PersonalProfileActivity.this , ViewLibraryBookActivity.class);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_BOOK_FROM_RECYCLER_VIEW, clickedBook);
+                intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, clickedBookInformation);
+                startActivity(intent);
+                view.setClickable(true);
+
+            }
+        };
+        favouriteBooksAdapter = new BooksRecyclerViewAdapter();
+
+        favouriteBooksAdapter.setMyListener(listener);
+        mRecyclerViewFavouriteBooks.setAdapter(favouriteBooksAdapter);
+
+        favouriteBooksSwipeRefreshLayout.setOnRefreshListener(this);
+        favouriteBooksSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                favouriteBooksSwipeRefreshLayout.setRefreshing(true);
+                getFavouriteBooks();
+                favouriteBooksSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
         getUserInfo();
 
@@ -101,6 +150,7 @@ PersonalProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,6 +173,7 @@ PersonalProfileActivity extends AppCompatActivity {
         }
         return true;
     }
+
 
     private void doPhoneNumberChange() {
         LayoutInflater li = LayoutInflater.from(PersonalProfileActivity.this);
@@ -177,10 +228,9 @@ PersonalProfileActivity extends AppCompatActivity {
             public void onCallback(User user) {
                 // retrieve user's info
                 mUserInformation = user.getUserInfo();
-
                 // display the info
                 mTextViewUsername.setText(mUserInformation.getUserName());
-                mTextViewEmail.setText("email: " + mUserInformation.getEmail());
+                mTextViewEmail.setText(mUserInformation.getEmail());
                 mTextViewPhoneNumber.setText("phone: " + mUserInformation.getPhoneNumber());
 
                 if (mUserInformation.getUserPhoto() != null && !mUserInformation.getUserPhoto().isEmpty()) {
@@ -264,5 +314,44 @@ PersonalProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void setFavouriteBooks(User user) {
+        favouriteBooksAdapter.setDataSet(new BookInformationPairing());
+        favouriteBooksAdapter.setDataCopy(new BookInformationPairing());
+        if(user != null && user.getFavouriteBooks() != null && user.getFavouriteBooks().getBooks() != null) {
+            final HashMap<String, Object> map = user.getFavouriteBooks().getBooks();
+            if(map.size() > 0) {
+                for (String isbn : map.keySet()) {
+                    final String information = map.get(isbn).toString();
+                    mDatabaseHelper.getBookFromDatabase(isbn, new BookCallback() {
+                        @Override
+                        public void onCallback(final Book book) {
+                            mDatabaseHelper.getBookInformation(information, new BookInformationCallback() {
+                                @Override
+                                public void onCallback(BookInformation bookInformation) {
+                                    favouriteBooksAdapter.addItem(book, bookInformation);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        favouriteBooksSwipeRefreshLayout.setRefreshing(true);
+        getFavouriteBooks();
+        favouriteBooksSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void getFavouriteBooks() {
+        mDatabaseHelper.getCurrentUserFromDatabase(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                setFavouriteBooks(user);
+            }
+        });
+    }
 }
 

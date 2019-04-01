@@ -30,6 +30,7 @@ import com.cmput301.w19t06.theundesirablejackals.adapter.SwipeController;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.activities.R;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.database.BookCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BookInformationCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
@@ -42,7 +43,6 @@ import java.util.HashMap;
 * Created by Mohamed on 21/02/2019
  */
 public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    private Button addBookButton;
     private View view;
     private BooksRecyclerViewAdapter booksRecyclerViewAdapter;
     private SwipeRefreshLayout ownedBooksSwipeRefreshLayout;
@@ -87,6 +87,7 @@ public class MyBooksFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 Intent intent = new Intent(getActivity(), ViewOwnedBookActivity.class);
                 intent.putExtra(ViewOwnedBookActivity.OWNED_BOOK_FROM_RECYCLER_VIEW, clickedBook);
                 intent.putExtra(ViewOwnedBookActivity.OWNED_INFO_FROM_RECYCLER_VIEW, clickedbookInformation);
+                intent.putExtra(ViewOwnedBookActivity.LOGGED_IN_USER, loggedInUser);
                 startActivity(intent);
                 view.setClickable(true);
             }

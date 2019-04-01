@@ -45,6 +45,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
 
     public final static String OWNED_BOOK_FROM_RECYCLER_VIEW = "OwnedBookFromRecyclerView";
     public final static String OWNED_INFO_FROM_RECYCLER_VIEW = "InformationFromRecyclerView";
+    public final static String LOGGED_IN_USER = "LoggedInUser";
 
     private Toolbar mToolbar;
     private DatabaseHelper databaseHelper;
@@ -64,6 +65,8 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     private TextView mCategory;
     private TextView mDescription;
 
+    private User mLoggedInUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +76,12 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
         mToolbar.setTitle("Owned Book");
         setSupportActionBar(mToolbar);
 
-
         databaseHelper = new DatabaseHelper();
 
         Intent intent = getIntent();
         mOwnedBook = (Book) intent.getSerializableExtra(OWNED_BOOK_FROM_RECYCLER_VIEW);
         mBookInformation = (BookInformation) intent.getSerializableExtra(OWNED_INFO_FROM_RECYCLER_VIEW);
-
+        mLoggedInUser = (User) intent.getSerializableExtra(LOGGED_IN_USER);
 
         mBookPhotoView = findViewById(R.id.imageViewViewOwnedBookPhoto);
         mTitle = findViewById(R.id.textViewViewOwnedBookBookTitle);
@@ -163,24 +165,17 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
     private void setFavouriteIcon(final MenuItem item) {
         Log.d(ACTIVITY_TAG, item.toString());
 
-        databaseHelper.getCurrentUserFromDatabase(new UserCallback() {
-            @Override
-            public void onCallback(User user) {
-                BookToInformationMap favouriteBooks = user.getFavouriteBooks();
-                if (favouriteBooks != null) {
-                    if (favouriteBooks.contains(mOwnedBook)) {
-                        item.setIcon(R.drawable.ic_is_favorite);
-                        isFavourite = true;
-                        toggleFavourite = true;
-                    } else {
-                        item.setIcon(R.drawable.ic_action_add_favorite);
-                        isFavourite = false;
-                        toggleFavourite = false;
-                    }
-                }
-
+        if (mLoggedInUser.getFavouriteBooks() != null) {
+            if (mLoggedInUser.getFavouriteBooks().contains(mOwnedBook)) {
+                item.setIcon(R.drawable.ic_is_favorite);
+                isFavourite = true;
+                toggleFavourite = true;
+            } else {
+                item.setIcon(R.drawable.ic_action_add_favorite);
+                isFavourite = false;
+                toggleFavourite = false;
             }
-        });
+        }
     }
 
     private void toggleFavouriteIcon(MenuItem item) {

@@ -97,7 +97,6 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
         mCategory = findViewById(R.id.textViewViewLibraryBookCategory);
         mDescription = findViewById(R.id.textViewViewLibraryBookBookDescription);
 
-
         mTitle.setText(mLibraryBook.getTitle());
         mAuthor.setText(mLibraryBook.getAuthor());
         mIsbn.setText("ISBN: " + mLibraryBook.getIsbn());
@@ -256,7 +255,7 @@ public class ViewLibraryBookActivity extends AppCompatActivity {
                                     }if(!requestExists){
                                         makeNewBorrowRequest(userInformation);
                                     }else{
-                                        ToastMessage.show(getBaseContext(), "you already requested this book");
+                                        ToastMessage.show(getBaseContext(), "You already requested this book");
                                     }
                                 }else{
                                     makeNewBorrowRequest(userInformation);
