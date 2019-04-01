@@ -60,14 +60,4 @@ public class BookToInformationMapTest {
         assertFalse(returnedBooks.containsKey("9780321268457"));
     }
 
-    @Test
-    public void contains_isCorrect() {
-        assertEquals(bookToInformationMap.contains(bookOne), true);
-        assertEquals(bookToInformationMap.contains(bookTwo), true);
-
-//        Book newBook = new Book("Unexistent Book", "Felipe", "9780321268333");
-//
-//        assertFalse(bookToInformationMap.contains(newBook));
-    }
-
 }
