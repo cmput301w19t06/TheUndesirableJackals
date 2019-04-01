@@ -122,7 +122,6 @@ public class PersonalProfileActivity extends AppCompatActivity implements SwipeR
                 intent.putExtra(ViewLibraryBookActivity.LIBRARY_INFO_FROM_RECYCLER_VIEW, clickedBookInformation);
                 startActivity(intent);
                 view.setClickable(true);
-
             }
         };
         favouriteBooksAdapter = new BooksRecyclerViewAdapter();

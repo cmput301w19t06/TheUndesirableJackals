@@ -28,18 +28,19 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
     private Double lng;
     private Button submit;
     Toolbar toolbar;
-
+    private final float mZoomLevel = 17.0f;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = findViewById(R.id.toolbarEditPickupLocation);
+        setContentView(R.layout.activity_select_location);
+        toolbar = findViewById(R.id.toolbarSelectPickupLocation);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Edit Pickup Location");
         setSupportActionBar(toolbar);
 
-        setContentView(R.layout.activity_select_location);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -102,7 +103,7 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
 
                 // Add a marker in coord and move the camera
                 mMap.addMarker(new MarkerOptions().position(coord).title("Default pick up location")).showInfoWindow();
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, mZoomLevel));
             }
         });
 
@@ -118,7 +119,7 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
 
                 // add marker in new coord and move the camera
                 mMap.addMarker(new MarkerOptions().position(point).title("New pick up location")).showInfoWindow();
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, mZoomLevel));
             }
         });
     }
