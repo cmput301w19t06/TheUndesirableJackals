@@ -21,8 +21,10 @@ import android.widget.TextView;
 import com.cmput301.w19t06.theundesirablejackals.adapter.BookInformationPairing;
 import com.cmput301.w19t06.theundesirablejackals.book.Book;
 import com.cmput301.w19t06.theundesirablejackals.book.BookInformation;
+import com.cmput301.w19t06.theundesirablejackals.book.BookRequestList;
 import com.cmput301.w19t06.theundesirablejackals.book.BookToInformationMap;
 import com.cmput301.w19t06.theundesirablejackals.classes.ToastMessage;
+import com.cmput301.w19t06.theundesirablejackals.database.BookRequestListCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.BooleanCallback;
 import com.cmput301.w19t06.theundesirablejackals.database.DatabaseHelper;
 import com.cmput301.w19t06.theundesirablejackals.database.UserCallback;
@@ -135,7 +137,7 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 editBook();
                 break;
             case R.id.itemMenuOwnedBookViewRequests:
-                ToastMessage.show(this, "Viewing Requests...");
+                doViewRequests();
                 break;
             case R.id.itemMenuOwnedBookDelete:
                 deleteBook();
@@ -160,6 +162,27 @@ public class ViewOwnedBookActivity extends AppCompatActivity {
                 mStatus.setTextColor(Color.parseColor("#34A853"));
                 break;
         }
+    }
+
+    private void  doViewRequests() {
+        databaseHelper.getLendRequests(mLoggedInUser.getUserInfo().getUserName(), new BookRequestListCallback() {
+            @Override
+            public void onCallback(BookRequestList bookRequestList) {
+                if(bookRequestList!=null) {
+                    if (!bookRequestList.contains(mOwnedBook.getIsbn())) {
+                        ToastMessage.show(getApplicationContext(), "No Request for this book");
+                    } else {
+                        showRequests();
+                    }
+                }
+            }
+        });
+    }
+
+    private void showRequests() {
+        Intent intent = new Intent(ViewOwnedBookActivity.this, LentListActivity.class);
+        intent.putExtra(LentListActivity.SEARCH_BY_ISBN, mOwnedBook.getIsbn());
+        startActivity(intent);
     }
 
     private void setFavouriteIcon(final MenuItem item) {
