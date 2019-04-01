@@ -7,11 +7,11 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 
 import com.cmput301.w19t06.theundesirablejackals.activities.AlternateSignInActivity;
 
@@ -32,10 +32,12 @@ import androidx.annotation.NonNull;
 
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class FragmentsClickTest {
+public class booksAPITest {
 
     @Rule
     public ActivityTestRule<AlternateSignInActivity> testRule =
@@ -58,34 +60,37 @@ public class FragmentsClickTest {
     }
 
     @Test
-    public void switchTabs_isCorrect() {
-        // click all three tabs
-        for (Integer i = 0; i < 3; i++){
-            Espresso.onView(withId(R.id.tabLayoutMainHomeViewActivityFragmentTabs)).
-                    perform(selectTabAtPosition(i));
-
-            SystemClock.sleep(3000);
-        }
-    }
-
-    @Test
-    public void myBooksFragment_isCorrect() {
-        // switch to "my books" tab
+    public void booksAPI_isCorrect() {
+        // switch to "my books" tab if not there already
         Espresso.onView(withId(R.id.tabLayoutMainHomeViewActivityFragmentTabs)).
                 perform(selectTabAtPosition(0));
 
         SystemClock.sleep(3000);
 
-        // clicks items in fragment
-        // there are 4 books in this class we can iterate through
-        for (Integer i = 0; i < 4; i++) {
-            Espresso.onView(withId(R.id.myBooks_recyclerview)).
-                    perform(RecyclerViewActions.actionOnItemAtPosition(i, click()));
+        // clicks on create a book
+        Espresso.onView(withId(R.id.floatingActionButtonAddNewBook)).perform(click());
+        SystemClock.sleep(1500);
 
-            SystemClock.sleep(1500);
-            Espresso.pressBack();
-            SystemClock.sleep(3000);
-        }
+        // the correct book description
+        String isbn = "9780307743657";
+        String author = "Stephen King";
+        String categories = "Fiction";
+
+        // fill the ISBN
+        Espresso.onView(withId(R.id.editTextAddBookBookISBN)).perform(typeText(isbn));
+        Espresso.closeSoftKeyboard();
+
+        // move the cursor away
+        Espresso.onView(withId(R.id.editTextAddBookBookTitle)).perform(typeText("."));
+        Espresso.closeSoftKeyboard();
+        SystemClock.sleep(3000);
+
+        // checks the description from Google Books API is correct
+        Espresso.onView(withId(R.id.editTextAddBookBookAuthor)).check(matches(withText(containsString(author))));
+        Espresso.onView(withId(R.id.editTextAddBookBookCategories)).check(matches(withText(containsString(categories))));
+
+        SystemClock.sleep(1500);
+
     }
 
     // copied by Felipe on 2019-03-31 from:

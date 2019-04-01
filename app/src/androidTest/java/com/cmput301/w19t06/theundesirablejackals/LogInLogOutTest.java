@@ -33,7 +33,9 @@ public class LogInLogOutTest {
     public void logIn() {
         // input text in the EditTexts
         Espresso.onView(withId(R.id.editTextAlternateSignInEmail)).perform(typeText("rdrgues@hotmail.com"));
+        Espresso.closeSoftKeyboard();
         Espresso.onView(withId(R.id.editTextAlternateSignInPassword)).perform(typeText("password"));
+        Espresso.closeSoftKeyboard();
         SystemClock.sleep(1500);
         // click the log in button
         Espresso.onView(withId(R.id.buttonAlternateSignIn)).perform(click());

@@ -39,13 +39,17 @@ public class ChangePhoneNumber {
     @Before
     public void logIn() {
         // input text in the EditTexts
-        onView(withId(R.id.editTextAlternateSignInEmail)).perform(typeText("rdrgues@hotmail.com"));
-        onView(withId(R.id.editTextAlternateSignInPassword)).perform(typeText("password"));
+        Espresso.onView(withId(R.id.editTextAlternateSignInEmail))
+                .perform(typeText("rdrgues@hotmail.com"));
+        Espresso.closeSoftKeyboard();
+        Espresso.onView(withId(R.id.editTextAlternateSignInPassword))
+                .perform(typeText("password"));
+        Espresso.closeSoftKeyboard();
         SystemClock.sleep(1500);
         // click the log in button
-        onView(withId(R.id.buttonAlternateSignIn)).perform(click());
+        Espresso.onView(withId(R.id.buttonAlternateSignIn)).perform(click());
 
-        SystemClock.sleep(1500);
+        SystemClock.sleep(3000);
     }
 
     @Test
@@ -71,7 +75,7 @@ public class ChangePhoneNumber {
         // input the new phone number and press "ok"
         onView(withId(R.id.editTextPrompNewPhoneNumberInput)).perform(typeText("7809155324"));
         onView(withText("OK")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click());
-        SystemClock.sleep(1500);
+        SystemClock.sleep(4000);
     }
 
 }
